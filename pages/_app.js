@@ -1,5 +1,5 @@
 // pages/_app.js
-import '../styles/globals.css';
+import '../styles/globals.css';  // ✅ This is the only place global CSS should be imported
 import Head from 'next/head';
 import Layout from '../components/Layout';
 

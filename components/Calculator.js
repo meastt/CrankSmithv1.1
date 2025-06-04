@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { bikeConfig, getComponentsForBikeType } from '../lib/components'
+import React, { useState, useEffect } from 'react';
+import { bikeConfig, getComponentsForBikeType } from '../lib/components';
 
 export default function Calculator({
   bikeType,
@@ -11,55 +11,42 @@ export default function Calculator({
   onCalculate,
   loading
 }) {
-  const [speedUnit, setSpeedUnit] = useState('MPH') // Default to MPH for US
-  const components = bikeType ? getComponentsForBikeType(bikeType) : { cassettes: [], cranksets: [] }
-  const config = bikeType ? bikeConfig[bikeType] : null
+  const [speedUnit, setSpeedUnit] = useState('MPH');
+  const components = bikeType ? getComponentsForBikeType(bikeType) : { cassettes: [], cranksets: [] };
+  const config = bikeType ? bikeConfig[bikeType] : null;
 
-  // Load saved preference on mount
   useEffect(() => {
-    const savedUnit = localStorage.getItem('speedUnit') || 'MPH'
-    setSpeedUnit(savedUnit)
-  }, [])
+    const savedUnit = localStorage.getItem('speedUnit') || 'MPH';
+    setSpeedUnit(savedUnit);
+  }, []);
 
-  // Save preference when changed
   const handleUnitChange = (unit) => {
-    setSpeedUnit(unit)
-    localStorage.setItem('speedUnit', unit)
-  }
+    setSpeedUnit(unit);
+    localStorage.setItem('speedUnit', unit);
+  };
 
   return (
     <div className="space-y-8">
       {/* Speed Unit Toggle */}
       <div className="flex justify-center mb-6">
         <div className="bg-gray-800 rounded-lg p-1 flex">
-          <button
-            onClick={() => handleUnitChange('KMH')}
-            className={`px-4 py-2 rounded-md transition-all ${
-              speedUnit === 'KMH' 
-                ? 'bg-blue-600 text-white' 
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            km/h
-          </button>
-          <button
-            onClick={() => handleUnitChange('MPH')}
-            className={`px-4 py-2 rounded-md transition-all ${
-              speedUnit === 'MPH' 
-                ? 'bg-blue-600 text-white' 
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            mph
-          </button>
+          {['KMH', 'MPH'].map(unit => (
+            <button
+              key={unit}
+              onClick={() => handleUnitChange(unit)}
+              className={`px-4 py-2 rounded-md transition-all ${
+                speedUnit === unit ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              {unit.toLowerCase()}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Bike Type Selection */}
       <div className="max-w-md mx-auto">
-        <label className="block text-sm font-medium mb-2 text-gray-400">
-          Select Your Bike Type
-        </label>
+        <label className="block text-sm font-medium mb-2 text-gray-400">Select Your Bike Type</label>
         <select
           value={bikeType}
           onChange={(e) => setBikeType(e.target.value)}
@@ -72,10 +59,9 @@ export default function Calculator({
         </select>
       </div>
 
-      {/* Configuration Cards */}
+      {/* Config Cards */}
       {bikeType && (
         <div className="grid md:grid-cols-2 gap-8">
-          {/* Current Setup */}
           <SetupCard
             title="Current Setup"
             icon="⚙️"
@@ -85,8 +71,6 @@ export default function Calculator({
             components={components}
             colorClass="from-blue-500 to-purple-600"
           />
-
-          {/* Proposed Setup */}
           <SetupCard
             title="New Setup"
             icon="🚀"
@@ -99,7 +83,7 @@ export default function Calculator({
         </div>
       )}
 
-      {/* Calculate Button - Pass speedUnit to parent */}
+      {/* Calculate Button */}
       <div className="text-center">
         <button
           onClick={() => onCalculate(speedUnit)}
@@ -125,98 +109,68 @@ export default function Calculator({
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 function SetupCard({ title, icon, setup, setSetup, config, components, colorClass }) {
   return (
     <div className="card">
-      <div className="flex items-center mb-6">
-        <div className={`w-12 h-12 bg-gradient-to-br ${colorClass} rounded-lg flex items-center justify-center mr-4 text-2xl`}>
-          {icon}
-        </div>
-        <h3 className="text-2xl font-semibold">{title}</h3>
+      <h2 className="text-xl font-bold mb-4 text-white">{icon} {title}</h2>
+
+      {/* Tire */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2 text-gray-400">Tire Width (mm)</label>
+        <select
+          value={setup.tire}
+          onChange={(e) => setSetup({ ...setup, tire: e.target.value })}
+          className="input-field"
+        >
+          <option value="">Select tire width...</option>
+          {config?.tireWidths.map(width => (
+            <option key={width} value={width}>{width}mm</option>
+          ))}
+        </select>
       </div>
 
-      <div className="space-y-4">
-        {/* Wheel Size */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-400">
-            Wheel Size
-          </label>
-          <select
-            value={setup.wheel}
-            onChange={(e) => setSetup({ ...setup, wheel: e.target.value })}
-            className="input-field"
-          >
-            <option value="">Select wheel size...</option>
-            {config?.wheelSizes.map(size => (
-              <option key={size} value={size}>{size}</option>
-            ))}
-          </select>
-        </div>
+      {/* Crankset */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2 text-gray-400">Crankset</label>
+        <select
+          value={setup.crankset?.id || ''}
+          onChange={(e) => {
+            const crankset = components.cranksets.find(c => c.id === e.target.value);
+            setSetup({ ...setup, crankset });
+          }}
+          className="input-field"
+        >
+          <option value="">Select crankset...</option>
+          {components.cranksets.map(c => (
+            <option key={c.id} value={c.id}>
+              {c.model} {c.variant} ({c.weight}g) - ${c.price}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        {/* Tire Width */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-400">
-            Tire Width (mm)
-          </label>
-          <select
-            value={setup.tire}
-            onChange={(e) => setSetup({ ...setup, tire: e.target.value })}
-            className="input-field"
-          >
-            <option value="">Select tire width...</option>
-            {config?.tireWidths.map(width => (
-              <option key={width} value={width}>{width}mm</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Crankset */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-400">
-            Crankset
-          </label>
-          <select
-            value={setup.crankset?.id || ''}
-            onChange={(e) => {
-              const crankset = components.cranksets.find(c => c.id === e.target.value)
-              setSetup({ ...setup, crankset })
-            }}
-            className="input-field"
-          >
-            <option value="">Select crankset...</option>
-            {components.cranksets.map(crankset => (
-              <option key={crankset.id} value={crankset.id}>
-                {crankset.model} {crankset.variant} ({crankset.weight}g) - ${crankset.price}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Cassette */}
-        <div>
-          <label className="block text-sm font-medium mb-2 text-gray-400">
-            Cassette
-          </label>
-          <select
-            value={setup.cassette?.id || ''}
-            onChange={(e) => {
-              const cassette = components.cassettes.find(c => c.id === e.target.value)
-              setSetup({ ...setup, cassette })
-            }}
-            className="input-field"
-          >
-            <option value="">Select cassette...</option>
-            {components.cassettes.map(cassette => (
-              <option key={cassette.id} value={cassette.id}>
-                {cassette.model} {cassette.variant} ({cassette.weight}g) - ${cassette.price}
-              </option>
-            ))}
-          </select>
-        </div>
+      {/* Cassette */}
+      <div>
+        <label className="block text-sm font-medium mb-2 text-gray-400">Cassette</label>
+        <select
+          value={setup.cassette?.id || ''}
+          onChange={(e) => {
+            const cassette = components.cassettes.find(c => c.id === e.target.value);
+            setSetup({ ...setup, cassette });
+          }}
+          className="input-field"
+        >
+          <option value="">Select cassette...</option>
+          {components.cassettes.map(c => (
+            <option key={c.id} value={c.id}>
+              {c.model} {c.variant} ({c.weight}g) - ${c.price}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
-  )
+  );
 }

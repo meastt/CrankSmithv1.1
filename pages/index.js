@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import Layout from '../components/Layout'
-import Calculator from '../components/Calculator'
+import Head from 'next/head';
+import Layout from '../components/Layout';
+import Calculator from '../components/Calculator';
 import Results from '../components/Results'
 import { localStorageDB } from '../lib/supabase'
 import { compareSetups } from '../lib/calculations'
@@ -121,78 +122,77 @@ export default function Home() {
     }
   }
 
-  return (
-    <Layout>
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-            Gear Ratio Calculator
-          </h1>
-          <p className="text-xl text-gray-400">
-            Optimize your bike&apos;s performance and save weight
-          </p>
-        </div>
+return (
+  <Layout>
+    <main className="container mx-auto px-4 py-12 max-w-7xl">
+      {/* Hero Section */}
+      <div className="text-center mb-12">
+        <h1 className="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-gray-800 drop-shadow-md">
+          CrankSmith
+        </h1>
+        <p className="text-xl text-[--color-text-secondary] italic">
+          Forged Precision for Every Ride
+        </p>
+      </div>
 
-        {/* Saved Configurations Toggle */}
-        <div className="text-center mb-8">
-          <button
-            onClick={() => setShowSaved(!showSaved)}
-            className="text-blue-400 hover:text-blue-300 transition-colors"
-          >
-            {showSaved ? 'Hide' : 'Show'} Saved Configurations ({savedConfigs.length})
-          </button>
-        </div>
+      {/* Saved Configurations Toggle */}
+      <div className="text-center mb-8">
+        <button
+          onClick={() => setShowSaved(!showSaved)}
+          className="text-[--color-accent] hover:underline transition-colors"
+        >
+          {showSaved ? 'Hide' : 'Show'} Saved Configurations ({savedConfigs.length})
+        </button>
+      </div>
 
-        {/* Saved Configurations List */}
-        {showSaved && savedConfigs.length > 0 && (
-          <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {savedConfigs.map(config => (
-              <div key={config.id} className="card">
-                <h3 className="font-semibold text-lg mb-2">{config.name}</h3>
-                <p className="text-sm text-gray-400 mb-4">
-                  {config.bike_type} • {new Date(config.created_at).toLocaleDateString()}
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleLoadConfig(config)}
-                    className="flex-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded transition"
-                  >
-                    Load
-                  </button>
-                  <button
-                    onClick={() => handleDeleteConfig(config.id)}
-                    className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded transition"
-                  >
-                    Delete
-                  </button>
-                </div>
+      {/* Saved Configurations List */}
+      {showSaved && savedConfigs.length > 0 && (
+        <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {savedConfigs.map(config => (
+            <div key={config.id} className="card bg-[--color-surface] shadow-xl p-4 rounded-lg border border-[--color-border]">
+              <h3 className="font-semibold text-lg text-[--color-text-primary] mb-2">{config.name}</h3>
+              <p className="text-sm text-[--color-text-secondary] mb-4">
+                {config.bike_type} • {new Date(config.created_at).toLocaleDateString()}
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleLoadConfig(config)}
+                  className="flex-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded transition text-white text-sm"
+                >
+                  Load
+                </button>
+                <button
+                  onClick={() => handleDeleteConfig(config.id)}
+                  className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded transition text-white text-sm"
+                >
+                  Delete
+                </button>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
+      )}
 
-        {/* Calculator Component */}
-        <Calculator
+      {/* Calculator Component */}
+      <Calculator
+        bikeType={bikeType}
+        setBikeType={setBikeType}
+        currentSetup={currentSetup}
+        setCurrentSetup={setCurrentSetup}
+        proposedSetup={proposedSetup}
+        setProposedSetup={setProposedSetup}
+        onCalculate={handleCalculate}
+        loading={loading}
+      />
+
+      {/* Results Component */}
+      {results && (
+        <Results
+          results={results}
+          onSave={handleSaveConfig}
           bikeType={bikeType}
-          setBikeType={setBikeType}
-          currentSetup={currentSetup}
-          setCurrentSetup={setCurrentSetup}
-          proposedSetup={proposedSetup}
-          setProposedSetup={setProposedSetup}
-          onCalculate={handleCalculate}
-          loading={loading}
         />
-
-        {/* Results Component */}
-        {results && (
-          <Results
-            results={results}
-            onSave={handleSaveConfig}
-            bikeType={bikeType}
-          />
-        )}
-      </main>
-    </Layout>
-  )
-}
+      )}
+    </main>
+  </Layout>
+);

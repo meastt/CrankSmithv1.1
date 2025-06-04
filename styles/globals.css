@@ -2,22 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-900 text-gray-100;
-  }
+:root {
+  --color-bg: #121212;
+  --color-surface: #1E1E1E;
+  --color-text-primary: #F0F0F0;
+  --color-text-secondary: #A0A0A0;
+  --color-accent: #B08D57;
 }
 
-@layer components {
-  .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-  
-  .input-field {
-    @apply w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
-  }
-  
-  .card {
-    @apply bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-200;
-  }
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.header .tagline {
+  font-size: 1.25rem;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  margin-top: 0.5rem;
+}
+
+.footer {
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.875rem;
+}
+
+.card {
+  background-color: var(--color-surface);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.input-field {
+  @apply w-full p-2 bg-gray-700 text-gray-100 border border-gray-600 rounded focus:outline-none focus:border-[--color-accent];
+}
+
+.btn-primary {
+  @apply px-6 py-3 bg-[--color-accent] text-black font-semibold rounded hover:opacity-90 transition;
 }

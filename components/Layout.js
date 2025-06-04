@@ -1,17 +1,24 @@
+import React from 'react';
 import Head from 'next/head';
+import '../globals/styles.css';
 
 export default function Layout({ children }) {
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-[--color-bg] text-[--color-text-primary]">
       <Head>
         <title>CrankSmith</title>
-        <meta name="description" content="Optimize your bike's performance with CrankSmith's gear ratio calculator" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="manifest" href="/manifest.json" />
+        <meta name="description" content="Forged for the Road, Built to Ride" />
       </Head>
-      <div className="min-h-screen bg-gray-900 text-white">
+      <header className="header">
+        <h1>CrankSmith</h1>
+        <p className="tagline">Forged for the Road, Built to Ride</p>
+      </header>
+      <main className="flex-grow container mx-auto px-4 py-8">
         {children}
-      </div>
-    </>
+      </main>
+      <footer className="footer">
+        <p>&copy; 2025 CrankSmith. All rights reserved.</p>
+      </footer>
+    </div>
   );
 }

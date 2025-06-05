@@ -70,7 +70,7 @@ export default function Layout({ children }) {
             &copy; 2024 CrankSmith. Precision gear calculations for serious cyclists.
           </p>
           <p className="mt-2 text-xs">
-            Forge your perfect ride • Beta Version
+          Forge your perfect ride. • Beta Version
           </p>
         </div>
       </footer>

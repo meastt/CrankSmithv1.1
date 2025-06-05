@@ -465,9 +465,9 @@ export default function Results({ results, onSave, bikeType, currentSetup, propo
           <RileyChat 
             userSetup={{ 
               bikeType, 
-              crankset: currentSetup.crankset, 
-              cassette: currentSetup.cassette,
-              tire: currentSetup.tire 
+              crankset: currentSetup?.crankset, 
+              cassette: currentSetup?.cassette,
+              tire: currentSetup?.tire 
             }}
             analysisResults={results}
             componentDatabase={componentDatabase}

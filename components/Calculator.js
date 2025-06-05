@@ -29,10 +29,9 @@ export default function Calculator({
     <div className="space-y-12">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="hero-title">Optimize Your Ride</h1>
+        <h1 className="hero-title">Dialed Performance</h1>
         <p className="hero-subtitle max-w-2xl mx-auto">
-          Analyze gear ratios, speed potential, and component weights with precision. 
-          Make informed decisions about your next upgrade.
+        Compare gearing, estimate speed, and weigh every component—built for cyclists who sweat the details.
         </p>
       </div>
 

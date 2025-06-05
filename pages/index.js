@@ -341,8 +341,46 @@ export default function Home() {
           CrankSmith
         </h1>
         <p className="text-xl text-[--color-text-secondary] italic">
-          Forged Precision for Every Ride
+         Forge your perfect ride.
         </p>
+      </div>
+            {/* Hero Section */}
+      <div className="text-center mb-12">
+        <h1 className="hero-title">CrankSmith</h1>
+        <p className="hero-subtitle">Forged Precision for Every Ride</p>
+        
+        {/* New Analysis Button - only show if there's existing data */}
+        {(bikeType || results) && (
+          <button
+            onClick={() => {
+              setBikeType('');
+              setCurrentSetup({ wheel: '', tire: '', crankset: null, cassette: null });
+              setProposedSetup({ wheel: '', tire: '', crankset: null, cassette: null });
+              setResults(null);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="mt-6 px-6 py-3 rounded-xl font-medium transition-all text-base"
+            style={{ 
+              background: 'var(--surface-primary)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border-subtle)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'var(--surface-elevated)';
+              e.target.style.borderColor = 'var(--accent-blue)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'var(--surface-primary)';
+              e.target.style.borderColor = 'var(--border-subtle)';
+            }}
+          >
+            <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            Start New Analysis
+          </button>
+        )}
       </div>
 
       {/* Calculator Component */}
@@ -363,6 +401,9 @@ export default function Home() {
           results={results}
           onSave={handleSaveConfig}
           bikeType={bikeType}
+          currentSetup={currentSetup}
+          proposedSetup={proposedSetup}
+          componentDatabase={componentDatabase}
         />
       )}
 

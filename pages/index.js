@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Layout from '../components/Layout';
 import Calculator from '../components/Calculator';
 import Results from '../components/Results';
 import { localStorageDB } from '../lib/supabase';
@@ -134,7 +133,6 @@ export default function Home() {
   };
 
   return (
-    <Layout>
       <main className="container mx-auto px-4 py-12 max-w-7xl">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -212,6 +210,5 @@ export default function Home() {
           />
         )}
       </main>
-    </Layout>
   );
 }

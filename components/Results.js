@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler } from 'chart.js'
 import { Line, Bar } from 'react-chartjs-2'
+import { RileyChat } from '../lib/rileyAI' // Import Riley
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler)
 
-export default function Results({ results, onSave, bikeType }) {
+export default function Results({ results, onSave, bikeType, currentSetup, proposedSetup, componentDatabase }) {
   const [showDetails, setShowDetails] = useState(false)
-  const [chartType, setChartType] = useState('modern') // 'modern' or 'classic'
+  const [chartType, setChartType] = useState('modern')
+  const [showRiley, setShowRiley] = useState(false)
   const resultsRef = useRef(null)
 
   useEffect(() => {
-    // Scroll to results when they appear
     if (resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
@@ -19,14 +20,14 @@ export default function Results({ results, onSave, bikeType }) {
   const { current, proposed, comparison } = results
   const speedUnit = comparison.speedUnit || 'km/h'
 
-  // Updated modern gradient line chart data with Apple colors
+  // All your existing chart data and options stay the same...
   const modernChartData = {
     labels: ['0', '20', '40', '60', '80', '90', '100', '120', '140'],
     datasets: [
       {
         label: 'Current Setup',
         data: [0, 8, 16, 24, 32, current.metrics.highSpeed, current.metrics.highSpeed * 1.1, current.metrics.highSpeed * 1.3, current.metrics.highSpeed * 1.5],
-        borderColor: '#007aff', // Apple blue
+        borderColor: '#007aff',
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 300);
@@ -46,7 +47,7 @@ export default function Results({ results, onSave, bikeType }) {
       {
         label: 'Proposed Setup',
         data: [0, 8.5, 17, 25.5, 34, proposed.metrics.highSpeed, proposed.metrics.highSpeed * 1.1, proposed.metrics.highSpeed * 1.3, proposed.metrics.highSpeed * 1.5],
-        borderColor: '#30d158', // Apple green
+        borderColor: '#30d158',
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 300);
@@ -66,7 +67,6 @@ export default function Results({ results, onSave, bikeType }) {
     ]
   }
 
-  // Classic bar chart data with Apple colors
   const classicChartData = {
     labels: ['Top Speed', 'Climbing Speed'],
     datasets: [
@@ -231,7 +231,7 @@ export default function Results({ results, onSave, bikeType }) {
 
   return (
     <div ref={resultsRef} className="space-y-12 mt-16">
-      {/* Apple-style Results Header */}
+      {/* Results Header */}
       <div className="text-center">
         <h2 className="section-title">Performance Analysis</h2>
         <p className="hero-subtitle max-w-2xl mx-auto">
@@ -239,7 +239,7 @@ export default function Results({ results, onSave, bikeType }) {
         </p>
       </div>
 
-      {/* Apple-style Key Metrics Grid */}
+      {/* Key Metrics Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         <AppleMetricCard
           label="Weight Change"
@@ -291,7 +291,7 @@ export default function Results({ results, onSave, bikeType }) {
         />
       </div>
 
-      {/* Apple-style Chart Type Toggle */}
+      {/* Chart Type Toggle */}
       <div className="flex justify-center">
         <div className="flex rounded-xl p-1" 
              style={{ 
@@ -333,11 +333,10 @@ export default function Results({ results, onSave, bikeType }) {
         </div>
       </div>
 
-      {/* Apple-styled Chart Container */}
+      {/* Chart Container */}
       <div className="card" style={{ padding: '32px' }}>
         {chartType === 'modern' ? (
           <>
-            {/* Custom legend with Apple styling */}
             <div className="flex justify-center gap-8 mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-4 h-4 rounded-full" style={{ background: '#007aff' }}></div>
@@ -355,7 +354,7 @@ export default function Results({ results, onSave, bikeType }) {
         )}
       </div>
 
-      {/* Apple-styled Setup Comparison Cards */}
+      {/* Setup Comparison Cards */}
       <div className="grid lg:grid-cols-2 gap-8">
         <SetupComparisonCard
           title="Current Setup"
@@ -382,14 +381,11 @@ export default function Results({ results, onSave, bikeType }) {
         />
       </div>
 
-      {/* Apple-styled Detailed Comparison */}
+      {/* Detailed Comparison */}
       <div className="card">
         <button
           onClick={() => setShowDetails(!showDetails)}
           className="w-full text-left flex justify-between items-center p-2 -m-2 rounded-lg transition-colors"
-          style={{ 
-            ':hover': { background: 'var(--surface-elevated)' }
-          }}
           onMouseEnter={(e) => e.target.style.background = 'var(--surface-elevated)'}
           onMouseLeave={(e) => e.target.style.background = 'transparent'}
         >
@@ -411,7 +407,6 @@ export default function Results({ results, onSave, bikeType }) {
           <div className="mt-6 space-y-6">
             <AppleComparisonTable current={current} proposed={proposed} speedUnit={speedUnit} />
             
-            {/* Apple-styled Warnings */}
             {(current.warnings?.length > 0 || proposed.warnings?.length > 0) && (
               <div className="p-4 rounded-xl" 
                    style={{ 
@@ -444,7 +439,43 @@ export default function Results({ results, onSave, bikeType }) {
         )}
       </div>
 
-      {/* Apple-styled Action Buttons */}
+      {/* 🔧 RILEY AI INTEGRATION - NEW! */}
+      <div className="border-t pt-12" style={{ borderColor: 'var(--border-subtle)' }}>
+        <div className="text-center mb-8">
+          <h2 className="section-title">Questions About Your Results?</h2>
+          <p className="hero-subtitle max-w-2xl mx-auto mb-6">
+            Chat with Riley, our expert bike mechanic, about component compatibility, upgrade recommendations, or any cycling tech questions.
+          </p>
+          
+          {!showRiley && (
+            <button
+              onClick={() => setShowRiley(true)}
+              className="btn-primary text-lg px-8"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              </svg>
+              Ask Riley
+            </button>
+          )}
+        </div>
+
+        {showRiley && (
+          <RileyChat 
+            userSetup={{ 
+              bikeType, 
+              crankset: currentSetup.crankset, 
+              cassette: currentSetup.cassette,
+              tire: currentSetup.tire 
+            }}
+            analysisResults={results}
+            componentDatabase={componentDatabase}
+          />
+        )}
+      </div>
+
+      {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
         <button
           onClick={onSave}
@@ -486,6 +517,7 @@ export default function Results({ results, onSave, bikeType }) {
   )
 }
 
+// All your existing helper components stay the same
 function AppleMetricCard({ label, value, unit, subtitle, type, icon }) {
   return (
     <div className="card text-center">

@@ -222,3 +222,85 @@ body {
     font-size: 24px;
   }
 }
+
+/* Add these to your styles/globals.css file */
+
+:root {
+  /* Your existing variables... */
+  
+  /* Fire gradient inspired by your logo */
+  --fire-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #ff4500 50%, #ff6347 75%, #ff7f50 100%);
+  --fire-gradient-subtle: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 50%, rgba(255, 69, 0, 0.1) 100%);
+}
+
+/* Subtle fire accent for hero titles */
+.hero-title-fire {
+  background: linear-gradient(180deg, var(--text-primary) 0%, #ff6b35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Fire accent for section headers */
+.section-title-fire {
+  position: relative;
+}
+
+.section-title-fire::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--fire-gradient);
+  border-radius: 2px;
+}
+
+/* Subtle fire glow for primary buttons */
+.btn-primary-fire {
+  background: var(--fire-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius-large);
+  padding: 16px 32px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-primary-fire:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
+}
+
+/* Subtle fire accent for cards */
+.card-fire-accent {
+  border-top: 2px solid transparent;
+  background-image: var(--fire-gradient-subtle), linear-gradient(var(--surface-primary), var(--surface-primary));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Fire gradient for the Quick Start card icon */
+.quick-start-icon-fire {
+  background: var(--fire-gradient);
+  color: white;
+}
+
+/* Bottom line card with subtle fire accent */
+.bottom-line-fire {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(247, 147, 30, 0.05) 50%, rgba(0, 122, 255, 0.1) 100%);
+  border: 1px solid transparent;
+  background-image: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 122, 255, 0.1) 100%), 
+                    linear-gradient(90deg, rgba(255, 107, 53, 0.3) 0%, rgba(0, 122, 255, 0.3) 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}

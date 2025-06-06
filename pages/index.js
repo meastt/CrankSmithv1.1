@@ -335,19 +335,12 @@ export default function Home() {
 
   return (
     <main className="container mx-auto px-4 py-12 max-w-7xl">
-      {/* Hero Section */}
+      {/* Clean Hero Section */}
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-gray-800 drop-shadow-md">
-          CrankSmith
-        </h1>
-        <p className="text-xl text-[--color-text-secondary] italic">
-         Forge your perfect ride.
+        <h1 className="hero-title hero-title-fire">Compare. Calculate. Optimize.</h1>
+        <p className="hero-subtitle max-w-2xl mx-auto">
+          See exactly how component changes affect your bike's performance with real-world data.
         </p>
-      </div>
-            {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="hero-title">CrankSmith</h1>
-        <p className="hero-subtitle">Forged Precision for Every Ride</p>
         
         {/* New Analysis Button - only show if there's existing data */}
         {(bikeType || results) && (
@@ -383,6 +376,124 @@ export default function Home() {
         )}
       </div>
 
+      {/* Quick Start Guide - only show when no bike type selected */}
+      {!bikeType && !results && (
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="card">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+                How It Works
+              </h2>
+              <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
+                Compare any bike components in 3 simple steps
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
+              <div className="text-center">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
+                     style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
+                  <span className="text-xl font-bold">1</span>
+                </div>
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  Choose Your Bike
+                </h3>
+                <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+                  Select road, gravel, or mountain bike to see compatible components
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
+                     style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
+                  <span className="text-xl font-bold">2</span>
+                </div>
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  Pick Components
+                </h3>
+                <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+                  Choose your current setup and the upgrade you're considering
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
+                     style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
+                  <span className="text-xl font-bold">3</span>
+                </div>
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  See Results
+                </h3>
+                <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+                  Get clear speed, weight, and performance comparisons
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t pt-8" style={{ borderColor: 'var(--border-subtle)' }}>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg text-center"
+                     style={{ background: 'var(--surface-elevated)' }}>
+                  <h4 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                    🚴‍♂️ I Know My Components
+                  </h4>
+                  <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
+                    Ready to compare specific parts? Jump right in!
+                  </p>
+                  <button 
+                    onClick={() => document.querySelector('select').focus()}
+                    className="btn-primary w-full"
+                  >
+                    Start Comparing
+                  </button>
+                </div>
+
+                <div className="p-4 rounded-lg text-center"
+                     style={{ background: 'var(--surface-elevated)' }}>
+                  <h4 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                    🤔 Need Guidance?
+                  </h4>
+                  <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
+                    Not sure what to upgrade? Let Riley guide you!
+                  </p>
+                  <button 
+                    onClick={() => {
+                      setBikeType('road'); // Set a default to enable Riley
+                      setTimeout(() => {
+                        const rileyButton = document.querySelector('[data-riley-button]');
+                        if (rileyButton) rileyButton.click();
+                      }, 1000);
+                    }}
+                    className="w-full px-6 py-3 rounded-xl font-medium transition-all"
+                    style={{ 
+                      background: 'var(--surface-primary)',
+                      color: 'var(--text-secondary)',
+                      border: '1px solid var(--border-subtle)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = 'var(--surface-elevated)';
+                      e.target.style.borderColor = 'var(--accent-blue)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'var(--surface-primary)';
+                      e.target.style.borderColor = 'var(--border-subtle)';
+                    }}
+                  >
+                    🔧 Ask Riley for Help
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Calculator Component */}
       <Calculator
         bikeType={bikeType}
@@ -415,7 +526,7 @@ export default function Home() {
             <svg className="w-8 h-8 text-[--color-accent]" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
             </svg>
-            <h2 className="text-3xl font-bold text-[--color-text-primary]">My Garage</h2>
+            <h2 className="text-3xl font-bold text-[--color-text-primary] section-title-fire">My Garage</h2>
           </div>
           <p className="text-[--color-text-secondary] max-w-2xl mx-auto mb-6">
             Your saved bike configurations. Each setup represents hours of careful planning and optimization.

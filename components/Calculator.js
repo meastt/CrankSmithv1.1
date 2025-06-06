@@ -27,14 +27,6 @@ export default function Calculator({
 
   return (
     <div className="space-y-12">
-      {/* Hero Section */}
-      <div className="text-center mb-16">
-        <h1 className="hero-title">Dialed Performance</h1>
-        <p className="hero-subtitle max-w-2xl mx-auto">
-        Compare gearing, estimate speed, and weigh every component—built for cyclists who sweat the details.
-        </p>
-      </div>
-
       {/* Speed Unit Toggle */}
       <div className="flex justify-center mb-8">
         <div className="flex rounded-xl p-1" 
@@ -141,7 +133,7 @@ export default function Calculator({
               <>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2z" />
                 </svg>
                 Analyze Performance
               </>
@@ -183,6 +175,27 @@ function SetupCard({ title, subtitle, badge, badgeColor, setup, setSetup, config
 
       {/* Form Fields */}
       <div className="space-y-5">
+        {/* Wheel Size Selection - NEW */}
+        <div>
+          <label className="form-label">Wheel Size</label>
+          <select
+            value={setup.wheel || ''}
+            onChange={(e) => setSetup({ ...setup, wheel: e.target.value })}
+            className="input-field"
+          >
+            <option value="">Select wheel size...</option>
+            {config?.wheelSizes.map(size => (
+              <option key={size} value={size}>
+                {size === '700c' ? '700c (Road/Gravel)' : 
+                 size === '650b' ? '650b (Gravel)' : 
+                 size === '26-inch' ? '26" (MTB)' :
+                 size === '27.5-inch' ? '27.5" (MTB)' :
+                 size === '29-inch' ? '29" (MTB)' : size}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Tire Width */}
         <div>
           <label className="form-label">Tire Width</label>
@@ -241,14 +254,14 @@ function SetupCard({ title, subtitle, badge, badgeColor, setup, setSetup, config
         </div>
       </div>
 
-      {/* Completion Indicator */}
+      {/* Completion Indicator - UPDATED to include wheel */}
       <div className="mt-6 pt-4" style={{ borderTop: '1px solid var(--border-subtle)' }}>
         <div className="flex items-center justify-between">
           <span className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
             Configuration Status
           </span>
           <div className="flex items-center space-x-2">
-            {setup.tire && setup.crankset && setup.cassette ? (
+            {setup.wheel && setup.tire && setup.crankset && setup.cassette ? (
               <>
                 <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-performance)' }} />
                 <span className="text-sm font-medium" style={{ color: 'var(--accent-performance)' }}>

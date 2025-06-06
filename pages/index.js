@@ -464,11 +464,20 @@ export default function Home() {
                   </p>
                   <button 
                     onClick={() => {
-                      setBikeType('road'); // Set a default to enable Riley
+                      // Set bike type to enable the interface
+                      setBikeType('road');
+                      // Wait for the page to update, then scroll to show Riley is available
                       setTimeout(() => {
-                        const rileyButton = document.querySelector('[data-riley-button]');
-                        if (rileyButton) rileyButton.click();
-                      }, 1000);
+                        // Scroll down to show the calculator
+                        window.scrollTo({ 
+                          top: window.innerHeight * 0.7, 
+                          behavior: 'smooth' 
+                        });
+                        // Show a helpful message
+                        setTimeout(() => {
+                          alert('Great! Now you can use the "Ask Riley" button that appears after you analyze any setup. Try selecting some components first, then click "Analyze Performance" to see Riley!');
+                        }, 1000);
+                      }, 500);
                     }}
                     className="w-full px-6 py-3 rounded-xl font-medium transition-all"
                     style={{ 

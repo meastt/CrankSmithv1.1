@@ -24,3 +24,4 @@ Beta Testing
 Test calculations, UI, and save/load functionality.
 Share with 5–10 cyclists and collect feedback (see PDF for questions).
 
+# Deploy trigger

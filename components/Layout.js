@@ -53,12 +53,18 @@ export default function Layout({ children }) {
                     style={{ color: 'var(--accent-blue)' }}>
                 Calculator
               </Link>
-              <Link href="#garage" 
-                    className="text-base font-medium transition-colors hover:opacity-80"
-                    style={{ color: 'var(--text-secondary)' }}>
+              <button 
+                onClick={() => {
+                  const garageSection = document.getElementById('garage-section');
+                  if (garageSection) {
+                    garageSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="text-base font-medium transition-colors hover:opacity-80"
+                style={{ color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer' }}>
                 My Garage
-              </Link>
-              <Link href="#about" 
+              </button>
+              <Link href="/about" 
                     className="text-base font-medium transition-colors hover:opacity-80"
                     style={{ color: 'var(--text-secondary)' }}>
                 About

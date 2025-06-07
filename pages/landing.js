@@ -120,8 +120,8 @@ export default function Landing() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </a>
-              <a href="/calculator" className="px-8 py-4 rounded-xl font-medium text-lg border border-[rgba(84,84,88,0.4)] text-white hover:bg-[rgba(58,58,60,0.8)] transition-all">
-                Try Free Calculator
+              <a href="#early-access" className="px-8 py-4 rounded-xl font-medium text-lg border border-[rgba(84,84,88,0.4)] text-white hover:bg-[rgba(58,58,60,0.8)] transition-all">
+                Join Beta Waitlist
               </a>
             </div>
 
@@ -366,7 +366,7 @@ export default function Landing() {
                 <span className="text-lg font-semibold text-white">CrankSmith</span>
               </div>
               <div className="flex flex-wrap gap-6 text-sm" style={{ color: 'rgba(235, 235, 245, 0.6)' }}>
-                <a href="/calculator" className="hover:text-white transition-colors">Free Calculator</a>
+                <a href="/?beta=true" className="hover:text-white transition-colors">Beta Access</a>
                 <a href="/about" className="hover:text-white transition-colors">About</a>
                 <a href="mailto:mike@cranksmith.com" className="hover:text-white transition-colors">Contact</a>
                 <a href="https://instagram.com/cranksmith" className="hover:text-white transition-colors">Instagram</a>

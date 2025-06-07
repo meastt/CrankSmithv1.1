@@ -11,40 +11,40 @@
   --bg-secondary: #1c1c1e;
   --bg-tertiary: #2c2c2e;
   --bg-elevated: #3a3a3c;
-  
+
   --text-primary: #ffffff;
   --text-secondary: #ebebf5;
   --text-tertiary: rgba(235, 235, 245, 0.6);
   --text-quaternary: rgba(235, 235, 245, 0.3);
-  
+
   --accent-blue: #007aff;
   --accent-blue-hover: #0056cc;
   --accent-performance: #30d158;
   --accent-warning: #ff9f0a;
   --accent-critical: #ff453a;
-  
+
   --surface-primary: rgba(58, 58, 60, 0.8);
   --surface-secondary: rgba(72, 72, 74, 0.6);
   --surface-elevated: rgba(84, 84, 88, 0.8);
-  
+
   --border-subtle: rgba(84, 84, 88, 0.4);
   --border-elevated: rgba(99, 99, 102, 0.6);
   --border-focus: var(--accent-blue);
-  
+
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.5);
   --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.3);
   --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-  
+
   --radius-small: 8px;
   --radius-medium: 12px;
   --radius-large: 16px;
   --radius-xlarge: 20px;
-  
+
   /* Fire gradient inspired by your logo */
   --fire-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #ff4500 50%, #ff6347 75%, #ff7f50 100%);
   --fire-gradient-subtle: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 50%, rgba(255, 69, 0, 0.1) 100%);
-  
+
   /* Legacy variables for compatibility */
   --color-bg: var(--bg-primary);
   --color-surface: var(--surface-primary);
@@ -52,6 +52,10 @@
   --color-text-secondary: var(--text-tertiary);
   --color-accent: var(--accent-blue);
   --color-border: var(--border-subtle);
+}
+
+html {
+  background: var(--bg-primary);
 }
 
 body {
@@ -92,7 +96,7 @@ body {
   font-weight: 400;
   transition: all 0.2s ease;
   appearance: none;
-  
+
   /* Custom dropdown arrow */
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ebebf599' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 12px center;
@@ -288,8 +292,7 @@ body {
 .bottom-line-fire {
   background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(247, 147, 30, 0.05) 50%, rgba(0, 122, 255, 0.1) 100%);
   border: 1px solid transparent;
-  background-image: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 122, 255, 0.1) 100%), 
-                    linear-gradient(90deg, rgba(255, 107, 53, 0.3) 0%, rgba(0, 122, 255, 0.3) 100%);
+  background-image: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 122, 255, 0.1) 100%), linear-gradient(90deg, rgba(255, 107, 53, 0.3) 0%, rgba(0, 122, 255, 0.3) 100%);
   background-origin: border-box;
   background-clip: padding-box, border-box;
 }
@@ -302,12 +305,12 @@ body {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  
+
   .results-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
-  
+
   .garage-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -319,110 +322,110 @@ body {
     padding: 16px;
     margin-bottom: 16px;
   }
-  
+
   .btn-primary, .btn-primary-fire {
     padding: 12px 20px;
     font-size: 16px;
     min-height: 48px;
   }
-  
+
   .section-title {
     font-size: 20px;
     margin-bottom: 16px;
   }
-  
+
   /* Hero title mobile optimization */
   .hero-title {
     font-size: clamp(28px, 8vw, 42px);
     line-height: 1.2;
     margin-bottom: 12px;
   }
-  
+
   .hero-subtitle {
     font-size: 18px;
     line-height: 1.5;
   }
-  
+
   /* Form elements mobile optimization */
   .input-field {
     padding: 14px 16px;
     font-size: 16px;
     min-height: 48px;
   }
-  
+
   .form-label {
     font-size: 15px;
     margin-bottom: 6px;
   }
-  
+
   /* Results grid mobile fix */
   .results-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   /* Calculator cards mobile optimization */
   .calculator-cards {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   /* Riley chat mobile fixes */
   .riley-chat-container {
     max-height: 70vh;
     padding: 12px;
   }
-  
+
   .riley-message {
     max-width: 85%;
     padding: 12px 16px;
     font-size: 15px;
     line-height: 1.4;
   }
-  
+
   .riley-input-container {
     padding: 12px;
     gap: 8px;
   }
-  
+
   .riley-input {
     font-size: 16px;
     padding: 12px 16px;
   }
-  
+
   /* Quick questions mobile layout */
   .quick-questions-grid {
     grid-template-columns: 1fr;
     gap: 8px;
   }
-  
+
   .quick-question-btn {
     padding: 12px 16px;
     font-size: 14px;
     text-align: left;
   }
-  
+
   /* Garage cards mobile optimization */
   .garage-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   /* Bottom line card mobile */
   .bottom-line-card {
     padding: 20px 16px;
   }
-  
+
   .bottom-line-icon {
     width: 48px;
     height: 48px;
   }
-  
+
   /* Navigation mobile fixes */
   .nav-mobile {
     padding: 16px 20px;
   }
-  
+
   /* Speed unit toggle mobile */
   .speed-toggle {
     padding: 8px;
@@ -430,7 +433,7 @@ body {
     width: 100%;
     max-width: 300px;
   }
-  
+
   .speed-toggle button {
     padding: 10px 20px;
     font-size: 14px;
@@ -442,32 +445,32 @@ body {
   .card {
     padding: 12px;
   }
-  
+
   .btn-primary, .btn-primary-fire {
     padding: 10px 16px;
     font-size: 15px;
   }
-  
+
   .hero-title {
     font-size: clamp(24px, 7vw, 36px);
   }
-  
+
   .hero-subtitle {
     font-size: 16px;
   }
-  
+
   /* Ensure minimum touch targets */
   button, .btn-primary, .btn-primary-fire, .input-field {
     min-height: 44px;
   }
-  
+
   .speed-toggle {
     max-width: 280px;
   }
 }
 
 @media screen and (orientation: landscape) and (max-height: 500px) {
-  
+
   /* Force the main container to use almost full viewport width */
   main.main-container {
     width: 100vw !important;
@@ -478,7 +481,7 @@ body {
     padding-top: 16px !important;
     padding-bottom: 16px !important;
   }
-  
+
   /* Override any Tailwind container classes */
   .container {
     width: 100% !important;
@@ -487,48 +490,48 @@ body {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-  
+
   /* Force body to use full width */
   body {
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden !important;
   }
-  
+
   /* Calculator cards side by side */
   .calculator-cards {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 12px !important;
   }
-  
+
   /* Results in a row */
   .results-grid {
     grid-template-columns: repeat(4, 1fr) !important;
     gap: 10px !important;
   }
-  
+
   /* Compact cards */
   .card {
     padding: 12px !important;
   }
-  
+
   /* Compact hero */
   .hero-title {
     font-size: 26px !important;
     margin-bottom: 8px !important;
   }
-  
+
   .hero-subtitle {
     font-size: 15px !important;
     margin-bottom: 12px !important;
   }
-  
+
   /* Quick questions in 2 columns */
   .quick-questions-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
   }
-  
+
   /* Text center adjustments */
   .text-center {
     padding-left: 8px !important;

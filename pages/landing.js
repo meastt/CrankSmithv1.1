@@ -1,475 +1,201 @@
-// pages/calculator.js (Fully Corrected)
-import { useState, useEffect } from 'react';
+// pages/landing.js
+import { useState } from 'react';
 import Head from 'next/head';
-import Calculator from '../components/Calculator';
-import Results from '../components/Results';
-import { compareSetups } from '../lib/calculations';
-import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
 
-// Simple localStorage functions (no Supabase)
-const localStorageDB = {
-  getConfigs: () => {
-    try {
-      const saved = localStorage.getItem('cranksmith_configs');
-      return { data: saved ? JSON.parse(saved) : [] };
-    } catch (error) {
-      console.error('Error loading configs:', error);
-      return { data: [] };
-    }
-  },
-  
-  saveConfig: (config) => {
-    try {
-      const existing = localStorageDB.getConfigs().data;
-      const newConfig = {
-        ...config,
-        id: Date.now(), // Simple ID generation
-        created_at: new Date().toISOString()
-      };
-      const updated = [...existing, newConfig];
-      localStorage.setItem('cranksmith_configs', JSON.stringify(updated));
-      return { error: null };
-    } catch (error) {
-      console.error('Error saving config:', error);
-      return { error: 'Failed to save configuration' };
-    }
-  },
-  
-  deleteConfig: (id) => {
-    try {
-      const existing = localStorageDB.getConfigs().data;
-      const updated = existing.filter(config => config.id !== id);
-      localStorage.setItem('cranksmith_configs', JSON.stringify(updated));
-      return { error: null };
-    } catch (error) {
-      console.error('Error deleting config:', error);
-      return { error: 'Failed to delete configuration' };
-    }
-  }
-};
-
-// Bike type icons - simple SVGs for each style
-const BikeIcons = {
-  road: (
-    <svg viewBox="0 0 100 60" className="w-full h-full">
-      <circle cx="20" cy="45" r="12" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="80" cy="45" r="12" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <path d="M20 45 L35 25 L45 30 L55 20 L70 25 L80 45" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <path d="M35 25 L45 35" stroke="currentColor" strokeWidth="2"/>
-      <path d="M30 20 L40 20 L35 25" fill="none" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  ),
-  gravel: (
-    <svg viewBox="0 0 100 60" className="w-full h-full">
-      <circle cx="20" cy="45" r="12" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-      <circle cx="80" cy="45" r="12" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-      <path d="M20 45 L35 28 L45 32 L55 22 L70 28 L80 45" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <path d="M35 28 L45 35" stroke="currentColor" strokeWidth="2"/>
-      <path d="M28 22 L42 22 L35 28" fill="none" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  ),
-  mtb: (
-    <svg viewBox="0 0 100 60" className="w-full h-full">
-      <circle cx="20" cy="45" r="12" fill="none" stroke="currentColor" strokeWidth="3"/>
-      <circle cx="80" cy="45" r="12" fill="none" stroke="currentColor" strokeWidth="3"/>
-      <path d="M20 45 L35 30 L45 35 L55 25 L70 30 L80 45" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <path d="M35 30 L45 35" stroke="currentColor" strokeWidth="2"/>
-      <path d="M30 25 L40 25" stroke="currentColor" strokeWidth="3"/>
-    </svg>
-  )
-};
-
-const GarageCard = ({ config, onLoad, onDelete }) => {
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  
-  const bikeTypeDisplay = {
-    road: 'Road',
-    gravel: 'Gravel', 
-    mtb: 'Mountain'
-  };
-
-  const formatSpecs = (setup) => {
-    const crankset = setup.crankset && setup.crankset.chainrings && Array.isArray(setup.crankset.chainrings) 
-      ? `${setup.crankset.chainrings.join('/')}T` 
-      : 'N/A';
-    const cassette = setup.cassette && setup.cassette.range 
-      ? `${setup.cassette.range.min}-${setup.cassette.range.max}T` 
-      : 'N/A';
-    return { crankset, cassette };
-  };
-
-  const currentSpecs = formatSpecs(config.current_setup);
-  const proposedSpecs = formatSpecs(config.proposed_setup);
-
-  return (
-    <div className="bg-[--color-surface] border border-[--color-border] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:border-[--color-accent]/30">
-      {/* Top Half - Header Info */}
-      <div className="p-4 border-b border-[--color-border]/50">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 text-[--color-accent]">
-              {BikeIcons[config.bike_type] || BikeIcons.road}
-            </div>
-            <div>
-              <h3 className="font-semibold text-[--color-text-primary] text-lg leading-tight">
-                {config.name}
-              </h3>
-              <p className="text-[--color-text-secondary] text-sm">
-                {bikeTypeDisplay[config.bike_type] || 'Road'} • {new Date(config.created_at).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-          
-          {/* Delete Button */}
-          <button
-            onClick={() => setShowDeleteConfirm(true)}
-            className="w-8 h-8 rounded-full bg-[--color-surface] hover:bg-[--color-accent] text-[--color-text-secondary] hover:text-white transition-all duration-200 flex items-center justify-center border border-[--color-border]"
-            title="Delete configuration"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Bottom Half - Specs & Action */}
-      <div className="p-4">
-        {/* Specs Comparison */}
-        <div className="mb-4">
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div>
-              <p className="text-[--color-text-secondary] mb-1">Current Setup</p>
-              <p className="text-[--color-text-primary] font-mono">
-                {currentSpecs.crankset} → {currentSpecs.cassette}
-              </p>
-            </div>
-            <div>
-              <p className="text-[--color-text-secondary] mb-1">Proposed Setup</p>
-              <p className="text-[--color-text-primary] font-mono">
-                {proposedSpecs.crankset} → {proposedSpecs.cassette}
-              </p>
-            </div>
-          </div>
-          
-          {/* Performance Highlight */}
-          {config.results && (
-            <div className="mt-3 p-2 bg-[--color-surface] rounded border border-[--color-border]/50">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-[--color-text-secondary]">Weight Change:</span>
-                <span className={`font-semibold ${config.results.weightChange > 0 ? 'text-[--color-accent]' : 'text-green-500'}`}>
-                  {config.results.weightChange > 0 ? '+' : ''}{config.results.weightChange}g
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Load Button */}
-        <button
-          onClick={() => onLoad(config)}
-          className="w-full py-3 bg-[--color-accent] hover:opacity-90 text-black font-semibold rounded transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
-        >
-          Load Configuration
-        </button>
-      </div>
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[--color-surface] border border-[--color-border] rounded-lg p-6 max-w-sm w-full">
-            <h4 className="text-[--color-text-primary] font-semibold mb-2">Delete Configuration?</h4>
-            <p className="text-[--color-text-secondary] text-sm mb-4">
-              Are you sure you want to delete "{config.name}"? This action cannot be undone.
-            </p>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 py-2 px-4 bg-[--color-surface] hover:bg-[--color-border] text-[--color-text-primary] rounded transition-colors border border-[--color-border]"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  onDelete(config.id);
-                  setShowDeleteConfirm(false);
-                }}
-                className="flex-1 py-2 px-4 bg-[--color-accent] hover:opacity-90 text-black rounded transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default function CalculatorPage() {
-  // State for bike type and setups
-  const [bikeType, setBikeType] = useState('');
-  const [currentSetup, setCurrentSetup] = useState({
-    wheel: '',
-    tire: '',
-    crankset: null,
-    cassette: null,
-  });
-  const [proposedSetup, setProposedSetup] = useState({
-    wheel: '',
-    tire: '',
-    crankset: null,
-    cassette: null,
-  });
-  const [results, setResults] = useState(null);
+export default function Landing() {
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [savedConfigs, setSavedConfigs] = useState([]);
-  const [showSaved, setShowSaved] = useState(false);
+  const [status, setStatus] = useState({ type: '', message: '' });
 
-  // Load saved configurations on mount
-  useEffect(() => {
-    loadSavedConfigs();
-  }, []);
-
-  // Update available components when bike type changes
-  useEffect(() => {
-    if (bikeType && bikeConfig[bikeType]) {
-      const defaults = bikeConfig[bikeType].defaultSetup;
-      const defaultCrankset = componentDatabase.cranksets.find((c) => c.id === defaults.crankset);
-      const defaultCassette = componentDatabase.cassettes.find((c) => c.id === defaults.cassette);
-
-      setCurrentSetup({
-        wheel: defaults.wheel,
-        tire: defaults.tire.toString(),
-        crankset: defaultCrankset,
-        cassette: defaultCassette,
-      });
-      setProposedSetup({
-        wheel: defaults.wheel,
-        tire: defaults.tire.toString(),
-        crankset: defaultCrankset,
-        cassette: defaultCassette,
-      });
-    }
-  }, [bikeType]);
-
-  // Fetch saved configurations from localStorage
-  const loadSavedConfigs = () => {
-    const { data } = localStorageDB.getConfigs();
-    setSavedConfigs(data || []);
-  };
-
-  // Handle calculation of setups
-  const handleCalculate = async (speedUnit = 'MPH') => {
-    // Validate inputs
-    if (
-      !bikeType ||
-      !currentSetup.crankset ||
-      !currentSetup.cassette ||
-      !proposedSetup.crankset ||
-      !proposedSetup.cassette
-    ) {
-      alert('Please complete all fields before calculating');
-      return;
-    }
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
+    setStatus({ type: '', message: '' });
 
     try {
-      // Perform calculations with speed unit
-      const comparison = compareSetups(currentSetup, proposedSetup, speedUnit);
-      setResults(comparison);
+      const response = await fetch('/api/early-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus({ type: 'success', message: '🎉 You\'re on the list! Check your email.' });
+        setEmail('');
+        
+        // Track conversion
+        if (typeof window !== 'undefined' && window.gtag) {
+          window.gtag('event', 'sign_up', {
+            event_category: 'engagement',
+            event_label: 'early_access'
+          });
+        }
+      } else {
+        setStatus({ type: 'error', message: data.error || 'Something went wrong. Please try again.' });
+      }
     } catch (error) {
-      console.error('Calculation error:', error);
-      alert('Error calculating results. Please check your inputs.');
+      setStatus({ type: 'error', message: 'Network error. Please try again.' });
     } finally {
       setLoading(false);
     }
   };
 
-  // Save configuration to localStorage
-  const handleSaveConfig = () => {
-    if (!results) return;
-
-    const name = prompt('Enter a name for this configuration:');
-    if (!name) return;
-
-    const config = {
-      name,
-      bike_type: bikeType,
-      current_setup: currentSetup,
-      proposed_setup: proposedSetup,
-      results: {
-        weightChange: results.comparison.weightChange,
-        currentMetrics: results.current.metrics,
-        proposedMetrics: results.proposed.metrics,
-      },
-    };
-
-    const { error } = localStorageDB.saveConfig(config);
-    if (error) {
-      alert('Error saving configuration');
-    } else {
-      alert('Configuration saved successfully!');
-      loadSavedConfigs();
-    }
-  };
-
-  // Load a saved configuration
-  const handleLoadConfig = (config) => {
-    setBikeType(config.bike_type);
-    setCurrentSetup(config.current_setup);
-    setProposedSetup(config.proposed_setup);
-    setResults(null);
-    setShowSaved(false);
-  };
-
-  // Delete a saved configuration
-  const handleDeleteConfig = (id) => {
-    const { error } = localStorageDB.deleteConfig(id);
-    if (error) {
-      alert('Error deleting configuration');
-    } else {
-      loadSavedConfigs();
-    }
-  };
-
   return (
-    <main className="main-container container mx-auto px-4 py-12 max-w-7xl">
-      {/* Clean Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="hero-title hero-title-fire">Compare. Calculate. Optimize.</h1>
-        <p className="hero-subtitle max-w-2xl mx-auto">
-          See exactly how component changes affect your bike's performance with real-world data.
-        </p>
-        
-        {/* New Analysis Button - only show if there's existing data */}
-        {(bikeType || results) && (
-          <button
-            onClick={() => {
-              setBikeType('');
-              setCurrentSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-              setProposedSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-              setResults(null);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="mt-6 px-6 py-3 rounded-xl font-medium transition-all text-base"
-            style={{ 
-              background: 'var(--surface-primary)',
-              color: 'var(--text-secondary)',
-              border: '1px solid var(--border-subtle)'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'var(--surface-elevated)';
-              e.target.style.borderColor = 'var(--accent-blue)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'var(--surface-primary)';
-              e.target.style.borderColor = 'var(--border-subtle)';
-            }}
-          >
-            <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-            Start New Analysis
-          </button>
-        )}
-      </div>
+    <>
+      <Head>
+        <title>CrankSmith - Bike Gear Calculator for Serious Cyclists</title>
+        <meta name="description" content="Compare bike components and optimize your setup. Real parts, real math, real results. Join the beta." />
+      </Head>
 
-      {/* Quick Start Guide - only show when no bike type selected */}
-      {!bikeType && !results && (
-        <div className="max-w-4xl mx-auto mb-12">
-           {/* ...This JSX is unchanged... */}
-        </div>
-      )}
-
-      {/* Features Showcase - Always visible when no bike type selected */}
-      {!bikeType && !results && (
-        <div className="max-w-6xl mx-auto mb-16">
-          {/* ...This JSX is unchanged... */}
-        </div>
-      )}
-
-      {/* 
-        ========================================================================
-        CORRECTED STRUCTURE BELOW
-        The .calculator-section and #garage-section are now siblings.
-        ========================================================================
-      */}
-
-      {/* Calculator Component & Results */}
-      <div className="calculator-section">
-        <Calculator
-          bikeType={bikeType}
-          setBikeType={setBikeType}
-          currentSetup={currentSetup}
-          setCurrentSetup={setCurrentSetup}
-          proposedSetup={proposedSetup}
-          setProposedSetup={setProposedSetup}
-          onCalculate={handleCalculate}
-          loading={loading}
-        />
-
-        {/* Results Component */}
-        {results && (
-          <Results
-            results={results}
-            onSave={handleSaveConfig}
-            bikeType={bikeType}
-            currentSetup={currentSetup}
-            proposedSetup={proposedSetup}
-            componentDatabase={componentDatabase}
-          />
-        )}
-      </div>
-
-      {/* Garage Section - Now a SIBLING to calculator-section */}
-      <div id="garage-section" className="mt-16">
-        {/* Garage Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <svg className="w-8 h-8 text-[--color-accent]" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
-            </svg>
-            <h2 className="text-3xl font-bold text-[--color-text-primary] section-title-fire">My Garage</h2>
-          </div>
-          <p className="text-[--color-text-secondary] max-w-2xl mx-auto mb-6">
-            Your saved bike configurations. Each setup represents hours of careful planning and optimization.
-          </p>
-          
-          {/* Toggle Button - only show if there are saved configs */}
-          {savedConfigs.length > 0 && (
-            <button
-              onClick={() => setShowSaved(!showSaved)}
-              className="text-[--color-accent] hover:opacity-80 transition-colors text-lg font-medium"
-            >
-              {showSaved ? 'Hide Garage' : 'Show Garage'} ({savedConfigs.length} configurations)
-            </button>
-          )}
-        </div>
-
-        {/* Garage Grid - when there are saved configs */}
-        {savedConfigs.length > 0 && showSaved && (
-          <div className="garage-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {savedConfigs.map((config) => (
-              <GarageCard
-                key={config.id}
-                config={config}
-                onLoad={handleLoadConfig}
-                onDelete={handleDeleteConfig}
+      <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white">
+        {/* Hero Section */}
+        <div className="container mx-auto px-4 py-16 text-center">
+          <div className="max-w-4xl mx-auto">
+            {/* Logo */}
+            <div className="mb-8">
+              <img 
+                src="/cranksmith-logo.png" 
+                alt="CrankSmith" 
+                className="w-24 h-24 mx-auto mb-4"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'flex';
+                }}
               />
-            ))}
-          </div>
-        )}
+              <div className="w-24 h-24 mx-auto rounded-xl items-center justify-center text-white font-bold text-3xl hidden"
+                   style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #007aff 100%)' }}>
+                C
+              </div>
+            </div>
 
-        {/* Empty Garage State - sleek card */}
-        {savedConfigs.length === 0 && (
-          <div className="flex justify-center">
-            {/* ...This JSX is unchanged... */}
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
+              Your Bike. Optimized.
+            </h1>
+            
+            <p className="text-xl md:text-2xl mb-8 text-gray-300">
+              Stop guessing. Start knowing. Real component data meets intelligent analysis.
+            </p>
+
+            {/* Early Access Form */}
+            <form onSubmit={handleSubmit} className="max-w-md mx-auto mb-8">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 px-6 py-4 rounded-xl bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none text-white"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-blue-500 rounded-xl font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {loading ? 'Joining...' : 'Get Early Access'}
+                </button>
+              </div>
+              
+              {status.message && (
+                <div className={`mt-4 p-4 rounded-lg ${
+                  status.type === 'success' ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'
+                }`}>
+                  {status.message}
+                </div>
+              )}
+            </form>
+
+            <p className="text-gray-400 mb-12">
+              🚀 Join 150+ cyclists already optimizing their rides
+            </p>
           </div>
-        )}
+        </div>
+
+        {/* Features Grid */}
+        <div className="container mx-auto px-4 py-16">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="text-center p-8 rounded-xl bg-gray-800/50 backdrop-blur">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Real Components</h3>
+              <p className="text-gray-400">
+                Actual Shimano & SRAM parts with real weights and specs. No generic calculators here.
+              </p>
+            </div>
+
+            <div className="text-center p-8 rounded-xl bg-gray-800/50 backdrop-blur">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center">
+                <span className="text-2xl">🔧</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">AI Mechanic</h3>
+              <p className="text-gray-400">
+                Meet Riley, your 24/7 bike expert. Get personalized advice based on your exact setup.
+              </p>
+            </div>
+
+            <div className="text-center p-8 rounded-xl bg-gray-800/50 backdrop-blur">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Instant Analysis</h3>
+              <p className="text-gray-400">
+                See speed, weight, and gear range impacts instantly. Make informed upgrade decisions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Social Proof */}
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-8">Built by Cyclists, for Cyclists</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
+                <p className="italic mb-4">
+                  "Finally, a tool that understands modern bike components. The crossover compatibility info alone saved me $500."
+                </p>
+                <p className="text-sm text-gray-400">- Sarah K., Gravel Racer</p>
+              </div>
+              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
+                <p className="italic mb-4">
+                  "Riley helped me choose between GX and X01. Turns out GX was the smarter choice for my riding."
+                </p>
+                <p className="text-sm text-gray-400">- Mike T., MTB Enthusiast</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="container mx-auto px-4 py-16 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold mb-4">Ready to Optimize Your Ride?</h2>
+            <p className="text-xl text-gray-300 mb-8">
+              Join the beta and start making smarter component choices today.
+            </p>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-blue-500 rounded-xl font-semibold text-lg hover:opacity-90 transition-opacity"
+            >
+              Get Early Access ↑
+            </button>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="border-t border-gray-800 mt-16 py-8">
+          <div className="container mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2024 CrankSmith. Made with ❤️ by a cyclist who got tired of bad calculators.</p>
+          </div>
+        </footer>
       </div>
-    </main>
+    </>
   );
 }

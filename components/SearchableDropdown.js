@@ -1,4 +1,6 @@
+// components/SearchableDropdown.js - FIXED VERSION
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const SearchableDropdown = ({ 
   options = [], 
@@ -6,12 +8,14 @@ const SearchableDropdown = ({
   onChange, 
   placeholder = "Search components...", 
   label,
-  groupBy = null // function to group options
+  groupBy = null
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
   const dropdownRef = useRef(null);
+  const triggerRef = useRef(null);
   const inputRef = useRef(null);
 
   // Filter and group options
@@ -34,19 +38,48 @@ const SearchableDropdown = ({
       }, {})
     : { 'All': filteredOptions };
 
+  // Update dropdown position when opened
+  useEffect(() => {
+    if (isOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      });
+    }
+  }, [isOpen]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+          triggerRef.current && !triggerRef.current.contains(event.target)) {
         setIsOpen(false);
         setSearchTerm('');
         setHighlightedIndex(-1);
       }
     };
 
+    const handleScroll = () => {
+      if (isOpen && triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        setDropdownPosition({
+          top: rect.bottom + window.scrollY,
+          left: rect.left + window.scrollX,
+          width: rect.width
+        });
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    window.addEventListener('scroll', handleScroll, true);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [isOpen]);
 
   // Handle keyboard navigation
   const handleKeyDown = (e) => {
@@ -87,18 +120,134 @@ const SearchableDropdown = ({
   const selectedOption = options.find(opt => opt.id === value?.id);
   const displayValue = selectedOption ? `${selectedOption.model} ${selectedOption.variant}` : '';
 
-  return (
+  // Dropdown content to be portaled
+  const dropdownContent = isOpen && (
     <div 
-      className={`relative ${isOpen ? 'searchable-dropdown-open' : ''}`} 
-      ref={dropdownRef} 
-      style={{ zIndex: isOpen ? 2000 : 1 }}
+      ref={dropdownRef}
+      className="searchable-dropdown-portal"
+      style={{ 
+        position: 'fixed',
+        top: `${dropdownPosition.top}px`,
+        left: `${dropdownPosition.left}px`,
+        width: `${dropdownPosition.width}px`,
+        zIndex: 9999,
+        background: 'var(--bg-primary)',
+        borderRadius: 'var(--radius-medium)',
+        border: '1px solid var(--border-elevated)',
+        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
+        maxHeight: '300px',
+        overflow: 'hidden'
+      }}
     >
+      {/* Search Input */}
+      <div className="p-3 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Type to search..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setHighlightedIndex(-1);
+          }}
+          onKeyDown={handleKeyDown}
+          className="w-full px-3 py-2 rounded-lg text-sm"
+          style={{ 
+            background: 'var(--bg-tertiary)',
+            border: '1px solid var(--border-subtle)',
+            color: 'var(--text-primary)'
+          }}
+          autoFocus
+        />
+      </div>
+
+      {/* Options List */}
+      <div style={{ maxHeight: '240px', overflowY: 'auto' }}>
+        {Object.keys(groupedOptions).length === 0 ? (
+          <div className="px-3 py-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
+            No components found
+          </div>
+        ) : (
+          Object.entries(groupedOptions).map(([groupName, groupOptions]) => (
+            <div key={groupName}>
+              {groupBy && Object.keys(groupedOptions).length > 1 && (
+                <div 
+                  className="px-3 py-2 text-xs font-semibold border-b sticky top-0"
+                  style={{ 
+                    background: 'var(--bg-secondary)',
+                    color: 'var(--text-secondary)',
+                    borderColor: 'var(--border-subtle)',
+                    zIndex: 1
+                  }}
+                >
+                  {groupName}
+                </div>
+              )}
+              {groupOptions.map((option, index) => {
+                const globalIndex = filteredOptions.indexOf(option);
+                return (
+                  <div
+                    key={option.id}
+                    className={`px-3 py-2 cursor-pointer text-sm transition-colors`}
+                    style={{
+                      background: globalIndex === highlightedIndex 
+                        ? 'var(--accent-blue)' 
+                        : selectedOption?.id === option.id 
+                          ? 'var(--surface-elevated)' 
+                          : 'transparent',
+                      color: globalIndex === highlightedIndex 
+                        ? 'white' 
+                        : 'var(--text-primary)'
+                    }}
+                    onClick={() => handleSelect(option)}
+                    onMouseEnter={() => setHighlightedIndex(globalIndex)}
+                  >
+                    <div className="font-medium">
+                      {option.model}
+                    </div>
+                    <div 
+                      className="text-xs" 
+                      style={{ 
+                        color: globalIndex === highlightedIndex 
+                          ? 'rgba(255,255,255,0.8)' 
+                          : 'var(--text-tertiary)' 
+                      }}
+                    >
+                      {option.variant} • {option.weight}g
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Quick Stats */}
+      {filteredOptions.length > 0 && (
+        <div 
+          className="px-3 py-2 text-xs border-t"
+          style={{ 
+            borderColor: 'var(--border-subtle)',
+            color: 'var(--text-quaternary)',
+            background: 'var(--bg-secondary)'
+          }}
+        >
+          {filteredOptions.length} components found
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="relative">
       {label && (
         <label className="form-label">{label}</label>
       )}
       
       {/* Main Input/Trigger */}
       <div 
+        ref={triggerRef}
         className="input-field cursor-pointer flex items-center justify-between"
         onClick={() => {
           setIsOpen(!isOpen);
@@ -108,9 +257,7 @@ const SearchableDropdown = ({
         }}
         style={{ 
           background: isOpen ? 'var(--bg-elevated)' : 'var(--bg-tertiary)',
-          borderColor: isOpen ? 'var(--border-focus)' : 'var(--border-subtle)',
-          position: 'relative',
-          zIndex: isOpen ? 1001 : 1
+          borderColor: isOpen ? 'var(--border-focus)' : 'var(--border-subtle)'
         }}
       >
         <span className={displayValue ? 'text-white' : 'text-gray-400'}>
@@ -126,124 +273,13 @@ const SearchableDropdown = ({
         </svg>
       </div>
 
-      {/* Dropdown Panel - FIXED CSS */}
-      {isOpen && (
-        <div 
-          className="dropdown-panel absolute w-full mt-1 rounded-lg shadow-xl border"
-          style={{ 
-            background: 'var(--bg-primary)', // SOLID background instead of transparent
-            borderColor: 'var(--border-elevated)',
-            maxHeight: '300px',
-            zIndex: 2001, // VERY HIGH z-index
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)', // STRONGER shadow
-            backdropFilter: 'none' // REMOVE backdrop filter for better opacity
-          }}
-        >
-          {/* Search Input */}
-          <div className="p-3 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Type to search..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setHighlightedIndex(-1);
-              }}
-              onKeyDown={handleKeyDown}
-              className="w-full px-3 py-2 rounded-lg text-sm"
-              style={{ 
-                background: 'var(--bg-tertiary)',
-                border: '1px solid var(--border-subtle)',
-                color: 'var(--text-primary)'
-              }}
-            />
-          </div>
-
-          {/* Options List */}
-          <div className="max-h-60 overflow-y-auto">
-            {Object.keys(groupedOptions).length === 0 ? (
-              <div className="px-3 py-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                No components found
-              </div>
-            ) : (
-              Object.entries(groupedOptions).map(([groupName, groupOptions]) => (
-                <div key={groupName}>
-                  {groupBy && Object.keys(groupedOptions).length > 1 && (
-                    <div 
-                      className="px-3 py-2 text-xs font-semibold border-b sticky top-0"
-                      style={{ 
-                        background: 'var(--bg-secondary)', // SOLID background for group headers
-                        color: 'var(--text-secondary)',
-                        borderColor: 'var(--border-subtle)',
-                        zIndex: 2002
-                      }}
-                    >
-                      {groupName}
-                    </div>
-                  )}
-                  {groupOptions.map((option, index) => {
-                    const globalIndex = filteredOptions.indexOf(option);
-                    return (
-                      <div
-                        key={option.id}
-                        className={`px-3 py-2 cursor-pointer text-sm transition-colors ${
-                          globalIndex === highlightedIndex ? 'selected' : ''
-                        }`}
-                        style={{
-                          background: globalIndex === highlightedIndex 
-                            ? 'var(--accent-blue)' 
-                            : selectedOption?.id === option.id 
-                              ? 'var(--surface-elevated)' 
-                              : 'transparent',
-                          color: globalIndex === highlightedIndex 
-                            ? 'white' 
-                            : 'var(--text-primary)'
-                        }}
-                        onClick={() => handleSelect(option)}
-                        onMouseEnter={() => setHighlightedIndex(globalIndex)}
-                      >
-                        <div className="font-medium">
-                          {option.model}
-                        </div>
-                        <div 
-                          className="text-xs" 
-                          style={{ 
-                            color: globalIndex === highlightedIndex 
-                              ? 'rgba(255,255,255,0.8)' 
-                              : 'var(--text-tertiary)' 
-                          }}
-                        >
-                          {option.variant} • {option.weight}g
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* Quick Stats */}
-          {filteredOptions.length > 0 && (
-            <div 
-              className="px-3 py-2 text-xs border-t"
-              style={{ 
-                borderColor: 'var(--border-subtle)',
-                color: 'var(--text-quaternary)',
-                background: 'var(--bg-secondary)' // SOLID background
-              }}
-            >
-              {filteredOptions.length} components found
-            </div>
-          )}
-        </div>
-      )}
+      {/* Portal the dropdown to body */}
+      {typeof document !== 'undefined' && createPortal(dropdownContent, document.body)}
     </div>
   );
 };
 
-// Smart grouping functions
+// Export grouping functions
 export const groupByBrand = (component) => {
   if (component.model.includes('Shimano')) return 'Shimano';
   if (component.model.includes('SRAM')) return 'SRAM';

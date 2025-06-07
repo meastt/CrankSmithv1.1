@@ -466,50 +466,40 @@ body {
   }
 }
 
-/* Landscape mobile optimization - Better width utilization */
-@media (max-width: 768px) and (orientation: landscape) {
-  /* Use more horizontal space in landscape */
-  .container {
-    max-width: 95% !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
+/* FIXED Landscape Mobile Optimization - Single Clean Media Query */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  /* This targets actual mobile devices in landscape */
   
-  /* Reduce vertical spacing to fit more content */
-  .hero-section {
-    padding-top: 60px;
+  .main-container {
+    width: 90%;
+    max-width: 90%;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 30px;
     padding-bottom: 30px;
   }
   
-  .riley-chat-container {
-    max-height: 60vh; /* Adjusted from 50vh */
-  }
-  
-  /* Allow grid items to use more space */
+  /* Side by side calculator cards */
   .calculator-cards {
-    grid-template-columns: repeat(2, 1fr) !important; /* Side by side in landscape */
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 16px;
   }
   
+  /* Results in a row */
   .results-grid {
-    grid-template-columns: repeat(4, 1fr) !important; /* All 4 metrics in landscape */
+    grid-template-columns: repeat(4, 1fr) !important;
     gap: 12px;
   }
   
-  /* Tighter spacing for landscape */
+  /* Compact spacing */
   .card {
     padding: 12px;
   }
   
-  /* Better use of horizontal space for forms */
-  .quick-questions-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px;
-  }
-  
-  /* Hero content adjustments */
+  /* Smaller hero */
   .hero-title {
-    font-size: clamp(24px, 6vw, 32px);
+    font-size: 28px;
     margin-bottom: 8px;
   }
   
@@ -518,35 +508,22 @@ body {
     margin-bottom: 16px;
   }
   
-  /* Make better use of landscape space for the main content */
-  .main-container {
-    padding-top: 40px;
-    padding-bottom: 40px;
-  }
-}
-
-/* Specific fix for iPhone 16 Pro and similar wide landscape screens */
-@media (min-width: 700px) and (max-width: 900px) and (orientation: landscape) {
-  .container {
-    max-width: 90% !important;
-  }
-  
-  /* Use 2-column layout more aggressively */
-  .calculator-cards {
+  /* Quick questions in 2 columns */
+  .quick-questions-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
   
-  /* Show more features side-by-side */
-  .features-showcase .grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+  /* Riley chat adjustments */
+  .riley-chat-container {
+    max-height: 60vh;
   }
 }
 
-/* For very wide landscape mobile (like iPhone 16 Pro Max landscape) */
-@media (min-width: 800px) and (max-width: 1024px) and (orientation: landscape) {
-  .container {
-    max-width: 85% !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Sharper text rendering for retina displays */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

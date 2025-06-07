@@ -1,5 +1,6 @@
 // pages/api/early-access.js
 import nodemailer from 'nodemailer';
+import { supabase } from '../../lib/supabase';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -13,6 +14,24 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Save to Supabase
+    const { data, error } = await supabase
+      .from('early_access')
+      .insert([{ email, source: 'landing_page' }])
+      .select()
+      .single();
+
+    if (error) {
+      // If email already exists, that's ok
+      if (error.code === '23505') {
+        return res.status(200).json({ 
+          success: true, 
+          message: 'You\'re already on the list!' 
+        });
+      }
+      throw error;
+    }
+
     // Create Zoho SMTP transporter
     const transporter = nodemailer.createTransport({
       host: 'smtp.zoho.com',

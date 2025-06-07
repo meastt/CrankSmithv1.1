@@ -1,5 +1,8 @@
+// Updated Calculator.js with SearchableDropdown integration
+
 import React, { useState, useEffect } from 'react';
 import { bikeConfig, getComponentsForBikeType } from '../lib/components';
+import SearchableDropdown, { groupBySeries } from './SearchableDropdown'; // Add this import
 
 export default function Calculator({
   bikeType,
@@ -74,7 +77,7 @@ export default function Calculator({
 
       {/* Component Configuration Cards */}
       {bikeType && (
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+        <div className="calculator-cards grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
           <SetupCard
             title="Current Setup"
             subtitle="Your baseline configuration"
@@ -175,7 +178,7 @@ function SetupCard({ title, subtitle, badge, badgeColor, setup, setSetup, config
 
       {/* Form Fields */}
       <div className="space-y-5">
-        {/* Wheel Size Selection - NEW */}
+        {/* Wheel Size Selection */}
         <div>
           <label className="form-label">Wheel Size</label>
           <select
@@ -213,48 +216,28 @@ function SetupCard({ title, subtitle, badge, badgeColor, setup, setSetup, config
           </select>
         </div>
 
-        {/* Crankset */}
-        <div>
-          <label className="form-label">Crankset</label>
-          <select
-            value={setup.crankset?.id || ''}
-            onChange={(e) => {
-              const crankset = components.cranksets.find(c => c.id === e.target.value);
-              setSetup({ ...setup, crankset });
-            }}
-            className="input-field"
-          >
-            <option value="">Select crankset...</option>
-            {components.cranksets.map(c => (
-              <option key={c.id} value={c.id}>
-                {c.model} {c.variant}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* 🚀 NEW: Searchable Crankset Dropdown */}
+        <SearchableDropdown
+          label="Crankset"
+          placeholder="Search cranksets (e.g., 105, Ultegra, GX Eagle)..."
+          options={components.cranksets}
+          value={setup.crankset}
+          onChange={(crankset) => setSetup({ ...setup, crankset })}
+          groupBy={groupBySeries}
+        />
 
-        {/* Cassette */}
-        <div>
-          <label className="form-label">Cassette</label>
-          <select
-            value={setup.cassette?.id || ''}
-            onChange={(e) => {
-              const cassette = components.cassettes.find(c => c.id === e.target.value);
-              setSetup({ ...setup, cassette });
-            }}
-            className="input-field"
-          >
-            <option value="">Select cassette...</option>
-            {components.cassettes.map(c => (
-              <option key={c.id} value={c.id}>
-                {c.model} {c.variant}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* 🚀 NEW: Searchable Cassette Dropdown */}
+        <SearchableDropdown
+          label="Cassette"
+          placeholder="Search cassettes (e.g., 11-28, 10-52, Dura-Ace)..."
+          options={components.cassettes}
+          value={setup.cassette}
+          onChange={(cassette) => setSetup({ ...setup, cassette })}
+          groupBy={groupBySeries}
+        />
       </div>
 
-      {/* Completion Indicator - UPDATED to include wheel */}
+      {/* Completion Indicator */}
       <div className="mt-6 pt-4" style={{ borderTop: '1px solid var(--border-subtle)' }}>
         <div className="flex items-center justify-between">
           <span className="text-sm" style={{ color: 'var(--text-tertiary)' }}>

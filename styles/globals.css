@@ -469,8 +469,8 @@ body {
   }
 }
 
+/* LANDSCAPE MOBILE OPTIMIZATION */
 @media screen and (orientation: landscape) and (max-height: 500px) {
-
   /* Force the main container to use almost full viewport width */
   main.main-container {
     width: 100vw !important;
@@ -539,11 +539,54 @@ body {
   }
 }
 
-/* High DPI displays */
+/* HIGH DPI DISPLAYS */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  /* Sharper text rendering for retina displays */
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+
+/* === DROPDOWN Z-INDEX SOLUTION (CORRECTED) === */
+
+/*
+  The problem: Properties like `transform` (used in .section-title-fire) and
+  `backdrop-filter` (used in .card) create new "stacking contexts". This can
+  cause elements inside them to appear on top of other elements, even if those
+  other elements have a very high z-index.
+
+  The solution: We manage the stacking contexts of the parent containers
+  instead of fighting a z-index war with !important.
+*/
+
+/* 1. The Container with the Active Dropdown */
+/* This ensures the container holding the dropdowns has a higher stacking order. */
+.calculator-section {
+  position: relative; /* Creates a stacking context */
+  z-index: 20;      /* Lifts this section above others */
+}
+
+/* 2. The Container That Needs to Stay in the Background */
+/* This forces the entire garage section into a single layer that will render
+   BELOW the calculator section. `isolation: isolate` is key here; it prevents
+   any children inside from breaking out and appearing on top. */
+#garage-section {
+  position: relative;   /* Establishes a context */
+  z-index: 10;        /* Places it below the calculator section */
+  isolation: isolate;   /* Traps all child stacking contexts within this element */
+}
+
+/* 3. The Dropdown Itself */
+/* When a dropdown is open, we give its wrapper a high z-index to ensure it appears
+   above everything else within its own section. */
+.searchable-dropdown-open {
+  position: relative; /* Ensures z-index is applied correctly */
+  z-index: 100;     /* High enough to be on top of everything */
+}
+
+/* Optional: Make sure the header stays below active dropdowns but above content */
+header {
+  position: relative;
+  z-index: 30; /* Higher than content, lower than active dropdowns */
 }

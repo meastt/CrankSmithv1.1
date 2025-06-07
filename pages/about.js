@@ -20,7 +20,7 @@ export default function About() {
                 As a lifelong cyclist, NICA coach, and competitive gravel racer, I've built countless bikes and witnessed the same struggles repeatedly: cyclists wanting to optimize their setups but facing confusing math, expensive components, and limited resources.
               </p>
               <p>
-                Existing tools like WeightWeenies and basic gear calculators are clunky, outdated, and don't reflect modern component reality. Meanwhile, cyclists are stuck buying expensive parts to "see what happens" or settling for suboptimal setups.
+                Existing tools on forums and basic gear calculators are clunky, outdated, and don't reflect modern component reality. Meanwhile, cyclists are stuck buying expensive parts to "see what happens" or settling for suboptimal setups.
               </p>
             </div>
           </section>

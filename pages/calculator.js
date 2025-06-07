@@ -162,119 +162,6 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
               </div>
             </div>
           )}
-
-      {/* Features Showcase - Always visible */}
-      <div className="max-w-6xl mx-auto mb-16">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
-            See What CrankSmith Can Do
-          </h2>
-          <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-            Real examples of how component changes affect your ride
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Speed Comparison */}
-          <div className="card text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                 style={{ background: 'var(--accent-blue)', color: 'white' }}>
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-              Speed Analysis
-            </h3>
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-sm">
-                <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
-                <span style={{ color: 'var(--text-secondary)' }}>31.2 mph</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
-                <span style={{ color: 'var(--text-secondary)' }}>33.1 mph</span>
-              </div>
-              <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
-                <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
-                  +1.9 mph
-                </div>
-              </div>
-            </div>
-            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-              See exactly how upgrades affect your top speed
-            </p>
-          </div>
-
-          {/* Weight Savings */}
-          <div className="card text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                 style={{ background: 'var(--accent-performance)', color: 'white' }}>
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-              Weight Tracking
-            </h3>
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-sm">
-                <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
-                <span style={{ color: 'var(--text-secondary)' }}>1,247g</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
-                <span style={{ color: 'var(--text-secondary)' }}>1,185g</span>
-              </div>
-              <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
-                <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
-                  -62g
-                </div>
-              </div>
-            </div>
-            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-              Track weight savings down to the gram
-            </p>
-          </div>
-
-          {/* AI Guidance */}
-          <div className="card text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
-              <span className="text-2xl">🔧</span>
-            </div>
-            <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-              Expert Advice
-            </h3>
-            <div className="p-3 rounded-lg mb-4" style={{ background: 'var(--surface-elevated)' }}>
-              <p className="text-sm italic" style={{ color: 'var(--text-secondary)' }}>
-                "That 11-34T cassette will give you much easier climbing gears. Perfect for steep hills!"
-              </p>
-              <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>
-                - Riley, AI Mechanic
-              </div>
-            </div>
-            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-              Get personalized recommendations from our AI expert
-            </p>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-12">
-          <button 
-            onClick={() => {
-              document.querySelector('select').focus();
-              window.scrollTo({ 
-                top: document.querySelector('.calculator-section')?.offsetTop || window.innerHeight, 
-                behavior: 'smooth' 
-              });
-            }}
-            className="btn-primary text-lg px-8"
-          >
-            Try It Now - It's Free
-          </button>
-        </div>
-      </div>
         </div>
 
         {/* Load Button */}
@@ -447,7 +334,7 @@ export default function Home() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-12 max-w-7xl">
+    <main className="main-container container mx-auto px-4 py-12 max-w-7xl">
       {/* Clean Hero Section */}
       <div className="text-center mb-12">
         <h1 className="hero-title hero-title-fire">Compare. Calculate. Optimize.</h1>
@@ -616,6 +503,121 @@ export default function Home() {
         </div>
       )}
 
+      {/* Features Showcase - Always visible when no bike type selected */}
+      {!bikeType && !results && (
+        <div className="max-w-6xl mx-auto mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+              See What CrankSmith Can Do
+            </h2>
+            <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
+              Real examples of how component changes affect your ride
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Speed Comparison */}
+            <div className="card text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
+                   style={{ background: 'var(--accent-blue)', color: 'white' }}>
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
+                Speed Analysis
+              </h3>
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>31.2 mph</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>33.1 mph</span>
+                </div>
+                <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
+                  <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
+                    +1.9 mph
+                  </div>
+                </div>
+              </div>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+                See exactly how upgrades affect your top speed
+              </p>
+            </div>
+
+            {/* Weight Savings */}
+            <div className="card text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
+                   style={{ background: 'var(--accent-performance)', color: 'white' }}>
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
+                Weight Tracking
+              </h3>
+              <div className="space-y-2 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>1,247g</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>1,185g</span>
+                </div>
+                <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
+                  <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
+                    -62g
+                  </div>
+                </div>
+              </div>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+                Track weight savings down to the gram
+              </p>
+            </div>
+
+            {/* AI Guidance */}
+            <div className="card text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
+                <span className="text-2xl">🔧</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
+                Expert Advice
+              </h3>
+              <div className="p-3 rounded-lg mb-4" style={{ background: 'var(--surface-elevated)' }}>
+                <p className="text-sm italic" style={{ color: 'var(--text-secondary)' }}>
+                  "That 11-34T cassette will give you much easier climbing gears. Perfect for steep hills!"
+                </p>
+                <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>
+                  - Riley, AI Mechanic
+                </div>
+              </div>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+                Get personalized recommendations from our AI expert
+              </p>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center mt-12">
+            <button 
+              onClick={() => {
+                document.querySelector('select').focus();
+                window.scrollTo({ 
+                  top: document.querySelector('.calculator-section')?.offsetTop || window.innerHeight, 
+                  behavior: 'smooth' 
+                });
+              }}
+              className="btn-primary text-lg px-8"
+            >
+              Try It Now - It's Free
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Calculator Component */}
       <div className="calculator-section">
         <Calculator
@@ -668,7 +670,7 @@ export default function Home() {
 
         {/* Garage Grid - when there are saved configs */}
         {savedConfigs.length > 0 && showSaved && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="garage-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {savedConfigs.map((config) => (
               <GarageCard
                 key={config.id}

@@ -125,7 +125,19 @@ export default function Landing() {
               </a>
             </div>
 
-            {/* Social Proof */}
+            {/* Hero Screenshot */}
+            <div className="mt-12 max-w-4xl mx-auto">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-[rgba(84,84,88,0.4)]">
+                <img 
+                  src="/hero-screenshot.png" 
+                  alt="CrankSmith calculator showing speed and weight comparison"
+                  className="w-full"
+                />
+                <div className="absolute top-4 right-4 px-3 py-1 bg-green-500 text-white text-sm font-bold rounded-lg">
+                  LIVE DEMO
+                </div>
+              </div>
+            </div>
             <div className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: 'rgba(235, 235, 245, 0.6)' }}>
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -144,6 +156,93 @@ export default function Landing() {
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
                 <span>100% Free during beta</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Visual Demo Section - NEW */}
+        <section className="py-20 px-4 -mt-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(0,122,255,0.1)] rounded-3xl p-8 md:p-12 border border-[rgba(84,84,88,0.4)]">
+              <h2 className="text-3xl font-bold text-center mb-8 text-white">
+                See The Difference In Seconds
+              </h2>
+              
+              {/* Comparison Visual */}
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {/* Current Setup */}
+                <div className="bg-black/40 rounded-xl p-6 border border-red-500/30">
+                  <h3 className="text-lg font-semibold mb-4 text-red-400">Your Current Setup</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Cassette:</span>
+                      <span className="text-white font-mono">11-32T</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Weight:</span>
+                      <span className="text-white font-mono">320g</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Top Speed:</span>
+                      <span className="text-white font-mono">28.4 mph</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Climbing:</span>
+                      <span className="text-white font-mono">5.2 mph</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Proposed Setup */}
+                <div className="bg-black/40 rounded-xl p-6 border border-green-500/30">
+                  <h3 className="text-lg font-semibold mb-4 text-green-400">After Upgrade</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Cassette:</span>
+                      <span className="text-white font-mono">11-34T</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Weight:</span>
+                      <span className="text-white font-mono">295g ✨</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Top Speed:</span>
+                      <span className="text-white font-mono">28.4 mph</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Climbing:</span>
+                      <span className="text-green-400 font-mono">5.8 mph 🚀</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Results Summary */}
+              <div className="mt-8 text-center">
+                <div className="inline-flex items-center space-x-6 text-lg">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-green-500 font-bold">-25g</span>
+                    <span className="text-gray-400">lighter</span>
+                  </div>
+                  <div className="text-gray-600">•</div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-green-500 font-bold">+0.6mph</span>
+                    <span className="text-gray-400">climbing</span>
+                  </div>
+                  <div className="text-gray-600">•</div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-orange-500 font-bold">$89</span>
+                    <span className="text-gray-400">upgrade cost</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center mt-8">
+                <p className="text-gray-400 mb-4">Know before you buy. Calculate any component combination.</p>
+                <a href="#early-access" className="btn-primary-fire">
+                  Start Optimizing
+                </a>
               </div>
             </div>
           </div>
@@ -346,7 +445,10 @@ export default function Landing() {
                     </svg>
                     <span className="text-green-500 font-semibold">You're on the list!</span>
                   </div>
-                  <p className="text-white">Check your email for confirmation and updates.</p>
+                  <p className="text-white mb-4">Check your email for confirmation and updates.</p>
+                  <a href="/?beta=true" className="btn-primary-fire">
+                    Access Beta Now →
+                  </a>
                 </div>
               )}
 

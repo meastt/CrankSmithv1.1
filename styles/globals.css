@@ -41,6 +41,10 @@
   --radius-large: 16px;
   --radius-xlarge: 20px;
   
+  /* Fire gradient inspired by your logo */
+  --fire-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #ff4500 50%, #ff6347 75%, #ff7f50 100%);
+  --fire-gradient-subtle: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 50%, rgba(255, 69, 0, 0.1) 100%);
+  
   /* Legacy variables for compatibility */
   --color-bg: var(--bg-primary);
   --color-surface: var(--surface-primary);
@@ -120,8 +124,11 @@ body {
   box-shadow: var(--shadow-medium);
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -138,6 +145,41 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+}
+
+/* Fire accent buttons */
+.btn-primary-fire {
+  background: var(--fire-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius-large);
+  padding: 16px 32px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-primary-fire:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
+}
+
+/* For the specific "Start Comparing" button in the quick start guide */
+.quick-start-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 /* Apple-style form labels */
@@ -207,33 +249,7 @@ body {
   line-height: 1.4;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .card {
-    padding: 20px;
-  }
-  
-  .btn-primary {
-    padding: 14px 24px;
-    font-size: 16px;
-  }
-  
-  .section-title {
-    font-size: 24px;
-  }
-}
-
-/* Add these to your styles/globals.css file */
-
-:root {
-  /* Your existing variables... */
-  
-  /* Fire gradient inspired by your logo */
-  --fire-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #ff4500 50%, #ff6347 75%, #ff7f50 100%);
-  --fire-gradient-subtle: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 50%, rgba(255, 69, 0, 0.1) 100%);
-}
-
-/* Subtle fire accent for hero titles */
+/* Fire accent styles */
 .hero-title-fire {
   background: linear-gradient(180deg, var(--text-primary) 0%, #ff6b35 100%);
   -webkit-background-clip: text;
@@ -241,7 +257,6 @@ body {
   background-clip: text;
 }
 
-/* Fire accent for section headers */
 .section-title-fire {
   position: relative;
 }
@@ -258,30 +273,6 @@ body {
   border-radius: 2px;
 }
 
-/* Subtle fire glow for primary buttons */
-.btn-primary-fire {
-  background: var(--fire-gradient);
-  color: white;
-  border: none;
-  border-radius: var(--radius-large);
-  padding: 16px 32px;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-}
-
-.btn-primary-fire:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
-}
-
-/* Subtle fire accent for cards */
 .card-fire-accent {
   border-top: 2px solid transparent;
   background-image: var(--fire-gradient-subtle), linear-gradient(var(--surface-primary), var(--surface-primary));
@@ -289,13 +280,11 @@ body {
   background-clip: padding-box, border-box;
 }
 
-/* Fire gradient for the Quick Start card icon */
 .quick-start-icon-fire {
   background: var(--fire-gradient);
   color: white;
 }
 
-/* Bottom line card with subtle fire accent */
 .bottom-line-fire {
   background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(247, 147, 30, 0.05) 50%, rgba(0, 122, 255, 0.1) 100%);
   border: 1px solid transparent;
@@ -303,4 +292,261 @@ body {
                     linear-gradient(90deg, rgba(255, 107, 53, 0.3) 0%, rgba(0, 122, 255, 0.3) 100%);
   background-origin: border-box;
   background-clip: padding-box, border-box;
+}
+
+/* MOBILE RESPONSIVENESS - Enhanced for all screen sizes */
+
+/* Tablet specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .calculator-cards {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .garage-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile and small tablet */
+@media (max-width: 768px) {
+  .card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .btn-primary, .btn-primary-fire {
+    padding: 12px 20px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  
+  /* Hero title mobile optimization */
+  .hero-title {
+    font-size: clamp(28px, 8vw, 42px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  
+  .hero-subtitle {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  
+  /* Form elements mobile optimization */
+  .input-field {
+    padding: 14px 16px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+  
+  .form-label {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  
+  /* Results grid mobile fix */
+  .results-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  /* Calculator cards mobile optimization */
+  .calculator-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* Riley chat mobile fixes */
+  .riley-chat-container {
+    max-height: 70vh;
+    padding: 12px;
+  }
+  
+  .riley-message {
+    max-width: 85%;
+    padding: 12px 16px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  
+  .riley-input-container {
+    padding: 12px;
+    gap: 8px;
+  }
+  
+  .riley-input {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+  
+  /* Quick questions mobile layout */
+  .quick-questions-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .quick-question-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+    text-align: left;
+  }
+  
+  /* Garage cards mobile optimization */
+  .garage-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  /* Bottom line card mobile */
+  .bottom-line-card {
+    padding: 20px 16px;
+  }
+  
+  .bottom-line-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* Navigation mobile fixes */
+  .nav-mobile {
+    padding: 16px 20px;
+  }
+  
+  /* Speed unit toggle mobile */
+  .speed-toggle {
+    padding: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .speed-toggle button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Extra small screens (iPhone SE and similar) */
+@media (max-width: 375px) {
+  .card {
+    padding: 12px;
+  }
+  
+  .btn-primary, .btn-primary-fire {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+  
+  .hero-title {
+    font-size: clamp(24px, 7vw, 36px);
+  }
+  
+  .hero-subtitle {
+    font-size: 16px;
+  }
+  
+  /* Ensure minimum touch targets */
+  button, .btn-primary, .btn-primary-fire, .input-field {
+    min-height: 44px;
+  }
+  
+  .speed-toggle {
+    max-width: 280px;
+  }
+}
+
+/* Landscape mobile optimization - Better width utilization */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Use more horizontal space in landscape */
+  .container {
+    max-width: 95% !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  /* Reduce vertical spacing to fit more content */
+  .hero-section {
+    padding-top: 60px;
+    padding-bottom: 30px;
+  }
+  
+  .riley-chat-container {
+    max-height: 60vh; /* Adjusted from 50vh */
+  }
+  
+  /* Allow grid items to use more space */
+  .calculator-cards {
+    grid-template-columns: repeat(2, 1fr) !important; /* Side by side in landscape */
+    gap: 16px;
+  }
+  
+  .results-grid {
+    grid-template-columns: repeat(4, 1fr) !important; /* All 4 metrics in landscape */
+    gap: 12px;
+  }
+  
+  /* Tighter spacing for landscape */
+  .card {
+    padding: 12px;
+  }
+  
+  /* Better use of horizontal space for forms */
+  .quick-questions-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+  }
+  
+  /* Hero content adjustments */
+  .hero-title {
+    font-size: clamp(24px, 6vw, 32px);
+    margin-bottom: 8px;
+  }
+  
+  .hero-subtitle {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  
+  /* Make better use of landscape space for the main content */
+  .main-container {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
+
+/* Specific fix for iPhone 16 Pro and similar wide landscape screens */
+@media (min-width: 700px) and (max-width: 900px) and (orientation: landscape) {
+  .container {
+    max-width: 90% !important;
+  }
+  
+  /* Use 2-column layout more aggressively */
+  .calculator-cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Show more features side-by-side */
+  .features-showcase .grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* For very wide landscape mobile (like iPhone 16 Pro Max landscape) */
+@media (min-width: 800px) and (max-width: 1024px) and (orientation: landscape) {
+  .container {
+    max-width: 85% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
 }

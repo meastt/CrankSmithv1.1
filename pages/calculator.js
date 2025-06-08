@@ -447,7 +447,14 @@ export default function Home() {
                     Ready to compare specific parts? Jump right in!
                   </p>
                   <button 
-                    onClick={() => document.querySelector('select').focus()}
+                    onClick={() => {
+                      // More specific selector and scroll prevention
+                      const selectElement = document.querySelector('.calculator-section select');
+                      if (selectElement) {
+                        selectElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => selectElement.focus(), 300);
+                      }
+                    }}
                     className="btn-primary w-full"
                   >
                     Start Comparing

@@ -262,7 +262,7 @@ const SearchableDropdown = ({
                 return (
                   <div
                     key={option.id}
-                    className={`px-3 py-2 cursor-pointer text-sm transition-colors`}
+                    className={`px-3 py-3 cursor-pointer text-sm transition-colors`}
                     style={{
                       background: globalIndex === highlightedIndex 
                         ? 'var(--accent-blue)' 
@@ -278,15 +278,15 @@ const SearchableDropdown = ({
                     // Prevent touch scrolling issues
                     onTouchStart={(e) => e.stopPropagation()}
                   >
-                    <div className="font-medium">
+                    <div className="font-medium text-base">
                       {option.model}
                     </div>
                     <div 
-                      className="text-xs" 
+                      className="text-sm font-medium mt-1"
                       style={{ 
                         color: globalIndex === highlightedIndex 
-                          ? 'rgba(255,255,255,0.8)' 
-                          : 'var(--text-tertiary)' 
+                          ? 'rgba(255,255,255,0.9)' 
+                          : 'var(--text-secondary)' 
                       }}
                     >
                       {option.variant} • {option.weight}g

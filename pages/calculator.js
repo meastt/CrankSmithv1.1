@@ -224,6 +224,8 @@ export default function Home() {
   useEffect(() => {
     console.log('🔍 bikeType useEffect triggered:', bikeType);
     
+    // TEMPORARILY DISABLED FOR TESTING
+    /*
     if (bikeType && bikeConfig[bikeType]) {
       console.log('📝 Setting up defaults for:', bikeType);
       const defaults = bikeConfig[bikeType].defaultSetup;
@@ -247,6 +249,8 @@ export default function Home() {
       
       console.log('✅ Setup states updated');
     }
+    */
+    console.log('⚠️ Default setup logic disabled for testing');
   }, [bikeType]);
 
   const loadSavedConfigs = () => {

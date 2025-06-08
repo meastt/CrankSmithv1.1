@@ -1,4 +1,4 @@
-// components/SearchableDropdown.js - FIXED VERSION with stable positioning
+// components/SearchableDropdown.js - FIXED VERSION with improved readability
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -262,7 +262,7 @@ const SearchableDropdown = ({
                 return (
                   <div
                     key={option.id}
-                    className={`px-3 py-3 cursor-pointer text-sm transition-colors`}
+                    className={`px-3 py-3 cursor-pointer transition-colors`}
                     style={{
                       background: globalIndex === highlightedIndex 
                         ? 'var(--accent-blue)' 
@@ -278,15 +278,16 @@ const SearchableDropdown = ({
                     // Prevent touch scrolling issues
                     onTouchStart={(e) => e.stopPropagation()}
                   >
-                    <div className="font-medium text-base">
+                    <div className="font-semibold text-base leading-tight">
                       {option.model}
                     </div>
                     <div 
-                      className="text-sm font-medium mt-1"
+                      className="text-sm font-medium mt-1" 
                       style={{ 
                         color: globalIndex === highlightedIndex 
-                          ? 'rgba(255,255,255,0.9)' 
-                          : 'var(--text-secondary)' 
+                          ? 'rgba(255,255,255,0.95)' 
+                          : 'var(--text-secondary)',
+                        fontFamily: 'monospace'
                       }}
                     >
                       {option.variant} • {option.weight}g
@@ -355,7 +356,7 @@ const SearchableDropdown = ({
   );
 };
 
-// Export grouping functions (unchanged)
+// Export grouping functions
 export const groupByBrand = (component) => {
   if (component.model.includes('Shimano')) return 'Shimano';
   if (component.model.includes('SRAM')) return 'SRAM';

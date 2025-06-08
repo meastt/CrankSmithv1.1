@@ -618,8 +618,10 @@ export default function Home() {
         </div>
       )}
 
-      {/* Calculator Component */}
-      <div className="calculator-section">
+{/* Calculator Component */}
+<div className="calculator-section">
+        {/* TEMPORARILY COMMENTED OUT FOR TESTING */}
+        {/*
         <Calculator
         bikeType={bikeType}
         setBikeType={setBikeType}
@@ -629,7 +631,18 @@ export default function Home() {
         setProposedSetup={setProposedSetup}
         onCalculate={handleCalculate}
         loading={loading}
-      />
+        />
+        */}
+        
+        {/* TEMPORARY PLACEHOLDER */}
+        {bikeType && (
+          <div className="card text-center p-8">
+            <h3>Calculator temporarily disabled for testing</h3>
+            <p>Selected bike type: {bikeType}</p>
+          </div>
+        )}
+      
+      </div>
 
       {/* Results Component */}
       {results && (

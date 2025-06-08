@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 
 export default function TirePressure() {
   const [riderWeight, setRiderWeight] = useState('');
@@ -131,69 +130,46 @@ export default function TirePressure() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+    <div className="min-h-screen w-full">
       <Head>
         <title>Tire Pressure Calculator | CrankSmith</title>
         <meta name="description" content="Calculate optimal tire pressure for your bike based on weight, conditions, and riding style" />
       </Head>
 
-      <nav className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <Link href="/" className="flex items-center">
-                <span className="text-xl font-bold">CrankSmith</span>
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/calculator" className="text-gray-300 hover:text-white">
-                Gear Calculator
-              </Link>
-              <Link href="/tire-pressure" className="text-white font-medium">
-                Tire Pressure
-              </Link>
-              <Link href="/about" className="text-gray-300 hover:text-white">
-                About
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8">Tire Pressure Calculator</h1>
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <h1 className="hero-title text-4xl font-bold mb-8">Tire Pressure Calculator</h1>
           
-          <div className="bg-gray-800 rounded-xl p-6 space-y-6">
-            <div className="flex justify-end mb-4">
-              <div className="flex rounded-xl p-1" 
-                   style={{ 
-                     background: 'var(--surface-primary)', 
-                     border: '1px solid var(--border-subtle)' 
-                   }}>
-                {['kg', 'lb'].map(unit => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Weight Unit
+                </label>
+                <div className="flex space-x-4">
                   <button
-                    key={unit}
-                    onClick={() => setWeightUnit(unit)}
-                    className={`px-4 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      weightUnit === unit 
-                        ? 'text-white shadow-sm' 
-                        : 'hover:opacity-70'
+                    onClick={() => setWeightUnit('kg')}
+                    className={`flex-1 py-2 px-4 rounded-lg ${
+                      weightUnit === 'kg'
+                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        : 'bg-gray-800 text-gray-300'
                     }`}
-                    style={{
-                      background: weightUnit === unit 
-                        ? 'linear-gradient(135deg, var(--accent-blue) 0%, #5856d6 100%)' 
-                        : 'transparent',
-                      color: weightUnit === unit ? 'white' : 'var(--text-secondary)'
-                    }}
                   >
-                    {unit.toUpperCase()}
+                    Kilograms (kg)
                   </button>
-                ))}
+                  <button
+                    onClick={() => setWeightUnit('lb')}
+                    className={`flex-1 py-2 px-4 rounded-lg ${
+                      weightUnit === 'lb'
+                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        : 'bg-gray-800 text-gray-300'
+                    }`}
+                  >
+                    Pounds (lb)
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Rider Weight ({weightUnit})
@@ -202,10 +178,11 @@ export default function TirePressure() {
                   type="number"
                   value={riderWeight}
                   onChange={(e) => setRiderWeight(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={`Enter your weight in ${weightUnit}`}
+                  className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[#ff6b35] focus:ring-2 focus:ring-[#ff6b35] focus:ring-opacity-20"
+                  placeholder={`Enter weight in ${weightUnit}`}
                 />
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Bike Weight ({weightUnit})
@@ -214,180 +191,150 @@ export default function TirePressure() {
                   type="number"
                   value={bikeWeight}
                   onChange={(e) => setBikeWeight(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={`Enter bike weight in ${weightUnit}`}
+                  className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[#ff6b35] focus:ring-2 focus:ring-[#ff6b35] focus:ring-opacity-20"
+                  placeholder={`Enter weight in ${weightUnit}`}
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Surface Type
-              </label>
-              <select
-                value={surfaceType}
-                onChange={(e) => {
-                  setSurfaceType(e.target.value);
-                  // Reset tire width when surface type changes
-                  setTireWidth('');
-                }}
-                className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="road">Road</option>
-                <option value="gravel">Gravel</option>
-                <option value="mtb">Mountain Bike</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Tire Width {surfaceType === 'mtb' ? '(inches)' : '(mm)'}
-              </label>
-              {surfaceType === 'mtb' ? (
-                <select
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Tire Width (mm)
+                </label>
+                <input
+                  type="number"
                   value={tireWidth}
                   onChange={(e) => setTireWidth(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Select tire width</option>
-                  <option value="2.2">2.2"</option>
-                  <option value="2.25">2.25"</option>
-                  <option value="2.3">2.3"</option>
-                  <option value="2.35">2.35"</option>
-                  <option value="2.4">2.4"</option>
-                  <option value="2.5">2.5"</option>
-                  <option value="2.6">2.6"</option>
-                </select>
-              ) : (
+                  className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[#ff6b35] focus:ring-2 focus:ring-[#ff6b35] focus:ring-opacity-20"
+                  placeholder="Enter tire width"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Surface Type
+                </label>
                 <select
-                  value={tireWidth}
-                  onChange={(e) => setTireWidth(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={surfaceType}
+                  onChange={(e) => setSurfaceType(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[#ff6b35] focus:ring-2 focus:ring-[#ff6b35] focus:ring-opacity-20"
                 >
-                  <option value="">Select tire width</option>
-                  {surfaceType === 'road' ? (
-                    <>
-                      <option value="23">23mm</option>
-                      <option value="25">25mm</option>
-                      <option value="28">28mm</option>
-                      <option value="30">30mm</option>
-                      <option value="32">32mm</option>
-                    </>
-                  ) : (
-                    <>
-                      <option value="38">38mm</option>
-                      <option value="40">40mm</option>
-                      <option value="42">42mm</option>
-                      <option value="45">45mm</option>
-                      <option value="47">47mm</option>
-                      <option value="50">50mm</option>
-                    </>
-                  )}
+                  <option value="road">Road</option>
+                  <option value="gravel">Gravel</option>
+                  <option value="mtb">Mountain Bike</option>
                 </select>
-              )}
-            </div>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Wheel Size
-              </label>
-              <select
-                value={wheelSize}
-                onChange={(e) => setWheelSize(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Setup
+                </label>
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => setIsTubeless(true)}
+                    className={`flex-1 py-2 px-4 rounded-lg ${
+                      isTubeless
+                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        : 'bg-gray-800 text-gray-300'
+                    }`}
+                  >
+                    Tubeless
+                  </button>
+                  <button
+                    onClick={() => setIsTubeless(false)}
+                    className={`flex-1 py-2 px-4 rounded-lg ${
+                      !isTubeless
+                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        : 'bg-gray-800 text-gray-300'
+                    }`}
+                  >
+                    Tubes
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Weather
+                </label>
+                <select
+                  value={weatherCondition}
+                  onChange={(e) => setWeatherCondition(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[#ff6b35] focus:ring-2 focus:ring-[#ff6b35] focus:ring-opacity-20"
+                >
+                  <option value="dry">Dry</option>
+                  <option value="wet">Wet</option>
+                  <option value="muddy">Muddy</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Riding Style
+                </label>
+                <select
+                  value={ridingStyle}
+                  onChange={(e) => setRidingStyle(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[#ff6b35] focus:ring-2 focus:ring-[#ff6b35] focus:ring-opacity-20"
+                >
+                  <option value="comfort">Comfort</option>
+                  <option value="normal">Normal</option>
+                  <option value="aggressive">Aggressive</option>
+                </select>
+              </div>
+
+              <button
+                onClick={calculatePressure}
+                className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white font-medium hover:from-[#ff4500] hover:to-[#ff6347] transition-all duration-200 transform hover:-translate-y-0.5"
               >
-                {surfaceType === 'mtb' ? (
-                  <>
-                    <option value="29">29"</option>
-                    <option value="27.5">27.5"</option>
-                    <option value="26">26"</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="700c">700c</option>
-                    <option value="650b">650b</option>
-                  </>
-                )}
-              </select>
+                Calculate Pressure
+              </button>
             </div>
 
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="tubeless"
-                checked={isTubeless}
-                onChange={(e) => setIsTubeless(e.target.checked)}
-                className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-600 rounded bg-gray-700"
-              />
-              <label htmlFor="tubeless" className="ml-2 block text-sm text-gray-300">
-                Tubeless Setup
-              </label>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Weather Condition
-              </label>
-              <select
-                value={weatherCondition}
-                onChange={(e) => setWeatherCondition(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="dry">Dry</option>
-                <option value="wet">Wet</option>
-                <option value="muddy">Muddy</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Riding Style
-              </label>
-              <select
-                value={ridingStyle}
-                onChange={(e) => setRidingStyle(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="comfort">Comfort</option>
-                <option value="normal">Normal</option>
-                <option value="aggressive">Aggressive</option>
-              </select>
-            </div>
-
-            <button
-              onClick={calculatePressure}
-              className="w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              Calculate Pressure
-            </button>
-
-            <div className="mt-6 p-4 bg-gray-700 rounded-lg">
-              <h2 className="text-xl font-semibold mb-2">Recommended Pressure</h2>
-              {pressure.base ? (
+            <div className="space-y-6">
+              {pressure && (
                 <>
-                  <p className="text-3xl font-bold text-blue-400">{pressure.base} PSI</p>
-                  <div className="mt-4 space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Comfort Range:</span>
-                      <span className="font-medium">{pressure.ranges.comfort} PSI</span>
+                  <div className="p-6 rounded-lg bg-gray-800 border border-gray-700">
+                    <h2 className="text-2xl font-bold text-[#ff6b35] mb-4">Recommended Pressure</h2>
+                    <div className="text-4xl font-bold text-white mb-2">
+                      {pressure.base} PSI
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Balanced Range:</span>
-                      <span className="font-medium">{pressure.ranges.balanced} PSI</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Performance Range:</span>
-                      <span className="font-medium">{pressure.ranges.performance} PSI</span>
+                    <div className="text-sm text-gray-400">
+                      Range: {pressure.ranges.comfort}–{pressure.ranges.performance} PSI
                     </div>
                   </div>
-                  <div className="mt-4 text-sm text-gray-300">
-                    <p className="mb-2"><strong>Comfort Range:</strong> Better grip, smoother ride, more comfortable on rough terrain</p>
-                    <p className="mb-2"><strong>Balanced Range:</strong> Good mix of comfort and performance, ideal for most riding</p>
-                    <p><strong>Performance Range:</strong> Faster rolling, better cornering, more responsive handling</p>
+
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
+                      <h3 className="text-lg font-semibold text-[#f7931e] mb-2">Comfort Range</h3>
+                      <div className="text-2xl font-bold text-white mb-1">
+                        {pressure.ranges.comfort} PSI
+                      </div>
+                      <p className="text-sm text-gray-400">
+                        Maximum grip and comfort, ideal for rough terrain and long rides
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
+                      <h3 className="text-lg font-semibold text-[#ff6b35] mb-2">Balanced Range</h3>
+                      <div className="text-2xl font-bold text-white mb-1">
+                        {pressure.ranges.balanced} PSI
+                      </div>
+                      <p className="text-sm text-gray-400">
+                        Optimal balance of grip, comfort, and rolling efficiency
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
+                      <h3 className="text-lg font-semibold text-[#ff4500] mb-2">Performance Range</h3>
+                      <div className="text-2xl font-bold text-white mb-1">
+                        {pressure.ranges.performance} PSI
+                      </div>
+                      <p className="text-sm text-gray-400">
+                        Maximum efficiency and speed, best for smooth surfaces
+                      </p>
+                    </div>
                   </div>
                 </>
-              ) : (
-                <p className="text-gray-300">Enter your details above to calculate recommended pressure</p>
               )}
             </div>
           </div>

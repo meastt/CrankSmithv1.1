@@ -17,8 +17,11 @@
   --text-tertiary: rgba(235, 235, 245, 0.6);
   --text-quaternary: rgba(235, 235, 245, 0.3);
 
-  --accent-blue: #007aff;
-  --accent-blue-hover: #0056cc;
+  /* Fire theme accents */
+  --accent-primary: #ff6b35;
+  --accent-secondary: #f7931e;
+  --accent-tertiary: #ff4500;
+  --accent-hover: #ff4500;
   --accent-performance: #30d158;
   --accent-warning: #ff9f0a;
   --accent-critical: #ff453a;
@@ -29,12 +32,12 @@
 
   --border-subtle: rgba(84, 84, 88, 0.4);
   --border-elevated: rgba(99, 99, 102, 0.6);
-  --border-focus: var(--accent-blue);
+  --border-focus: var(--accent-primary);
 
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.5);
   --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.3);
   --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+  --shadow-glow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 
   --radius-small: 8px;
   --radius-medium: 12px;
@@ -50,7 +53,7 @@
   --color-surface: var(--surface-primary);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-tertiary);
-  --color-accent: var(--accent-blue);
+  --color-accent: var(--accent-primary);
   --color-border: var(--border-subtle);
 }
 
@@ -59,7 +62,7 @@ html {
 }
 
 body {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, #111113 100%);
+  background: linear-gradient(180deg, #000000 0%, #1a1a1a 100%);
   color: var(--text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
@@ -82,7 +85,7 @@ body {
 .card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-strong);
-  border-color: var(--border-elevated);
+  border-color: var(--accent-primary);
 }
 
 .input-field {
@@ -107,52 +110,18 @@ body {
 
 .input-field:focus {
   outline: none;
-  border-color: var(--border-focus);
-  box-shadow: var(--shadow-glow);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .input-field::placeholder {
   color: var(--text-quaternary);
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, var(--accent-blue) 0%, #5856d6 100%);
-  color: white;
-  border: none;
-  border-radius: var(--radius-large);
-  padding: 16px 32px;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-medium);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  text-decoration: none;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, var(--accent-blue-hover) 0%, #4c46c7 100%);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-strong);
-}
-
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Fire accent buttons */
-.btn-primary-fire {
+.btn-primary, 
+.btn-primary-fire,
+button[type="submit"],
+button.primary {
   background: var(--fire-gradient);
   color: white;
   border: none;
@@ -172,18 +141,143 @@ body {
   white-space: nowrap;
 }
 
-.btn-primary-fire:hover {
+.btn-primary:hover, 
+.btn-primary-fire:hover,
+button[type="submit"]:hover,
+button.primary:hover {
+  background: linear-gradient(135deg, #ff4500 0%, #ff6347 100%);
   transform: translateY(-1px);
   box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
 }
 
-/* For the specific "Start Comparing" button in the quick start guide */
-.quick-start-button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+/* Update all focus states */
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+/* Update all links */
+a {
+  color: var(--accent-primary);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* Update all active states */
+button:active,
+.btn-primary:active,
+.btn-primary-fire:active {
+  transform: translateY(0);
+}
+
+/* Update all disabled states */
+button:disabled,
+.btn-primary:disabled,
+.btn-primary-fire:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Update all form elements */
+.input-field {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.input-field:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+/* Update all select elements */
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ff6b35' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.25em;
+}
+
+/* Update all checkboxes */
+input[type="checkbox"] {
+  accent-color: var(--accent-primary);
+}
+
+/* Update all radio buttons */
+input[type="radio"] {
+  accent-color: var(--accent-primary);
+}
+
+/* Update all progress bars */
+progress {
+  accent-color: var(--accent-primary);
+}
+
+/* Update all range inputs */
+input[type="range"] {
+  accent-color: var(--accent-primary);
+}
+
+/* Update all metric displays */
+.metric-large {
+  color: var(--accent-primary);
+}
+
+.metric-large.positive {
+  color: var(--accent-performance);
+}
+
+.metric-large.negative {
+  color: var(--accent-critical);
+}
+
+.metric-large.neutral {
+  color: var(--accent-primary);
+}
+
+/* Update all section titles */
+.section-title {
+  color: var(--accent-primary);
+}
+
+/* Update all hero titles */
+.hero-title {
+  background: var(--fire-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Update all cards */
+.card {
+  border-color: var(--border-subtle);
+}
+
+.card:hover {
+  border-color: var(--accent-primary);
+}
+
+/* Update all toggles */
+.speed-toggle button.active {
+  background: var(--fire-gradient);
+  color: white;
+}
+
+/* Update all dropdowns */
+.searchable-dropdown-portal .cursor-pointer:hover {
+  background: var(--fire-gradient-subtle);
+}
+
+.searchable-dropdown-portal .cursor-pointer.selected {
+  background: var(--fire-gradient);
+  color: white;
 }
 
 /* Apple-style form labels */
@@ -214,7 +308,7 @@ body {
 }
 
 .metric-large.neutral {
-  color: var(--accent-blue);
+  color: var(--accent-primary);
 }
 
 .metric-label {
@@ -225,23 +319,11 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Section titles */
-.section-title {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 24px;
-  color: var(--text-primary);
-}
-
 /* Hero title */
 .hero-title {
   font-size: clamp(36px, 5vw, 56px);
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   margin-bottom: 16px;
   line-height: 1.1;
 }

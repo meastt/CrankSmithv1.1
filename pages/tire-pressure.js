@@ -10,8 +10,16 @@ export default function TirePressure() {
   const [isTubeless, setIsTubeless] = useState(true);
   const [weatherCondition, setWeatherCondition] = useState('dry');
   const [ridingStyle, setRidingStyle] = useState('normal');
-  const [pressure, setPressure] = useState(null);
+  const [pressure, setPressure] = useState({
+    base: null,
+    ranges: {
+      comfort: null,
+      balanced: null,
+      performance: null
+    }
+  });
   const [weightUnit, setWeightUnit] = useState('lb');
+  const [wheelSize, setWheelSize] = useState('700c');
 
   const convertWeight = (weight, fromUnit, toUnit) => {
     if (fromUnit === toUnit) return weight;
@@ -23,49 +31,103 @@ export default function TirePressure() {
   const calculatePressure = () => {
     const riderWeightKg = convertWeight(Number(riderWeight), weightUnit, 'kg');
     const bikeWeightKg = convertWeight(Number(bikeWeight), weightUnit, 'kg');
+    const totalWeightKg = riderWeightKg + bikeWeightKg;
+    const totalWeightLb = totalWeightKg * 2.20462;
+    let minPSI = 0;
+    let maxPSI = 0;
+    let basePSI = 0;
+    let width = Number(tireWidth);
+
+    // Wheel size adjustment factor
+    let wheelSizeFactor = 0;
+    if (surfaceType === 'mtb') {
+      switch (wheelSize) {
+        case '29': wheelSizeFactor = 0; break;    // Base case
+        case '27.5': wheelSizeFactor = 2; break;  // +2 PSI
+        case '26': wheelSizeFactor = 4; break;    // +4 PSI
+      }
+    } else {
+      switch (wheelSize) {
+        case '700c': wheelSizeFactor = 0; break;  // Base case
+        case '650b': wheelSizeFactor = 2; break;  // +2 PSI
+      }
+    }
+
+    if (surfaceType === 'road') {
+      // Road tires: 23–32mm
+      if (width <= 25) {
+        basePSI = 100;
+        basePSI += ((totalWeightLb - 150) / 10) * 5; // 5 PSI per 10 lbs above/below 150
+        minPSI = 85;
+        maxPSI = 110;
+      } else if (width <= 32) {
+        basePSI = 75;
+        basePSI += ((totalWeightLb - 150) / 10) * 5;
+        minPSI = 60;
+        maxPSI = 85;
+      } else {
+        basePSI = 70;
+        minPSI = 60;
+        maxPSI = 85;
+      }
+    } else if (surfaceType === 'gravel') {
+      // Gravel tires: 38–50mm
+      if (width <= 42) {
+        basePSI = 38;
+        basePSI += ((totalWeightLb - 160) / 10) * 2; // 2 PSI per 10 lbs above/below 160
+        minPSI = 32;
+        maxPSI = 45;
+      } else {
+        basePSI = 32;
+        basePSI += ((totalWeightLb - 160) / 10) * 2;
+        minPSI = 28;
+        maxPSI = 38;
+      }
+    } else if (surfaceType === 'mtb') {
+      // MTB tires: 2.2–2.6"
+      if (width <= 2.3) {
+        basePSI = 25;
+        basePSI += ((totalWeightLb - 170) / 10) * 1; // 1 PSI per 10 lbs above/below 170
+        minPSI = 22;
+        maxPSI = 28;
+      } else {
+        basePSI = 21;
+        basePSI += ((totalWeightLb - 170) / 10) * 1;
+        minPSI = 18;
+        maxPSI = 25;
+      }
+    }
+
+    // Apply wheel size adjustment
+    basePSI += wheelSizeFactor;
+    minPSI += wheelSizeFactor;
+    maxPSI += wheelSizeFactor;
+
+    // Tubeless adjustment
+    if (isTubeless) basePSI -= 2;
+    // Weather adjustment
+    if (weatherCondition === 'wet' || weatherCondition === 'muddy') basePSI -= 2;
+    // Riding style adjustment
+    if (ridingStyle === 'aggressive' || ridingStyle === 'racing') basePSI += 2;
+    if (ridingStyle === 'comfort') basePSI -= 2;
+
+    // Clamp to min/max
+    basePSI = Math.max(minPSI, Math.min(maxPSI, basePSI));
     
-    let basePressure = 0;
+    // Calculate ranges
+    const range = maxPSI - minPSI;
+    const comfortPSI = Math.round(minPSI + (range * 0.2));
+    const balancedPSI = Math.round(minPSI + (range * 0.5));
+    const performancePSI = Math.round(minPSI + (range * 0.8));
     
-    const totalWeight = riderWeightKg + bikeWeightKg;
-    
-    switch (surfaceType) {
-      case 'road':
-        basePressure = totalWeight * 0.7;
-        break;
-      case 'gravel':
-        basePressure = totalWeight * 0.6;
-        break;
-      case 'mtb':
-        basePressure = totalWeight * 0.5;
-        break;
-    }
-
-    const widthFactor = 1 - (Number(tireWidth) - 25) * 0.01;
-    basePressure *= widthFactor;
-
-    if (isTubeless) {
-      basePressure *= 0.9;
-    }
-
-    switch (weatherCondition) {
-      case 'wet':
-        basePressure *= 0.95;
-        break;
-      case 'muddy':
-        basePressure *= 0.9;
-        break;
-    }
-
-    switch (ridingStyle) {
-      case 'aggressive':
-        basePressure *= 1.1;
-        break;
-      case 'comfort':
-        basePressure *= 0.9;
-        break;
-    }
-
-    setPressure(Math.round(basePressure));
+    setPressure({
+      base: Math.round(basePSI),
+      ranges: {
+        comfort: comfortPSI,
+        balanced: balancedPSI,
+        performance: performancePSI
+      }
+    });
   };
 
   return (
@@ -225,6 +287,30 @@ export default function TirePressure() {
               )}
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Wheel Size
+              </label>
+              <select
+                value={wheelSize}
+                onChange={(e) => setWheelSize(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {surfaceType === 'mtb' ? (
+                  <>
+                    <option value="29">29"</option>
+                    <option value="27.5">27.5"</option>
+                    <option value="26">26"</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="700c">700c</option>
+                    <option value="650b">650b</option>
+                  </>
+                )}
+              </select>
+            </div>
+
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -275,15 +361,35 @@ export default function TirePressure() {
               Calculate Pressure
             </button>
 
-            {pressure && (
-              <div className="mt-6 p-4 bg-gray-700 rounded-lg">
-                <h2 className="text-xl font-semibold mb-2">Recommended Pressure</h2>
-                <p className="text-3xl font-bold text-blue-400">{pressure} PSI</p>
-                <p className="mt-2 text-sm text-gray-300">
-                  This is a starting point. Adjust based on feel and conditions.
-                </p>
-              </div>
-            )}
+            <div className="mt-6 p-4 bg-gray-700 rounded-lg">
+              <h2 className="text-xl font-semibold mb-2">Recommended Pressure</h2>
+              {pressure.base ? (
+                <>
+                  <p className="text-3xl font-bold text-blue-400">{pressure.base} PSI</p>
+                  <div className="mt-4 space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">Comfort Range:</span>
+                      <span className="font-medium">{pressure.ranges.comfort} PSI</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">Balanced Range:</span>
+                      <span className="font-medium">{pressure.ranges.balanced} PSI</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">Performance Range:</span>
+                      <span className="font-medium">{pressure.ranges.performance} PSI</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-sm text-gray-300">
+                    <p className="mb-2"><strong>Comfort Range:</strong> Better grip, smoother ride, more comfortable on rough terrain</p>
+                    <p className="mb-2"><strong>Balanced Range:</strong> Good mix of comfort and performance, ideal for most riding</p>
+                    <p><strong>Performance Range:</strong> Faster rolling, better cornering, more responsive handling</p>
+                  </div>
+                </>
+              ) : (
+                <p className="text-gray-300">Enter your details above to calculate recommended pressure</p>
+              )}
+            </div>
           </div>
         </div>
       </main>

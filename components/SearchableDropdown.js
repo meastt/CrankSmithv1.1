@@ -1,4 +1,4 @@
-// components/SearchableDropdown.js - FIXED VERSION
+// components/SearchableDropdown.js - CLEAN VERSION
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -10,14 +10,6 @@ const SearchableDropdown = ({
   label,
   groupBy = null
 }) => {
-  // DEBUG LINES - TEMPORARY
-  console.log('🔍 SearchableDropdown rendered with:', {
-    optionsLength: options?.length,
-    placeholder,
-    hasOptions: Array.isArray(options),
-    firstOption: options?.[0]
-  });
-
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -25,9 +17,6 @@ const SearchableDropdown = ({
   const dropdownRef = useRef(null);
   const triggerRef = useRef(null);
   const inputRef = useRef(null);
-
-  // DEBUG - TEMPORARY
-  console.log('🔍 Dropdown state:', { isOpen });
 
   // Filter and group options
   const filteredOptions = options.filter(option => {
@@ -261,7 +250,6 @@ const SearchableDropdown = ({
         ref={triggerRef}
         className="input-field cursor-pointer flex items-center justify-between"
         onClick={() => {
-          console.log('🔍 Dropdown clicked! Current isOpen:', isOpen);
           setIsOpen(!isOpen);
           if (!isOpen) {
             setTimeout(() => inputRef.current?.focus(), 100);
@@ -296,6 +284,10 @@ export const groupByBrand = (component) => {
   if (component.model.includes('Shimano')) return 'Shimano';
   if (component.model.includes('SRAM')) return 'SRAM';
   if (component.model.includes('Campagnolo')) return 'Campagnolo';
+  if (component.model.includes('FSA')) return 'FSA';
+  if (component.model.includes('Praxis')) return 'Praxis';
+  if (component.model.includes('Race Face')) return 'Race Face';
+  if (component.model.includes('Rotor')) return 'Rotor';
   return 'Other';
 };
 

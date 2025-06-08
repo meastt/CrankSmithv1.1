@@ -1,4 +1,5 @@
-// components/SearchableDropdown.js - FIXED VERSION with improved readability
+// components/SearchableDropdown.js - STABLE VERSION
+// Last updated: 2024-03-19 - Fixed dropdown stability
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 

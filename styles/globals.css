@@ -590,3 +590,49 @@ header {
   position: relative;
   z-index: 30; /* Higher than content, lower than active dropdowns */
 }
+/* Add to your styles/globals.css */
+
+/* Z-index hierarchy fix */
+header {
+  z-index: 50 !important; /* Lower than dropdown */
+}
+
+.searchable-dropdown-portal {
+  z-index: 10000 !important; /* Higher than header */
+}
+
+/* Mobile dropdown stability fixes */
+@media (max-width: 768px) {
+  /* Prevent zoom on focus for iOS */
+  input[type="text"], input[type="email"], select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Stable dropdown positioning */
+  .searchable-dropdown-portal {
+    position: fixed !important;
+    transform: translateZ(0); /* Hardware acceleration */
+    will-change: auto;
+    backface-visibility: hidden;
+  }
+  
+  /* Prevent scrolling issues */
+  body.dropdown-open {
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Better touch targets */
+  .searchable-dropdown-portal .cursor-pointer {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* Prevent dropdown flickering during animations */
+.searchable-dropdown-portal {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}

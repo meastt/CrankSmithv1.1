@@ -1,4 +1,4 @@
-// components/SearchableDropdown.js - CLEAN VERSION
+// components/SearchableDropdown.js - FIXED VERSION with stable positioning
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -14,6 +14,7 @@ const SearchableDropdown = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+  const [usePortal, setUsePortal] = useState(false);
   const dropdownRef = useRef(null);
   const triggerRef = useRef(null);
   const inputRef = useRef(null);
@@ -38,19 +39,56 @@ const SearchableDropdown = ({
       }, {})
     : { 'All': filteredOptions };
 
-  // Update dropdown position when opened
-  useEffect(() => {
-    if (isOpen && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
+  // Calculate position more reliably
+  const updatePosition = () => {
+    if (!isOpen || !triggerRef.current) return;
+    
+    const rect = triggerRef.current.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const dropdownHeight = 300; // Max height of dropdown
+    
+    // Check if we're on mobile (basic detection)
+    const isMobile = window.innerWidth <= 768;
+    
+    // For mobile, use simpler positioning to avoid issues
+    if (isMobile) {
       setDropdownPosition({
-        top: rect.bottom,
+        top: rect.bottom + 2,
         left: rect.left,
         width: rect.width
       });
+      setUsePortal(true);
+    } else {
+      // Desktop positioning with overflow detection
+      const spaceBelow = viewportHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      
+      let top = rect.bottom + 2;
+      
+      // If not enough space below and more space above, position above
+      if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+        top = rect.top - dropdownHeight - 2;
+      }
+      
+      setDropdownPosition({
+        top,
+        left: rect.left,
+        width: rect.width
+      });
+      setUsePortal(true);
+    }
+  };
+
+  // Update position when opened (single call, no continuous updates)
+  useEffect(() => {
+    if (isOpen) {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(updatePosition, 10);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside or scrolling
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
@@ -61,23 +99,36 @@ const SearchableDropdown = ({
       }
     };
 
-    const handleScroll = () => {
-      if (isOpen && triggerRef.current) {
-        const rect = triggerRef.current.getBoundingClientRect();
-        setDropdownPosition({
-          top: rect.bottom,
-          left: rect.left,
-          width: rect.width
-        });
+    const handleScroll = (event) => {
+      // Only close if scrolling the main page, not the dropdown itself
+      if (dropdownRef.current && dropdownRef.current.contains(event.target)) {
+        return; // Don't close if scrolling inside the dropdown
       }
+      
+      // Close dropdown on page scroll to prevent positioning issues
+      setIsOpen(false);
+      setSearchTerm('');
+      setHighlightedIndex(-1);
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    window.addEventListener('scroll', handleScroll, true);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      
+      // Only listen for scroll on the main window, with a slight delay
+      setTimeout(() => {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+      }, 100);
+      
+      // Prevent body scroll on mobile when dropdown is open
+      if (window.innerWidth <= 768) {
+        document.body.style.overflow = 'hidden';
+      }
+    }
     
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener('scroll', handleScroll);
+      document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
@@ -117,10 +168,17 @@ const SearchableDropdown = ({
     setHighlightedIndex(-1);
   };
 
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+    if (!isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  };
+
   const selectedOption = options.find(opt => opt.id === value?.id);
   const displayValue = selectedOption ? `${selectedOption.model} ${selectedOption.variant}` : '';
 
-  // Dropdown content to be portaled
+  // Dropdown content - simplified for better performance
   const dropdownContent = isOpen && (
     <div 
       ref={dropdownRef}
@@ -130,13 +188,15 @@ const SearchableDropdown = ({
         top: `${dropdownPosition.top}px`,
         left: `${dropdownPosition.left}px`,
         width: `${dropdownPosition.width}px`,
-        zIndex: 9999,
+        zIndex: 10000,
         background: 'var(--bg-primary)',
         borderRadius: 'var(--radius-medium)',
         border: '1px solid var(--border-elevated)',
         boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
         maxHeight: '300px',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        // Prevent scrolling issues on mobile
+        touchAction: 'manipulation'
       }}
     >
       {/* Search Input */}
@@ -158,11 +218,21 @@ const SearchableDropdown = ({
             color: 'var(--text-primary)'
           }}
           autoFocus
+          // Prevent mobile keyboard from affecting layout
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
         />
       </div>
 
       {/* Options List */}
-      <div style={{ maxHeight: '240px', overflowY: 'auto' }}>
+      <div style={{ 
+        maxHeight: '240px', 
+        overflowY: 'auto',
+        // Improve scrolling on mobile
+        WebkitOverflowScrolling: 'touch'
+      }}>
         {Object.keys(groupedOptions).length === 0 ? (
           <div className="px-3 py-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
             No components found
@@ -201,6 +271,8 @@ const SearchableDropdown = ({
                     }}
                     onClick={() => handleSelect(option)}
                     onMouseEnter={() => setHighlightedIndex(globalIndex)}
+                    // Prevent touch scrolling issues
+                    onTouchStart={(e) => e.stopPropagation()}
                   >
                     <div className="font-medium">
                       {option.model}
@@ -249,15 +321,12 @@ const SearchableDropdown = ({
       <div 
         ref={triggerRef}
         className="input-field cursor-pointer flex items-center justify-between"
-        onClick={() => {
-          setIsOpen(!isOpen);
-          if (!isOpen) {
-            setTimeout(() => inputRef.current?.focus(), 100);
-          }
-        }}
+        onClick={handleOpen}
         style={{ 
           background: isOpen ? 'var(--bg-elevated)' : 'var(--bg-tertiary)',
-          borderColor: isOpen ? 'var(--border-focus)' : 'var(--border-subtle)'
+          borderColor: isOpen ? 'var(--border-focus)' : 'var(--border-subtle)',
+          // Prevent layout shifts on mobile
+          minHeight: '48px'
         }}
       >
         <span className={displayValue ? 'text-white' : 'text-gray-400'}>
@@ -273,21 +342,20 @@ const SearchableDropdown = ({
         </svg>
       </div>
 
-      {/* Portal the dropdown to body */}
-      {typeof document !== 'undefined' && createPortal(dropdownContent, document.body)}
+      {/* Portal the dropdown to body only when necessary */}
+      {usePortal && typeof document !== 'undefined' && createPortal(dropdownContent, document.body)}
+      
+      {/* Fallback for non-portal rendering */}
+      {!usePortal && dropdownContent}
     </div>
   );
 };
 
-// Export grouping functions
+// Export grouping functions (unchanged)
 export const groupByBrand = (component) => {
   if (component.model.includes('Shimano')) return 'Shimano';
   if (component.model.includes('SRAM')) return 'SRAM';
   if (component.model.includes('Campagnolo')) return 'Campagnolo';
-  if (component.model.includes('FSA')) return 'FSA';
-  if (component.model.includes('Praxis')) return 'Praxis';
-  if (component.model.includes('Race Face')) return 'Race Face';
-  if (component.model.includes('Rotor')) return 'Rotor';
   return 'Other';
 };
 

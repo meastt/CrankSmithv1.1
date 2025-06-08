@@ -105,19 +105,22 @@ const SearchableDropdown = ({
         return; // Don't close if scrolling inside the dropdown
       }
       
-      // Close dropdown on page scroll to prevent positioning issues
-      setIsOpen(false);
-      setSearchTerm('');
-      setHighlightedIndex(-1);
+      // Add a small delay and distance check to make it less sensitive
+      clearTimeout(window.dropdownScrollTimeout);
+      window.dropdownScrollTimeout = setTimeout(() => {
+        setIsOpen(false);
+        setSearchTerm('');
+        setHighlightedIndex(-1);
+      }, 200); // 200ms delay instead of immediate
     };
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       
-      // Only listen for scroll on the main window, with a slight delay
+      // Only listen for scroll on the main window, with more delay
       setTimeout(() => {
         window.addEventListener('scroll', handleScroll, { passive: true });
-      }, 100);
+      }, 300); // Increased from 100ms to 300ms
       
       // Prevent body scroll on mobile when dropdown is open
       if (window.innerWidth <= 768) {
@@ -128,6 +131,7 @@ const SearchableDropdown = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('scroll', handleScroll);
+      clearTimeout(window.dropdownScrollTimeout);
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);

@@ -11,7 +11,7 @@ export default function TirePressure() {
   const [weatherCondition, setWeatherCondition] = useState('dry');
   const [ridingStyle, setRidingStyle] = useState('normal');
   const [pressure, setPressure] = useState(null);
-  const [weightUnit, setWeightUnit] = useState('kg');
+  const [weightUnit, setWeightUnit] = useState('lb');
 
   const convertWeight = (weight, fromUnit, toUnit) => {
     if (fromUnit === toUnit) return weight;
@@ -160,30 +160,69 @@ export default function TirePressure() {
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Tire Width (mm)
-              </label>
-              <input
-                type="number"
-                value={tireWidth}
-                onChange={(e) => setTireWidth(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter tire width"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Surface Type
               </label>
               <select
                 value={surfaceType}
-                onChange={(e) => setSurfaceType(e.target.value)}
+                onChange={(e) => {
+                  setSurfaceType(e.target.value);
+                  // Reset tire width when surface type changes
+                  setTireWidth('');
+                }}
                 className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="road">Road</option>
                 <option value="gravel">Gravel</option>
                 <option value="mtb">Mountain Bike</option>
               </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Tire Width {surfaceType === 'mtb' ? '(inches)' : '(mm)'}
+              </label>
+              {surfaceType === 'mtb' ? (
+                <select
+                  value={tireWidth}
+                  onChange={(e) => setTireWidth(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select tire width</option>
+                  <option value="2.2">2.2"</option>
+                  <option value="2.25">2.25"</option>
+                  <option value="2.3">2.3"</option>
+                  <option value="2.35">2.35"</option>
+                  <option value="2.4">2.4"</option>
+                  <option value="2.5">2.5"</option>
+                  <option value="2.6">2.6"</option>
+                </select>
+              ) : (
+                <select
+                  value={tireWidth}
+                  onChange={(e) => setTireWidth(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select tire width</option>
+                  {surfaceType === 'road' ? (
+                    <>
+                      <option value="23">23mm</option>
+                      <option value="25">25mm</option>
+                      <option value="28">28mm</option>
+                      <option value="30">30mm</option>
+                      <option value="32">32mm</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="38">38mm</option>
+                      <option value="40">40mm</option>
+                      <option value="42">42mm</option>
+                      <option value="45">45mm</option>
+                      <option value="47">47mm</option>
+                      <option value="50">50mm</option>
+                    </>
+                  )}
+                </select>
+              )}
             </div>
 
             <div className="flex items-center">

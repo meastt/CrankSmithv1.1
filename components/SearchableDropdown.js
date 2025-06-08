@@ -204,7 +204,7 @@ const SearchableDropdown = ({
       }}
     >
       {/* Search Input */}
-      <div className="p-3 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+      <div className="p-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <input
           ref={inputRef}
           type="text"
@@ -215,11 +215,12 @@ const SearchableDropdown = ({
             setHighlightedIndex(-1);
           }}
           onKeyDown={handleKeyDown}
-          className="w-full px-3 py-2 rounded-lg text-sm"
+          className="w-full px-4 py-2.5 rounded-lg text-base"
           style={{ 
             background: 'var(--bg-tertiary)',
             border: '1px solid var(--border-subtle)',
-            color: 'var(--text-primary)'
+            color: 'var(--text-primary)',
+            fontSize: '16px'
           }}
           autoFocus
           // Prevent mobile keyboard from affecting layout
@@ -238,7 +239,7 @@ const SearchableDropdown = ({
         WebkitOverflowScrolling: 'touch'
       }}>
         {Object.keys(groupedOptions).length === 0 ? (
-          <div className="px-3 py-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
+          <div className="px-4 py-3 text-base" style={{ color: 'var(--text-tertiary)' }}>
             No components found
           </div>
         ) : (
@@ -262,7 +263,7 @@ const SearchableDropdown = ({
                 return (
                   <div
                     key={option.id}
-                    className={`px-3 py-3 cursor-pointer transition-colors`}
+                    className={`px-4 py-3 cursor-pointer transition-colors`}
                     style={{
                       background: globalIndex === highlightedIndex 
                         ? 'var(--accent-blue)' 
@@ -278,19 +279,30 @@ const SearchableDropdown = ({
                     // Prevent touch scrolling issues
                     onTouchStart={(e) => e.stopPropagation()}
                   >
-                    <div className="font-semibold text-base leading-tight">
-                      {option.model}
+                    <div className="flex items-baseline justify-between gap-3">
+                      <div className="font-medium text-base">
+                        {option.model}
+                      </div>
+                      <div 
+                        className="text-sm font-normal flex-shrink-0" 
+                        style={{ 
+                          color: globalIndex === highlightedIndex 
+                            ? 'rgba(255,255,255,0.85)' 
+                            : 'var(--text-tertiary)'
+                        }}
+                      >
+                        {option.weight}g
+                      </div>
                     </div>
                     <div 
-                      className="text-sm font-medium mt-1" 
+                      className="text-sm mt-1" 
                       style={{ 
                         color: globalIndex === highlightedIndex 
-                          ? 'rgba(255,255,255,0.95)' 
-                          : 'var(--text-secondary)',
-                        fontFamily: 'monospace'
+                          ? 'rgba(255,255,255,0.75)' 
+                          : 'var(--text-tertiary)'
                       }}
                     >
-                      {option.variant} • {option.weight}g
+                      {option.variant}
                     </div>
                   </div>
                 );
@@ -334,7 +346,7 @@ const SearchableDropdown = ({
           minHeight: '48px'
         }}
       >
-        <span className={displayValue ? 'text-white' : 'text-gray-400'}>
+        <span className={displayValue ? '' : 'opacity-60'} style={{ fontSize: '16px' }}>
           {displayValue || placeholder}
         </span>
         <svg 

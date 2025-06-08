@@ -435,7 +435,8 @@ export default function Home() {
                   </p>
                   <button 
                     onClick={() => {
-                      console.log('🔍 Start Comparing clicked - testing for scroll');
+                      console.log('🔍 Start Comparing clicked - setting bike type to road');
+                      setBikeType('road');
                     }}
                     className="btn-primary w-full"
                   >
@@ -578,7 +579,8 @@ export default function Home() {
           <div className="text-center mt-12">
             <button 
               onClick={() => {
-                console.log('🔍 Try It Now button clicked - testing for scroll');
+                console.log('🔍 Try It Now button clicked - setting bike type to road');
+                setBikeType('road');
               }}
               className="btn-primary text-lg px-8"
             >

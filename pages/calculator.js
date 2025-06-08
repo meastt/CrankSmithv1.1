@@ -448,16 +448,12 @@ export default function Home() {
                   </p>
                   <button 
                     onClick={() => {
-                      // More specific selector and scroll prevention
-                      const selectElement = document.querySelector('.calculator-section select');
-                      if (selectElement) {
-                        selectElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        setTimeout(() => selectElement.focus(), 300);
-                      }
+                      console.log('🔍 Start Comparing clicked - but disabled for testing');
+                      // Temporarily disabled: document.querySelector('select').focus()
                     }}
                     className="btn-primary w-full"
                   >
-                    Start Comparing
+                    Start Comparing (Testing)
                   </button>
                 </div>
 

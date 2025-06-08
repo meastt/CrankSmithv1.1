@@ -90,7 +90,7 @@ export default function Layout({ children }) {
             &copy; 2025 CrankSmith. Serious Analysis for serious cyclists.
           </p>
           <p className="mt-2 text-xs">
-          Forge Your Perfect Ride. • Beta Version
+          Forge Your Perfect Ride. • Beta Version 1
           </p>
         </div>
       </footer>

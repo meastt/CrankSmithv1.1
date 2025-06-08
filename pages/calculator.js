@@ -102,7 +102,6 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
 
   return (
     <div className="bg-[--color-surface] border border-[--color-border] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:border-[--color-accent]/30">
-      {/* Top Half - Header Info */}
       <div className="p-4 border-b border-[--color-border]/50">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-3">
@@ -119,7 +118,6 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
             </div>
           </div>
           
-          {/* Delete Button */}
           <button
             onClick={() => setShowDeleteConfirm(true)}
             className="w-8 h-8 rounded-full bg-[--color-surface] hover:bg-[--color-accent] text-[--color-text-secondary] hover:text-white transition-all duration-200 flex items-center justify-center border border-[--color-border]"
@@ -132,9 +130,7 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
         </div>
       </div>
 
-      {/* Bottom Half - Specs & Action */}
       <div className="p-4">
-        {/* Specs Comparison */}
         <div className="mb-4">
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
@@ -151,7 +147,6 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
             </div>
           </div>
           
-          {/* Performance Highlight */}
           {config.results && (
             <div className="mt-3 p-2 bg-[--color-surface] rounded border border-[--color-border]/50">
               <div className="flex justify-between items-center text-sm">
@@ -164,7 +159,6 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
           )}
         </div>
 
-        {/* Load Button */}
         <button
           onClick={() => onLoad(config)}
           className="w-full py-3 bg-[--color-accent] hover:opacity-90 text-black font-semibold rounded transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
@@ -173,7 +167,6 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
         </button>
       </div>
 
-      {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[--color-surface] border border-[--color-border] rounded-lg p-6 max-w-sm w-full">
@@ -206,7 +199,6 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
 };
 
 export default function Home() {
-  // State for bike type and setups
   const [bikeType, setBikeType] = useState('');
   const [currentSetup, setCurrentSetup] = useState({
     wheel: '',
@@ -225,17 +217,20 @@ export default function Home() {
   const [savedConfigs, setSavedConfigs] = useState([]);
   const [showSaved, setShowSaved] = useState(false);
 
-  // Load saved configurations on mount
   useEffect(() => {
     loadSavedConfigs();
   }, []);
 
-  // Update available components when bike type changes
   useEffect(() => {
+    console.log('🔍 bikeType useEffect triggered:', bikeType);
+    
     if (bikeType && bikeConfig[bikeType]) {
+      console.log('📝 Setting up defaults for:', bikeType);
       const defaults = bikeConfig[bikeType].defaultSetup;
       const defaultCrankset = componentDatabase.cranksets.find((c) => c.id === defaults.crankset);
       const defaultCassette = componentDatabase.cassettes.find((c) => c.id === defaults.cassette);
+
+      console.log('🔧 Found default components:', { defaultCrankset, defaultCassette });
 
       setCurrentSetup({
         wheel: defaults.wheel,
@@ -249,18 +244,17 @@ export default function Home() {
         crankset: defaultCrankset,
         cassette: defaultCassette,
       });
+      
+      console.log('✅ Setup states updated');
     }
   }, [bikeType]);
 
-  // Fetch saved configurations from localStorage
   const loadSavedConfigs = () => {
     const { data } = localStorageDB.getConfigs();
     setSavedConfigs(data || []);
   };
 
-  // Handle calculation of setups
   const handleCalculate = async (speedUnit = 'MPH') => {
-    // Validate inputs
     if (
       !bikeType ||
       !currentSetup.crankset ||
@@ -275,7 +269,6 @@ export default function Home() {
     setLoading(true);
 
     try {
-      // Perform calculations with speed unit
       const comparison = compareSetups(currentSetup, proposedSetup, speedUnit);
       setResults(comparison);
     } catch (error) {
@@ -286,7 +279,6 @@ export default function Home() {
     }
   };
 
-  // Save configuration to localStorage
   const handleSaveConfig = () => {
     if (!results) return;
 
@@ -314,7 +306,6 @@ export default function Home() {
     }
   };
 
-  // Load a saved configuration
   const handleLoadConfig = (config) => {
     setBikeType(config.bike_type);
     setCurrentSetup(config.current_setup);
@@ -323,7 +314,6 @@ export default function Home() {
     setShowSaved(false);
   };
 
-  // Delete a saved configuration
   const handleDeleteConfig = (id) => {
     const { error } = localStorageDB.deleteConfig(id);
     if (error) {
@@ -335,14 +325,12 @@ export default function Home() {
 
   return (
     <main className="main-container container mx-auto px-4 py-12 max-w-7xl">
-      {/* Clean Hero Section */}
       <div className="text-center mb-12">
         <h1 className="hero-title hero-title-fire">Compare. Calculate. Optimize.</h1>
         <p className="hero-subtitle max-w-2xl mx-auto">
           See exactly how component changes affect your bike's performance with real-world data.
         </p>
         
-        {/* New Analysis Button - only show if there's existing data */}
         {(bikeType || results) && (
           <button
             onClick={() => {
@@ -376,7 +364,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* Quick Start Guide - only show when no bike type selected */}
       {!bikeType && !results && (
         <div className="max-w-4xl mx-auto mb-12">
           <div className="card">
@@ -448,8 +435,7 @@ export default function Home() {
                   </p>
                   <button 
                     onClick={() => {
-                      console.log('🔍 Start Comparing clicked - but disabled for testing');
-                      // Temporarily disabled: document.querySelector('select').focus()
+                      console.log('🔍 Start Comparing clicked - testing for scroll');
                     }}
                     className="btn-primary w-full"
                   >
@@ -467,19 +453,10 @@ export default function Home() {
                   </p>
                   <button 
                     onClick={() => {
-                      // Set bike type to enable the interface
                       setBikeType('road');
-                      // Wait for the page to update, then scroll to show Riley is available
                       setTimeout(() => {
-                        // Scroll down to show the calculator
-                        window.scrollTo({ 
-                          behavior: 'smooth' 
-                        });
-                        // Show a helpful message
-                        setTimeout(() => {
-                          alert('Great! Now you can use the "Ask Riley" button that appears after you analyze any setup. Try selecting some components first, then click "Analyze Performance" to see Riley!');
-                        }, 1000);
-                      }, 500);
+                        alert('Great! Now you can use the "Ask Riley" button that appears after you analyze any setup. Try selecting some components first, then click "Analyze Performance" to see Riley!');
+                      }, 1000);
                     }}
                     className="w-full px-6 py-3 rounded-xl font-medium transition-all"
                     style={{ 
@@ -505,7 +482,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Features Showcase - Always visible when no bike type selected */}
       {!bikeType && !results && (
         <div className="max-w-6xl mx-auto mb-16">
           <div className="text-center mb-12">
@@ -518,7 +494,6 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Speed Comparison */}
             <div className="card text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
                    style={{ background: 'var(--accent-blue)', color: 'white' }}>
@@ -549,7 +524,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Weight Savings */}
             <div className="card text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
                    style={{ background: 'var(--accent-performance)', color: 'white' }}>
@@ -580,7 +554,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* AI Guidance */}
             <div className="card text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
                 <span className="text-2xl">🔧</span>
@@ -602,41 +575,33 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Call to Action */}
           <div className="text-center mt-12">
             <button 
               onClick={() => {
-                document.querySelector('select').focus();
-                window.scrollTo({ 
-                  top: document.querySelector('.calculator-section')?.offsetTop || window.innerHeight, 
-                  behavior: 'smooth' 
-                });
+                console.log('🔍 Try It Now button clicked - testing for scroll');
               }}
               className="btn-primary text-lg px-8"
             >
-              Try It Now - It's Free
+              Try It Now - It's Free (Testing)
             </button>
           </div>
         </div>
       )}
 
-{/* Calculator Component */}
-<div className="calculator-section">
-        {/* TEMPORARILY COMMENTED OUT FOR TESTING */}
+      <div className="calculator-section">
         {false && (
-        <Calculator
-        bikeType={bikeType}
-        setBikeType={setBikeType}
-        currentSetup={currentSetup}
-        setCurrentSetup={setCurrentSetup}
-        proposedSetup={proposedSetup}
-        setProposedSetup={setProposedSetup}
-        onCalculate={handleCalculate}
-        loading={loading}
-        />
+          <Calculator
+            bikeType={bikeType}
+            setBikeType={setBikeType}
+            currentSetup={currentSetup}
+            setCurrentSetup={setCurrentSetup}
+            proposedSetup={proposedSetup}
+            setProposedSetup={setProposedSetup}
+            onCalculate={handleCalculate}
+            loading={loading}
+          />
         )}
         
-        {/* TEMPORARY PLACEHOLDER */}
         {bikeType && (
           <div className="card text-center p-8">
             <h3>Calculator temporarily disabled for testing</h3>
@@ -645,7 +610,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* Results Component */}
       {results && (
         <Results
           results={results}
@@ -657,9 +621,7 @@ export default function Home() {
         />
       )}
 
-      {/* Garage Section */}
       <div id="garage-section" className="mt-16">
-        {/* Garage Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <svg className="w-8 h-8 text-[--color-accent]" fill="currentColor" viewBox="0 0 24 24">
@@ -671,7 +633,6 @@ export default function Home() {
             Your saved bike configurations. Each setup represents hours of careful planning and optimization.
           </p>
           
-          {/* Toggle Button - only show if there are saved configs */}
           {savedConfigs.length > 0 && (
             <button
               onClick={() => setShowSaved(!showSaved)}
@@ -682,7 +643,6 @@ export default function Home() {
           )}
         </div>
 
-        {/* Garage Grid - when there are saved configs */}
         {savedConfigs.length > 0 && showSaved && (
           <div className="garage-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {savedConfigs.map((config) => (
@@ -696,7 +656,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Empty Garage State - sleek card */}
         {savedConfigs.length === 0 && (
           <div className="flex justify-center">
             <div className="max-w-md w-full p-6 bg-[--color-bg] rounded-lg border-2 border-[--color-accent] shadow-lg shadow-[--color-accent]/20">
@@ -714,7 +673,6 @@ export default function Home() {
             </div>
           </div>
         )}
-      </div>
       </div>
     </main>
   );

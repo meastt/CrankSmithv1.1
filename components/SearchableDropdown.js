@@ -10,6 +10,14 @@ const SearchableDropdown = ({
   label,
   groupBy = null
 }) => {
+  // DEBUG LINES - TEMPORARY
+  console.log('🔍 SearchableDropdown rendered with:', {
+    optionsLength: options?.length,
+    placeholder,
+    hasOptions: Array.isArray(options),
+    firstOption: options?.[0]
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -17,6 +25,9 @@ const SearchableDropdown = ({
   const dropdownRef = useRef(null);
   const triggerRef = useRef(null);
   const inputRef = useRef(null);
+
+  // DEBUG - TEMPORARY
+  console.log('🔍 Dropdown state:', { isOpen });
 
   // Filter and group options
   const filteredOptions = options.filter(option => {
@@ -43,8 +54,8 @@ const SearchableDropdown = ({
     if (isOpen && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
       setDropdownPosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
+        top: rect.bottom,
+        left: rect.left,
         width: rect.width
       });
     }
@@ -65,8 +76,8 @@ const SearchableDropdown = ({
       if (isOpen && triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
         setDropdownPosition({
-          top: rect.bottom + window.scrollY,
-          left: rect.left + window.scrollX,
+          top: rect.bottom,
+          left: rect.left,
           width: rect.width
         });
       }
@@ -250,6 +261,7 @@ const SearchableDropdown = ({
         ref={triggerRef}
         className="input-field cursor-pointer flex items-center justify-between"
         onClick={() => {
+          console.log('🔍 Dropdown clicked! Current isOpen:', isOpen);
           setIsOpen(!isOpen);
           if (!isOpen) {
             setTimeout(() => inputRef.current?.focus(), 100);
@@ -302,6 +314,7 @@ export const groupBySeries = (component) => {
   if (model.includes('slx')) return 'SLX';
   if (model.includes('deore')) return 'Deore';
   if (model.includes('grx')) return 'GRX';
+  if (model.includes('cues')) return 'CUES';
   
   // SRAM series
   if (model.includes('red')) return 'Red';
@@ -313,6 +326,13 @@ export const groupBySeries = (component) => {
   if (model.includes('gx')) return 'GX';
   if (model.includes('nx')) return 'NX';
   if (model.includes('sx')) return 'SX';
+  
+  // Other brands
+  if (model.includes('campagnolo')) return 'Campagnolo';
+  if (model.includes('fsa')) return 'FSA';
+  if (model.includes('praxis')) return 'Praxis';
+  if (model.includes('race face')) return 'Race Face';
+  if (model.includes('rotor')) return 'Rotor';
   
   return 'Other';
 };

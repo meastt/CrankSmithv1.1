@@ -65,6 +65,7 @@ export default function Calculator({
         <select
             value={bikeType}
             onChange={(e) => {
+              console.log('Bike type change triggered'); // debugging 
               e.preventDefault();
               e.stopPropagation();
               setBikeType(e.target.value);

@@ -368,231 +368,37 @@ export default function Home() {
         )}
       </div>
 
-      {!bikeType && !results && (
-        <div className="max-w-4xl mx-auto mb-12">
-          <div className="card">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
-                How It Works
-              </h2>
-              <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-                Compare any bike components in 3 simple steps
-              </p>
+      {/* Quick Start Guide - ALWAYS SHOW FOR TESTING */}
+      <div className="max-w-4xl mx-auto mb-12">
+        <div className="card">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
-
-            <div className="grid md:grid-cols-3 gap-8 mb-8">
-              <div className="text-center">
-                <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
-                     style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
-                  <span className="text-xl font-bold">1</span>
-                </div>
-                <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                  Choose Your Bike
-                </h3>
-                <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                  Select road, gravel, or mountain bike to see compatible components
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
-                     style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
-                  <span className="text-xl font-bold">2</span>
-                </div>
-                <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                  Pick Components
-                </h3>
-                <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                  Choose your current setup and the upgrade you're considering
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
-                     style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
-                  <span className="text-xl font-bold">3</span>
-                </div>
-                <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                  See Results
-                </h3>
-                <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                  Get clear speed, weight, and performance comparisons
-                </p>
-              </div>
-            </div>
-
-            <div className="border-t pt-8" style={{ borderColor: 'var(--border-subtle)' }}>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg text-center"
-                     style={{ background: 'var(--surface-elevated)' }}>
-                  <h4 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                    🚴‍♂️ I Know My Components
-                  </h4>
-                  <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
-                    Ready to compare specific parts? Jump right in!
-                  </p>
-                  <button 
-                    onClick={() => {
-                      console.log('🔍 Start Comparing clicked - setting bike type to road');
-                      setBikeType('road');
-                    }}
-                    className="btn-primary w-full"
-                  >
-                    Start Comparing (Testing)
-                  </button>
-                </div>
-
-                <div className="p-4 rounded-lg text-center"
-                     style={{ background: 'var(--surface-elevated)' }}>
-                  <h4 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                    🤔 Need Guidance?
-                  </h4>
-                  <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
-                    Not sure what to upgrade? Let Riley guide you!
-                  </p>
-                  <button 
-                    onClick={() => {
-                      setBikeType('road');
-                      setTimeout(() => {
-                        alert('Great! Now you can use the "Ask Riley" button that appears after you analyze any setup. Try selecting some components first, then click "Analyze Performance" to see Riley!');
-                      }, 1000);
-                    }}
-                    className="w-full px-6 py-3 rounded-xl font-medium transition-all"
-                    style={{ 
-                      background: 'var(--surface-primary)',
-                      color: 'var(--text-secondary)',
-                      border: '1px solid var(--border-subtle)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = 'var(--surface-elevated)';
-                      e.target.style.borderColor = 'var(--accent-blue)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'var(--surface-primary)';
-                      e.target.style.borderColor = 'var(--border-subtle)';
-                    }}
-                  >
-                    🔧 Ask Riley for Help
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {!bikeType && !results && (
-        <div className="max-w-6xl mx-auto mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
-              See What CrankSmith Can Do
+            <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+              How It Works - TESTING MODE
             </h2>
             <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-              Real examples of how component changes affect your ride
+              Current bike type: {bikeType || 'None selected'}
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="card text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                   style={{ background: 'var(--accent-blue)', color: 'white' }}>
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-                Speed Analysis
-              </h3>
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>31.2 mph</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>33.1 mph</span>
-                </div>
-                <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
-                  <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
-                    +1.9 mph
-                  </div>
-                </div>
-              </div>
-              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                See exactly how upgrades affect your top speed
-              </p>
-            </div>
-
-            <div className="card text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                   style={{ background: 'var(--accent-performance)', color: 'white' }}>
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-                Weight Tracking
-              </h3>
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>1,247g</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>1,185g</span>
-                </div>
-                <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
-                  <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
-                    -62g
-                  </div>
-                </div>
-              </div>
-              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                Track weight savings down to the gram
-              </p>
-            </div>
-
-            <div className="card text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
-                <span className="text-2xl">🔧</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-                Expert Advice
-              </h3>
-              <div className="p-3 rounded-lg mb-4" style={{ background: 'var(--surface-elevated)' }}>
-                <p className="text-sm italic" style={{ color: 'var(--text-secondary)' }}>
-                  "That 11-34T cassette will give you much easier climbing gears. Perfect for steep hills!"
-                </p>
-                <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>
-                  - Riley, AI Mechanic
-                </div>
-              </div>
-              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                Get personalized recommendations from our AI expert
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <button 
-              onClick={() => {
-                console.log('🔍 Try It Now button clicked - setting bike type to road');
-                setBikeType('road');
-              }}
-              className="btn-primary text-lg px-8"
-            >
-              Try It Now - It's Free (Testing)
-            </button>
-          </div>
         </div>
-      )}
+      </div>
+
+      {/* Features Showcase - ALWAYS SHOW FOR TESTING */}
+      <div className="max-w-6xl mx-auto mb-16">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+            Features - TESTING MODE  
+          </h2>
+          <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
+            Bike type selected: {bikeType || 'None'}
+          </p>
+        </div>
+      </div>
 
       <div className="calculator-section">
         {/* TEMPORARY BIKE TYPE SELECTOR FOR TESTING */}

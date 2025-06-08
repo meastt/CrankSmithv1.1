@@ -591,6 +591,30 @@ export default function Home() {
       )}
 
       <div className="calculator-section">
+        {/* TEMPORARY BIKE TYPE SELECTOR FOR TESTING */}
+        <div className="max-w-md mx-auto mb-8">
+          <div className="card text-center p-6">
+            <h3 className="text-lg font-semibold mb-4">Testing Mode - Select Bike Type</h3>
+            <select
+              value={bikeType}
+              onChange={(e) => {
+                console.log('🔍 TESTING: Bike type change triggered:', e.target.value);
+                e.preventDefault();
+                e.stopPropagation();
+                setBikeType(e.target.value);
+              }}
+              className="input-field text-base w-full"
+              style={{ fontSize: '16px' }}
+            >
+              <option value="">Choose bike type...</option>
+              <option value="road">Road Bike</option>
+              <option value="gravel">Gravel Bike</option>
+              <option value="mtb">Mountain Bike</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Calculator is disabled for testing */}
         {false && (
           <Calculator
             bikeType={bikeType}
@@ -607,7 +631,8 @@ export default function Home() {
         {bikeType && (
           <div className="card text-center p-8">
             <h3>Calculator temporarily disabled for testing</h3>
-            <p>Selected bike type: {bikeType}</p>
+            <p>Selected bike type: <strong>{bikeType}</strong></p>
+            <p className="text-sm mt-2 text-gray-400">Testing if bike type selection causes scroll jump to garage</p>
           </div>
         )}
       </div>

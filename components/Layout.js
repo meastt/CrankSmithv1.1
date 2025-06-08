@@ -41,7 +41,7 @@ export default function Layout({ children }) {
                   CrankSmith
                 </div>
                 <div className="text-sm md:text-base tracking-wide -mt-1" style={{ color: 'var(--text-tertiary)' }}>
-                  Precision Performance
+                  Forge Your Perfect Ride
                 </div>
               </div>
             </Link>
@@ -87,10 +87,10 @@ export default function Layout({ children }) {
               }}>
         <div className="container mx-auto px-6 text-center" style={{ color: 'var(--text-tertiary)' }}>
           <p className="text-sm">
-            &copy; 2024 CrankSmith. Precision gear calculations for serious cyclists.
+            &copy; 2025 CrankSmith. Serious Analysis for serious cyclists.
           </p>
           <p className="mt-2 text-xs">
-          Forge your perfect ride. • Beta Version
+          Forge Your Perfect Ride. • Beta Version
           </p>
         </div>
       </footer>

@@ -63,11 +63,15 @@ export default function Calculator({
       <div className="max-w-md mx-auto mb-12">
         <label className="form-label">Select Your Bike Type</label>
         <select
-          value={bikeType}
-          onChange={(e) => setBikeType(e.target.value)}
-          className="input-field text-base"
-          style={{ fontSize: '16px' }}
-        >
+            value={bikeType}
+            onChange={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setBikeType(e.target.value);
+            }}
+            className="input-field text-base"
+            style={{ fontSize: '16px' }}
+          >
           <option value="">Choose bike type...</option>
           <option value="road">Road Bike</option>
           <option value="gravel">Gravel Bike</option>

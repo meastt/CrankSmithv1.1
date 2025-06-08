@@ -232,15 +232,10 @@ export default function Home() {
 
   // Update available components when bike type changes
   useEffect(() => {
-    console.log('🔍 bikeType useEffect triggered:', bikeType);
-    
     if (bikeType && bikeConfig[bikeType]) {
-      console.log('📝 Setting up defaults for:', bikeType);
       const defaults = bikeConfig[bikeType].defaultSetup;
       const defaultCrankset = componentDatabase.cranksets.find((c) => c.id === defaults.crankset);
       const defaultCassette = componentDatabase.cassettes.find((c) => c.id === defaults.cassette);
-
-      console.log('🔧 Found default components:', { defaultCrankset, defaultCassette });
 
       setCurrentSetup({
         wheel: defaults.wheel,
@@ -254,8 +249,6 @@ export default function Home() {
         crankset: defaultCrankset,
         cassette: defaultCassette,
       });
-      
-      console.log('✅ Setup states updated');
     }
   }, [bikeType]);
 
@@ -454,7 +447,14 @@ export default function Home() {
                     Ready to compare specific parts? Jump right in!
                   </p>
                   <button 
-                    onClick={() => document.querySelector('select').focus()}
+                    onClick={() => {
+                      // More specific selector and scroll prevention
+                      const selectElement = document.querySelector('.calculator-section select');
+                      if (selectElement) {
+                        selectElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => selectElement.focus(), 300);
+                      }
+                    }}
                     className="btn-primary w-full"
                   >
                     Start Comparing
@@ -473,11 +473,17 @@ export default function Home() {
                     onClick={() => {
                       // Set bike type to enable the interface
                       setBikeType('road');
-                      // REMOVED: No more automatic scrolling that was causing page jump
-                      // Show a helpful message without scrolling
+                      // Wait for the page to update, then scroll to show Riley is available
                       setTimeout(() => {
-                        alert('Great! Now you can use the "Ask Riley" button that appears after you analyze any setup. Try selecting some components first, then click "Analyze Performance" to see Riley!');
-                      }, 1000);
+                        // Scroll down to show the calculator
+                        window.scrollTo({ 
+                          behavior: 'smooth' 
+                        });
+                        // Show a helpful message
+                        setTimeout(() => {
+                          alert('Great! Now you can use the "Ask Riley" button that appears after you analyze any setup. Try selecting some components first, then click "Analyze Performance" to see Riley!');
+                        }, 1000);
+                      }, 500);
                     }}
                     className="w-full px-6 py-3 rounded-xl font-medium transition-all"
                     style={{ 
@@ -621,7 +627,7 @@ export default function Home() {
 {/* Calculator Component */}
 <div className="calculator-section">
         {/* TEMPORARILY COMMENTED OUT FOR TESTING */}
-        {/*
+        {false && (
         <Calculator
         bikeType={bikeType}
         setBikeType={setBikeType}
@@ -632,7 +638,7 @@ export default function Home() {
         onCalculate={handleCalculate}
         loading={loading}
         />
-        */}
+        )}
         
         {/* TEMPORARY PLACEHOLDER */}
         {bikeType && (
@@ -641,7 +647,6 @@ export default function Home() {
             <p>Selected bike type: {bikeType}</p>
           </div>
         )}
-      
       </div>
 
       {/* Results Component */}

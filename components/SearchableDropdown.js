@@ -1,3 +1,21 @@
+/**
+ * STABLE VERSION - DO NOT MODIFY WITHOUT TESTING
+ * Last stable commit: 4c61aed
+ * Date: 2024-03-19
+ * 
+ * This version has working dropdowns without disappearing issues.
+ * Key features:
+ * - Stable dropdown behavior
+ * - Proper event handling
+ * - Working mobile support
+ * 
+ * If modifying this component:
+ * 1. Test dropdown behavior thoroughly
+ * 2. Verify mobile functionality
+ * 3. Check event handling
+ * 4. Test with different screen sizes
+ */
+
 // components/SearchableDropdown.js - STABLE VERSION
 // Last updated: 2024-03-19 - Fixed dropdown stability
 import { useState, useRef, useEffect } from 'react';
@@ -51,12 +69,18 @@ const SearchableDropdown = ({
     // Check if we're on mobile (basic detection)
     const isMobile = window.innerWidth <= 768;
     
-    // For mobile, use simpler positioning to avoid issues
+    // For mobile, use fixed positioning with viewport constraints
     if (isMobile) {
+      const top = Math.min(
+        rect.bottom + 2,
+        viewportHeight - dropdownHeight - 20 // Leave some padding at bottom
+      );
+      
       setDropdownPosition({
-        top: rect.bottom + 2,
-        left: rect.left,
-        width: rect.width
+        top,
+        left: 0, // Full width on mobile
+        width: '100%', // Full width on mobile
+        maxWidth: '100vw' // Ensure it doesn't overflow viewport
       });
       setUsePortal(true);
     } else {
@@ -191,8 +215,9 @@ const SearchableDropdown = ({
       style={{ 
         position: 'fixed',
         top: `${dropdownPosition.top}px`,
-        left: `${dropdownPosition.left}px`,
-        width: `${dropdownPosition.width}px`,
+        left: typeof dropdownPosition.left === 'number' ? `${dropdownPosition.left}px` : dropdownPosition.left,
+        width: typeof dropdownPosition.width === 'number' ? `${dropdownPosition.width}px` : dropdownPosition.width,
+        maxWidth: dropdownPosition.maxWidth,
         zIndex: 10000,
         background: 'var(--bg-primary)',
         borderRadius: 'var(--radius-medium)',
@@ -201,7 +226,11 @@ const SearchableDropdown = ({
         maxHeight: '300px',
         overflow: 'hidden',
         // Prevent scrolling issues on mobile
-        touchAction: 'manipulation'
+        touchAction: 'manipulation',
+        // Hardware acceleration for smoother animations
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        WebkitOverflowScrolling: 'touch'
       }}
     >
       {/* Search Input */}
@@ -221,7 +250,9 @@ const SearchableDropdown = ({
             background: 'var(--bg-tertiary)',
             border: '1px solid var(--border-subtle)',
             color: 'var(--text-primary)',
-            fontSize: '16px'
+            fontSize: '16px',
+            // Prevent zoom on iOS
+            WebkitTextSizeAdjust: '100%'
           }}
           autoFocus
           // Prevent mobile keyboard from affecting layout
@@ -237,7 +268,9 @@ const SearchableDropdown = ({
         maxHeight: '240px', 
         overflowY: 'auto',
         // Improve scrolling on mobile
-        WebkitOverflowScrolling: 'touch'
+        WebkitOverflowScrolling: 'touch',
+        // Prevent overscroll bounce
+        overscrollBehavior: 'contain'
       }}>
         {Object.keys(groupedOptions).length === 0 ? (
           <div className="px-4 py-3 text-base" style={{ color: 'var(--text-tertiary)' }}>

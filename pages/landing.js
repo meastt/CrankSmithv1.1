@@ -78,7 +78,7 @@ export default function Landing() {
               <img 
                 src="/beta-hero.png" 
                 alt="CrankSmith" 
-                className="w-80 h-80 md:w-96 md:h-96 mx-auto mb-6"
+                className="max-w-xs md:max-w-lg w-full h-auto mx-auto mb-6 object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.nextElementSibling.style.display = 'flex';

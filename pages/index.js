@@ -28,7 +28,7 @@ function EmailVerificationPrompt({ onVerify, onSkip }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white flex items-center justify-center p-4">
+    <div className="min-h-screen" style={{ background: '#010912' }}>
       <div className="max-w-md w-full bg-gray-800/50 backdrop-blur rounded-xl p-8 border border-gray-700">
         <div className="text-center mb-6">
           {/* Logo */}

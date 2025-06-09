@@ -74,27 +74,27 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto">
             {/* Logo */}
-            <div className="mb-8">
+            <div className="mb-12">
               <img 
                 src="/cranksmith-logo.png" 
                 alt="CrankSmith" 
-                className="w-28 h-28 md:w-36 md:h-36 mx-auto mb-4"
+                className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-6"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.nextElementSibling.style.display = 'flex';
                 }}
               />
-              <div className="w-28 h-28 md:w-36 md:h-36 mx-auto rounded-xl items-center justify-center text-white font-bold text-6xl hidden"
+              <div className="w-40 h-40 md:w-48 md:h-48 mx-auto rounded-xl items-center justify-center text-white font-bold text-7xl hidden"
                    style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #007aff 100%)' }}>
                 C
               </div>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
               Your Bike. Optimized.
             </h1>
             
-            <p className="text-xl md:text-2xl mb-12 text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl mb-12 text-gray-300 max-w-2xl mx-auto">
               Stop guessing. Start knowing. Real component data meets intelligent analysis.
             </p>
 

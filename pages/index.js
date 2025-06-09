@@ -35,7 +35,7 @@ function EmailVerificationPrompt({ onVerify, onSkip }) {
           <img 
             src="/beta-hero.png" 
             alt="CrankSmith Beta" 
-            className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-6"
+            className="w-96 h-96 md:w-[32rem] md:h-[32rem] mx-auto mb-6"
             onError={(e) => {
               e.target.style.display = 'none';
               e.target.nextElementSibling.style.display = 'flex';

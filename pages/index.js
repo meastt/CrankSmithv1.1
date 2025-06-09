@@ -29,10 +29,10 @@ function EmailVerificationPrompt({ onVerify, onSkip }) {
 
   return (
     <div className="min-h-screen" style={{ background: '#010912' }}>
-      <div className="max-w-md w-full bg-gray-800/50 backdrop-blur rounded-xl p-8 border border-gray-700">
+      <div className="max-w-md w-full bg-gray-800/50 backdrop-blur rounded-xl p-8 border border-gray-700 mx-auto mt-20">
         <div className="text-center mb-6">
           {/* Logo */}
-          <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center text-white font-bold text-2xl"
+          <div className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 rounded-xl flex items-center justify-center text-white font-bold text-4xl"
                style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #007aff 100%)' }}>
             C
           </div>

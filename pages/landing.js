@@ -69,7 +69,7 @@ export default function Landing() {
         <meta name="description" content="Compare bike components and optimize your setup. Real parts, real math, real results. Join the beta." />
       </Head>
 
-      <div className="min-h-screen" style={{ background: '#010912' }}>
+      <div className="min-h-screen" style={{ background: '#010309' }}>
         {/* Hero Section - Simplified */}
         <div className="container mx-auto px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto">
@@ -78,13 +78,13 @@ export default function Landing() {
               <img 
                 src="/beta-hero.png" 
                 alt="CrankSmith" 
-                className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-6"
+                className="w-80 h-80 md:w-96 md:h-96 mx-auto mb-6"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.nextElementSibling.style.display = 'flex';
                 }}
               />
-              <div className="w-40 h-40 md:w-48 md:h-48 mx-auto rounded-xl items-center justify-center text-white font-bold text-7xl hidden"
+              <div className="w-80 h-80 md:w-96 md:h-96 mx-auto rounded-xl items-center justify-center text-white font-bold text-7xl hidden"
                    style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #007aff 100%)' }}>
                 C
               </div>

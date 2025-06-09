@@ -69,7 +69,7 @@ export default function Landing() {
         <meta name="description" content="Compare bike components and optimize your setup. Real parts, real math, real results. Join the beta." />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white">
+      <div className="min-h-screen" style={{ background: '#010912' }}>
         {/* Hero Section - Simplified */}
         <div className="container mx-auto px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto">

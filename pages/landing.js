@@ -78,13 +78,13 @@ export default function Landing() {
               <img 
                 src="/cranksmith-logo.png" 
                 alt="CrankSmith" 
-                className="w-20 h-20 mx-auto mb-4"
+                className="w-28 h-28 md:w-36 md:h-36 mx-auto mb-4"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.nextElementSibling.style.display = 'flex';
                 }}
               />
-              <div className="w-20 h-20 mx-auto rounded-xl items-center justify-center text-white font-bold text-4xl hidden"
+              <div className="w-28 h-28 md:w-36 md:h-36 mx-auto rounded-xl items-center justify-center text-white font-bold text-6xl hidden"
                    style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #007aff 100%)' }}>
                 C
               </div>

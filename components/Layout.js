@@ -10,54 +10,38 @@ export default function Layout({ children }) {
       {/* Apple-style Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl border-b" 
               style={{ 
-                background: 'rgba(10, 10, 11, 0.8)', 
+                background: '#010912', 
                 borderColor: 'var(--border-subtle)' 
               }}>
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-4 group">
-              {/* Your logo image */}
-              <img 
-                src="/cranksmith-logo.png" 
-                alt="CrankSmith Logo" 
-                className="w-12 h-12 md:w-14 md:h-14 object-contain"
-                onError={(e) => {
-                  // Fallback to "C" logo if image fails to load
-                  e.target.style.display = 'none';
-                  e.target.nextElementSibling.style.display = 'flex';
-                }}
-              />
-              
-              {/* Fallback logo - hidden by default */}
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg items-center justify-center text-white font-semibold hidden"
-                   style={{ 
-                     background: 'linear-gradient(135deg, var(--accent-blue) 0%, #5856d6 100%)',
-                     fontSize: '16px'
-                   }}>
-                C
-              </div>
-              
-              <div>
-                <div className="text-xl md:text-2xl font-semibold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                  CrankSmith
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-40">
+            <div className="flex items-center">
+              <Link href="/" className="flex items-center">
+                <img 
+                  src="/cranksmith-logo.png" 
+                  alt="CrankSmith Logo" 
+                  className="w-28 h-28 md:w-40 md:h-40 object-contain"
+                  onError={(e) => {
+                    // Fallback to "C" logo if image fails to load
+                    e.target.style.display = 'none';
+                    e.target.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                
+                {/* Fallback logo - hidden by default */}
+                <div className="w-18 h-18 md:w-20 md:h-20 rounded-lg items-center justify-center text-white font-semibold hidden"
+                     style={{ 
+                       background: 'linear-gradient(135deg, var(--accent-blue) 0%, #5856d6 100%)',
+                       fontSize: '24px'
+                     }}>
+                  C
                 </div>
-                <div className="text-sm md:text-base tracking-wide -mt-1" style={{ color: 'var(--text-tertiary)' }}>
-                  Forge Your Perfect Ride
-                </div>
-              </div>
-            </Link>
-            
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8">
-              <Link href="/calculator" 
-                    className="text-base font-medium transition-colors hover:opacity-80"
-                    style={{ color: 'var(--accent-blue)' }}>
-                Gear Calculator
               </Link>
-              <Link href="/tire-pressure" 
-                    className="text-base font-medium transition-colors hover:opacity-80"
-                    style={{ color: 'var(--text-secondary)' }}>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-12 ml-16">
+              <Link href="/tire-pressure" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
                 Tire Pressure
               </Link>
               <button 
@@ -67,16 +51,22 @@ export default function Layout({ children }) {
                     garageSection.scrollIntoView({ behavior: 'smooth' });
                   }
                 }}
-                className="text-base font-medium transition-colors hover:opacity-80"
-                style={{ color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                className="text-lg font-medium text-gray-300 hover:text-white transition-colors bg-transparent border-none cursor-pointer"
+              >
                 My Garage
               </button>
-              <Link href="/about" 
-                    className="text-base font-medium transition-colors hover:opacity-80"
-                    style={{ color: 'var(--text-secondary)' }}>
+              <Link href="/about" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
                 About
               </Link>
             </nav>
+
+            <div className="flex items-center space-x-4">
+              <Link href="/early-access" className="hidden md:block">
+                <button className="px-4 py-2 text-lg font-medium text-white bg-[var(--accent-blue)] rounded-lg hover:bg-[var(--accent-blue-hover)] transition-colors">
+                  Get Early Access
+                </button>
+              </Link>
+            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -158,3 +148,4 @@ export default function Layout({ children }) {
     </div>
   );
 }
+

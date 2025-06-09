@@ -76,7 +76,7 @@ export default function Landing() {
             {/* Logo */}
             <div className="mb-12">
               <img 
-                src="/cranksmith-logo.png" 
+                src="/beta-hero.png" 
                 alt="CrankSmith" 
                 className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-6"
                 onError={(e) => {

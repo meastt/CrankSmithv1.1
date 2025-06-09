@@ -307,22 +307,34 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Social Proof - Simplified */}
+        {/* Key Benefits */}
         <div className="container mx-auto px-4 py-20">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-12">Built by Cyclists, for Cyclists</h2>
+            <h2 className="text-3xl font-bold mb-12">Why CrankSmith?</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
-                <p className="italic mb-4">
-                  "Finally, a tool that understands modern bike components. The crossover compatibility info alone saved me $500."
+                <h3 className="text-xl font-semibold mb-3">Real Component Data</h3>
+                <p className="text-gray-300">
+                  Access accurate specifications and compatibility data for thousands of bike components. No more guesswork or outdated information.
                 </p>
-                <p className="text-sm text-gray-400">- Sarah K., Gravel Racer</p>
               </div>
               <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
-                <p className="italic mb-4">
-                  "Riley helped me choose between GX and X01. Turns out GX was the smarter choice for my riding."
+                <h3 className="text-xl font-semibold mb-3">Smart Analysis</h3>
+                <p className="text-gray-300">
+                  Get personalized recommendations based on your riding style, terrain, and goals. Make informed decisions about your setup.
                 </p>
-                <p className="text-sm text-gray-400">- Mike T., MTB Enthusiast</p>
+              </div>
+              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
+                <h3 className="text-xl font-semibold mb-3">Save Money</h3>
+                <p className="text-gray-300">
+                  Avoid costly mistakes by understanding component compatibility before you buy. Get the right parts the first time.
+                </p>
+              </div>
+              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
+                <h3 className="text-xl font-semibold mb-3">Expert Guidance</h3>
+                <p className="text-gray-300">
+                  Get answers to your technical questions with Riley, your AI bike expert. No more conflicting advice from forums.
+                </p>
               </div>
             </div>
           </div>

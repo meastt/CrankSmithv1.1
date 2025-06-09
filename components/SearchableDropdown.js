@@ -41,10 +41,27 @@ const SearchableDropdown = ({
   // Filter and group options
   const filteredOptions = options.filter(option => {
     const searchLower = searchTerm.toLowerCase();
+    const modelLower = option.model?.toLowerCase() || '';
+    const variantLower = option.variant?.toLowerCase() || '';
+    
+    // Special handling for XTR Di2 components
+    if (modelLower.includes('xtr m9200')) {
+      // Show XTR M9200 components when searching for partial matches
+      if (searchLower === '' || 
+          searchLower.includes('xtr') || 
+          searchLower.includes('di') || 
+          searchLower.includes('di2') ||
+          modelLower.includes(searchLower) ||
+          variantLower.includes(searchLower)) {
+        return true;
+      }
+    }
+    
+    // Normal search logic for other components
     return (
-      option.model?.toLowerCase().includes(searchLower) ||
-      option.variant?.toLowerCase().includes(searchLower) ||
-      `${option.model} ${option.variant}`.toLowerCase().includes(searchLower)
+      modelLower.includes(searchLower) ||
+      variantLower.includes(searchLower) ||
+      `${modelLower} ${variantLower}`.includes(searchLower)
     );
   });
 
@@ -414,6 +431,7 @@ export const groupBySeries = (component) => {
   const model = component.model.toLowerCase();
   
   // Shimano series
+  if (model.includes('xtr') && model.includes('di2')) return 'XTR Di2';
   if (model.includes('dura-ace')) return 'Dura-Ace';
   if (model.includes('ultegra')) return 'Ultegra';
   if (model.includes('105')) return '105';

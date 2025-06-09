@@ -342,17 +342,15 @@ export default function Home() {
             }}
             className="mt-6 px-6 py-3 rounded-xl font-medium transition-all text-base"
             style={{ 
-              background: 'var(--surface-primary)',
-              color: 'var(--text-secondary)',
-              border: '1px solid var(--border-subtle)'
+              background: 'var(--accent-blue)',
+              color: 'var(--white)',
+              border: '1px solid var(--accent-blue)'
             }}
             onMouseEnter={(e) => {
-              e.target.style.background = 'var(--surface-elevated)';
-              e.target.style.borderColor = 'var(--accent-blue)';
+              e.target.style.background = 'var(--accent-blue-hover)';
             }}
             onMouseLeave={(e) => {
-              e.target.style.background = 'var(--surface-primary)';
-              e.target.style.borderColor = 'var(--border-subtle)';
+              e.target.style.background = 'var(--accent-blue)';
             }}
           >
             <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -620,21 +618,20 @@ export default function Home() {
              target="_blank"
              className="px-6 py-3 rounded-xl font-medium transition-all text-base min-w-[200px] flex items-center justify-center gap-2"
              style={{ 
-               background: 'var(--fire-gradient)',
+               background: 'var(--accent-blue)',
                color: 'white',
-               boxShadow: '0 4px 12px rgba(255, 107, 53, 0.2)',
-               textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+               boxShadow: '0 4px 12px rgba(0, 115, 230, 0.2)',
                fontWeight: '600'
              }}
              onMouseEnter={(e) => {
                e.target.style.transform = 'translateY(-1px)';
-               e.target.style.boxShadow = '0 6px 16px rgba(255, 107, 53, 0.3)';
+               e.target.style.boxShadow = '0 6px 16px rgba(0, 115, 230, 0.3)';
              }}
              onMouseLeave={(e) => {
                e.target.style.transform = 'translateY(0)';
-               e.target.style.boxShadow = '0 4px 12px rgba(255, 107, 53, 0.2)';
+               e.target.style.boxShadow = '0 4px 12px rgba(0, 115, 230, 0.2)';
              }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))' }}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
             </svg>
             Shop Jenson USA
@@ -643,21 +640,20 @@ export default function Home() {
              target="_blank"
              className="px-6 py-3 rounded-xl font-medium transition-all text-base min-w-[200px] flex items-center justify-center gap-2"
              style={{ 
-               background: 'var(--fire-gradient)',
+               background: 'var(--accent-blue)',
                color: 'white',
-               boxShadow: '0 4px 12px rgba(255, 107, 53, 0.2)',
-               textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+               boxShadow: '0 4px 12px rgba(0, 115, 230, 0.2)',
                fontWeight: '600'
              }}
              onMouseEnter={(e) => {
                e.target.style.transform = 'translateY(-1px)';
-               e.target.style.boxShadow = '0 6px 16px rgba(255, 107, 53, 0.3)';
+               e.target.style.boxShadow = '0 6px 16px rgba(0, 115, 230, 0.3)';
              }}
              onMouseLeave={(e) => {
                e.target.style.transform = 'translateY(0)';
-               e.target.style.boxShadow = '0 4px 12px rgba(255, 107, 53, 0.2)';
+               e.target.style.boxShadow = '0 4px 12px rgba(0, 115, 230, 0.2)';
              }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2))' }}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
             </svg>
             Shop Competitive Cyclist

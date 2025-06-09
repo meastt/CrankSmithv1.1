@@ -151,7 +151,7 @@ export default function TirePressure() {
                     onClick={() => setWeightUnit('kg')}
                     className={`flex-1 py-2 px-4 rounded-lg ${
                       weightUnit === 'kg'
-                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        ? 'bg-[var(--accent-blue)] text-white'
                         : 'bg-gray-800 text-gray-300'
                     }`}
                   >
@@ -161,7 +161,7 @@ export default function TirePressure() {
                     onClick={() => setWeightUnit('lb')}
                     className={`flex-1 py-2 px-4 rounded-lg ${
                       weightUnit === 'lb'
-                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        ? 'bg-[var(--accent-blue)] text-white'
                         : 'bg-gray-800 text-gray-300'
                     }`}
                   >
@@ -233,7 +233,7 @@ export default function TirePressure() {
                     onClick={() => setIsTubeless(true)}
                     className={`flex-1 py-2 px-4 rounded-lg ${
                       isTubeless
-                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        ? 'bg-[var(--accent-blue)] text-white'
                         : 'bg-gray-800 text-gray-300'
                     }`}
                   >
@@ -243,7 +243,7 @@ export default function TirePressure() {
                     onClick={() => setIsTubeless(false)}
                     className={`flex-1 py-2 px-4 rounded-lg ${
                       !isTubeless
-                        ? 'bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white'
+                        ? 'bg-[var(--accent-blue)] text-white'
                         : 'bg-gray-800 text-gray-300'
                     }`}
                   >
@@ -284,9 +284,22 @@ export default function TirePressure() {
 
               <button
                 onClick={calculatePressure}
-                className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-[#ff6b35] to-[#ff4500] text-white font-medium hover:from-[#ff4500] hover:to-[#ff6347] transition-all duration-200 transform hover:-translate-y-0.5"
+                className="px-8 py-4 rounded-xl font-medium transition-all text-lg"
+                style={{ 
+                  background: 'var(--accent-blue)',
+                  color: 'white',
+                  boxShadow: '0 4px 12px rgba(0, 115, 230, 0.2)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = '0 6px 16px rgba(0, 115, 230, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(0, 115, 230, 0.2)';
+                }}
               >
-                Calculate Pressure
+                Calculate
               </button>
             </div>
 
@@ -294,7 +307,7 @@ export default function TirePressure() {
               {pressure && (
                 <>
                   <div className="p-6 rounded-lg bg-gray-800 border border-gray-700">
-                    <h2 className="text-2xl font-bold text-[#ff6b35] mb-4">Recommended Pressure</h2>
+                    <h2 className="text-2xl font-bold text-[var(--accent-blue)] mb-4">Recommended Pressure</h2>
                     <div className="text-4xl font-bold text-white mb-2">
                       {pressure.base} PSI
                     </div>
@@ -305,7 +318,7 @@ export default function TirePressure() {
 
                   <div className="space-y-4">
                     <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-                      <h3 className="text-lg font-semibold text-[#f7931e] mb-2">Comfort Range</h3>
+                      <h3 className="text-lg font-semibold text-[var(--accent-blue)] mb-2">Comfort Range</h3>
                       <div className="text-2xl font-bold text-white mb-1">
                         {pressure.ranges.comfort} PSI
                       </div>
@@ -315,7 +328,7 @@ export default function TirePressure() {
                     </div>
 
                     <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-                      <h3 className="text-lg font-semibold text-[#ff6b35] mb-2">Balanced Range</h3>
+                      <h3 className="text-lg font-semibold text-[var(--accent-blue)] mb-2">Balanced Range</h3>
                       <div className="text-2xl font-bold text-white mb-1">
                         {pressure.ranges.balanced} PSI
                       </div>
@@ -325,12 +338,12 @@ export default function TirePressure() {
                     </div>
 
                     <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-                      <h3 className="text-lg font-semibold text-[#ff4500] mb-2">Performance Range</h3>
+                      <h3 className="text-lg font-semibold text-[var(--accent-blue)] mb-2">Performance Range</h3>
                       <div className="text-2xl font-bold text-white mb-1">
                         {pressure.ranges.performance} PSI
                       </div>
                       <p className="text-sm text-gray-400">
-                        Maximum efficiency and speed, best for smooth surfaces
+                        Maximum efficiency and speed, ideal for smooth surfaces
                       </p>
                     </div>
                   </div>

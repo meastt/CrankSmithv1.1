@@ -83,7 +83,6 @@ function EmailVerificationPrompt({ onVerify, onSkip }) {
 export default function Home() {
   const [showApp, setShowApp] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
   
   useEffect(() => {
     checkAccess();
@@ -126,9 +125,8 @@ export default function Home() {
       }
     }
     
-    // Method 4: Show email prompt
-    console.log('No access found, showing email prompt');
-    setShowEmailPrompt(true);
+    // If no access found, show landing page
+    console.log('No access found, showing landing page');
     setLoading(false);
   };
 
@@ -157,24 +155,6 @@ export default function Home() {
     }
   };
 
-  const handleEmailVerification = async (email) => {
-    const hasAccess = await verifyEmail(email);
-    
-    if (hasAccess) {
-      setShowApp(true);
-      setShowEmailPrompt(false);
-    } else {
-      // Show a helpful message
-      alert('Email not found in our beta list. Please sign up for early access on our landing page!');
-      setShowEmailPrompt(false);
-    }
-  };
-
-  const handleSkipToLanding = () => {
-    setShowEmailPrompt(false);
-    // This will show the landing page since showApp is still false
-  };
-
   // Loading state
   if (loading) {
     return (
@@ -191,16 +171,6 @@ export default function Home() {
           <div>Loading CrankSmith...</div>
         </div>
       </div>
-    );
-  }
-
-  // Email verification prompt
-  if (showEmailPrompt) {
-    return (
-      <EmailVerificationPrompt 
-        onVerify={handleEmailVerification} 
-        onSkip={handleSkipToLanding} 
-      />
     );
   }
 

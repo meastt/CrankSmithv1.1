@@ -92,7 +92,7 @@ export default function About() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 
-                  href="mailto:hello@cranksmith.com" 
+                  href="mailto:mike@cranksmith.com" 
                   className="btn-primary inline-flex items-center justify-center"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -18,6 +18,14 @@ export default function Calculator({
   const components = bikeType ? getComponentsForBikeType(bikeType) : { cassettes: [], cranksets: [] };
   const config = bikeType ? bikeConfig[bikeType] : null;
 
+  // Add debugging
+  useEffect(() => {
+    if (bikeType === 'mtb') {
+      console.log('MTB Components:', components);
+      console.log('XTR Di2 Components:', components.cranksets.filter(c => c.model.includes('XTR M9200')));
+    }
+  }, [bikeType, components]);
+
   useEffect(() => {
     const savedUnit = localStorage.getItem('speedUnit') || 'MPH';
     setSpeedUnit(savedUnit);
@@ -48,7 +56,7 @@ export default function Calculator({
               }`}
               style={{
                 background: speedUnit === unit 
-                  ? 'linear-gradient(135deg, var(--accent-blue) 0%, #5856d6 100%)' 
+                  ? 'var(--accent-blue)' 
                   : 'transparent',
                 color: speedUnit === unit ? 'white' : 'var(--text-secondary)'
               }}

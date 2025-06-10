@@ -8,11 +8,7 @@
   /* Primary colors - Monochrome base */
   --black: #000000;
   --white: #FFFFFF;
-  
-  /* Accent - Professional cycling blue (like Garmin/Zwift) */
-  --accent-blue: #0073E6;
-  --accent-blue-hover: #0056B3;
-  --accent-blue-light: #E6F2FF;
+  --bg-dark: #010309;
   
   /* Functional colors */
   --success-green: #00A651;

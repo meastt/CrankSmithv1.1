@@ -614,7 +614,7 @@ export default function Home() {
 
         {/* Retailer Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-          <a href="https://www.jensonusa.com/?utm_source=cranksmith&utm_medium=riley_ai" 
+          <a href="https://www.jensonusa.com/?utm_source=cranksmith&utm_medium=CrankSmith.com" 
              target="_blank"
              className="px-6 py-3 rounded-xl font-medium transition-all text-base min-w-[200px] flex items-center justify-center gap-2"
              style={{ 
@@ -636,7 +636,7 @@ export default function Home() {
             </svg>
             Shop Jenson USA
           </a>
-          <a href="https://www.competitivecyclist.com/?utm_source=cranksmith&utm_medium=riley_ai" 
+          <a href="https://www.competitivecyclist.com/?utm_source=cranksmith&utm_medium=CrankSmith.com" 
              target="_blank"
              className="px-6 py-3 rounded-xl font-medium transition-all text-base min-w-[200px] flex items-center justify-center gap-2"
              style={{ 

@@ -14,7 +14,7 @@ export default function Layout({ children }) {
                 borderColor: 'var(--border-subtle)' 
               }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-48">
+          <div className="flex justify-between items-center h-40">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <img 
@@ -142,10 +142,10 @@ export default function Layout({ children }) {
               }}>
         <div className="container mx-auto px-6 text-center" style={{ color: 'var(--text-tertiary)' }}>
           <p className="text-sm">
-            &copy; 2025 CrankSmith. Serious Analysis for serious cyclists.
+            &copy; 2025 CrankSmith. All rights reserved.
           </p>
           <p className="mt-2 text-xs">
-          Forge Your Perfect Ride. • Beta Version 1
+            Forge Your Perfect Ride. • Beta Version 1
           </p>
         </div>
       </footer>

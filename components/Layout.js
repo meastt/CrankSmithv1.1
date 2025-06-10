@@ -61,7 +61,7 @@ export default function Layout({ children }) {
             </nav>
 
             <div className="flex items-center space-x-4 mt-8">
-              <Link href="https://instagram.com/cranksmittapp" target="_blank" rel="noopener noreferrer" className="hidden md:block">
+              <Link href="https://instagram.com/cranksmithapp" target="_blank" rel="noopener noreferrer" className="hidden md:block">
                 <svg 
                   className="w-6 h-6 text-gray-300 hover:text-white transition-colors" 
                   fill="currentColor" 

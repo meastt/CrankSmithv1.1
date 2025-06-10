@@ -342,18 +342,8 @@ const SearchableDropdown = ({
                             : 'var(--text-tertiary)'
                         }}
                       >
-                        {option.weight}g
+                        {option.variant}
                       </div>
-                    </div>
-                    <div 
-                      className="text-sm mt-1" 
-                      style={{ 
-                        color: globalIndex === highlightedIndex 
-                          ? 'rgba(255,255,255,0.75)' 
-                          : 'var(--text-tertiary)'
-                      }}
-                    >
-                      {option.variant}
                     </div>
                   </div>
                 );

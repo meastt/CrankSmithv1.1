@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import Calculator from '../components/Calculator';
-import Results from '../components/Results';
+import GearSelectorPanel from '../components/GearSelectorPanel';
+import SimulationResults from '../components/SimulationResults';
+import PerformanceChart from '../components/PerformanceChart';
+import BuildSummaryCard from '../components/BuildSummaryCard';
 import { compareSetups } from '../lib/calculations';
 import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
+import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
+
+// Default empty component database for initial render
+const defaultComponentDatabase = {
+  cranksets: [],
+  cassettes: []
+};
 
 // Simple localStorage functions (no Supabase)
 const localStorageDB = {
@@ -17,15 +25,15 @@ const localStorageDB = {
     }
   },
   
-  saveConfig: (config) => {
+  saveConfig: async (config) => {
     try {
-      const existing = localStorageDB.getConfigs().data;
+      const existing = await localStorageDB.getConfigs();
       const newConfig = {
         ...config,
         id: Date.now(), // Simple ID generation
         created_at: new Date().toISOString()
       };
-      const updated = [...existing, newConfig];
+      const updated = [...existing.data, newConfig];
       localStorage.setItem('cranksmith_configs', JSON.stringify(updated));
       return { error: null };
     } catch (error) {
@@ -34,10 +42,10 @@ const localStorageDB = {
     }
   },
   
-  deleteConfig: (id) => {
+  deleteConfig: async (id) => {
     try {
-      const existing = localStorageDB.getConfigs().data;
-      const updated = existing.filter(config => config.id !== id);
+      const existing = await localStorageDB.getConfigs();
+      const updated = existing.data.filter(config => config.id !== id);
       localStorage.setItem('cranksmith_configs', JSON.stringify(updated));
       return { error: null };
     } catch (error) {
@@ -88,17 +96,48 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
   };
 
   const formatSpecs = (setup) => {
-    const crankset = setup.crankset && setup.crankset.chainrings && Array.isArray(setup.crankset.chainrings) 
-      ? `${setup.crankset.chainrings.join('/')}T` 
-      : 'N/A';
-    const cassette = setup.cassette && setup.cassette.range 
-      ? `${setup.cassette.range.min}-${setup.cassette.range.max}T` 
-      : 'N/A';
-    return { crankset, cassette };
+    if (!setup) return { crankset: 'N/A', cassette: 'N/A', wheel: 'N/A', tire: 'N/A' };
+
+    // Get crankset info
+    const crankset = setup.crankset;
+    const cranksetText = crankset ? 
+      `${crankset.model || ''} ${crankset.teeth ? crankset.teeth.join('/') + 'T' : ''}`.trim() : 
+      'N/A';
+    
+    // Get cassette info
+    const cassette = setup.cassette;
+    const cassetteText = cassette ? 
+      `${cassette.model || ''} ${cassette.teeth ? cassette.teeth.join('-') + 'T' : ''}`.trim() : 
+      'N/A';
+    
+    // Get wheel and tire info
+    const wheelText = setup.wheel ? `${setup.wheel} wheel` : 'N/A';
+    const tireText = setup.tire ? `${setup.tire}mm tire` : 'N/A';
+    
+    return { 
+      crankset: cranksetText,
+      cassette: cassetteText,
+      wheel: wheelText,
+      tire: tireText
+    };
   };
 
-  const currentSpecs = formatSpecs(config.current_setup);
-  const proposedSpecs = formatSpecs(config.proposed_setup);
+  const currentSpecs = formatSpecs(config.currentSetup);
+  const proposedSpecs = formatSpecs(config.proposedSetup);
+
+  // Safely get weight change
+  const getWeightChange = () => {
+    if (!config.results) return 0;
+    if (config.results.comparison?.weightChange !== undefined) {
+      return config.results.comparison.weightChange;
+    }
+    if (config.results.weightChange !== undefined) {
+      return config.results.weightChange;
+    }
+    return 0;
+  };
+
+  const weightChange = getWeightChange();
 
   return (
     <div className="bg-[--color-surface] border border-[--color-border] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:border-[--color-accent]/30">
@@ -106,14 +145,14 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 text-[--color-accent]">
-              {BikeIcons[config.bike_type] || BikeIcons.road}
+              {BikeIcons[config.bikeType] || BikeIcons.road}
             </div>
             <div>
               <h3 className="font-semibold text-[--color-text-primary] text-lg leading-tight">
                 {config.name}
               </h3>
               <p className="text-[--color-text-secondary] text-sm">
-                {bikeTypeDisplay[config.bike_type] || 'Road'} • {new Date(config.created_at).toLocaleDateString()}
+                {bikeTypeDisplay[config.bikeType] || 'Road'} • {new Date(config.created_at).toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -138,11 +177,17 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
               <p className="text-[--color-text-primary] font-mono">
                 {currentSpecs.crankset} → {currentSpecs.cassette}
               </p>
+              <p className="text-[--color-text-primary] text-xs mt-1">
+                {currentSpecs.wheel} • {currentSpecs.tire}
+              </p>
             </div>
             <div>
               <p className="text-[--color-text-secondary] mb-1">Proposed Setup</p>
               <p className="text-[--color-text-primary] font-mono">
                 {proposedSpecs.crankset} → {proposedSpecs.cassette}
+              </p>
+              <p className="text-[--color-text-primary] text-xs mt-1">
+                {proposedSpecs.wheel} • {proposedSpecs.tire}
               </p>
             </div>
           </div>
@@ -151,8 +196,8 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
             <div className="mt-3 p-2 bg-[--color-surface] rounded border border-[--color-border]/50">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-[--color-text-secondary]">Weight Change:</span>
-                <span className={`font-semibold ${config.results.weightChange > 0 ? 'text-[--color-accent]' : 'text-green-500'}`}>
-                  {config.results.weightChange > 0 ? '+' : ''}{config.results.weightChange}g
+                <span className={`font-semibold ${weightChange > 0 ? 'text-[--color-accent]' : 'text-green-500'}`}>
+                  {weightChange > 0 ? '+' : ''}{weightChange}g
                 </span>
               </div>
             </div>
@@ -161,23 +206,30 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
 
         <button
           onClick={() => onLoad(config)}
-          className="w-full py-3 bg-[--color-accent] hover:opacity-90 text-black font-semibold rounded transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+          className="w-full py-3 bg-[--color-accent] hover:opacity-90 text-white font-semibold rounded transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
         >
           Load Configuration
         </button>
       </div>
 
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[--color-surface] border border-[--color-border] rounded-lg p-6 max-w-sm w-full">
-            <h4 className="text-[--color-text-primary] font-semibold mb-2">Delete Configuration?</h4>
-            <p className="text-[--color-text-secondary] text-sm mb-4">
-              Are you sure you want to delete "{config.name}"? This action cannot be undone.
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[#010912] p-6 rounded-lg max-w-md w-full mx-4 border border-[--color-border] shadow-xl">
+            <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
+              Delete Configuration
+            </h3>
+            <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
+              Are you sure you want to delete this configuration? This action cannot be undone.
             </p>
-            <div className="flex space-x-3">
+            <div className="flex justify-end gap-4">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 py-2 px-4 bg-[--color-surface] hover:bg-[--color-border] text-[--color-text-primary] rounded transition-colors border border-[--color-border]"
+                className="px-4 py-2 rounded-lg font-medium transition-colors"
+                style={{ 
+                  background: 'var(--surface-primary)',
+                  color: 'var(--text-secondary)',
+                  border: '1px solid var(--border-subtle)'
+                }}
               >
                 Cancel
               </button>
@@ -186,7 +238,8 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
                   onDelete(config.id);
                   setShowDeleteConfirm(false);
                 }}
-                className="flex-1 py-2 px-4 bg-[--color-accent] hover:opacity-90 text-black rounded transition-colors"
+                className="px-4 py-2 rounded-lg font-medium text-white transition-colors"
+                style={{ background: 'var(--accent-red)' }}
               >
                 Delete
               </button>
@@ -199,132 +252,286 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
 };
 
 export default function Home() {
-  const [bikeType, setBikeType] = useState('');
+  const [bikeType, setBikeType] = useState('road');
   const [currentSetup, setCurrentSetup] = useState({
     wheel: '',
     tire: '',
     crankset: null,
-    cassette: null,
+    cassette: null
   });
   const [proposedSetup, setProposedSetup] = useState({
     wheel: '',
     tire: '',
     crankset: null,
-    cassette: null,
+    cassette: null
   });
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [savedConfigs, setSavedConfigs] = useState([]);
   const [showSaved, setShowSaved] = useState(false);
+  const [speedUnit, setSpeedUnit] = useState('mph');
 
+  // Load saved configurations when the page loads
   useEffect(() => {
-    loadSavedConfigs();
-  }, []);
+    const loadSavedConfigs = async () => {
+      try {
+        const { data } = await localStorageDB.getConfigs();
+        if (data) {
+          setSavedConfigs(data);
+        }
+      } catch (error) {
+        console.error('Error loading saved configurations:', error);
+      }
+    };
 
+    loadSavedConfigs();
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Calculate setup completion percentage
+  const calculateSetupCompletion = (setup) => {
+    console.log('=== Calculating Completion ===');
+    console.log('Setup to check:', setup);
+    
+    const requiredFields = ['wheel', 'tire', 'crankset', 'cassette'];
+    const completedFields = requiredFields.filter(field => {
+      const value = setup[field];
+      console.log(`Checking field ${field}:`, value);
+      
+      if (field === 'crankset' || field === 'cassette') {
+        // For crankset and cassette, we need a non-null object with at least one property
+        const isComplete = value !== null && 
+                         typeof value === 'object' && 
+                         Object.keys(value).length > 0;
+        console.log(`${field} is ${isComplete ? 'complete' : 'incomplete'}`);
+        return isComplete;
+      }
+      
+      // For wheel and tire, we need a non-empty string
+      const isComplete = typeof value === 'string' && value.trim() !== '';
+      console.log(`${field} is ${isComplete ? 'complete' : 'incomplete'}`);
+      return isComplete;
+    });
+    
+    const percentage = (completedFields.length / requiredFields.length) * 100;
+    console.log('Completed fields:', completedFields);
+    console.log('Completion percentage:', percentage);
+    console.log('==========================');
+    return percentage;
+  };
+
+  // Calculate completion percentages
+  const currentSetupCompletion = calculateSetupCompletion(currentSetup);
+  const proposedSetupCompletion = calculateSetupCompletion(proposedSetup);
+  const totalCompletion = (currentSetupCompletion + proposedSetupCompletion) / 2;
+
+  // Component change handlers
+  const handleCurrentWheelChange = (value) => {
+    console.log('🔄 Current wheel selected:', value);
+    setCurrentSetup(prev => {
+      const newSetup = {
+        ...prev,
+        wheel: value
+      };
+      console.log('New current setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  const handleCurrentTireChange = (value) => {
+    console.log('🔄 Current tire selected:', value);
+    setCurrentSetup(prev => {
+      const newSetup = {
+        ...prev,
+        tire: value
+      };
+      console.log('New current setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  const handleProposedWheelChange = (value) => {
+    console.log('🔄 Proposed wheel selected:', value);
+    setProposedSetup(prev => {
+      const newSetup = {
+        ...prev,
+        wheel: value
+      };
+      console.log('New proposed setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  const handleProposedTireChange = (value) => {
+    console.log('🔄 Proposed tire selected:', value);
+    setProposedSetup(prev => {
+      const newSetup = {
+        ...prev,
+        tire: value
+      };
+      console.log('New proposed setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  const handleCurrentCranksetChange = (selectedOption) => {
+    console.log('🔄 Current crankset selected:', selectedOption);
+    setCurrentSetup(prev => {
+      const newSetup = {
+        ...prev,
+        crankset: selectedOption
+      };
+      console.log('New current setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  const handleCurrentCassetteChange = (selectedOption) => {
+    console.log('🔄 Current cassette selected:', selectedOption);
+    setCurrentSetup(prev => {
+      const newSetup = {
+        ...prev,
+        cassette: selectedOption
+      };
+      console.log('New current setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  const handleProposedCranksetChange = (selectedOption) => {
+    console.log('🔄 Proposed crankset selected:', selectedOption);
+    setProposedSetup(prev => {
+      const newSetup = {
+        ...prev,
+        crankset: selectedOption
+      };
+      console.log('New proposed setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  const handleProposedCassetteChange = (selectedOption) => {
+    console.log('🔄 Proposed cassette selected:', selectedOption);
+    setProposedSetup(prev => {
+      const newSetup = {
+        ...prev,
+        cassette: selectedOption
+      };
+      console.log('New proposed setup:', newSetup);
+      return newSetup;
+    });
+  };
+
+  // Add useEffect to monitor state changes
+  useEffect(() => {
+    console.log('=== State Changed ===');
+    console.log('Current Setup:', currentSetup);
+    console.log('Proposed Setup:', proposedSetup);
+    console.log('Current Completion:', currentSetupCompletion);
+    console.log('Proposed Completion:', proposedSetupCompletion);
+    console.log('Total Completion:', totalCompletion);
+    console.log('===================');
+  }, [currentSetup, proposedSetup, currentSetupCompletion, proposedSetupCompletion, totalCompletion]);
+
+  // Get components based on bike type, with fallback to empty arrays
+  const components = bikeType ? getComponentsForBikeType(bikeType) : defaultComponentDatabase;
+  
   useEffect(() => {
     console.log('🔍 bikeType useEffect triggered:', bikeType);
     
-    if (bikeType && bikeConfig[bikeType]) {
+    if (bikeType && bikeConfig[bikeType] && componentDatabase?.cranksets) {
       console.log('📝 Setting up defaults for:', bikeType);
+      // Don't set default values, just log the available defaults
       const defaults = bikeConfig[bikeType].defaultSetup;
-      const defaultCrankset = componentDatabase.cranksets.find((c) => c.id === defaults.crankset);
-      const defaultCassette = componentDatabase.cassettes.find((c) => c.id === defaults.cassette);
-
-      console.log('🔧 Found default components:', { defaultCrankset, defaultCassette });
-
-      setCurrentSetup({
-        wheel: defaults.wheel,
-        tire: defaults.tire.toString(),
-        crankset: defaultCrankset,
-        cassette: defaultCassette,
-      });
-      setProposedSetup({
-        wheel: defaults.wheel,
-        tire: defaults.tire.toString(),
-        crankset: defaultCrankset,
-        cassette: defaultCassette,
-      });
-      
-      console.log('✅ Setup states updated');
+      console.log('Available defaults:', defaults);
     }
   }, [bikeType]);
 
-  const loadSavedConfigs = () => {
-    const { data } = localStorageDB.getConfigs();
-    setSavedConfigs(data || []);
-  };
+  const handleCalculate = async () => {
+    // Validate both setups are complete
+    const currentValidation = validateSetupComplete(currentSetup);
+    const proposedValidation = validateSetupComplete(proposedSetup);
 
-  const handleCalculate = async (speedUnit = 'MPH') => {
-    if (
-      !bikeType ||
-      !currentSetup.crankset ||
-      !currentSetup.cassette ||
-      !proposedSetup.crankset ||
-      !proposedSetup.cassette
-    ) {
-      alert('Please complete all fields before calculating');
+    if (!currentValidation.isComplete || !proposedValidation.isComplete) {
+      console.log('Cannot calculate: Setup not complete');
+      alert('Please complete both setups before analyzing');
       return;
     }
 
     setLoading(true);
-
     try {
-      const comparison = compareSetups(currentSetup, proposedSetup, speedUnit);
-      setResults(comparison);
+      // Add a small delay for UX
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Calculate real results using actual component data
+      const realResults = calculateRealPerformance(currentSetup, proposedSetup, speedUnit);
+      
+      setResults(realResults);
     } catch (error) {
-      console.error('Calculation error:', error);
-      alert('Error calculating results. Please check your inputs.');
+      console.error('Error calculating results:', error);
+      alert('Error calculating results. Please check your component selections.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSaveConfig = () => {
-    if (!results) return;
-
-    const name = prompt('Enter a name for this configuration:');
-    if (!name) return;
+  const handleSaveConfig = async () => {
+    if (!results) {
+      alert('Please calculate results before saving');
+      return;
+    }
 
     const config = {
-      name,
-      bike_type: bikeType,
-      current_setup: currentSetup,
-      proposed_setup: proposedSetup,
-      results: {
-        weightChange: results.comparison.weightChange,
-        currentMetrics: results.current.metrics,
-        proposedMetrics: results.proposed.metrics,
-      },
+      name: `${bikeType.charAt(0).toUpperCase() + bikeType.slice(1)} Setup ${new Date().toLocaleDateString()}`,
+      bikeType,
+      currentSetup,
+      proposedSetup,
+      results,
+      created_at: new Date().toISOString()
     };
 
-    const { error } = localStorageDB.saveConfig(config);
-    if (error) {
-      alert('Error saving configuration');
-    } else {
-      alert('Configuration saved successfully!');
-      loadSavedConfigs();
+    try {
+      const { error } = await localStorageDB.saveConfig(config);
+      if (error) {
+        throw error;
+      }
+      
+      // Refresh the saved configs list
+      const { data } = await localStorageDB.getConfigs();
+      setSavedConfigs(data || []);
+      
+      // Show success message
+      alert('Configuration saved to garage!');
+    } catch (error) {
+      console.error('Error saving configuration:', error);
+      alert('Failed to save configuration. Please try again.');
     }
   };
 
   const handleLoadConfig = (config) => {
-    setBikeType(config.bike_type);
-    setCurrentSetup(config.current_setup);
-    setProposedSetup(config.proposed_setup);
-    setResults(null);
-    setShowSaved(false);
+    setCurrentSetup(config.currentSetup);
+    setProposedSetup(config.proposedSetup);
+    setResults(config.results);
+    setBikeType(config.bikeType);
   };
 
-  const handleDeleteConfig = (id) => {
-    const { error } = localStorageDB.deleteConfig(id);
-    if (error) {
-      alert('Error deleting configuration');
-    } else {
-      loadSavedConfigs();
+  const handleDeleteConfig = async (id) => {
+    try {
+      const { error } = await localStorageDB.deleteConfig(id);
+      if (error) {
+        throw error;
+      }
+      // Refresh the saved configs list
+      const { data } = await localStorageDB.getConfigs();
+      setSavedConfigs(data || []);
+    } catch (error) {
+      console.error('Error deleting configuration:', error);
+      alert('Failed to delete configuration. Please try again.');
     }
   };
 
   return (
     <main className="main-container container mx-auto px-4 py-12 max-w-7xl">
+      {/* Header Section */}
       <div className="text-center mb-12">
         <h1 className="hero-title hero-title-fire">Compare. Calculate. Optimize.</h1>
         <p className="hero-subtitle max-w-2xl mx-auto">
@@ -346,12 +553,6 @@ export default function Home() {
               color: 'var(--white)',
               border: '1px solid var(--accent-blue)'
             }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'var(--accent-blue-hover)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'var(--accent-blue)';
-            }}
           >
             <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
@@ -362,7 +563,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* Quick Start Guide - Smart content based on state */}
+      {/* Quick Start Guide */}
       <div className="max-w-4xl mx-auto mb-12">
         <div className="card">
           <div className="text-center mb-8">
@@ -392,284 +593,150 @@ export default function Home() {
               </>
             )}
           </div>
-
-          {!bikeType && (
-            <>
-              <div className="grid md:grid-cols-3 gap-8 mb-8">
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
-                       style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
-                    <span className="text-xl font-bold">1</span>
-                  </div>
-                  <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                    Choose Your Bike
-                  </h3>
-                  <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                    Select road, gravel, or mountain bike to see compatible components
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
-                       style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
-                    <span className="text-xl font-bold">2</span>
-                  </div>
-                  <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                    Pick Components
-                  </h3>
-                  <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                    Choose your current setup and the upgrade you're considering
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-4 rounded-lg flex items-center justify-center"
-                       style={{ background: 'var(--surface-elevated)', color: 'var(--accent-blue)' }}>
-                    <span className="text-xl font-bold">3</span>
-                  </div>
-                  <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                    See Results
-                  </h3>
-                  <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                    Get clear speed, weight, and performance comparisons
-                  </p>
-                </div>
-              </div>
-
-              <div className="border-t pt-8" style={{ borderColor: 'var(--border-subtle)' }}>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg text-center"
-                       style={{ background: 'var(--surface-elevated)' }}>
-                    <h4 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                      🚴‍♂️ I Know My Components
-                    </h4>
-                    <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
-                      Ready to compare specific parts? Jump right in!
-                    </p>
-                    <button 
-                      onClick={() => setBikeType('road')}
-                      className="btn-primary w-full"
-                    >
-                      Start Comparing
-                    </button>
-                  </div>
-
-                  <div className="p-4 rounded-lg text-center"
-                       style={{ background: 'var(--surface-elevated)' }}>
-                    <h4 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                      🤔 Need Guidance?
-                    </h4>
-                    <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
-                      Not sure what to upgrade? Let Riley guide you!
-                    </p>
-                    <button 
-                      onClick={() => {
-                        setBikeType('road');
-                        setTimeout(() => {
-                          alert('Great! Now you can use the "Ask Riley" button that appears after you analyze any setup. Try selecting some components first, then click "Analyze Performance" to see Riley!');
-                        }, 1000);
-                      }}
-                      className="w-full px-6 py-3 rounded-xl font-medium transition-all"
-                      style={{ 
-                        background: 'var(--surface-primary)',
-                        color: 'var(--text-secondary)',
-                        border: '1px solid var(--border-subtle)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.background = 'var(--surface-elevated)';
-                        e.target.style.borderColor = 'var(--accent-blue)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.background = 'var(--surface-primary)';
-                        e.target.style.borderColor = 'var(--border-subtle)';
-                      }}
-                    >
-                      🔧 Ask Riley for Help
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
         </div>
       </div>
 
-      {/* Features Showcase - Only show when no bike selected */}
+      {/* Bike Type Selection */}
       {!bikeType && (
-        <div className="max-w-6xl mx-auto mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
-              See What CrankSmith Can Do
-            </h2>
-            <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-              Real examples of how component changes affect your ride
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="card text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                   style={{ background: 'var(--accent-blue)', color: 'white' }}>
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-                Speed Analysis
-              </h3>
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>31.2 mph</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>33.1 mph</span>
-                </div>
-                <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
-                  <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
-                    +1.9 mph
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-4">Select Your Bike Type</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {Object.entries(bikeConfig).map(([type, config]) => (
+                <button
+                  key={type}
+                  onClick={() => setBikeType(type)}
+                  className={`p-6 rounded-lg border-2 transition-all duration-200 ${
+                    bikeType === type
+                      ? 'border-[--color-accent] bg-[--color-accent]/10'
+                      : 'border-[--color-border] hover:border-[--color-accent]/50'
+                  }`}
+                >
+                  <div className="w-16 h-16 mx-auto mb-4 text-[--color-accent]">
+                    {BikeIcons[type]}
                   </div>
-                </div>
-              </div>
-              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                See exactly how upgrades affect your top speed
-              </p>
+                  <h3 className="text-lg font-semibold mb-2">{config.name}</h3>
+                  <p className="text-sm text-[--color-text-secondary]">{config.description}</p>
+                </button>
+              ))}
             </div>
-
-            <div className="card text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                   style={{ background: 'var(--accent-performance)', color: 'white' }}>
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-                Weight Tracking
-              </h3>
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Current</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>1,247g</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--text-tertiary)' }}>Proposed</span>
-                  <span style={{ color: 'var(--text-secondary)' }}>1,185g</span>
-                </div>
-                <div className="border-t pt-2" style={{ borderColor: 'var(--border-subtle)' }}>
-                  <div className="text-xl font-bold" style={{ color: 'var(--accent-performance)' }}>
-                    -62g
-                  </div>
-                </div>
-              </div>
-              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                Track weight savings down to the gram
-              </p>
-            </div>
-
-            <div className="card text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
-                <span className="text-2xl">🔧</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
-                Expert Advice
-              </h3>
-              <div className="p-3 rounded-lg mb-4" style={{ background: 'var(--surface-elevated)' }}>
-                <p className="text-sm italic" style={{ color: 'var(--text-secondary)' }}>
-                  "That 11-34T cassette will give you much easier climbing gears. Perfect for steep hills!"
-                </p>
-                <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>
-                  - Riley, AI Mechanic
-                </div>
-              </div>
-              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                Get personalized recommendations from our AI expert
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <button 
-              onClick={() => setBikeType('road')}
-              className="btn-primary text-lg px-8"
-            >
-              Try It Now - It's Free
-            </button>
           </div>
         </div>
       )}
 
-      <div className="calculator-section">
-        {/* Re-enable the Calculator now that we fixed the scroll issue */}
-        <Calculator
-          bikeType={bikeType}
-          setBikeType={setBikeType}
-          currentSetup={currentSetup}
-          setCurrentSetup={setCurrentSetup}
-          proposedSetup={proposedSetup}
-          setProposedSetup={setProposedSetup}
-          onCalculate={handleCalculate}
-          loading={loading}
-        />
+      {/* Component Selection and Analysis */}
+      {bikeType && (
+        <div className="space-y-8">
+          {/* Gear Selector Panels */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <GearSelectorPanel
+              title="Current Setup"
+              subtitle="Your current components"
+              setup={currentSetup}
+              config={{
+                wheelSizes: bikeConfig[bikeType].wheelSizes,
+                tireWidths: bikeConfig[bikeType].tireWidths,
+                onWheelChange: handleCurrentWheelChange,
+                onTireChange: handleCurrentTireChange,
+                onCranksetChange: handleCurrentCranksetChange,
+                onCassetteChange: handleCurrentCassetteChange
+              }}
+              components={components}
+              icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>}
+            />
 
-        {/* Retailer Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-          <a href="https://www.jensonusa.com/?utm_source=cranksmith&utm_medium=CrankSmith.com" 
-             target="_blank"
-             className="px-6 py-3 rounded-xl font-medium transition-all text-base min-w-[200px] flex items-center justify-center gap-2"
-             style={{ 
-               background: 'var(--accent-blue)',
-               color: 'white',
-               boxShadow: '0 4px 12px rgba(0, 115, 230, 0.2)',
-               fontWeight: '600'
-             }}
-             onMouseEnter={(e) => {
-               e.target.style.transform = 'translateY(-1px)';
-               e.target.style.boxShadow = '0 6px 16px rgba(0, 115, 230, 0.3)';
-             }}
-             onMouseLeave={(e) => {
-               e.target.style.transform = 'translateY(0)';
-               e.target.style.boxShadow = '0 4px 12px rgba(0, 115, 230, 0.2)';
-             }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
-            </svg>
-            Shop Jenson USA
-          </a>
-          <a href="https://www.competitivecyclist.com/?utm_source=cranksmith&utm_medium=CrankSmith.com" 
-             target="_blank"
-             className="px-6 py-3 rounded-xl font-medium transition-all text-base min-w-[200px] flex items-center justify-center gap-2"
-             style={{ 
-               background: 'var(--accent-blue)',
-               color: 'white',
-               boxShadow: '0 4px 12px rgba(0, 115, 230, 0.2)',
-               fontWeight: '600'
-             }}
-             onMouseEnter={(e) => {
-               e.target.style.transform = 'translateY(-1px)';
-               e.target.style.boxShadow = '0 6px 16px rgba(0, 115, 230, 0.3)';
-             }}
-             onMouseLeave={(e) => {
-               e.target.style.transform = 'translateY(0)';
-               e.target.style.boxShadow = '0 4px 12px rgba(0, 115, 230, 0.2)';
-             }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
-            </svg>
-            Shop Competitive Cyclist
-          </a>
+            <GearSelectorPanel
+              title="Proposed Setup"
+              subtitle="Components you're considering"
+              setup={proposedSetup}
+              config={{
+                wheelSizes: bikeConfig[bikeType].wheelSizes,
+                tireWidths: bikeConfig[bikeType].tireWidths,
+                onWheelChange: handleProposedWheelChange,
+                onTireChange: handleProposedTireChange,
+                onCranksetChange: handleProposedCranksetChange,
+                onCassetteChange: handleProposedCassetteChange
+              }}
+              components={components}
+              icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>}
+            />
+          </div>
+
+          {/* Setup Progress and Analyze Button */}
+          <div className="max-w-4xl mx-auto">
+            <div className="card">
+              <div className="flex justify-between items-center">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-[var(--accent-blue)]" />
+                    <span className="text-sm text-gray-600">Current Setup: {Math.round(currentSetupCompletion)}%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-[var(--accent-performance)]" />
+                    <span className="text-sm text-gray-600">Proposed Setup: {Math.round(proposedSetupCompletion)}%</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => handleCalculate()}
+                  disabled={totalCompletion < 100 || loading}
+                  className={`px-6 py-3 rounded-xl font-medium transition-all ${
+                    totalCompletion < 100 || loading
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:opacity-90'
+                  }`}
+                  style={{ 
+                    background: 'var(--accent-blue)',
+                    color: 'var(--white)'
+                  }}
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Analyzing...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                      Analyze Performance
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
+      {/* Results Section */}
       {results && (
-        <Results
-          results={results}
-          onSave={handleSaveConfig}
-          bikeType={bikeType}
-          currentSetup={currentSetup}
-          proposedSetup={proposedSetup}
-          componentDatabase={componentDatabase}
-        />
+        <div className="max-w-4xl mx-auto mt-12">
+          <SimulationResults 
+            results={results}
+            speedUnit={speedUnit}
+            bikeType={bikeType}
+          />
+          <PerformanceChart 
+            current={results.current}
+            proposed={results.proposed}
+            speedUnit={speedUnit}
+          />
+          <BuildSummaryCard 
+            currentSetup={currentSetup}
+            proposedSetup={proposedSetup}
+            results={results}
+            onSave={handleSaveConfig}
+          />
+        </div>
       )}
 
       <div id="garage-section" className="mt-16">

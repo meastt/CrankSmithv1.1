@@ -1,27 +1,50 @@
-CrankSmith (Beta-v1.0)
-A Next.js application for cyclists to calculate gear ratios, compare bike setups, and optimize performance. Features include weight comparison, real Shimano/SRAM component data, local storage via Supabase, and Chart.js visualizations.
-Setup
+# Cranksmith V2
 
-Install dependencies:npm install
+Advanced drivetrain analysis tool for cyclists and bike mechanics.
 
+## Features
 
-Create a .env.local file with Supabase credentials:NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+- Interactive drivetrain builder
+- Advanced gear ratio calculations
+- Custom cassette analysis
+- Modern, responsive UI
 
+## Getting Started
 
-Run the development server:npm run dev
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd cranksmith-v2
+```
 
+2. Install dependencies:
+```bash
+npm install
+```
 
-Open http://localhost:3000.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-Deployment
-Deploy to Vercel:
-npm install -g vercel
-vercel
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Beta Testing
+## Tech Stack
 
-Test calculations, UI, and save/load functionality.
-Share with 5–10 cyclists and collect feedback (see PDF for questions).
+- Next.js
+- React
+- Tailwind CSS
+- Custom calculation engine
+
+## Development
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## License
+
+[Add your license here]
 
 # Deploy trigger

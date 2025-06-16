@@ -91,7 +91,7 @@ export default function Calculator({
       {/* Component Configuration Cards */}
       {bikeType && (
         <div className="calculator-cards grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
-          <SetupCard
+          <GearSelectorPanel
             title="Current Setup"
             subtitle="Your baseline configuration"
             badge="Baseline"
@@ -108,7 +108,7 @@ export default function Calculator({
               </svg>
             }
           />
-          <SetupCard
+          <GearSelectorPanel
             title="Proposed Setup"
             subtitle="Your potential upgrade"
             badge="Upgrade"
@@ -161,7 +161,7 @@ export default function Calculator({
   );
 }
 
-function SetupCard({ title, subtitle, badge, badgeColor, setup, setSetup, config, components, icon }) {
+function GearSelectorPanel({ title, subtitle, badge, badgeColor, setup, setSetup, config, components, icon }) {
   return (
     <div className="card group">
       {/* Card Header */}

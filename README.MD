@@ -52,13 +52,11 @@ CrankSmith-v1.1/
 └── styles/            # Global styles and Tailwind config
 ```
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This is proprietary software. All rights reserved. Unauthorized copying, modification, distribution, or use of this software, via any medium, is strictly prohibited.
+
+For licensing inquiries, contact: mike@cranksmith.com
 
 ## Contact
 

@@ -1,5 +1,4 @@
-// Updated Calculator.js with SearchableDropdown integration
-
+// Updated Calculator.js with SearchableDropdown integration and loading state
 import React, { useState, useEffect } from 'react';
 import { bikeConfig, getComponentsForBikeType } from '../lib/components';
 import SearchableDropdown, { groupBySeries } from './SearchableDropdown'; // Add this import
@@ -15,8 +14,22 @@ export default function Calculator({
   loading
 }) {
   const [speedUnit, setSpeedUnit] = useState('MPH');
+  
+  // 🔧 ADD THIS: Ensure components load before render to prevent empty dropdowns
+  const [componentsLoaded, setComponentsLoaded] = useState(false);
+  
   const components = bikeType ? getComponentsForBikeType(bikeType) : { cassettes: [], cranksets: [] };
   const config = bikeType ? bikeConfig[bikeType] : null;
+
+  // 🔧 ADD THIS: Load components when bike type changes
+  useEffect(() => {
+    if (bikeType && components?.cranksets?.length > 0) {
+      console.log('Components loaded for', bikeType, ':', components);
+      setComponentsLoaded(true);
+    } else {
+      setComponentsLoaded(false);
+    }
+  }, [bikeType, components]);
 
   // Add debugging
   useEffect(() => {
@@ -35,6 +48,20 @@ export default function Calculator({
     setSpeedUnit(unit);
     localStorage.setItem('speedUnit', unit);
   };
+
+  // 🔧 ADD THIS: Show loading state if components aren't ready
+  if (bikeType && !componentsLoaded) {
+    return (
+      <div className="space-y-12">
+        <div className="flex justify-center items-center h-64">
+          <div className="loading-spinner"></div>
+          <span className="ml-3 text-lg" style={{ color: 'var(--text-secondary)' }}>
+            Loading {bikeType} components...
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-12">
@@ -73,7 +100,7 @@ export default function Calculator({
         <select
             value={bikeType}
             onChange={(e) => {
-              console.log('Bike type change triggered'); // debugging 
+              console.log('Bike type change triggered:', e.target.value); // debugging 
               e.preventDefault();
               e.stopPropagation();
               setBikeType(e.target.value);
@@ -88,8 +115,8 @@ export default function Calculator({
         </select>
       </div>
 
-      {/* Component Configuration Cards */}
-      {bikeType && (
+      {/* Component Configuration Cards - Only show when components are loaded */}
+      {bikeType && componentsLoaded && (
         <div className="calculator-cards grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12">
           <GearSelectorPanel
             title="Current Setup"
@@ -127,8 +154,8 @@ export default function Calculator({
         </div>
       )}
 
-      {/* Calculate Button */}
-      {bikeType && (
+      {/* Calculate Button - Only show when components are loaded */}
+      {bikeType && componentsLoaded && (
         <div className="text-center">
           <button
             onClick={() => onCalculate(speedUnit)}

@@ -634,6 +634,12 @@ footer {
   }
 }
 
+/* Add to globals.css */
+.searchable-dropdown-portal {
+  position: fixed !important;
+  z-index: 10000 !important;
+}
+
 
 /* === DROPDOWN Z-INDEX SOLUTION (CORRECTED) === */
 

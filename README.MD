@@ -1,50 +1,69 @@
-# Cranksmith V2
+# CrankSmith v1.1
 
-Advanced drivetrain analysis tool for cyclists and bike mechanics.
+CrankSmith is a powerful bike gear calculator and optimization tool that helps cyclists make informed decisions about their drivetrain components. Built by cyclists, for cyclists.
 
 ## Features
 
-- Interactive drivetrain builder
-- Advanced gear ratio calculations
-- Custom cassette analysis
-- Modern, responsive UI
-
-## Getting Started
-
-1. Clone the repository:
-```bash
-git clone [repository-url]
-cd cranksmith-v2
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Run the development server:
-```bash
-npm run dev
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+- 🚴‍♂️ **Gear Calculator**: Compare current and proposed setups with real component data
+- 📊 **Performance Analysis**: See exact speed and cadence impacts of component changes
+- 🎯 **Tire Pressure Calculator**: Get optimal tire pressure recommendations
+- 🤖 **AI Mechanic (Riley)**: Get personalized advice from our AI bike expert
+- 💾 **Save Configurations**: Store your setups in the garage for future reference
 
 ## Tech Stack
 
 - Next.js
 - React
 - Tailwind CSS
-- Custom calculation engine
+- Local Storage for data persistence
 
-## Development
+## Getting Started
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/CrankSmith-v1.1.git
+cd CrankSmith-v1.1
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Run the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Project Structure
+
+```
+CrankSmith-v1.1/
+├── components/         # Reusable UI components
+├── lib/               # Utility functions and calculations
+├── pages/             # Next.js pages and API routes
+├── public/            # Static assets
+└── styles/            # Global styles and Tailwind config
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-[Add your license here]
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contact
+
+- Website: [cranksmith.com](https://cranksmith.com)
+- Email: mike@cranksmith.com
+- Instagram: [@cranksmithapp](https://instagram.com/cranksmithapp)
 
 # Deploy trigger

@@ -47,7 +47,7 @@ export default function Layout({ children }) {
                 Bike Gear Calculator
               </Link>
               <Link href="/tire-pressure" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
-                Tire Pressure
+                Tire Pressure Calculator
               </Link>
               <Link href="/blog" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
                 Blog
@@ -102,7 +102,7 @@ export default function Layout({ children }) {
                   className="block text-base font-medium transition-colors hover:opacity-80"
                   style={{ color: 'var(--text-secondary)' }}
                   onClick={() => setIsMobileMenuOpen(false)}>
-              Tire Pressure
+              Tire Pressure Calculator
             </Link>
             <Link href="/blog" 
                   className="block text-base font-medium transition-colors hover:opacity-80"

@@ -43,20 +43,15 @@ export default function Layout({ children }) {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-12 ml-16 mt-8">
+              <Link href="/calculator" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
+                Bike Gear Calculator
+              </Link>
               <Link href="/tire-pressure" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
                 Tire Pressure
               </Link>
-              <button 
-                onClick={() => {
-                  const garageSection = document.getElementById('garage-section');
-                  if (garageSection) {
-                    garageSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                className="text-lg font-medium text-gray-300 hover:text-white transition-colors bg-transparent border-none cursor-pointer"
-              >
-                My Garage
-              </button>
+              <Link href="/blog" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
+                Blog
+              </Link>
               <Link href="/about" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
                 About
               </Link>
@@ -101,7 +96,7 @@ export default function Layout({ children }) {
                   className="block text-base font-medium transition-colors hover:opacity-80"
                   style={{ color: 'var(--accent-blue)' }}
                   onClick={() => setIsMobileMenuOpen(false)}>
-              Gear Calculator
+              Bike Gear Calculator
             </Link>
             <Link href="/tire-pressure" 
                   className="block text-base font-medium transition-colors hover:opacity-80"
@@ -109,18 +104,12 @@ export default function Layout({ children }) {
                   onClick={() => setIsMobileMenuOpen(false)}>
               Tire Pressure
             </Link>
-            <button 
-              onClick={() => {
-                const garageSection = document.getElementById('garage-section');
-                if (garageSection) {
-                  garageSection.scrollIntoView({ behavior: 'smooth' });
-                  setIsMobileMenuOpen(false);
-                }
-              }}
-              className="block w-full text-left text-base font-medium transition-colors hover:opacity-80"
-              style={{ color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer' }}>
-              My Garage
-            </button>
+            <Link href="/blog" 
+                  className="block text-base font-medium transition-colors hover:opacity-80"
+                  style={{ color: 'var(--text-secondary)' }}
+                  onClick={() => setIsMobileMenuOpen(false)}>
+              Blog
+            </Link>
             <Link href="/about" 
                   className="block text-base font-medium transition-colors hover:opacity-80"
                   style={{ color: 'var(--text-secondary)' }}
@@ -142,13 +131,21 @@ export default function Layout({ children }) {
                 borderColor: 'var(--border-subtle)', 
                 background: 'var(--bg-primary)' 
               }}>
-        <div className="container mx-auto px-6 text-center" style={{ color: 'var(--text-tertiary)' }}>
-          <p className="text-sm">
-            &copy; 2025 CrankSmith. All rights reserved.
-          </p>
-          <p className="mt-2 text-xs">
-            Forge Your Perfect Ride. • Beta Version 1
-          </p>
+        <div className="container mx-auto px-6 text-center flex flex-col md:flex-row md:justify-between md:items-center">
+          <div className="mb-4 md:mb-0">
+            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+              &copy; 2025 CrankSmith. All rights reserved.
+            </p>
+            <p className="mt-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+              Precision tools for modern cyclists.
+            </p>
+          </div>
+          <nav className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <a href="/docs" className="hover:text-[var(--accent-blue)] transition-colors">Docs</a>
+            <a href="/blog" className="hover:text-[var(--accent-blue)] transition-colors">Blog</a>
+            <a href="mailto:mike@cranksmith.com" className="hover:text-[var(--accent-blue)] transition-colors">Contact</a>
+            <a href="/about" className="hover:text-[var(--accent-blue)] transition-colors">About</a>
+          </nav>
         </div>
       </footer>
     </div>

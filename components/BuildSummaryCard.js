@@ -1,5 +1,37 @@
 import { useState } from 'react';
 
+// Simple toast system - add this at the top of your file
+const showToast = (message, type = 'success') => {
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 ${
+    type === 'success' ? 'bg-green-500 text-white' : 
+    type === 'error' ? 'bg-red-500 text-white' : 
+    'bg-blue-500 text-white'
+  }`;
+  toast.textContent = message;
+  
+  // Add to page
+  document.body.appendChild(toast);
+  
+  // Animate in
+  setTimeout(() => {
+    toast.style.transform = 'translateX(0)';
+    toast.style.opacity = '1';
+  }, 100);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    toast.style.transform = 'translateX(100%)';
+    toast.style.opacity = '0';
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }, 3000);
+};
+
 export default function BuildSummaryCard({ currentSetup, proposedSetup, results, onSave }) {
   const [isExporting, setIsExporting] = useState(false);
   
@@ -104,225 +136,192 @@ export default function BuildSummaryCard({ currentSetup, proposedSetup, results,
     return message;
   };
 
-  // PDF Export function
+  // Fixed PDF export with proper error handling
   const exportToPDF = async () => {
     setIsExporting(true);
+    
     try {
-      // Create a clean version for PDF
-      const printContent = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>CrankSmith Build Comparison</title>
-            <style>
-              @page { 
-                size: A4; 
-                margin: 1in; 
-              }
-              * {
-                box-sizing: border-box;
-              }
-              body { 
-                font-family: Arial, sans-serif; 
-                margin: 0; 
-                padding: 20px;
-                color: #333; 
-                line-height: 1.4;
-                background: white;
-              }
-              .header { 
-                text-align: center; 
-                margin-bottom: 30px; 
-                border-bottom: 2px solid #007AFF;
-                padding-bottom: 20px;
-              }
-              .header h1 {
-                margin: 0 0 10px 0;
-                color: #007AFF;
-                font-size: 24px;
-              }
-              .comparison { 
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 30px; 
-                margin-bottom: 30px; 
-              }
-              .setup { 
-                background: #f9f9f9;
-                padding: 20px;
-                border-radius: 8px;
-                border: 1px solid #ddd;
-              }
-              .setup h3 { 
-                color: #007AFF; 
-                border-bottom: 2px solid #007AFF; 
-                padding-bottom: 8px; 
-                margin: 0 0 15px 0;
-                font-size: 18px;
-              }
-              .spec-row { 
-                display: flex; 
-                justify-content: space-between; 
-                margin: 10px 0; 
-                padding: 5px 0;
-                border-bottom: 1px dotted #ccc;
-              }
-              .spec-row:last-child {
-                border-bottom: none;
-              }
-              .spec-row span:first-child {
-                font-weight: 500;
-                color: #666;
-              }
-              .spec-row span:last-child {
-                font-weight: 600;
-                color: #333;
-              }
-              .bottom-line { 
-                background: #f0f8ff; 
-                padding: 20px; 
-                border-radius: 8px; 
-                margin: 20px 0; 
-                border: 1px solid #007AFF;
-              }
-              .bottom-line h3 {
-                margin: 0 0 10px 0;
-                color: #007AFF;
-              }
-              .bottom-line p {
-                margin: 0;
-                font-size: 16px;
-                line-height: 1.5;
-              }
-              .compatibility { 
-                margin: 20px 0; 
-                padding: 15px; 
-                border-radius: 8px; 
-                page-break-inside: avoid;
-              }
-              .compatibility h3 {
-                margin: 0 0 10px 0;
-                font-size: 16px;
-              }
-              .compatibility p {
-                margin: 5px 0;
-                font-size: 14px;
-              }
-              .compatible { 
-                background: #e8f5e8; 
-                border: 1px solid #4CAF50;
-                color: #2e7d32;
-              }
-              .warning { 
-                background: #fff3cd; 
-                border: 1px solid #ffc107; 
-                color: #856404;
-              }
-              .error { 
-                background: #f8d7da; 
-                border: 1px solid #dc3545; 
-                color: #721c24;
-              }
-              .footer {
-                margin-top: 40px;
-                text-align: center;
-                font-size: 12px;
-                color: #666;
-                border-top: 1px solid #ddd;
-                padding-top: 20px;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="header">
-              <h1>🔧 CrankSmith Build Comparison</h1>
-              <p>Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
-            </div>
-            
-            <div class="comparison">
-              <div class="setup">
-                <h3>📊 Current Setup</h3>
-                <div class="spec-row"><span>Crankset:</span><span>${currentSpecs.crankset}</span></div>
-                <div class="spec-row"><span>Cassette:</span><span>${currentSpecs.cassette}</span></div>
-                <div class="spec-row"><span>Wheel:</span><span>${currentSpecs.wheel}</span></div>
-                <div class="spec-row"><span>Tire:</span><span>${currentSpecs.tire}</span></div>
-                <div class="spec-row"><span>Top Speed:</span><span>${current.metrics.highSpeed} ${comparison.speedUnit}</span></div>
-                <div class="spec-row"><span>Weight:</span><span>${current.totalWeight}g</span></div>
-              </div>
-              
-              <div class="setup">
-                <h3>🚀 Proposed Setup</h3>
-                <div class="spec-row"><span>Crankset:</span><span>${proposedSpecs.crankset}</span></div>
-                <div class="spec-row"><span>Cassette:</span><span>${proposedSpecs.cassette}</span></div>
-                <div class="spec-row"><span>Wheel:</span><span>${proposedSpecs.wheel}</span></div>
-                <div class="spec-row"><span>Tire:</span><span>${proposedSpecs.tire}</span></div>
-                <div class="spec-row"><span>Top Speed:</span><span>${proposed.metrics.highSpeed} ${comparison.speedUnit}</span></div>
-                <div class="spec-row"><span>Weight:</span><span>${proposed.totalWeight}g</span></div>
-              </div>
-            </div>
-            
-            <div class="bottom-line">
-              <h3>💡 Performance Analysis</h3>
-              <p>${generateBottomLine()}</p>
-            </div>
-            
-            <div class="compatibility ${compatibility.status}">
-              <h3>🔧 Compatibility Status</h3>
-              <p><strong>Status:</strong> ${compatibility.status.charAt(0).toUpperCase() + compatibility.status.slice(1)}</p>
-              ${compatibility.issues.length > 0 ? `<p><strong>❌ Issues:</strong> ${compatibility.issues.join(', ')}</p>` : ''}
-              ${compatibility.warnings.length > 0 ? `<p><strong>⚠️ Warnings:</strong> ${compatibility.warnings.join(', ')}</p>` : ''}
-              ${compatibility.status === 'compatible' ? '<p><strong>✅ All components are compatible!</strong></p>' : ''}
-            </div>
-
-            <div class="footer">
-              <p>Generated by CrankSmith v2.0 - The Ultimate Cycling Gear Calculator</p>
-              <p>Visit us at cranksmith.app for more cycling tools and insights</p>
-            </div>
-          </body>
-        </html>
-      `;
-      
-      // Create new window with proper size
-      const printWindow = window.open('', '_blank', 'width=800,height=1000,scrollbars=yes');
-      
-      if (!printWindow) {
-        alert('Please allow popups for PDF export to work');
+      // Try to import jsPDF - if it fails, fallback to HTML
+      let jsPDFModule;
+      try {
+        jsPDFModule = await import('jspdf');
+      } catch (importError) {
+        console.warn('jsPDF not available, falling back to HTML export');
+        exportToHTML();
         return;
       }
       
-      // Write content and wait for it to load
-      printWindow.document.open();
-      printWindow.document.write(printContent);
-      printWindow.document.close();
+      const { jsPDF } = jsPDFModule;
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.getWidth();
       
-      // Wait for content to render, then print
-      printWindow.onload = () => {
-        setTimeout(() => {
-          printWindow.focus();
-          printWindow.print();
-          
-          // Close window after print dialog
-          setTimeout(() => {
-            printWindow.close();
-          }, 1000);
-        }, 300);
-      };
+      // Header
+      doc.setFontSize(24);
+      doc.setTextColor(0, 122, 255);
+      doc.text('CrankSmith Build Summary', pageWidth / 2, 30, { align: 'center' });
       
-      // Fallback if onload doesn't fire
-      setTimeout(() => {
-        if (!printWindow.closed) {
-          printWindow.focus();
-          printWindow.print();
-        }
-      }, 1000);
+      doc.setFontSize(12);
+      doc.setTextColor(100);
+      doc.text(`Generated on ${new Date().toLocaleDateString()}`, pageWidth / 2, 40, { align: 'center' });
+      
+      // Current Setup Section
+      let yPosition = 60;
+      doc.setFontSize(16);
+      doc.setTextColor(0);
+      doc.text('Current Setup', 20, yPosition);
+      
+      yPosition += 10;
+      doc.setFontSize(10);
+      doc.setTextColor(60);
+      
+      doc.text(`Crankset: ${currentSpecs.crankset}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Cassette: ${currentSpecs.cassette}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Wheel: ${currentSpecs.wheel}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Tire: ${currentSpecs.tire}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Top Speed: ${current.metrics.highSpeed} ${comparison.speedUnit}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Weight: ${current.totalWeight}g`, 25, yPosition);
+      
+      // Proposed Setup Section
+      yPosition += 20;
+      doc.setFontSize(16);
+      doc.setTextColor(0);
+      doc.text('Proposed Setup', 20, yPosition);
+      
+      yPosition += 10;
+      doc.setFontSize(10);
+      doc.setTextColor(60);
+      
+      doc.text(`Crankset: ${proposedSpecs.crankset}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Cassette: ${proposedSpecs.cassette}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Wheel: ${proposedSpecs.wheel}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Tire: ${proposedSpecs.tire}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Top Speed: ${proposed.metrics.highSpeed} ${comparison.speedUnit}`, 25, yPosition);
+      yPosition += 6;
+      doc.text(`Weight: ${proposed.totalWeight}g`, 25, yPosition);
+      
+      // Performance Analysis
+      yPosition += 20;
+      doc.setFontSize(16);
+      doc.setTextColor(0, 122, 255);
+      doc.text('Performance Analysis', 20, yPosition);
+      
+      yPosition += 10;
+      doc.setFontSize(10);
+      doc.setTextColor(0);
+      
+      const bottomLine = generateBottomLine();
+      const lines = doc.splitTextToSize(bottomLine, pageWidth - 40);
+      doc.text(lines, 20, yPosition);
+      
+      // Compatibility Status
+      yPosition += lines.length * 6 + 15;
+      doc.setFontSize(14);
+      doc.setTextColor(0, 150, 0);
+      doc.text('✓ Components are compatible', 20, yPosition);
+      
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(120);
+      doc.text('Generated by CrankSmith - The Ultimate Cycling Gear Calculator', 
+               pageWidth / 2, doc.internal.pageSize.getHeight() - 20, { align: 'center' });
+      doc.text('Visit cranksmith.com for more cycling tools', 
+               pageWidth / 2, doc.internal.pageSize.getHeight() - 15, { align: 'center' });
+      
+      // Download the PDF
+      const fileName = `cranksmith-build-${new Date().toISOString().split('T')[0]}.pdf`;
+      doc.save(fileName);
+      
+      showToast('✅ PDF downloaded successfully!', 'success');
       
     } catch (error) {
       console.error('PDF export failed:', error);
-      alert('PDF export failed. Please try again.');
+      showToast('❌ PDF export failed. Trying HTML export...', 'error');
+      // Fallback to HTML export
+      setTimeout(() => exportToHTML(), 1000);
     } finally {
       setIsExporting(false);
     }
+  };
+
+  // HTML export fallback
+  const exportToHTML = () => {
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>CrankSmith Build Summary</title>
+          <style>
+            body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+            .header { text-align: center; border-bottom: 2px solid #007AFF; padding-bottom: 20px; margin-bottom: 20px; }
+            .section { margin-bottom: 20px; }
+            .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+            .spec-item { margin: 8px 0; display: flex; justify-content: space-between; }
+            .label { font-weight: bold; color: #333; }
+            .value { color: #666; }
+            .analysis { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #007AFF; }
+            @media print { body { margin: 0; } }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>🔧 CrankSmith Build Summary</h1>
+            <p>Generated on ${new Date().toLocaleDateString()}</p>
+          </div>
+          
+          <div class="spec-grid">
+            <div class="section">
+              <h2>📊 Current Setup</h2>
+              <div class="spec-item"><span class="label">Crankset:</span> <span class="value">${currentSpecs.crankset}</span></div>
+              <div class="spec-item"><span class="label">Cassette:</span> <span class="value">${currentSpecs.cassette}</span></div>
+              <div class="spec-item"><span class="label">Wheel:</span> <span class="value">${currentSpecs.wheel}</span></div>
+              <div class="spec-item"><span class="label">Tire:</span> <span class="value">${currentSpecs.tire}</span></div>
+              <div class="spec-item"><span class="label">Top Speed:</span> <span class="value">${current.metrics.highSpeed} ${comparison.speedUnit}</span></div>
+              <div class="spec-item"><span class="label">Weight:</span> <span class="value">${current.totalWeight}g</span></div>
+            </div>
+            
+            <div class="section">
+              <h2>🚀 Proposed Setup</h2>
+              <div class="spec-item"><span class="label">Crankset:</span> <span class="value">${proposedSpecs.crankset}</span></div>
+              <div class="spec-item"><span class="label">Cassette:</span> <span class="value">${proposedSpecs.cassette}</span></div>
+              <div class="spec-item"><span class="label">Wheel:</span> <span class="value">${proposedSpecs.wheel}</span></div>
+              <div class="spec-item"><span class="label">Tire:</span> <span class="value">${proposedSpecs.tire}</span></div>
+              <div class="spec-item"><span class="label">Top Speed:</span> <span class="value">${proposed.metrics.highSpeed} ${comparison.speedUnit}</span></div>
+              <div class="spec-item"><span class="label">Weight:</span> <span class="value">${proposed.totalWeight}g</span></div>
+            </div>
+          </div>
+          
+          <div class="analysis">
+            <h2>💡 Performance Analysis</h2>
+            <p>${generateBottomLine()}</p>
+          </div>
+          
+          <div class="section" style="text-align: center; margin-top: 30px; color: #666; font-size: 12px;">
+            <p>Generated by CrankSmith - Visit cranksmith.com for more cycling tools</p>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `cranksmith-build-${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    showToast('✅ Build summary downloaded!', 'success');
   };
 
   // Share function
@@ -335,21 +334,18 @@ export default function BuildSummaryCard({ currentSetup, proposedSetup, results,
 
     try {
       if (navigator.share) {
-        // Use native sharing if available
         await navigator.share(shareData);
       } else {
-        // Fallback: copy link to clipboard
         await navigator.clipboard.writeText(window.location.href);
-        alert('Link copied to clipboard!');
+        showToast('✅ Link copied to clipboard!', 'success');
       }
     } catch (error) {
       console.error('Sharing failed:', error);
-      // Final fallback: just copy URL
       try {
         await navigator.clipboard.writeText(window.location.href);
-        alert('Link copied to clipboard!');
+        showToast('✅ Link copied to clipboard!', 'success');
       } catch (clipboardError) {
-        alert('Sharing not supported. Copy the URL from your browser address bar.');
+        showToast('❌ Sharing not supported', 'error');
       }
     }
   };
@@ -515,7 +511,7 @@ export default function BuildSummaryCard({ currentSetup, proposedSetup, results,
                 disabled={isExporting}
                 className="px-6 py-3 rounded-xl font-medium transition-all text-base"
                 style={{ 
-                  background: isExporting ? 'var(--surface-disabled)' : 'var(--accent-blue)',
+                  background: isExporting ? '#6B7280' : 'var(--accent-blue)',
                   color: 'white',
                   opacity: isExporting ? 0.6 : 1
                 }}
@@ -531,17 +527,17 @@ export default function BuildSummaryCard({ currentSetup, proposedSetup, results,
                 onClick={shareResults}
                 className="px-6 py-3 rounded-xl font-medium transition-all text-base"
                 style={{ 
-                  background: 'var(--surface-primary)',
-                  color: 'var(--text-secondary)',
-                  border: '1px solid var(--border-subtle)'
+                  background: '#F9FAFB',
+                  color: '#6B7280',
+                  border: '1px solid #D1D5DB'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.background = 'var(--surface-elevated)';
-                  e.target.style.borderColor = 'var(--border-elevated)';
+                  e.target.style.background = '#F3F4F6';
+                  e.target.style.borderColor = '#9CA3AF';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = 'var(--surface-primary)';
-                  e.target.style.borderColor = 'var(--border-subtle)';
+                  e.target.style.background = '#F9FAFB';
+                  e.target.style.borderColor = '#D1D5DB';
                 }}
               >
                 <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

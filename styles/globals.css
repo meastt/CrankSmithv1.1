@@ -15,6 +15,11 @@
   --warning-orange: #FF6900;
   --error-red: #DC2626;
   
+  /* Accent colors */
+  --accent-blue: #3B82F6;
+  --accent-blue-hover: #2563EB;
+  --accent-blue-light: #EFF6FF;
+  
   /* Grays - The backbone of professional design */
   --gray-50: #FAFAFA;
   --gray-100: #F4F4F5;
@@ -299,7 +304,7 @@ a:hover {
 
 /* Garage cards - Clean data display */
 .garage-card {
-  background: var(--white);
+  background: var(--surface-elevated);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -713,4 +718,18 @@ img {
 [class*="gradient"],
 [class*="fire"] {
   background: none !important;
+}
+
+.garage-grid {
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1100px;
+}
+
+.garage-load-btn {
+  border: 2px solid #fff;
+}
+.garage-load-btn:disabled {
+  border-color: #aaa;
 }

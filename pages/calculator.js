@@ -87,168 +87,231 @@ const BikeIcons = {
 };
 
 const GarageCard = ({ config, onLoad, onDelete }) => {
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
-  const bikeTypeDisplay = {
-    road: 'Road',
-    gravel: 'Gravel', 
-    mtb: 'Mountain'
-  };
-
-  const formatSpecs = (setup) => {
-    if (!setup) return { crankset: 'N/A', cassette: 'N/A', wheel: 'N/A', tire: 'N/A' };
-
-    // Get crankset info
-    const crankset = setup.crankset;
-    const cranksetText = crankset ? 
-      `${crankset.model || ''} ${crankset.teeth ? crankset.teeth.join('/') + 'T' : ''}`.trim() : 
-      'N/A';
+  const handleLoadConfig = async () => {
+    setIsLoading(true);
     
-    // Get cassette info
-    const cassette = setup.cassette;
-    const cassetteText = cassette ? 
-      `${cassette.model || ''} ${cassette.teeth ? cassette.teeth.join('-') + 'T' : ''}`.trim() : 
-      'N/A';
-    
-    // Get wheel and tire info
-    const wheelText = setup.wheel ? `${setup.wheel} wheel` : 'N/A';
-    const tireText = setup.tire ? `${setup.tire}mm tire` : 'N/A';
-    
-    return { 
-      crankset: cranksetText,
-      cassette: cassetteText,
-      wheel: wheelText,
-      tire: tireText
-    };
-  };
-
-  const currentSpecs = formatSpecs(config.currentSetup);
-  const proposedSpecs = formatSpecs(config.proposedSetup);
-
-  // Safely get weight change
-  const getWeightChange = () => {
-    if (!config.results) return 0;
-    if (config.results.comparison?.weightChange !== undefined) {
-      return config.results.comparison.weightChange;
+    try {
+      // Add visual feedback immediately
+      const toast = createToast('Loading configuration...', 'loading');
+      
+      // Small delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Load the configuration
+      await onLoad(config);
+      
+      // Update toast to success
+      updateToast(toast, `✅ Loaded "${config.name}" successfully!`, 'success');
+      
+      // Scroll to top smoothly
+      window.scrollTo({ 
+        top: 0, 
+        behavior: 'smooth' 
+      });
+      
+      // Auto-hide success message after 3 seconds
+      setTimeout(() => hideToast(toast), 3000);
+      
+    } catch (error) {
+      console.error('Error loading config:', error);
+      createToast('❌ Failed to load configuration', 'error');
+    } finally {
+      setIsLoading(false);
     }
-    if (config.results.weightChange !== undefined) {
-      return config.results.weightChange;
-    }
-    return 0;
   };
 
-  const weightChange = getWeightChange();
+  const handleDeleteConfig = async () => {
+    if (window.confirm(`Are you sure you want to delete "${config.name}"?`)) {
+      try {
+        await onDelete(config.id);
+        createToast(`🗑️ Deleted "${config.name}"`, 'success');
+      } catch (error) {
+        console.error('Error deleting config:', error);
+        createToast('❌ Failed to delete configuration', 'error');
+      }
+    }
+  };
 
   return (
-    <div className="bg-[--color-surface] border border-[--color-border] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:border-[--color-accent]/30">
-      <div className="p-4 border-b border-[--color-border]/50">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 text-[--color-accent]">
-              {BikeIcons[config.bikeType] || BikeIcons.road}
-            </div>
-            <div>
-              <h3 className="font-semibold text-[--color-text-primary] text-lg leading-tight">
-                {config.name}
-              </h3>
-              <p className="text-[--color-text-secondary] text-sm">
-                {bikeTypeDisplay[config.bikeType] || 'Road'} • {new Date(config.created_at).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-          
-          <button
-            onClick={() => setShowDeleteConfirm(true)}
-            className="w-8 h-8 rounded-full bg-[--color-surface] hover:bg-[--color-accent] text-[--color-text-secondary] hover:text-white transition-all duration-200 flex items-center justify-center border border-[--color-border]"
-            title="Delete configuration"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          </button>
+    <div className="garage-card">
+      {/* Header */}
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
+            {config.name}
+          </h3>
+          <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+            {config.bikeType ? config.bikeType.charAt(0).toUpperCase() + config.bikeType.slice(1) : 'Unknown'} Bike
+          </p>
         </div>
-      </div>
-
-      <div className="p-4">
-        <div className="mb-4">
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div>
-              <p className="text-[--color-text-secondary] mb-1">Current Setup</p>
-              <p className="text-[--color-text-primary] font-mono">
-                {currentSpecs.crankset} → {currentSpecs.cassette}
-              </p>
-              <p className="text-[--color-text-primary] text-xs mt-1">
-                {currentSpecs.wheel} • {currentSpecs.tire}
-              </p>
-            </div>
-            <div>
-              <p className="text-[--color-text-secondary] mb-1">Proposed Setup</p>
-              <p className="text-[--color-text-primary] font-mono">
-                {proposedSpecs.crankset} → {proposedSpecs.cassette}
-              </p>
-              <p className="text-[--color-text-primary] text-xs mt-1">
-                {proposedSpecs.wheel} • {proposedSpecs.tire}
-              </p>
-            </div>
-          </div>
-          
-          {config.results && (
-            <div className="mt-3 p-2 bg-[--color-surface] rounded border border-[--color-border]/50">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-[--color-text-secondary]">Weight Change:</span>
-                <span className={`font-semibold ${weightChange > 0 ? 'text-[--color-accent]' : 'text-green-500'}`}>
-                  {weightChange > 0 ? '+' : ''}{weightChange}g
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
         <button
-          onClick={() => onLoad(config)}
-          className="w-full py-3 bg-[--color-accent] hover:opacity-90 text-white font-semibold rounded transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+          onClick={handleDeleteConfig}
+          className="p-2 rounded-lg transition-colors hover:bg-red-50"
+          style={{ color: 'var(--text-tertiary)' }}
+          title="Delete configuration"
         >
-          Load Configuration
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
         </button>
       </div>
 
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-[#010912] p-6 rounded-lg max-w-md w-full mx-4 border border-[--color-border] shadow-xl">
-            <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
-              Delete Configuration
-            </h3>
-            <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>
-              Are you sure you want to delete this configuration? This action cannot be undone.
-            </p>
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 rounded-lg font-medium transition-colors"
-                style={{ 
-                  background: 'var(--surface-primary)',
-                  color: 'var(--text-secondary)',
-                  border: '1px solid var(--border-subtle)'
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  onDelete(config.id);
-                  setShowDeleteConfirm(false);
-                }}
-                className="px-4 py-2 rounded-lg font-medium text-white transition-colors"
-                style={{ background: 'var(--accent-red)' }}
-              >
-                Delete
-              </button>
+      {/* Configuration Details */}
+      <div className="space-y-3 mb-4">
+        {/* Components */}
+        <div>
+          <h4 className="text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+            Components
+          </h4>
+          <div className="space-y-1 text-sm" style={{ color: 'var(--text-tertiary)' }}>
+            <div className="flex justify-between">
+              <span>Crankset:</span>
+              <span className="font-medium">{config.proposedSetup?.crankset?.model || 'Not set'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Cassette:</span>
+              <span className="font-medium">{config.proposedSetup?.cassette?.model || 'Not set'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Wheel:</span>
+              <span className="font-medium">{config.proposedSetup?.wheel || 'Not set'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Tire:</span>
+              <span className="font-medium">{config.proposedSetup?.tire || 'Not set'}</span>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Performance Metrics */}
+        {config.results && (
+          <div>
+            <h4 className="text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+              Performance
+            </h4>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="text-center p-2 rounded" style={{ background: 'var(--surface-elevated)' }}>
+                <div className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+                  {config.results.proposed?.totalWeight}g
+                </div>
+                <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Weight</div>
+              </div>
+              <div className="text-center p-2 rounded" style={{ background: 'var(--surface-elevated)' }}>
+                <div className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+                  {config.results.proposed?.gearRange}%
+                </div>
+                <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Range</div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Load Button */}
+      <button
+        onClick={handleLoadConfig}
+        disabled={isLoading}
+        className={`garage-load-btn w-full py-3 rounded font-semibold transition-all ${
+          isLoading 
+            ? 'bg-gray-400 cursor-not-allowed opacity-60' 
+            : 'bg-[--color-accent] hover:opacity-90'
+        } text-white`}
+      >
+        {isLoading ? (
+          <span className="flex items-center justify-center gap-2">
+            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+            Loading...
+          </span>
+        ) : (
+          'Load Configuration'
+        )}
+      </button>
     </div>
   );
+};
+
+// Toast notification system
+let toastId = 0;
+const activeToasts = new Map();
+
+const createToast = (message, type = 'info') => {
+  const id = ++toastId;
+  
+  const toast = document.createElement('div');
+  toast.id = `toast-${id}`;
+  toast.className = `
+    fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm
+    transform transition-all duration-300 ease-in-out
+    ${type === 'success' ? 'bg-green-500 text-white' : 
+      type === 'error' ? 'bg-red-500 text-white' :
+      type === 'loading' ? 'bg-blue-500 text-white' :
+      'bg-gray-800 text-white'}
+  `;
+  
+  toast.innerHTML = `
+    <div class="flex items-center gap-3">
+      ${type === 'loading' ? `
+        <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+        </svg>
+      ` : ''}
+      <span>${message}</span>
+    </div>
+  `;
+  
+  // Add click to dismiss
+  toast.addEventListener('click', () => hideToast(id));
+  
+  document.body.appendChild(toast);
+  activeToasts.set(id, toast);
+  
+  // Animate in
+  requestAnimationFrame(() => {
+    toast.style.transform = 'translateX(0)';
+    toast.style.opacity = '1';
+  });
+  
+  return id;
+};
+
+const updateToast = (id, message, type) => {
+  const toast = activeToasts.get(id);
+  if (!toast) return;
+  
+  // Update styling
+  toast.className = toast.className.replace(
+    /(bg-\w+-500)/g, 
+    type === 'success' ? 'bg-green-500' : 
+    type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+  );
+  
+  // Update content (remove loading spinner for success/error)
+  toast.querySelector('span').textContent = message;
+  const spinner = toast.querySelector('svg');
+  if (spinner && type !== 'loading') {
+    spinner.remove();
+  }
+};
+
+const hideToast = (id) => {
+  const toast = activeToasts.get(id);
+  if (!toast) return;
+  
+  toast.style.transform = 'translateX(100%)';
+  toast.style.opacity = '0';
+  
+  setTimeout(() => {
+    if (toast.parentNode) {
+      toast.parentNode.removeChild(toast);
+    }
+    activeToasts.delete(id);
+  }, 300);
 };
 
 export default function Home() {

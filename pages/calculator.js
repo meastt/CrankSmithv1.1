@@ -6,6 +6,7 @@ import BuildSummaryCard from '../components/BuildSummaryCard';
 import { compareSetups } from '../lib/calculations';
 import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
 import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
+import SEOHead from '../components/SEOHead';
 
 // Default empty component database for initial render
 const defaultComponentDatabase = {
@@ -593,273 +594,281 @@ export default function Home() {
   };
 
   return (
-    <main className="main-container container mx-auto px-4 py-12 max-w-7xl">
-      {/* Header Section */}
-      <div className="text-center mb-12">
-        <h1 className="hero-title hero-title-fire">Compare. Calculate. Optimize.</h1>
-        <p className="hero-subtitle max-w-2xl mx-auto">
-          See exactly how component changes affect your bike's performance with real-world data.
-        </p>
-        
-        {(bikeType || results) && (
-          <button
-            onClick={() => {
-              setBikeType('');
-              setCurrentSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-              setProposedSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-              setResults(null);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="mt-6 px-6 py-3 rounded-xl font-medium transition-all text-base"
-            style={{ 
-              background: 'var(--accent-blue)',
-              color: 'var(--white)',
-              border: '1px solid var(--accent-blue)'
-            }}
-          >
-            <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-            Start New Analysis
-          </button>
-        )}
-      </div>
-
-      {/* Quick Start Guide */}
-      <div className="max-w-4xl mx-auto mb-12">
-        <div className="card">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            {!bikeType ? (
-              <>
-                <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
-                  How It Works
-                </h2>
-                <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-                  Compare any bike components in 3 simple steps
-                </p>
-              </>
-            ) : (
-              <>
-                <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
-                  Great Choice! 🚴‍♂️
-                </h2>
-                <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
-                  You've selected a {bikeType} bike. Now configure your components below.
-                </p>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Bike Type Selection */}
-      {!bikeType && (
-        <div className="max-w-4xl mx-auto mb-12">
-          <div className="mb-8">
-            <h2 className="text-4xl font-extrabold mb-2 text-center" style={{ color: 'var(--text-primary)' }}>
-              Select Your Bike Type
-            </h2>
-            <p className="text-lg text-center mb-6" style={{ color: 'var(--text-secondary)' }}>
-              Choose the style of bike you want to optimize. Unlock the full gear configurator to build your perfect setup—save your builds to your garage, and return anytime to load or fine-tune your bikes.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {Object.entries(bikeConfig).map(([type, config]) => (
-                <button
-                  key={type}
-                  onClick={() => setBikeType(type)}
-                  className={`p-6 rounded-lg border-2 transition-all duration-200 ${
-                    bikeType === type
-                      ? 'border-[--color-accent] bg-[--color-accent]/10'
-                      : 'border-[--color-border] hover:border-[--color-accent]/50'
-                  }`}
-                >
-                  <div className="w-16 h-16 mx-auto mb-4 text-[--color-accent]">
-                    {BikeIcons[type]}
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{config.name}</h3>
-                  <p className="text-sm text-[--color-text-secondary]">{config.description}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Component Selection and Analysis */}
-      {bikeType && (
-        <div className="space-y-8">
-          {/* Gear Selector Panels */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <GearSelectorPanel
-              title="Current Setup"
-              subtitle="Your current components"
-              setup={currentSetup}
-              config={{
-                wheelSizes: bikeConfig[bikeType].wheelSizes,
-                tireWidths: bikeConfig[bikeType].tireWidths,
-                onWheelChange: handleCurrentWheelChange,
-                onTireChange: handleCurrentTireChange,
-                onCranksetChange: handleCurrentCranksetChange,
-                onCassetteChange: handleCurrentCassetteChange
-              }}
-              components={components}
-              icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>}
-            />
-
-            <GearSelectorPanel
-              title="Proposed Setup"
-              subtitle="Components you're considering"
-              setup={proposedSetup}
-              config={{
-                wheelSizes: bikeConfig[bikeType].wheelSizes,
-                tireWidths: bikeConfig[bikeType].tireWidths,
-                onWheelChange: handleProposedWheelChange,
-                onTireChange: handleProposedTireChange,
-                onCranksetChange: handleProposedCranksetChange,
-                onCassetteChange: handleProposedCassetteChange
-              }}
-              components={components}
-              icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>}
-            />
-          </div>
-
-          {/* Setup Progress and Analyze Button */}
-          <div className="max-w-4xl mx-auto">
-            <div className="card">
-              <div className="flex justify-between items-center">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-[var(--accent-blue)]" />
-                    <span className="text-sm text-gray-600">Current Setup: {Math.round(currentSetupCompletion)}%</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-[var(--accent-performance)]" />
-                    <span className="text-sm text-gray-600">Proposed Setup: {Math.round(proposedSetupCompletion)}%</span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => handleCalculate()}
-                  disabled={totalCompletion < 100 || loading}
-                  className={`px-6 py-3 rounded-xl font-medium transition-all ${
-                    totalCompletion < 100 || loading
-                      ? 'opacity-50 cursor-not-allowed'
-                      : 'hover:opacity-90'
-                  }`}
-                  style={{ 
-                    background: 'var(--accent-blue)',
-                    color: 'var(--white)'
-                  }}
-                >
-                  {loading ? (
-                    <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                      </svg>
-                      Analyzing...
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                      </svg>
-                      Analyze Performance
-                    </span>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Results Section */}
-      {results && (
-        <div className="max-w-4xl mx-auto mt-12">
-          <SimulationResults 
-            results={results}
-            speedUnit={speedUnit}
-            bikeType={bikeType}
-          />
-          <PerformanceChart 
-            current={results.current}
-            proposed={results.proposed}
-            speedUnit={speedUnit}
-          />
-          <BuildSummaryCard 
-            currentSetup={currentSetup}
-            proposedSetup={proposedSetup}
-            results={results}
-            onSave={handleSaveConfig}
-          />
-        </div>
-      )}
-
-      <div id="garage-section" className="mt-16">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <svg className="w-8 h-8 text-[--color-accent]" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
-            </svg>
-            <h2 className="text-3xl font-bold text-[--color-text-primary] section-title-fire">My Garage</h2>
-          </div>
-          <p className="text-[--color-text-secondary] max-w-2xl mx-auto mb-6">
-            Your saved bike configurations. Each setup represents hours of careful planning and optimization.
+    <>
+      <SEOHead
+        title="CrankSmith - Bike Gear Calculator & Compatibility Checker"
+        description="Calculate gear ratios, check drivetrain compatibility, and optimize your bike setup. Perfect for cyclists and bike shops."
+        url="https://cranksmith.com/calculator"
+        image="/og-image.jpg"
+      />
+      <main className="main-container container mx-auto px-4 py-12 max-w-7xl">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="hero-title hero-title-fire">Compare. Calculate. Optimize.</h1>
+          <p className="hero-subtitle max-w-2xl mx-auto">
+            See exactly how component changes affect your bike's performance with real-world data.
           </p>
           
-          {savedConfigs.length > 0 && (
+          {(bikeType || results) && (
             <button
-              onClick={() => setShowSaved(!showSaved)}
-              className="text-[--color-accent] hover:opacity-80 transition-colors text-lg font-medium"
+              onClick={() => {
+                setBikeType('');
+                setCurrentSetup({ wheel: '', tire: '', crankset: null, cassette: null });
+                setProposedSetup({ wheel: '', tire: '', crankset: null, cassette: null });
+                setResults(null);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="mt-6 px-6 py-3 rounded-xl font-medium transition-all text-base"
+              style={{ 
+                background: 'var(--accent-blue)',
+                color: 'var(--white)',
+                border: '1px solid var(--accent-blue)'
+              }}
             >
-              {showSaved ? 'Hide Garage' : 'Show Garage'} ({savedConfigs.length} configurations)
+              <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+              Start New Analysis
             </button>
           )}
         </div>
 
-        {savedConfigs.length > 0 && showSaved && (
-          <div className="garage-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {savedConfigs.map((config) => (
-              <GarageCard
-                key={config.id}
-                config={config}
-                onLoad={handleLoadConfig}
-                onDelete={handleDeleteConfig}
-              />
-            ))}
+        {/* Quick Start Guide */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="card">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center quick-start-icon-fire">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              {!bikeType ? (
+                <>
+                  <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+                    How It Works
+                  </h2>
+                  <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
+                    Compare any bike components in 3 simple steps
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+                    Great Choice! 🚴‍♂️
+                  </h2>
+                  <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
+                    You've selected a {bikeType} bike. Now configure your components below.
+                  </p>
+                </>
+              )}
+            </div>
           </div>
-        )}
+        </div>
 
-        {savedConfigs.length === 0 && (
-          <div className="flex justify-center">
-            <div className="max-w-md w-full p-6 bg-[--color-bg] rounded-lg border-2 border-[--color-accent] shadow-lg shadow-[--color-accent]/20">
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 text-[--color-accent]">
-                  <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-                    <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
-                  </svg>
-                </div>
-                <h3 className="text-[--color-text-primary] text-xl font-semibold mb-2">Empty Garage</h3>
-                <p className="text-[--color-text-secondary] text-sm leading-relaxed">
-                  Save your first bike configuration to start building your garage. Perfect setups deserve to be remembered.
-                </p>
+        {/* Bike Type Selection */}
+        {!bikeType && (
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="mb-8">
+              <h2 className="text-4xl font-extrabold mb-2 text-center" style={{ color: 'var(--text-primary)' }}>
+                Select Your Bike Type
+              </h2>
+              <p className="text-lg text-center mb-6" style={{ color: 'var(--text-secondary)' }}>
+                Choose the style of bike you want to optimize. Unlock the full gear configurator to build your perfect setup—save your builds to your garage, and return anytime to load or fine-tune your bikes.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {Object.entries(bikeConfig).map(([type, config]) => (
+                  <button
+                    key={type}
+                    onClick={() => setBikeType(type)}
+                    className={`p-6 rounded-lg border-2 transition-all duration-200 ${
+                      bikeType === type
+                        ? 'border-[--color-accent] bg-[--color-accent]/10'
+                        : 'border-[--color-border] hover:border-[--color-accent]/50'
+                    }`}
+                  >
+                    <div className="w-16 h-16 mx-auto mb-4 text-[--color-accent]">
+                      {BikeIcons[type]}
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">{config.name}</h3>
+                    <p className="text-sm text-[--color-text-secondary]">{config.description}</p>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
         )}
-      </div>
-    </main>
+
+        {/* Component Selection and Analysis */}
+        {bikeType && (
+          <div className="space-y-8">
+            {/* Gear Selector Panels */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <GearSelectorPanel
+                title="Current Setup"
+                subtitle="Your current components"
+                setup={currentSetup}
+                config={{
+                  wheelSizes: bikeConfig[bikeType].wheelSizes,
+                  tireWidths: bikeConfig[bikeType].tireWidths,
+                  onWheelChange: handleCurrentWheelChange,
+                  onTireChange: handleCurrentTireChange,
+                  onCranksetChange: handleCurrentCranksetChange,
+                  onCassetteChange: handleCurrentCassetteChange
+                }}
+                components={components}
+                icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>}
+              />
+
+              <GearSelectorPanel
+                title="Proposed Setup"
+                subtitle="Components you're considering"
+                setup={proposedSetup}
+                config={{
+                  wheelSizes: bikeConfig[bikeType].wheelSizes,
+                  tireWidths: bikeConfig[bikeType].tireWidths,
+                  onWheelChange: handleProposedWheelChange,
+                  onTireChange: handleProposedTireChange,
+                  onCranksetChange: handleProposedCranksetChange,
+                  onCassetteChange: handleProposedCassetteChange
+                }}
+                components={components}
+                icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>}
+              />
+            </div>
+
+            {/* Setup Progress and Analyze Button */}
+            <div className="max-w-4xl mx-auto">
+              <div className="card">
+                <div className="flex justify-between items-center">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-[var(--accent-blue)]" />
+                      <span className="text-sm text-gray-600">Current Setup: {Math.round(currentSetupCompletion)}%</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-[var(--accent-performance)]" />
+                      <span className="text-sm text-gray-600">Proposed Setup: {Math.round(proposedSetupCompletion)}%</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleCalculate()}
+                    disabled={totalCompletion < 100 || loading}
+                    className={`px-6 py-3 rounded-xl font-medium transition-all ${
+                      totalCompletion < 100 || loading
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:opacity-90'
+                    }`}
+                    style={{ 
+                      background: 'var(--accent-blue)',
+                      color: 'var(--white)'
+                    }}
+                  >
+                    {loading ? (
+                      <span className="flex items-center gap-2">
+                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Analyzing...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Analyze Performance
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Results Section */}
+        {results && (
+          <div className="max-w-4xl mx-auto mt-12">
+            <SimulationResults 
+              results={results}
+              speedUnit={speedUnit}
+              bikeType={bikeType}
+            />
+            <PerformanceChart 
+              current={results.current}
+              proposed={results.proposed}
+              speedUnit={speedUnit}
+            />
+            <BuildSummaryCard 
+              currentSetup={currentSetup}
+              proposedSetup={proposedSetup}
+              results={results}
+              onSave={handleSaveConfig}
+            />
+          </div>
+        )}
+
+        <div id="garage-section" className="mt-16">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <svg className="w-8 h-8 text-[--color-accent]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
+              </svg>
+              <h2 className="text-3xl font-bold text-[--color-text-primary] section-title-fire">My Garage</h2>
+            </div>
+            <p className="text-[--color-text-secondary] max-w-2xl mx-auto mb-6">
+              Your saved bike configurations. Each setup represents hours of careful planning and optimization.
+            </p>
+            
+            {savedConfigs.length > 0 && (
+              <button
+                onClick={() => setShowSaved(!showSaved)}
+                className="text-[--color-accent] hover:opacity-80 transition-colors text-lg font-medium"
+              >
+                {showSaved ? 'Hide Garage' : 'Show Garage'} ({savedConfigs.length} configurations)
+              </button>
+            )}
+          </div>
+
+          {savedConfigs.length > 0 && showSaved && (
+            <div className="garage-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              {savedConfigs.map((config) => (
+                <GarageCard
+                  key={config.id}
+                  config={config}
+                  onLoad={handleLoadConfig}
+                  onDelete={handleDeleteConfig}
+                />
+              ))}
+            </div>
+          )}
+
+          {savedConfigs.length === 0 && (
+            <div className="flex justify-center">
+              <div className="max-w-md w-full p-6 bg-[--color-bg] rounded-lg border-2 border-[--color-accent] shadow-lg shadow-[--color-accent]/20">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 text-[--color-accent]">
+                    <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full">
+                      <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
+                    </svg>
+                  </div>
+                  <h3 className="text-[--color-text-primary] text-xl font-semibold mb-2">Empty Garage</h3>
+                  <p className="text-[--color-text-secondary] text-sm leading-relaxed">
+                    Save your first bike configuration to start building your garage. Perfect setups deserve to be remembered.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
+import SEOHead from '../components/SEOHead';
 
 export default function TirePressure() {
   const [riderWeight, setRiderWeight] = useState('');
@@ -160,10 +160,12 @@ export default function TirePressure() {
 
   return (
     <div className="min-h-screen w-full">
-      <Head>
-        <title>Tire Pressure Calculator | CrankSmith</title>
-        <meta name="description" content="Calculate optimal tire pressure for your bike based on weight, conditions, and riding style. Get accurate PSI recommendations." />
-      </Head>
+      <SEOHead
+        title="CrankSmith - Tire Pressure Calculator"
+        description="Calculate optimal tire pressure for your bike based on weight, conditions, and riding style. Get accurate PSI recommendations."
+        url="https://cranksmith.com/tire-pressure"
+        image="/og-image.jpg"
+      />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-4xl mx-auto px-4 py-8">

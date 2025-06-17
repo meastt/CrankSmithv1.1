@@ -1,6 +1,6 @@
 // pages/landing.js
 import { useState } from 'react';
-import Head from 'next/head';
+import SEOHead from '../components/SEOHead';
 import { useRouter } from 'next/router';
 
 export default function Landing() {
@@ -64,14 +64,12 @@ export default function Landing() {
 
   return (
     <>
-      <Head>
-        <title>CrankSmith - Bike Gear Calculator for Serious Cyclists</title>
-        <meta name="description" content="Compare bike components and optimize your setup. Real parts, real math, real results. Join the beta." />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-      </Head>
+      <SEOHead
+        title="CrankSmith - Bike Gear Calculator for Serious Cyclists"
+        description="Compare bike components and optimize your setup. Real parts, real math, real results. Join the beta."
+        url="https://cranksmith.com"
+        image="/og-image.jpg"
+      />
 
       <div className="min-h-screen" style={{ background: '#010309' }}>
         {/* Hero Section - Simplified */}

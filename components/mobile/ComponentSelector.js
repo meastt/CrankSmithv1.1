@@ -31,7 +31,8 @@ export default function ComponentSelector({
       if (field === 'crankset' || field === 'cassette') {
         return value && typeof value === 'object' && Object.keys(value).length > 0;
       }
-      return value && value.trim() !== '';
+      // Fix: Convert to string before trimming, handle all types
+      return value && String(value).trim() !== '';
     });
     return (completed.length / required.length) * 100;
   };

@@ -21,10 +21,18 @@ export default function MobileDropdown({
       return;
     }
 
-    const filtered = options.filter(option =>
-      option.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (option.subtitle && option.subtitle.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    const filtered = options.filter(option => {
+      // Safety check for option and option.label
+      if (!option || !option.label) return false;
+      
+      const searchLower = searchTerm.toLowerCase();
+      const labelMatch = option.label.toLowerCase().includes(searchLower);
+      const subtitleMatch = option.subtitle ? 
+        option.subtitle.toLowerCase().includes(searchLower) : 
+        false;
+      
+      return labelMatch || subtitleMatch;
+    });
     setFilteredOptions(filtered);
   }, [options, searchTerm, searchable]);
 
@@ -61,9 +69,11 @@ export default function MobileDropdown({
   }, [isOpen, searchable]);
 
   const handleSelect = (option) => {
-    onChange(option.value);
-    setIsOpen(false);
-    setSearchTerm('');
+    if (option && option.value !== undefined) {
+      onChange(option.value);
+      setIsOpen(false);
+      setSearchTerm('');
+    }
   };
 
   const handleOpen = () => {
@@ -71,11 +81,11 @@ export default function MobileDropdown({
     setSearchTerm('');
   };
 
-  // Get display value
+  // Get display value with safety checks
   const displayValue = value ? 
     (typeof value === 'object' ? 
-      `${value.model} ${value.variant}` : 
-      options.find(opt => opt.value === value)?.label || value
+      `${value.model || ''} ${value.variant || ''}`.trim() : 
+      options.find(opt => opt && opt.value === value)?.label || String(value)
     ) : '';
 
   return (
@@ -106,8 +116,8 @@ export default function MobileDropdown({
           {displayValue ? (
             <div>
               <div className="font-medium">{displayValue}</div>
-              {typeof value === 'object' && value.weight && (
-                <div className="text-sm text-gray-400">{value.weight}g • {value.speeds}</div>
+              {typeof value === 'object' && value && value.weight && (
+                <div className="text-sm text-gray-400">{value.weight}g • {value.speeds || ''}</div>
               )}
             </div>
           ) : (
@@ -203,43 +213,48 @@ export default function MobileDropdown({
           >
             {filteredOptions.length > 0 ? (
               <div className="options-list space-y-2">
-                {filteredOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    onClick={() => handleSelect(option)}
-                    className="option-item"
-                    style={{
-                      width: '100%',
-                      background: value === option.value ? 
-                        'rgba(59, 130, 246, 0.2)' : 
-                        'rgba(255, 255, 255, 0.05)',
-                      border: `1px solid ${value === option.value ? 
-                        '#3B82F6' : 
-                        'rgba(255, 255, 255, 0.1)'}`,
-                      borderRadius: '12px',
-                      padding: '16px',
-                      color: 'white',
-                      textAlign: 'left',
-                      minHeight: '60px', // Good touch target
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <div className="flex-1">
-                      <div className="font-medium text-base">{option.label}</div>
-                      {option.subtitle && (
-                        <div className="text-sm text-gray-400 mt-1">{option.subtitle}</div>
+                {filteredOptions.map((option) => {
+                  // Safety check for each option
+                  if (!option || !option.id) return null;
+                  
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => handleSelect(option)}
+                      className="option-item"
+                      style={{
+                        width: '100%',
+                        background: value === option.value ? 
+                          'rgba(59, 130, 246, 0.2)' : 
+                          'rgba(255, 255, 255, 0.05)',
+                        border: `1px solid ${value === option.value ? 
+                          '#3B82F6' : 
+                          'rgba(255, 255, 255, 0.1)'}`,
+                        borderRadius: '12px',
+                        padding: '16px',
+                        color: 'white',
+                        textAlign: 'left',
+                        minHeight: '60px', // Good touch target
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <div className="flex-1">
+                        <div className="font-medium text-base">{option.label || ''}</div>
+                        {option.subtitle && (
+                          <div className="text-sm text-gray-400 mt-1">{option.subtitle}</div>
+                        )}
+                      </div>
+                      {value === option.value && (
+                        <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
                       )}
-                    </div>
-                    {value === option.value && (
-                      <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             ) : (
               <div className="no-options" style={{

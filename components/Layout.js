@@ -43,7 +43,15 @@ export default function Layout({ children }) {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-12 ml-16 mt-8">
-              <Link href="/calculator" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
+              <Link href="/calculator" className="text-lg font-medium text-gray-300 hover:text-white transition-colors"
+                onClick={e => {
+                  if (window.location.pathname === '/calculator') {
+                    e.preventDefault();
+                    window.dispatchEvent(new Event('reset-calculator'));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+              >
                 Bike Gear Calculator
               </Link>
               <Link href="/tire-pressure" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
@@ -95,7 +103,16 @@ export default function Layout({ children }) {
             <Link href="/calculator" 
                   className="block text-base font-medium transition-colors hover:opacity-80"
                   style={{ color: 'var(--accent-blue)' }}
-                  onClick={() => setIsMobileMenuOpen(false)}>
+                  onClick={e => {
+                    if (window.location.pathname === '/calculator') {
+                      e.preventDefault();
+                      setIsMobileMenuOpen(false);
+                      window.dispatchEvent(new Event('reset-calculator'));
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                      setIsMobileMenuOpen(false);
+                    }
+                  }}>
               Bike Gear Calculator
             </Link>
             <Link href="/tire-pressure" 

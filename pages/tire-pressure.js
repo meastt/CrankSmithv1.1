@@ -29,7 +29,7 @@ export default function TirePressure() {
     return weight;
   };
 
-  // CORRECTED ALGORITHM - Much lower pressures to match SILCA
+  // CORRECTED ALGORITHM - Much lower pressures for optimal performance
   const calculatePressure = () => {
     const riderWeightKg = convertWeight(Number(riderWeight), weightUnit, 'kg');
     const bikeWeightKg = convertWeight(Number(bikeWeight), weightUnit, 'kg');
@@ -40,7 +40,7 @@ export default function TirePressure() {
     let maxPSI = 0;
     let width = Number(tireWidth);
 
-    // FIXED ALGORITHM - Based on real-world data and SILCA standards
+    // FIXED ALGORITHM - Based on real-world data and industry standards
     if (surfaceType === 'road') {
       // Road: 23-35mm tires
       if (width <= 25) {
@@ -457,7 +457,7 @@ export default function TirePressure() {
               <h4 className="text-sm font-semibold text-blue-300 mb-2">Algorithm Status</h4>
               <p className="text-xs text-blue-200">
                 Results calibrated with industry standards. For 175lb rider + 20lb bike with 47mm gravel tire: 
-                Expected ~32-34 PSI (SILCA standard) | Your result: {pressure.base} PSI 
+                Expected ~32-34 PSI | Your result: {pressure.base} PSI 
                 {Math.abs(pressure.base - 33) <= 3 ? ' ✅' : ' ⚠️ (Check calibration)'}
               </p>
             </div>

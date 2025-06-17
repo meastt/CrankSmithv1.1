@@ -90,11 +90,6 @@ export default function GearSelectorPanel({
         </span>
       </div>
 
-      {/* Compatibility Warnings */}
-      {setup.crankset && setup.cassette && (
-        <CompatibilityWarnings crankset={setup.crankset} cassette={setup.cassette} />
-      )}
-
       {/* Form Fields */}
       <div className="space-y-5">
         {/* Wheel Size Selection */}
@@ -157,36 +152,6 @@ export default function GearSelectorPanel({
   );
 }
 
-// Helper Components
-function CompatibilityWarnings({ crankset, cassette }) {
-  const warnings = validateCompatibility(crankset, cassette);
-  
-  if (warnings.length === 0) return null;
-
-  return (
-    <div className="mb-4 p-3 rounded-lg border" 
-         style={{ 
-           background: 'rgba(255, 193, 7, 0.1)', 
-           borderColor: 'rgba(255, 193, 7, 0.3)' 
-         }}>
-      <div className="flex items-center space-x-2 mb-2">
-        <svg className="w-4 h-4" style={{ color: '#ffc107' }} fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2L1 21h22L12 2zm0 3.47L20.53 19H3.47L12 5.47z"/>
-          <path d="M11 16h2v2h-2zm0-6h2v4h-2z"/>
-        </svg>
-        <span className="text-sm font-medium" style={{ color: '#ffc107' }}>
-          Compatibility Check
-        </span>
-      </div>
-      {warnings.map((warning, index) => (
-        <div key={index} className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-          • {warning}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function ChainringIcon({ teeth }) {
   const isDouble = teeth.length === 2;
   return (
@@ -219,23 +184,4 @@ function formatWheelSize(size) {
 
 function formatTireWidth(width) {
   return `${width}mm`;
-}
-
-function validateCompatibility(crankset, cassette) {
-  const warnings = [];
-  
-  // Check if both components are from the same manufacturer
-  if (crankset.manufacturer !== cassette.manufacturer) {
-    warnings.push('Components from different manufacturers may have compatibility issues');
-  }
-  
-  // Check if the cassette range is appropriate for the crankset
-  const totalTeeth = crankset.teeth.reduce((a, b) => a + b, 0);
-  const cassetteRange = cassette.teeth[1] - cassette.teeth[0];
-  
-  if (cassetteRange > 40 && totalTeeth < 50) {
-    warnings.push('Large cassette range may require a longer chain');
-  }
-  
-  return warnings;
 } 

@@ -239,16 +239,14 @@ export default function Home() {
     loadSavedConfigs();
   }, []);
 
-  // Check compatibility whenever setup changes
-  useEffect(() => {
+  // Only check compatibility after analysis button is clicked
+  const checkCompatibility = () => {
     if (proposedSetup.crankset && proposedSetup.cassette && bikeType) {
       const compatibility = compatibilityChecker.checkCompatibility(proposedSetup, bikeType);
       const summary = compatibilityChecker.generateCompatibilitySummary(compatibility);
       setCompatibilityResults(summary);
-    } else {
-      setCompatibilityResults(null);
     }
-  }, [proposedSetup, bikeType, compatibilityChecker]);
+  };
 
   // Calculate setup completion percentage
   const calculateSetupCompletion = (setup) => {
@@ -331,6 +329,9 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+
+    // Check compatibility after analysis button is clicked
+    checkCompatibility();
   };
 
   const handleSaveConfig = async () => {

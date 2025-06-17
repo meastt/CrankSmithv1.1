@@ -82,7 +82,7 @@ export default function Landing() {
               <img 
                 src="/beta-hero.png" 
                 alt="CrankSmith" 
-                className="max-w-xs md:max-w-lg w-full h-auto mx-auto mb-6 object-contain"
+                className="max-w-[180px] md:max-w-[260px] w-full h-auto mx-auto mb-4 object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.nextElementSibling.style.display = 'flex';
@@ -94,12 +94,11 @@ export default function Landing() {
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 bg-clip-text text-transparent">
-              Your Bike. Optimized.
-            </h1>
-            
-            <p className="text-lg md:text-xl mb-12 text-gray-300 max-w-2xl mx-auto">
-              Stop guessing. Start knowing. Real component data meets intelligent analysis.
+            <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center" style={{ color: 'var(--text-primary)' }}>
+              Stop guessing. Start knowing.
+            </h2>
+            <p className="text-lg md:text-xl mb-12 text-gray-300 max-w-2xl mx-auto text-center">
+              This tool is completely free to use. Just enter your email below to unlock instant access and start optimizing your ride.
             </p>
 
             {/* Early Access Form - More Prominent */}

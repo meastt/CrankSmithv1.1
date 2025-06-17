@@ -315,7 +315,7 @@ const hideToast = (id) => {
 };
 
 export default function Home() {
-  const [bikeType, setBikeType] = useState('road');
+  const [bikeType, setBikeType] = useState('');
   const [currentSetup, setCurrentSetup] = useState({
     wheel: '',
     tire: '',
@@ -663,7 +663,12 @@ export default function Home() {
       {!bikeType && (
         <div className="max-w-4xl mx-auto mb-12">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-4">Select Your Bike Type</h2>
+            <h2 className="text-4xl font-extrabold mb-2 text-center" style={{ color: 'var(--text-primary)' }}>
+              Select Your Bike Type
+            </h2>
+            <p className="text-lg text-center mb-6" style={{ color: 'var(--text-secondary)' }}>
+              Choose the style of bike you want to optimize. Unlock the full gear configurator to build your perfect setup—save your builds to your garage, and return anytime to load or fine-tune your bikes.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {Object.entries(bikeConfig).map(([type, config]) => (
                 <button

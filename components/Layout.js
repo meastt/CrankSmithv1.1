@@ -5,7 +5,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import InstallBanner from './InstallBanner';
 import FloatingInstallButton from './FloatingInstallButton';
-import PWATest from './PWATest';
 
 export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,7 +15,7 @@ export default function Layout({ children }) {
       <InstallBanner />
       
       {/* PWA Debug Tool - Remove this after testing */}
-      <PWATest />
+      {/* <PWATest /> */}
       
       {/* Apple-style Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl border-b" 

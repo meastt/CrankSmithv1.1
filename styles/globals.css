@@ -733,3 +733,73 @@ img {
 .garage-load-btn:disabled {
   border-color: #aaa;
 }
+
+/* === MOBILE DROPDOWN PERFORMANCE OPTIMIZATIONS === */
+
+/* Hardware acceleration for mobile dropdowns */
+.mobile-dropdown-modal {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Optimized mobile dropdown animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.mobile-dropdown-modal {
+  animation: slideUp 0.25s ease-out;
+}
+
+/* Better touch targets for mobile */
+.mobile-option-item {
+  min-height: 60px !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Optimized scrolling for mobile */
+.mobile-options-container {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* Prevent zoom on input focus (iOS) */
+.mobile-search-container input {
+  font-size: 16px !important;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Better mobile pagination */
+.mobile-pagination-btn {
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Optimized mobile dropdown positioning */
+.mobile-dropdown {
+  position: relative;
+  z-index: 1;
+}
+
+/* Prevent body scroll when dropdown is open */
+body.dropdown-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* === EXISTING MOBILE STYLES === */

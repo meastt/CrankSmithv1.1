@@ -120,8 +120,8 @@ export default function BuildSummaryCard({ currentSetup, proposedSetup, results,
     if (speedChange > 0.3) benefits.push(`gives you ${speedChange.toFixed(1)} ${comparison.speedUnit} more top speed`);
     else if (speedChange < -0.3) benefits.push(`reduces top speed by ${Math.abs(speedChange).toFixed(1)} ${comparison.speedUnit}`);
     
-    if (rangeChange > 20) benefits.push(`adds ${rangeChange}% more gear range for climbing`);
-    else if (rangeChange < -20) benefits.push(`reduces gear range by ${Math.abs(rangeChange)}%`);
+    if (rangeChange > 20) benefits.push(`adds ${rangeChange.toFixed(1)}% more gear range for climbing`);
+    else if (rangeChange < -20) benefits.push(`reduces gear range by ${Math.abs(rangeChange).toFixed(1)}%`);
     
     if (benefits.length === 0) {
       return "Your proposed setup offers similar performance with different characteristics.";

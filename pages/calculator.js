@@ -474,6 +474,7 @@ export default function Home() {
                 title="Current Setup"
                 subtitle="Your current components"
                 setup={currentSetup}
+                setSetup={setCurrentSetup}
                 config={{
                   wheelSizes: bikeConfig[bikeType].wheelSizes,
                   tireWidths: bikeConfig[bikeType].tireWidths,
@@ -492,6 +493,7 @@ export default function Home() {
                 title="Proposed Setup"
                 subtitle="Components you're considering"
                 setup={proposedSetup}
+                setSetup={setProposedSetup}
                 config={{
                   wheelSizes: bikeConfig[bikeType].wheelSizes,
                   tireWidths: bikeConfig[bikeType].tireWidths,

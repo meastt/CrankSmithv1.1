@@ -51,6 +51,10 @@ export default function GearSelectorPanel({
 
   const handleCranksetChange = (selectedOption) => {
     console.log('🔄 Crankset selected:', selectedOption);
+    // Update the setup state directly with the full component object
+    setSetup({ ...setup, crankset: selectedOption });
+    
+    // Also call the config handler if it exists
     if (config?.onCranksetChange) {
       config.onCranksetChange(selectedOption);
     }
@@ -58,6 +62,10 @@ export default function GearSelectorPanel({
 
   const handleCassetteChange = (selectedOption) => {
     console.log('🔄 Cassette selected:', selectedOption);
+    // Update the setup state directly with the full component object
+    setSetup({ ...setup, cassette: selectedOption });
+    
+    // Also call the config handler if it exists
     if (config?.onCassetteChange) {
       config.onCassetteChange(selectedOption);
     }

@@ -1,7 +1,7 @@
 // components/SearchableDropdown.js - FIXED VERSION
 // Replaces the unstable version with proper event handling and mobile support
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
 export default function SearchableDropdown({
   options = [],
@@ -14,12 +14,24 @@ export default function SearchableDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const triggerRef = useRef(null);
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
 
   // Find selected option
-  const selectedOption = options.find(opt => opt.id === value);
+  const selectedOption = useMemo(() => {
+    if (!value) return null;
+    
+    // Handle both cases: value could be an ID or a full component object
+    if (typeof value === 'object' && value.id) {
+      // Value is a full component object
+      return options.find(opt => opt.id === value.id);
+    } else {
+      // Value is just an ID
+      return options.find(opt => opt.id === value);
+    }
+  }, [options, value]);
 
   // Filter options based on search
   const filteredOptions = options.filter(option => {
@@ -43,12 +55,13 @@ export default function SearchableDropdown({
     { 'All': filteredOptions };
 
   // Handle selection
-  const handleSelect = (option) => {
-    onChange(option.id);
+  const handleSelect = useCallback((option) => {
+    onChange(option); // Pass the full component object instead of just the ID
     setIsOpen(false);
     setSearchTerm('');
     setHighlightedIndex(0);
-  };
+    setCurrentPage(0);
+  }, [onChange]);
 
   // Handle keyboard navigation
   const handleKeyDown = (e) => {

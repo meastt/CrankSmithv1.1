@@ -16,7 +16,16 @@ const SearchableDropdown = ({
   const triggerRef = useRef(null);
   const inputRef = useRef(null);
 
-  const selectedOption = options.find(opt => opt.id === value);
+  const selectedOption = options.find(opt => {
+    if (!value) return false;
+    
+    // Handle both cases: value could be an ID or a full component object
+    if (typeof value === 'object' && value.id) {
+      return opt.id === value.id;
+    } else {
+      return opt.id === value;
+    }
+  });
 
   const filteredOptions = options.filter(option => {
     const searchLower = searchTerm.toLowerCase();
@@ -37,7 +46,7 @@ const SearchableDropdown = ({
   }, {});
 
   const handleSelect = (option) => {
-    onChange(option.id);
+    onChange(option); // Pass the full component object instead of just the ID
     setIsOpen(false);
     setSearchTerm('');
     setHighlightedIndex(0);

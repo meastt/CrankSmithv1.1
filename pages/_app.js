@@ -1,31 +1,51 @@
-// pages/_app.js
+// pages/_app.js - FIXED VERSION
+// Smart mobile routing that respects user intent
+
 import '../styles/globals.css';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import Script from 'next/script';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { registerServiceWorker, isMobileDevice } from '../lib/pwa-utils';
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
+  const [hasShownMobilePrompt, setHasShownMobilePrompt] = useState(false);
 
   useEffect(() => {
     // Register service worker for PWA functionality
     registerServiceWorker();
     
-    // Auto-redirect mobile users to mobile version
+    // Smart mobile routing logic
     if (typeof window !== 'undefined') {
       const isMobile = isMobileDevice();
       const isOnMobilePage = router.pathname.startsWith('/mobile');
       const isOnLandingPage = router.pathname === '/';
       
-      // Redirect mobile users to mobile app unless they're already there
-      if (isMobile && !isOnMobilePage && !isOnLandingPage) {
-        router.push('/mobile');
+      // Check if user has opted out of mobile suggestions
+      const hasOptedOutMobile = localStorage.getItem('cranksmith_desktop_preference') === 'true';
+      
+      // Only suggest mobile version, don't force it
+      if (isMobile && !isOnMobilePage && !isOnLandingPage && !hasOptedOutMobile && !hasShownMobilePrompt) {
+        setHasShownMobilePrompt(true);
+        
+        // Show a friendly prompt instead of auto-redirecting
+        const userWantsMobile = window.confirm(
+          "👋 We have a mobile-optimized version!\n\n" +
+          "Would you like to switch to the mobile app for a better experience?\n\n" +
+          "(You can always access the desktop version later)"
+        );
+        
+        if (userWantsMobile) {
+          router.push('/mobile');
+        } else {
+          // Remember user preference
+          localStorage.setItem('cranksmith_desktop_preference', 'true');
+        }
       }
     }
-  }, [router]);
+  }, [router, hasShownMobilePrompt]);
 
   // Use different layout for mobile app
   const isMobileApp = router.pathname.startsWith('/mobile');
@@ -91,9 +111,59 @@ export default function App({ Component, pageProps }) {
         `}
       </Script>
       
+      {/* Mobile App Suggestion Banner */}
+      <MobileAppBanner />
+      
       <Layout>
         <Component {...pageProps} />
       </Layout>
     </>
+  );
+}
+
+// Optional: Add a subtle banner for mobile users who chose desktop
+function MobileAppBanner() {
+  const [showBanner, setShowBanner] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isMobile = isMobileDevice();
+      const hasOptedOut = localStorage.getItem('cranksmith_desktop_preference') === 'true';
+      const isOnCalculator = router.pathname === '/calculator';
+      
+      // Show banner on calculator page for mobile users who opted for desktop
+      if (isMobile && hasOptedOut && isOnCalculator) {
+        setShowBanner(true);
+      }
+    }
+  }, [router.pathname]);
+
+  if (!showBanner) return null;
+
+  return (
+    <div 
+      className="fixed bottom-4 left-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-lg shadow-lg flex items-center justify-between"
+      style={{ fontSize: '14px' }}
+    >
+      <div className="flex items-center gap-2">
+        <span>📱</span>
+        <span>Try our mobile app for better touch experience</span>
+      </div>
+      <div className="flex gap-2">
+        <button
+          onClick={() => router.push('/mobile')}
+          className="bg-white text-blue-600 px-3 py-1 rounded text-sm font-medium"
+        >
+          Try Mobile
+        </button>
+        <button
+          onClick={() => setShowBanner(false)}
+          className="text-white/80 hover:text-white"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
   );
 }

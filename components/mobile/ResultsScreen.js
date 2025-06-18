@@ -1,5 +1,6 @@
 // components/mobile/ResultsScreen.js - Mobile-optimized results display
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import Chart from 'chart.js/auto';
 
 export default function ResultsScreen({
   results,
@@ -11,10 +12,182 @@ export default function ResultsScreen({
 }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
 
   if (!results) return null;
 
   const { current, proposed, comparison, compatibility } = results;
+
+  // Radar Chart Effect
+  useEffect(() => {
+    if (!current || !proposed || activeTab !== 'chart') return;
+
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    const ctx = chartRef.current?.getContext('2d');
+    if (!ctx) return;
+
+    // Get actual values
+    const currentValues = {
+      topSpeed: parseFloat(current.metrics.highSpeed),
+      climbingSpeed: parseFloat(current.metrics.lowSpeed),
+      weight: current.totalWeight,
+      gearRange: parseInt(current.gearRange)
+    };
+
+    const proposedValues = {
+      topSpeed: parseFloat(proposed.metrics.highSpeed),
+      climbingSpeed: parseFloat(proposed.metrics.lowSpeed),
+      weight: proposed.totalWeight,
+      gearRange: parseInt(proposed.gearRange)
+    };
+
+    // Find the ranges for proper scaling
+    const maxTopSpeed = Math.max(currentValues.topSpeed, proposedValues.topSpeed) * 1.1;
+    const maxClimbingSpeed = Math.max(currentValues.climbingSpeed, proposedValues.climbingSpeed) * 1.1;
+    
+    // For weight, we need the heaviest weight as our reference point
+    const maxWeight = Math.max(currentValues.weight, proposedValues.weight);
+    const minWeight = Math.min(currentValues.weight, proposedValues.weight);
+    const weightRange = maxWeight - minWeight + 100; // Add buffer for scaling
+    
+    const maxGearRange = Math.max(currentValues.gearRange, proposedValues.gearRange) * 1.1;
+
+    // Normalize to 0-100 scale properly
+    const normalizeData = (values) => [
+      (values.topSpeed / maxTopSpeed) * 100,
+      (values.climbingSpeed / maxClimbingSpeed) * 100,
+      // Invert weight: lighter weight = higher score on radar
+      ((maxWeight + 100 - values.weight) / (maxWeight + 100 - minWeight + 100)) * 100,
+      (values.gearRange / maxGearRange) * 100
+    ];
+
+    const data = {
+      labels: ['Top Speed', 'Climbing', 'Weight', 'Range'],
+      datasets: [
+        {
+          label: 'Current',
+          data: normalizeData(currentValues),
+          backgroundColor: 'rgba(59, 130, 246, 0.2)',
+          borderColor: 'rgba(59, 130, 246, 1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+        },
+        {
+          label: 'Proposed',
+          data: normalizeData(proposedValues),
+          backgroundColor: 'rgba(16, 185, 129, 0.2)',
+          borderColor: 'rgba(16, 185, 129, 1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(16, 185, 129, 1)'
+        }
+      ]
+    };
+
+    const config = {
+      type: 'radar',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            angleLines: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            pointLabels: {
+              color: 'rgba(255, 255, 255, 0.8)',
+              font: {
+                size: 11,
+                weight: '600'
+              }
+            },
+            ticks: {
+              color: 'rgba(255, 255, 255, 0.5)',
+              backdropColor: 'transparent',
+              font: {
+                size: 10
+              },
+              callback: function(value) {
+                return Math.round(value) + '%';
+              }
+            },
+            suggestedMin: 0,
+            suggestedMax: 100
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: 'rgba(255, 255, 255, 0.8)',
+              font: {
+                size: 12,
+                weight: '600'
+              },
+              usePointStyle: true,
+              padding: 15
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            titleColor: 'rgba(255, 255, 255, 0.9)',
+            bodyColor: 'rgba(255, 255, 255, 0.8)',
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            callbacks: {
+              label: function(context) {
+                const label = context.dataset.label || '';
+                const metric = context.label;
+                
+                // Show actual values in tooltip
+                let actualValue;
+                if (metric === 'Top Speed') {
+                  actualValue = context.datasetIndex === 0 ? 
+                    currentValues.topSpeed : proposedValues.topSpeed;
+                  return `${label}: ${actualValue.toFixed(1)} ${speedUnit}`;
+                } else if (metric === 'Climbing') {
+                  actualValue = context.datasetIndex === 0 ? 
+                    currentValues.climbingSpeed : proposedValues.climbingSpeed;
+                  return `${label}: ${actualValue.toFixed(1)} ${speedUnit}`;
+                } else if (metric === 'Weight') {
+                  actualValue = context.datasetIndex === 0 ? 
+                    currentValues.weight : proposedValues.weight;
+                  return `${label}: ${actualValue}g`;
+                } else if (metric === 'Range') {
+                  actualValue = context.datasetIndex === 0 ? 
+                    currentValues.gearRange : proposedValues.gearRange;
+                  return `${label}: ${actualValue}%`;
+                }
+                return `${label}: ${context.raw.toFixed(1)}%`;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    chartInstance.current = new Chart(ctx, config);
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+    };
+  }, [current, proposed, speedUnit, activeTab]);
 
   const metrics = [
     {
@@ -87,7 +260,7 @@ export default function ResultsScreen({
     
     message += benefits.join(", ") + ". ";
     const majorBenefits = benefits.length >= 2 || Math.abs(weightChange) > 50;
-    message += majorBenefits ? "Worth the upgrade!" : "Minor improvement.";
+    message += majorBenefits ? "Thats a solid improvement!" : "Minor improvement.";
     
     return message;
   };
@@ -122,6 +295,7 @@ export default function ResultsScreen({
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: '📊' },
+    { id: 'chart', label: 'Chart', icon: '📈' },
     { id: 'details', label: 'Details', icon: '🔍' },
     { id: 'compatibility', label: 'Compatibility', icon: '🔧' }
   ];
@@ -293,6 +467,90 @@ export default function ResultsScreen({
                     {proposed.setup.cassette?.model} {proposed.setup.cassette?.variant}
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'chart' && (
+          <div className="chart-tab space-y-6">
+            {/* Chart Header */}
+            <div className="chart-header text-center">
+              <h3 className="text-lg font-semibold mb-2 text-white">Performance Comparison</h3>
+              <p className="text-sm text-gray-400">Visual comparison of your setups</p>
+            </div>
+
+            {/* Chart Container */}
+            <div className="chart-container" style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '16px',
+              padding: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}>
+              <div style={{
+                height: '280px',
+                position: 'relative'
+              }}>
+                <canvas ref={chartRef} style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%'
+                }}></canvas>
+              </div>
+            </div>
+
+            {/* Chart Explanation */}
+            <div className="chart-explanation" style={{
+              background: 'rgba(59, 130, 246, 0.1)',
+              borderRadius: '12px',
+              padding: '16px',
+              border: '1px solid rgba(59, 130, 246, 0.2)'
+            }}>
+              <h4 className="font-medium text-white mb-2">How to read this chart:</h4>
+              <div className="space-y-2 text-sm text-gray-300">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(59, 130, 246, 1)' }}></div>
+                  <span>Current setup</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(16, 185, 129, 1)' }}></div>
+                  <span>Proposed setup</span>
+                </div>
+                <p className="mt-3 text-xs text-gray-400">
+                  Larger area = better performance. Weight shows "better" (lighter = higher score).
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="quick-stats" style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '12px'
+            }}>
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '12px',
+                padding: '16px',
+                textAlign: 'center'
+              }}>
+                <div className="text-2xl font-bold text-white">
+                  {Math.round((parseFloat(proposed.metrics.highSpeed) / parseFloat(current.metrics.highSpeed)) * 100)}%
+                </div>
+                <div className="text-xs text-gray-400">Top Speed</div>
+              </div>
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '12px',
+                padding: '16px',
+                textAlign: 'center'
+              }}>
+                <div className="text-2xl font-bold text-white">
+                  {Math.round((parseFloat(proposed.metrics.lowSpeed) / parseFloat(current.metrics.lowSpeed)) * 100)}%
+                </div>
+                <div className="text-xs text-gray-400">Climbing</div>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import InstallBanner from './InstallBanner';
 import FloatingInstallButton from './FloatingInstallButton';
+import PWATest from './PWATest';
 
 export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,6 +14,9 @@ export default function Layout({ children }) {
     <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, var(--bg-primary) 0%, #111113 100%)' }}>
       {/* Install Banner */}
       <InstallBanner />
+      
+      {/* PWA Debug Tool - Remove this after testing */}
+      <PWATest />
       
       {/* Apple-style Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl border-b" 

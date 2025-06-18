@@ -2,7 +2,7 @@
   "name": "CrankSmith - Bike Gear Calculator",
   "short_name": "CrankSmith",
   "description": "The ultimate bike gear calculator and compatibility checker for cyclists",
-  "start_url": "/mobile",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#3B82F6",

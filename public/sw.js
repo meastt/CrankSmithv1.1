@@ -325,8 +325,8 @@ self.addEventListener('push', (event) => {
     
     const options = {
       body: data.body,
-      icon: '/icon-192x192.png',
-      badge: '/icon-72x72.png',
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),
@@ -336,12 +336,12 @@ self.addEventListener('push', (event) => {
         {
           action: 'explore',
           title: 'Open CrankSmith',
-          icon: '/icon-192x192.png'
+          icon: '/icon-192.png'
         },
         {
           action: 'close',
           title: 'Close',
-          icon: '/icon-192x192.png'
+          icon: '/icon-192.png'
         }
       ]
     };

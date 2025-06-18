@@ -7,8 +7,11 @@ const DYNAMIC_CACHE_NAME = 'cranksmith-dynamic-v1.0.0';
 const STATIC_ASSETS = [
   '/mobile',
   '/manifest.json',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
+  '/favicon-32x32.png',
+  '/favicon-16x16.png',
   // Add your CSS and JS files here
   '/_next/static/css/',
   '/_next/static/chunks/',
@@ -30,10 +33,17 @@ self.addEventListener('install', (event) => {
     caches.open(STATIC_CACHE_NAME)
       .then((cache) => {
         console.log('Service Worker: Caching static assets');
-        return cache.addAll(STATIC_ASSETS);
+        // Only cache files that exist - filter out non-existent files
+        const existingAssets = STATIC_ASSETS.filter(asset => {
+          // Skip dynamic paths that might not exist
+          return !asset.includes('_next/static/') && !asset.includes('api/');
+        });
+        return cache.addAll(existingAssets);
       })
       .catch((error) => {
         console.error('Service Worker: Failed to cache static assets', error);
+        // Continue installation even if caching fails
+        return Promise.resolve();
       })
   );
   

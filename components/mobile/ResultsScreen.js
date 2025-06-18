@@ -127,12 +127,19 @@ export default function ResultsScreen({
   ];
 
   return (
-    <div className="mobile-screen results-screen" style={{ padding: '0', height: '100%', overflow: 'hidden' }}>
+    <div className="mobile-screen results-screen" style={{ 
+      padding: '0', 
+      height: '100vh', 
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden' 
+    }}>
       {/* Header */}
       <div className="results-header" style={{
         padding: '20px',
         background: 'linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%)',
-        color: 'white'
+        color: 'white',
+        flexShrink: 0
       }}>
         <div className="flex items-center justify-between mb-4">
           <button
@@ -181,7 +188,8 @@ export default function ResultsScreen({
       <div className="tab-nav" style={{
         display: 'flex',
         background: 'rgba(0, 0, 0, 0.05)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        flexShrink: 0
       }}>
         {tabs.map(tab => (
           <button
@@ -213,7 +221,8 @@ export default function ResultsScreen({
         flex: 1,
         overflow: 'auto',
         WebkitOverflowScrolling: 'touch',
-        padding: '20px'
+        padding: '20px',
+        minHeight: 0
       }}>
         {activeTab === 'overview' && (
           <div className="overview-tab space-y-6">

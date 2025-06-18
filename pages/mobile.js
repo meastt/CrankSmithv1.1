@@ -8,6 +8,7 @@ import ComponentSelector from '../components/mobile/ComponentSelector';
 import ResultsScreen from '../components/mobile/ResultsScreen';
 import GarageScreen from '../components/mobile/GarageScreen';
 import SettingsScreen from '../components/mobile/SettingsScreen';
+import MobileInstallPrompt from '../components/mobile/InstallPrompt';
 import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
 import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
 import { CompatibilityChecker } from '../lib/compatibilityChecker';
@@ -261,6 +262,9 @@ export default function MobileApp() {
       >
         {renderCurrentScreen()}
       </MobileLayout>
+
+      {/* Mobile Install Prompt */}
+      <MobileInstallPrompt />
     </>
   );
 }

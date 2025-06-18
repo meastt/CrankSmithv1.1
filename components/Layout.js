@@ -3,12 +3,17 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import InstallBanner from './InstallBanner';
+import FloatingInstallButton from './FloatingInstallButton';
 
 export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, var(--bg-primary) 0%, #111113 100%)' }}>
+      {/* Install Banner */}
+      <InstallBanner />
+      
       {/* Apple-style Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl border-b" 
               style={{ 
@@ -141,6 +146,9 @@ export default function Layout({ children }) {
       <main style={{ color: 'var(--text-primary)' }}>
         {children}
       </main>
+
+      {/* Floating Install Button */}
+      <FloatingInstallButton />
 
       {/* Footer */}
       <footer className="border-t mt-16 py-8" 

@@ -1,6 +1,7 @@
 // pages/landing.js
 import { useState } from 'react';
 import SEOHead from '../components/SEOHead';
+import AppDownloadCTA from '../components/AppDownloadCTA';
 import { useRouter } from 'next/router';
 
 export default function Landing() {
@@ -336,6 +337,9 @@ export default function Landing() {
             </div>
           </div>
         </div>
+
+        {/* App Download CTA */}
+        <AppDownloadCTA />
 
         {/* Footer */}
         <footer className="border-t border-gray-800 mt-16 py-8">

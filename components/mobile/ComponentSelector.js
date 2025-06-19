@@ -1,4 +1,4 @@
-// components/mobile/ComponentSelector.js - Mobile-optimized component selection
+// components/mobile/ComponentSelector.js - Fixed z-index and layout issues
 import { useState } from 'react';
 import { bikeConfig, getComponentsForBikeType } from '../../lib/components';
 import MobileDropdown from './MobileDropdown';
@@ -57,12 +57,19 @@ export default function ComponentSelector({
   };
 
   return (
-    <div className="mobile-screen" style={{ padding: '0' }}>
+    <div className="mobile-screen" style={{ 
+      padding: '0',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden'
+    }}>
       {/* Header */}
       <div className="mobile-header" style={{ 
         padding: '20px 20px 16px 20px',
         background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, transparent 100%)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        flexShrink: 0
       }}>
         <div className="flex items-center justify-between mb-4">
           <button
@@ -157,7 +164,13 @@ export default function ComponentSelector({
       </div>
 
       {/* Component Selection */}
-      <div className="component-form" style={{ padding: '20px' }}>
+      <div className="component-form" style={{ 
+        flex: 1,
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        padding: '20px',
+        paddingBottom: '200px' // Extra space for the fixed bottom actions
+      }}>
         <div className="space-y-6">
           {/* Wheel Size */}
           <div>
@@ -221,11 +234,14 @@ export default function ComponentSelector({
 
       {/* Bottom Action Area */}
       <div className="bottom-actions" style={{
-        position: 'sticky',
+        position: 'absolute',
         bottom: 0,
-        background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.9) 20%)',
+        left: 0,
+        right: 0,
+        background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 1) 100%)',
         padding: '20px',
-        borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+        zIndex: 10 // Low z-index, dropdowns will be above this
       }}>
         {/* Quick Setup Status */}
         <div className="status-cards" style={{ 

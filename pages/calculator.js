@@ -12,6 +12,7 @@ import { compareSetups } from '../lib/calculations';
 import { bikeConfig, componentDatabase } from '../lib/components';
 import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
 import SEOHead from '../components/SEOHead';
+import { useCalculatorState } from '../hooks/useCalculatorState';
 
 // Enhanced compatibility display component
 const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
@@ -173,49 +174,41 @@ const BikeIcons = {
 };
 
 export default function Home() {
-  const [bikeType, setBikeType] = useState('');
-  const [currentSetup, setCurrentSetup] = useState({
-    wheel: '',
-    tire: '',
-    crankset: null,
-    cassette: null
-  });
-  const [proposedSetup, setProposedSetup] = useState({
-    wheel: '',
-    tire: '',
-    crankset: null,
-    cassette: null
-  });
-  const [results, setResults] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // Use the optimized calculator state hook
+  const {
+    bikeType,
+    currentSetup,
+    proposedSetup,
+    results,
+    loading,
+    speedUnit,
+    compatibilityResults,
+    validation,
+    setBikeType,
+    updateCurrentSetup,
+    updateProposedSetup,
+    setResults,
+    setSpeedUnit,
+    setCompatibilityResults,
+    resetCalculator,
+    calculateResults
+  } = useCalculatorState();
+
+  // Additional state for UI features
   const [savedConfigs, setSavedConfigs] = useState([]);
   const [showSaved, setShowSaved] = useState(false);
-  const [speedUnit, setSpeedUnit] = useState('mph');
-  
-  // New state for enhanced features
-  const [compatibilityResults, setCompatibilityResults] = useState(null);
   const [showRiley, setShowRiley] = useState(false);
   const [compatibilityChecker] = useState(new CompatibilityChecker());
-
-  // Reset logic as a function
-  const resetCalculator = () => {
-    setBikeType('');
-    setCurrentSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-    setProposedSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-    setResults(null);
-    setCompatibilityResults(null);
-    setShowRiley(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   // Listen for reset-calculator event
   useEffect(() => {
     const handler = () => {
       resetCalculator();
+      setShowRiley(false);
     };
     window.addEventListener('reset-calculator', handler);
     return () => window.removeEventListener('reset-calculator', handler);
-  }, []);
+  }, [resetCalculator]);
 
   // Load saved configurations when the page loads
   useEffect(() => {
@@ -242,87 +235,52 @@ export default function Home() {
     }
   };
 
-  // Calculate setup completion percentage
-  const calculateSetupCompletion = (setup) => {
-    const requiredFields = ['wheel', 'tire', 'crankset', 'cassette'];
-    const completedFields = requiredFields.filter(field => {
-      const value = setup[field];
-      
-      if (field === 'crankset' || field === 'cassette') {
-        return value !== null && typeof value === 'object' && Object.keys(value).length > 0;
-      }
-      
-      return typeof value === 'string' && value.trim() !== '';
-    });
-    
-    return (completedFields.length / requiredFields.length) * 100;
-  };
-
-  const currentSetupCompletion = calculateSetupCompletion(currentSetup);
-  const proposedSetupCompletion = calculateSetupCompletion(proposedSetup);
-  const totalCompletion = (currentSetupCompletion + proposedSetupCompletion) / 2;
-
   // Component change handlers (keeping existing functionality)
   const handleCurrentWheelChange = (value) => {
-    setCurrentSetup(prev => ({ ...prev, wheel: value }));
+    updateCurrentSetup({ wheel: value });
   };
 
   const handleCurrentTireChange = (value) => {
-    setCurrentSetup(prev => ({ ...prev, tire: value }));
+    updateCurrentSetup({ tire: value });
   };
 
   const handleProposedWheelChange = (value) => {
-    setProposedSetup(prev => ({ ...prev, wheel: value }));
+    updateProposedSetup({ wheel: value });
   };
 
   const handleProposedTireChange = (value) => {
-    setProposedSetup(prev => ({ ...prev, tire: value }));
+    updateProposedSetup({ tire: value });
   };
 
   const handleCurrentCranksetChange = (selectedOption) => {
-    setCurrentSetup(prev => ({ ...prev, crankset: selectedOption }));
+    updateCurrentSetup({ crankset: selectedOption });
   };
 
   const handleCurrentCassetteChange = (selectedOption) => {
-    setCurrentSetup(prev => ({ ...prev, cassette: selectedOption }));
+    updateCurrentSetup({ cassette: selectedOption });
   };
 
   const handleProposedCranksetChange = (selectedOption) => {
-    setProposedSetup(prev => ({ ...prev, crankset: selectedOption }));
+    updateProposedSetup({ crankset: selectedOption });
   };
 
   const handleProposedCassetteChange = (selectedOption) => {
-    setProposedSetup(prev => ({ ...prev, cassette: selectedOption }));
+    updateProposedSetup({ cassette: selectedOption });
   };
 
   const handleCalculate = async () => {
-    const currentValidation = validateSetupComplete(currentSetup);
-    const proposedValidation = validateSetupComplete(proposedSetup);
-
-    if (!currentValidation.isComplete || !proposedValidation.isComplete) {
-      alert('Please complete both setups before analyzing');
-      return;
-    }
-
-    setLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const realResults = calculateRealPerformance(currentSetup, proposedSetup, speedUnit);
-      setResults(realResults);
+      const realResults = await calculateResults();
       
       // Auto-show Riley after results are ready
       setTimeout(() => setShowRiley(true), 2000);
       
+      // Check compatibility after analysis button is clicked
+      checkCompatibility();
     } catch (error) {
-      console.error('Error calculating results:', error);
-      alert('Error calculating results. Please check your component selections.');
-    } finally {
-      setLoading(false);
+      // Error is already handled in calculateResults
+      console.error('Calculation failed:', error);
     }
-
-    // Check compatibility after analysis button is clicked
-    checkCompatibility();
   };
 
   const handleSaveConfig = async () => {
@@ -356,8 +314,8 @@ export default function Home() {
   };
 
   const handleLoadConfig = (config) => {
-    setCurrentSetup(config.currentSetup);
-    setProposedSetup(config.proposedSetup);
+    updateCurrentSetup(config.currentSetup);
+    updateProposedSetup(config.proposedSetup);
     setResults(config.results);
     setBikeType(config.bikeType);
     setCompatibilityResults(config.compatibilityResults);
@@ -465,7 +423,7 @@ export default function Home() {
                 title="Current Setup"
                 subtitle="Your current components"
                 setup={currentSetup}
-                setSetup={setCurrentSetup}
+                setSetup={updateCurrentSetup}
                 config={{
                   wheelSizes: bikeConfig[bikeType].wheelSizes,
                   tireWidths: bikeConfig[bikeType].tireWidths,
@@ -484,7 +442,7 @@ export default function Home() {
                 title="Proposed Setup"
                 subtitle="Components you're considering"
                 setup={proposedSetup}
-                setSetup={setProposedSetup}
+                setSetup={updateProposedSetup}
                 config={{
                   wheelSizes: bikeConfig[bikeType].wheelSizes,
                   tireWidths: bikeConfig[bikeType].tireWidths,
@@ -517,11 +475,11 @@ export default function Home() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-[var(--accent-blue)]" />
-                      <span className="text-sm text-gray-600">Current Setup: {Math.round(currentSetupCompletion)}%</span>
+                      <span className="text-sm text-gray-600">Current Setup: {Math.round(validation.current.completion)}%</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-[var(--accent-performance)]" />
-                      <span className="text-sm text-gray-600">Proposed Setup: {Math.round(proposedSetupCompletion)}%</span>
+                      <span className="text-sm text-gray-600">Proposed Setup: {Math.round(validation.proposed.completion)}%</span>
                     </div>
                     {compatibilityResults && (
                       <div className="flex items-center gap-2">
@@ -556,9 +514,9 @@ export default function Home() {
                     {/* Analyze Button */}
                     <button
                       onClick={() => handleCalculate()}
-                      disabled={totalCompletion < 100 || loading}
+                      disabled={!validation.canAnalyze || loading}
                       className={`px-6 py-3 rounded-xl font-medium transition-all ${
-                        totalCompletion < 100 || loading
+                        !validation.canAnalyze || loading
                           ? 'opacity-50 cursor-not-allowed'
                           : 'hover:opacity-90'
                       }`}

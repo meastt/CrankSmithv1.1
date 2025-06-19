@@ -41,7 +41,7 @@ export default function ComponentSelector({
   const proposedCompletion = calculateCompletion(proposedSetup);
   const totalCompletion = (currentCompletion + proposedCompletion) / 2;
 
-  const canCalculate = currentCompletion === 100 && proposedCompletion === 100;
+  const canCalculate = !isNaN(currentCompletion) && !isNaN(proposedCompletion) && currentCompletion === 100 && proposedCompletion === 100;
 
   const handleComponentChange = (field, value) => {
     setSetup(prev => ({ ...prev, [field]: value }));
@@ -89,7 +89,7 @@ export default function ComponentSelector({
         <div className="progress-container mb-4">
           <div className="flex justify-between text-sm text-gray-300 mb-2">
             <span>Setup Progress</span>
-            <span>{Math.round(totalCompletion)}%</span>
+            <span>{isNaN(totalCompletion) ? '0' : Math.round(totalCompletion)}%</span>
           </div>
           <div 
             className="progress-bar"
@@ -104,7 +104,7 @@ export default function ComponentSelector({
             <div 
               className="progress-fill"
               style={{
-                width: `${totalCompletion}%`,
+                width: `${isNaN(totalCompletion) ? 0 : totalCompletion}%`,
                 height: '100%',
                 background: 'linear-gradient(90deg, #3B82F6 0%, #10B981 100%)',
                 borderRadius: '2px',
@@ -135,7 +135,7 @@ export default function ComponentSelector({
               transition: 'all 0.2s ease'
             }}
           >
-            Current ({Math.round(currentCompletion)}%)
+            Current ({isNaN(currentCompletion) ? '0' : Math.round(currentCompletion)}%)
           </button>
           <button
             onClick={() => setActiveSetup('proposed')}
@@ -151,7 +151,7 @@ export default function ComponentSelector({
               transition: 'all 0.2s ease'
             }}
           >
-            Proposed ({Math.round(proposedCompletion)}%)
+            Proposed ({isNaN(proposedCompletion) ? '0' : Math.round(proposedCompletion)}%)
           </button>
         </div>
       </div>
@@ -245,7 +245,7 @@ export default function ComponentSelector({
             <div className="text-lg font-bold" style={{ 
               color: currentCompletion === 100 ? '#10B981' : 'white' 
             }}>
-              {Math.round(currentCompletion)}%
+              {isNaN(currentCompletion) ? '0' : Math.round(currentCompletion)}%
             </div>
           </div>
           <div className="status-card" style={{
@@ -259,7 +259,7 @@ export default function ComponentSelector({
             <div className="text-lg font-bold" style={{ 
               color: proposedCompletion === 100 ? '#10B981' : 'white' 
             }}>
-              {Math.round(proposedCompletion)}%
+              {isNaN(proposedCompletion) ? '0' : Math.round(proposedCompletion)}%
             </div>
           </div>
         </div>

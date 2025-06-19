@@ -22,11 +22,13 @@ export const useCalculatorState = () => {
     const currentValidation = validateSetupComplete(currentSetup);
     const proposedValidation = validateSetupComplete(proposedSetup);
     
+    const totalCompletion = (currentValidation.completion + proposedValidation.completion) / 2;
+    
     return {
       current: currentValidation,
       proposed: proposedValidation,
       canAnalyze: currentValidation.isComplete && proposedValidation.isComplete,
-      totalCompletion: (currentValidation.completion + proposedValidation.completion) / 2
+      totalCompletion: isNaN(totalCompletion) ? 0 : totalCompletion
     };
   }, [currentSetup, proposedSetup]);
 

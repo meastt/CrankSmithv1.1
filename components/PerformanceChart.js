@@ -1,21 +1,15 @@
-// PerformanceChart.js - Clean radar chart visualization
-import React, { useRef, useEffect } from 'react';
+// PerformanceChart.js - OPTIMIZED VERSION
+import React, { useRef, useEffect, useMemo } from 'react';
 import Chart from 'chart.js/auto';
 
 export default function PerformanceChart({ current, proposed, speedUnit = 'mph' }) {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
-  useEffect(() => {
-    if (!current || !proposed) return;
+  // Memoize chart data to prevent unnecessary recalculations
+  const chartData = useMemo(() => {
+    if (!current || !proposed) return null;
 
-    if (chartInstance.current) {
-      chartInstance.current.destroy();
-    }
-
-    const ctx = chartRef.current.getContext('2d');
-
-    // Get actual values
     const currentValues = {
       topSpeed: parseFloat(current.metrics.highSpeed),
       climbingSpeed: parseFloat(current.metrics.lowSpeed),
@@ -33,35 +27,20 @@ export default function PerformanceChart({ current, proposed, speedUnit = 'mph' 
     // Find the ranges for proper scaling
     const maxTopSpeed = Math.max(currentValues.topSpeed, proposedValues.topSpeed) * 1.1;
     const maxClimbingSpeed = Math.max(currentValues.climbingSpeed, proposedValues.climbingSpeed) * 1.1;
-    
-    // For weight, we need the heaviest weight as our reference point
     const maxWeight = Math.max(currentValues.weight, proposedValues.weight);
     const minWeight = Math.min(currentValues.weight, proposedValues.weight);
-    const weightRange = maxWeight - minWeight + 100; // Add buffer for scaling
-    
     const maxGearRange = Math.max(currentValues.gearRange, proposedValues.gearRange) * 1.1;
 
-    // Normalize to 0-100 scale properly
+    // Normalize to 0-100 scale
     const normalizeData = (values) => [
       (values.topSpeed / maxTopSpeed) * 100,
       (values.climbingSpeed / maxClimbingSpeed) * 100,
-      // Invert weight: lighter weight = higher score on radar
+      // Invert weight: lighter weight = higher score
       ((maxWeight + 100 - values.weight) / (maxWeight + 100 - minWeight + 100)) * 100,
       (values.gearRange / maxGearRange) * 100
     ];
 
-    // Debug logging to see what's happening
-    console.log('Weight values:', {
-      current: currentValues.weight,
-      proposed: proposedValues.weight,
-      difference: proposedValues.weight - currentValues.weight,
-      maxWeight,
-      minWeight,
-      currentNormalized: ((maxWeight + 100 - currentValues.weight) / (maxWeight + 100 - minWeight + 100)) * 100,
-      proposedNormalized: ((maxWeight + 100 - proposedValues.weight) / (maxWeight + 100 - minWeight + 100)) * 100
-    });
-
-    const data = {
+    return {
       labels: ['Top Speed', 'Climbing Speed', 'Weight (Better)', 'Gear Range'],
       datasets: [
         {
@@ -86,15 +65,28 @@ export default function PerformanceChart({ current, proposed, speedUnit = 'mph' 
           pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: 'rgba(88, 86, 214, 1)'
         }
-      ]
+      ],
+      currentValues,
+      proposedValues
     };
+  }, [current, proposed]);
 
-    const config = {
+  // Memoize chart configuration
+  const chartConfig = useMemo(() => {
+    if (!chartData) return null;
+
+    return {
       type: 'radar',
-      data: data,
+      data: {
+        labels: chartData.labels,
+        datasets: chartData.datasets
+      },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 500 // Faster animation
+        },
         scales: {
           r: {
             angleLines: {
@@ -139,19 +131,19 @@ export default function PerformanceChart({ current, proposed, speedUnit = 'mph' 
                 let actualValue;
                 if (metric === 'Top Speed') {
                   actualValue = context.datasetIndex === 0 ? 
-                    currentValues.topSpeed : proposedValues.topSpeed;
+                    chartData.currentValues.topSpeed : chartData.proposedValues.topSpeed;
                   return `${label}: ${actualValue.toFixed(1)} ${speedUnit}`;
                 } else if (metric === 'Climbing Speed') {
                   actualValue = context.datasetIndex === 0 ? 
-                    currentValues.climbingSpeed : proposedValues.climbingSpeed;
+                    chartData.currentValues.climbingSpeed : chartData.proposedValues.climbingSpeed;
                   return `${label}: ${actualValue.toFixed(1)} ${speedUnit}`;
                 } else if (metric === 'Weight (Better)') {
                   actualValue = context.datasetIndex === 0 ? 
-                    currentValues.weight : proposedValues.weight;
+                    chartData.currentValues.weight : chartData.proposedValues.weight;
                   return `${label}: ${actualValue}g`;
                 } else if (metric === 'Gear Range') {
                   actualValue = context.datasetIndex === 0 ? 
-                    currentValues.gearRange : proposedValues.gearRange;
+                    chartData.currentValues.gearRange : chartData.proposedValues.gearRange;
                   return `${label}: ${actualValue}%`;
                 }
                 return `${label}: ${context.raw.toFixed(1)}%`;
@@ -161,17 +153,27 @@ export default function PerformanceChart({ current, proposed, speedUnit = 'mph' 
         }
       }
     };
+  }, [chartData, speedUnit]);
 
-    chartInstance.current = new Chart(ctx, config);
+  useEffect(() => {
+    if (!chartConfig || !chartRef.current) return;
+
+    // Destroy existing chart
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    const ctx = chartRef.current.getContext('2d');
+    chartInstance.current = new Chart(ctx, chartConfig);
 
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
     };
-  }, [current, proposed, speedUnit]);
+  }, [chartConfig]);
 
-  if (!current || !proposed) return null;
+  if (!chartData) return null;
 
   return (
     <div className="card">
@@ -188,7 +190,6 @@ export default function PerformanceChart({ current, proposed, speedUnit = 'mph' 
         <canvas ref={chartRef}></canvas>
       </div>
       
-      {/* Simple explanation */}
       <div className="mt-4 pt-4 text-xs" 
            style={{ 
              borderTop: '1px solid var(--border-subtle)',

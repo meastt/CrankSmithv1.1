@@ -9,7 +9,7 @@ import BuildSummaryCard from '../components/BuildSummaryCard';
 import { RileyChat } from '../lib/rileyAI';
 import { CompatibilityChecker } from '../lib/compatibilityChecker';
 import { compareSetups } from '../lib/calculations';
-import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
+import { bikeConfig, componentDatabase } from '../lib/components';
 import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
 import SEOHead from '../components/SEOHead';
 
@@ -97,12 +97,6 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
       </div>
     </div>
   );
-};
-
-// Default empty component database for initial render
-const defaultComponentDatabase = {
-  cranksets: [],
-  cassettes: []
 };
 
 // Simple localStorage functions (keeping existing functionality)
@@ -301,9 +295,6 @@ export default function Home() {
     setProposedSetup(prev => ({ ...prev, cassette: selectedOption }));
   };
 
-  // Get components based on bike type
-  const components = bikeType ? getComponentsForBikeType(bikeType) : defaultComponentDatabase;
-
   const handleCalculate = async () => {
     const currentValidation = validateSetupComplete(currentSetup);
     const proposedValidation = validateSetupComplete(proposedSetup);
@@ -483,7 +474,7 @@ export default function Home() {
                   onCranksetChange: handleCurrentCranksetChange,
                   onCassetteChange: handleCurrentCassetteChange
                 }}
-                components={components}
+                bikeType={bikeType}
                 icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>}
@@ -502,7 +493,7 @@ export default function Home() {
                   onCranksetChange: handleProposedCranksetChange,
                   onCassetteChange: handleProposedCassetteChange
                 }}
-                components={components}
+                bikeType={bikeType}
                 icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>}

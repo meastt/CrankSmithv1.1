@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import SearchableDropdown from './SearchableDropdown';
+import { useComponentDatabase } from '../hooks/useComponentDatabase';
 
-export default function GearSelectorPanel({ 
+const GearSelectorPanel = React.memo(({ 
   title,
   subtitle,
   badge,
@@ -9,47 +10,57 @@ export default function GearSelectorPanel({
   setup,
   setSetup,
   config,
-  components,
+  bikeType,
   icon: Icon 
-}) {
+}) => {
+  // Use the optimized hook for component loading
+  const { components, loading, error } = useComponentDatabase(bikeType);
+
   // Debug logging
   console.log(`🔍 GearSelectorPanel (${title}):`, {
     components,
     cranksets: components?.cranksets,
     cassettes: components?.cassettes,
     setup,
-    config
+    config,
+    loading,
+    error
   });
 
-  // Transform components data for SearchableDropdown
-  const cranksetOptions = components?.cranksets?.map(crankset => ({
-    id: crankset.id,
-    label: `${crankset.model} ${crankset.variant}`,
-    model: crankset.model,
-    variant: crankset.variant,
-    teeth: crankset.teeth,
-    speeds: crankset.speeds,
-    weight: crankset.weight,
-    bikeType: crankset.bikeType
-  })) || [];
+  // Transform components data for SearchableDropdown - memoized to prevent recalculation
+  const cranksetOptions = useMemo(() => 
+    components?.cranksets?.map(crankset => ({
+      id: crankset.id,
+      label: `${crankset.model} ${crankset.variant}`,
+      model: crankset.model,
+      variant: crankset.variant,
+      teeth: crankset.teeth,
+      speeds: crankset.speeds,
+      weight: crankset.weight,
+      bikeType: crankset.bikeType
+    })) || [], [components?.cranksets]
+  );
 
-  const cassetteOptions = components?.cassettes?.map(cassette => ({
-    id: cassette.id,
-    label: `${cassette.model} ${cassette.variant}`,
-    model: cassette.model,
-    variant: cassette.variant,
-    teeth: cassette.teeth,
-    speeds: cassette.speeds,
-    weight: cassette.weight,
-    bikeType: cassette.bikeType
-  })) || [];
+  const cassetteOptions = useMemo(() => 
+    components?.cassettes?.map(cassette => ({
+      id: cassette.id,
+      label: `${cassette.model} ${cassette.variant}`,
+      model: cassette.model,
+      variant: cassette.variant,
+      teeth: cassette.teeth,
+      speeds: cassette.speeds,
+      weight: cassette.weight,
+      bikeType: cassette.bikeType
+    })) || [], [components?.cassettes]
+  );
 
   console.log(`🔧 Transformed options for ${title}:`, {
     cranksetOptions,
     cassetteOptions
   });
 
-  const handleCranksetChange = (selectedOption) => {
+  // Memoized event handlers to prevent unnecessary re-renders
+  const handleCranksetChange = useCallback((selectedOption) => {
     console.log('🔄 Crankset selected:', selectedOption);
     // Update the setup state directly with the full component object
     setSetup({ ...setup, crankset: selectedOption });
@@ -58,9 +69,9 @@ export default function GearSelectorPanel({
     if (config?.onCranksetChange) {
       config.onCranksetChange(selectedOption);
     }
-  };
+  }, [setup, setSetup, config]);
 
-  const handleCassetteChange = (selectedOption) => {
+  const handleCassetteChange = useCallback((selectedOption) => {
     console.log('🔄 Cassette selected:', selectedOption);
     // Update the setup state directly with the full component object
     setSetup({ ...setup, cassette: selectedOption });
@@ -69,7 +80,40 @@ export default function GearSelectorPanel({
     if (config?.onCassetteChange) {
       config.onCassetteChange(selectedOption);
     }
-  };
+  }, [setup, setSetup, config]);
+
+  // Memoized wheel change handler
+  const handleWheelChange = useCallback((value) => {
+    config.onWheelChange(value);
+  }, [config]);
+
+  // Memoized tire change handler
+  const handleTireChange = useCallback((value) => {
+    config.onTireChange(value);
+  }, [config]);
+
+  // Show loading state if components are still loading
+  if (loading) {
+    return (
+      <div className="card group">
+        <div className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: 'var(--accent-blue)' }}></div>
+          <span className="ml-3" style={{ color: 'var(--text-secondary)' }}>Loading components...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if there was an error loading components
+  if (error) {
+    return (
+      <div className="card group">
+        <div className="flex items-center justify-center py-8">
+          <span className="text-red-500">Error loading components: {error}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="card group">
@@ -105,7 +149,7 @@ export default function GearSelectorPanel({
           <label className="form-label">Wheel Size</label>
           <select
             value={setup.wheel}
-            onChange={(e) => config.onWheelChange(e.target.value)}
+            onChange={(e) => handleWheelChange(e.target.value)}
             className="input-field"
           >
             <option value="">Select wheel size</option>
@@ -122,7 +166,7 @@ export default function GearSelectorPanel({
           <label className="form-label">Tire Width</label>
           <select
             value={setup.tire}
-            onChange={(e) => config.onTireChange(e.target.value)}
+            onChange={(e) => handleTireChange(e.target.value)}
             className="input-field"
           >
             <option value="">Select tire width</option>
@@ -158,7 +202,12 @@ export default function GearSelectorPanel({
       </div>
     </div>
   );
-}
+});
+
+// Add display name for debugging
+GearSelectorPanel.displayName = 'GearSelectorPanel';
+
+export default GearSelectorPanel;
 
 function ChainringIcon({ teeth }) {
   const isDouble = teeth.length === 2;

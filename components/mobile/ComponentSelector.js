@@ -94,7 +94,7 @@ export default function ComponentSelector({
 
         {/* Progress Bar */}
         <div className="progress-container mb-4">
-          <div className="flex justify-between text-sm text-gray-300 mb-2">
+          <div className="flex justify-between text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>
             <span>Setup Progress</span>
             <span>{isNaN(totalCompletion) ? '0' : Math.round(totalCompletion)}%</span>
           </div>
@@ -257,7 +257,7 @@ export default function ComponentSelector({
             padding: '12px',
             textAlign: 'center'
           }}>
-            <div className="text-sm text-gray-300">Current</div>
+            <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>Current</div>
             <div className="text-lg font-bold" style={{ 
               color: currentCompletion === 100 ? '#10B981' : 'white' 
             }}>
@@ -271,7 +271,7 @@ export default function ComponentSelector({
             padding: '12px',
             textAlign: 'center'
           }}>
-            <div className="text-sm text-gray-300">Proposed</div>
+            <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>Proposed</div>
             <div className="text-lg font-bold" style={{ 
               color: proposedCompletion === 100 ? '#10B981' : 'white' 
             }}>
@@ -324,7 +324,7 @@ export default function ComponentSelector({
         </button>
 
         {!canCalculate && (
-          <p className="text-center text-sm text-gray-400 mt-3">
+          <p className="text-center text-sm mt-3" style={{ color: 'var(--text-tertiary)' }}>
             Complete both setups to analyze performance
           </p>
         )}

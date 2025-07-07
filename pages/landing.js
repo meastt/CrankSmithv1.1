@@ -95,10 +95,10 @@ export default function Landing() {
               )}
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-gray-50">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center" style={{ color: 'var(--text-primary)' }}>
               Stop guessing. Start knowing.
             </h2>
-            <p className="text-lg md:text-xl mb-12 text-gray-300 max-w-2xl mx-auto text-center">
+            <p className="text-lg md:text-xl mb-12 max-w-2xl mx-auto text-center" style={{ color: 'var(--text-secondary)' }}>
               This tool is completely free to use. Just enter your email below to unlock instant access and start optimizing your ride.
             </p>
 
@@ -111,7 +111,7 @@ export default function Landing() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="w-full px-6 py-4 rounded-xl bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none text-white text-lg"
+                  className="input-field text-lg"
                 />
                 {/* Corrected Button: Uses Tailwind for hover effects, not JS */}
                 <button
@@ -132,7 +132,7 @@ export default function Landing() {
               )}
             </div>
 
-            <p className="text-gray-400">
+            <p style={{ color: 'var(--text-tertiary)' }}>
               🚀 Join 150+ cyclists already optimizing their rides
             </p>
           </div>
@@ -142,36 +142,36 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-20">
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* These gradients will now work correctly due to the CSS fix */}
-            <div className="text-center p-8 rounded-xl bg-gray-800/50 backdrop-blur">
+            <div className="card text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-50">Gear Calculator</h3>
-              <p className="text-gray-400">
+              <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Gear Calculator</h3>
+              <p style={{ color: 'var(--text-tertiary)' }}>
                 Compare components and see exact performance impacts
               </p>
             </div>
 
-            <div className="text-center p-8 rounded-xl bg-gray-800/50 backdrop-blur">
+            <div className="card text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center text-white">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-50">Tire Pressure</h3>
-              <p className="text-gray-400">
+              <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Tire Pressure</h3>
+              <p style={{ color: 'var(--text-tertiary)' }}>
                 Get perfect tire pressure for your weight and terrain
               </p>
             </div>
 
-            <div className="text-center p-8 rounded-xl bg-gray-800/50 backdrop-blur">
+            <div className="card text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white">
                 <span className="text-2xl">🔧</span>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-50">Ask Riley</h3>
-              <p className="text-gray-400">
+              <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Ask Riley</h3>
+              <p style={{ color: 'var(--text-tertiary)' }}>
                 Get personalized advice from your AI bike expert
               </p>
             </div>
@@ -184,29 +184,29 @@ export default function Landing() {
         {/* Key Benefits */}
         <div className="container mx-auto px-4 py-20">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-12 text-gray-50">Why CrankSmith?</h2>
+            <h2 className="text-3xl font-bold mb-12" style={{ color: 'var(--text-primary)' }}>Why CrankSmith?</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
-                <h3 className="text-xl font-semibold mb-3 text-gray-50">Real Component Data</h3>
-                <p className="text-gray-300">
+              <div className="card text-left">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Real Component Data</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>
                   Access accurate specifications and compatibility data for thousands of bike components. No more guesswork or outdated information.
                 </p>
               </div>
-              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
-                <h3 className="text-xl font-semibold mb-3 text-gray-50">Smart Analysis</h3>
-                <p className="text-gray-300">
+              <div className="card text-left">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Smart Analysis</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>
                   Get personalized recommendations based on your riding style, terrain, and goals. Make informed decisions about your setup.
                 </p>
               </div>
-              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
-                <h3 className="text-xl font-semibold mb-3 text-gray-50">Save Money</h3>
-                <p className="text-gray-300">
+              <div className="card text-left">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Save Money</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>
                   Avoid costly mistakes by understanding component compatibility before you buy. Get the right parts the first time.
                 </p>
               </div>
-              <div className="p-6 rounded-xl bg-gray-800/50 backdrop-blur text-left">
-                <h3 className="text-xl font-semibold mb-3 text-gray-50">Expert Guidance</h3>
-                <p className="text-gray-300">
+              <div className="card text-left">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Expert Guidance</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>
                   Get answers to your technical questions with Riley, your AI bike expert. No more conflicting advice from forums.
                 </p>
               </div>
@@ -218,8 +218,8 @@ export default function Landing() {
         <AppDownloadCTA />
 
         {/* Footer */}
-        <footer className="border-t border-gray-800 mt-16 py-8">
-          <div className="container mx-auto px-4 text-center text-gray-400">
+        <footer className="border-t mt-16 py-8" style={{ borderColor: 'var(--border-light)' }}>
+          <div className="container mx-auto px-4 text-center" style={{ color: 'var(--text-tertiary)' }}>
             <p>© 2024 CrankSmith. Made with ❤️ by a cyclist who got tired of bad calculators.</p>
           </div>
         </footer>

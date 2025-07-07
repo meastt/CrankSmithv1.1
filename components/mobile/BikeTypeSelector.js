@@ -44,7 +44,7 @@ export default function BikeTypeSelector({ bikeType, setBikeType, onNext }) {
         <h1 className="text-3xl font-bold mb-3" style={{ color: 'white' }}>
           Choose Your Bike
         </h1>
-        <p className="text-gray-300 text-lg">
+        <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>
           Select your bike type to get started with gear optimization
         </p>
       </div>
@@ -72,7 +72,7 @@ export default function BikeTypeSelector({ bikeType, setBikeType, onNext }) {
                 <h3 className="text-xl font-bold mb-2" style={{ color: 'white' }}>
                   {type.name}
                 </h3>
-                <p className="text-gray-300 mb-3 text-base leading-relaxed">
+                <p className="mb-3 text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                   {type.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -139,7 +139,7 @@ export default function BikeTypeSelector({ bikeType, setBikeType, onNext }) {
 
       {/* Help Text */}
       <div className="mt-6 text-center">
-        <p className="text-gray-400 text-sm">
+                  <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
           Don't worry, you can always change this later in settings
         </p>
       </div>

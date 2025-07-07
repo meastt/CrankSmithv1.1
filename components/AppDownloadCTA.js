@@ -54,7 +54,7 @@ export default function AppDownloadCTA() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>
             Get the Full CrankSmith Experience
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                      <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             Download our mobile app for offline access, faster performance, and a native app experience
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function AppDownloadCTA() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-white">Mobile App</h3>
-                  <p className="text-gray-300">
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     Optimized for mobile devices with touch-friendly interface and gesture controls
                   </p>
                 </div>
@@ -111,7 +111,7 @@ export default function AppDownloadCTA() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-white">Offline Access</h3>
-                  <p className="text-gray-300">
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     Works without internet connection - perfect for bike shops and trailside calculations
                   </p>
                 </div>
@@ -139,7 +139,7 @@ export default function AppDownloadCTA() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-white">Lightning Fast</h3>
-                  <p className="text-gray-300">
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     Instant calculations and smooth animations for the best user experience
                   </p>
                 </div>
@@ -219,14 +219,14 @@ export default function AppDownloadCTA() {
                   </a>
                   
                   {isMobile && (
-                    <p className="text-sm text-gray-300">
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                       Tap "Add to Home Screen" in your browser menu
                     </p>
                   )}
                 </div>
               )}
 
-              <div className="mt-6 text-xs text-gray-300">
+              <div className="mt-6 text-xs" style={{ color: 'var(--text-secondary)' }}>
                 <p>Free • No ads • Privacy focused</p>
                 <p>Works on iOS, Android & Desktop</p>
               </div>
@@ -245,8 +245,8 @@ export default function AppDownloadCTA() {
               border: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
               <div className="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
-              <p className="text-gray-300 mb-4">"Finally, a gear calculator that actually works offline!"</p>
-              <p className="text-sm text-gray-400">- Mountain Biker</p>
+              <p style={{ color: 'var(--text-secondary)' }} className="mb-4">"Finally, a gear calculator that actually works offline!"</p>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>- Mountain Biker</p>
             </div>
             <div style={{
               background: 'rgba(255, 255, 255, 0.05)',
@@ -255,8 +255,8 @@ export default function AppDownloadCTA() {
               border: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
               <div className="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
-              <p className="text-gray-300 mb-4">"The mobile app is so much faster than the website"</p>
-              <p className="text-sm text-gray-400">- Road Cyclist</p>
+              <p style={{ color: 'var(--text-secondary)' }} className="mb-4">"The mobile app is so much faster than the website"</p>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>- Road Cyclist</p>
             </div>
             <div style={{
               background: 'rgba(255, 255, 255, 0.05)',
@@ -265,8 +265,8 @@ export default function AppDownloadCTA() {
               border: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
               <div className="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
-              <p className="text-gray-300 mb-4">"Perfect for bike shop consultations"</p>
-              <p className="text-sm text-gray-400">- Bike Mechanic</p>
+              <p style={{ color: 'var(--text-secondary)' }} className="mb-4">"Perfect for bike shop consultations"</p>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>- Bike Mechanic</p>
             </div>
           </div>
         </div>

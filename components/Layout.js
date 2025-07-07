@@ -51,7 +51,8 @@ export default function Layout({ children }) {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-12 ml-16 mt-8">
-              <Link href="/calculator" className="text-lg font-medium text-gray-300 hover:text-white transition-colors"
+              <Link href="/calculator" className="text-lg font-medium hover:opacity-80 transition-colors"
+                style={{ color: 'var(--text-secondary)' }}
                 onClick={e => {
                   if (window.location.pathname === '/calculator') {
                     e.preventDefault();
@@ -62,13 +63,13 @@ export default function Layout({ children }) {
               >
                 Bike Gear Calculator
               </Link>
-              <Link href="/tire-pressure" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
+              <Link href="/tire-pressure" className="text-lg font-medium hover:opacity-80 transition-colors" style={{ color: 'var(--text-secondary)' }}>
                 Tire Pressure Calculator
               </Link>
-              <Link href="/blog" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
+              <Link href="/blog" className="text-lg font-medium hover:opacity-80 transition-colors" style={{ color: 'var(--text-secondary)' }}>
                 Blog
               </Link>
-              <Link href="/about" className="text-lg font-medium text-gray-300 hover:text-white transition-colors">
+              <Link href="/about" className="text-lg font-medium hover:opacity-80 transition-colors" style={{ color: 'var(--text-secondary)' }}>
                 About
               </Link>
             </nav>
@@ -76,7 +77,8 @@ export default function Layout({ children }) {
             <div className="flex items-center space-x-4 mt-8">
               <Link href="https://instagram.com/cranksmithapp" target="_blank" rel="noopener noreferrer" className="hidden md:block">
                 <svg 
-                  className="w-6 h-6 text-gray-300 hover:text-white transition-colors" 
+                  className="w-6 h-6 hover:opacity-80 transition-colors" 
+                  style={{ color: 'var(--text-secondary)' }}
                   fill="currentColor" 
                   viewBox="0 0 24 24"
                 >
@@ -86,10 +88,10 @@ export default function Layout({ children }) {
             </div>
 
             {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-800 transition-colors"
-              style={{ color: 'var(--text-secondary)' }}
+                          <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg transition-colors"
+                style={{ color: 'var(--text-secondary)' }}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isMobileMenuOpen ? (

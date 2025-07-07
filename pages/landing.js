@@ -73,7 +73,7 @@ export default function Landing() {
         image="/og-image.jpg"
       />
 
-      <div className="min-h-screen bg-[#010309]">
+      <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
         {/* Hero Section - Simplified */}
         <div className="container mx-auto px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto">

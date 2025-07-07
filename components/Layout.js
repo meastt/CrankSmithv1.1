@@ -10,7 +10,7 @@ export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, var(--bg-primary) 0%, #111113 100%)' }}>
+    <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
       {/* Install Banner */}
       <InstallBanner />
       
@@ -20,8 +20,8 @@ export default function Layout({ children }) {
       {/* Apple-style Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl border-b" 
               style={{ 
-                background: '#010912', 
-                borderColor: 'var(--border-subtle)' 
+                background: 'var(--bg-secondary)', 
+                borderColor: 'var(--border-light)' 
               }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-40">
@@ -108,7 +108,7 @@ export default function Layout({ children }) {
         <div className={`md:hidden transition-all duration-300 ease-in-out ${
           isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
         } overflow-hidden`}
-             style={{ background: 'rgba(10, 10, 11, 0.95)' }}>
+             style={{ background: 'var(--bg-secondary)' }}>
           <nav className="container mx-auto px-6 py-4 space-y-4">
             <Link href="/calculator" 
                   className="block text-base font-medium transition-colors hover:opacity-80"

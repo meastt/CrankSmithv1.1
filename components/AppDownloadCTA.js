@@ -45,9 +45,9 @@ export default function AppDownloadCTA() {
 
   return (
     <section className="app-download-cta py-16" style={{
-      background: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)',
-      borderTop: '1px solid rgba(59, 130, 246, 0.2)',
-      borderBottom: '1px solid rgba(59, 130, 246, 0.2)'
+      background: 'var(--bg-secondary)',
+      borderTop: '1px solid var(--border-light)',
+      borderBottom: '1px solid var(--border-light)'
     }}>
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-12">
@@ -62,12 +62,7 @@ export default function AppDownloadCTA() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* App Features */}
           <div className="space-y-6">
-            <div className="feature-card" style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '16px',
-              padding: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>
+            <div className="card">
               <div className="flex items-start gap-4">
                 <div style={{
                   width: '48px',
@@ -90,12 +85,7 @@ export default function AppDownloadCTA() {
               </div>
             </div>
 
-            <div className="feature-card" style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '16px',
-              padding: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>
+            <div className="card">
               <div className="flex items-start gap-4">
                 <div style={{
                   width: '48px',
@@ -118,12 +108,7 @@ export default function AppDownloadCTA() {
               </div>
             </div>
 
-            <div className="feature-card" style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '16px',
-              padding: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>
+            <div className="card">
               <div className="flex items-start gap-4">
                 <div style={{
                   width: '48px',
@@ -238,32 +223,17 @@ export default function AppDownloadCTA() {
         <div className="mt-16 text-center">
           <h3 className="text-2xl font-semibold mb-8 text-white">What Cyclists Say</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '16px',
-              padding: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>
+            <div className="card">
               <div className="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
               <p style={{ color: 'var(--text-secondary)' }} className="mb-4">"Finally, a gear calculator that actually works offline!"</p>
               <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>- Mountain Biker</p>
             </div>
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '16px',
-              padding: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>
+            <div className="card">
               <div className="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
               <p style={{ color: 'var(--text-secondary)' }} className="mb-4">"The mobile app is so much faster than the website"</p>
               <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>- Road Cyclist</p>
             </div>
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '16px',
-              padding: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
-            }}>
+            <div className="card">
               <div className="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
               <p style={{ color: 'var(--text-secondary)' }} className="mb-4">"Perfect for bike shop consultations"</p>
               <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>- Bike Mechanic</p>

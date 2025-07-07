@@ -170,7 +170,7 @@ export default function TirePressure() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <h1 className="hero-title text-4xl font-bold mb-4">Tire Pressure Calculator</h1>
-          <p className="text-lg text-gray-400 mb-8 max-w-2xl">
+          <p className="text-lg mb-8 max-w-2xl" style={{ color: 'var(--text-secondary)' }}>
             Get optimal tire pressure recommendations based on your weight, tire size, and riding conditions. 
             Algorithm calibrated with industry standards.
           </p>
@@ -178,7 +178,7 @@ export default function TirePressure() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Weight Unit
                 </label>
                 <div className="flex space-x-4">
@@ -186,8 +186,8 @@ export default function TirePressure() {
                     onClick={() => setWeightUnit('kg')}
                     className={`flex-1 py-2 px-4 rounded-lg transition-all ${
                       weightUnit === 'kg'
-                        ? 'bg-[var(--accent-blue)] text-white'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                        ? 'btn-primary'
+                        : 'input-field hover:bg-[var(--bg-tertiary)]'
                     }`}
                   >
                     Kilograms (kg)
@@ -196,8 +196,8 @@ export default function TirePressure() {
                     onClick={() => setWeightUnit('lb')}
                     className={`flex-1 py-2 px-4 rounded-lg transition-all ${
                       weightUnit === 'lb'
-                        ? 'bg-[var(--accent-blue)] text-white'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                        ? 'btn-primary'
+                        : 'input-field hover:bg-[var(--bg-tertiary)]'
                     }`}
                   >
                     Pounds (lb)
@@ -206,33 +206,33 @@ export default function TirePressure() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Rider Weight ({weightUnit})
                 </label>
                 <input
                   type="number"
                   value={riderWeight}
                   onChange={(e) => setRiderWeight(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[var(--accent-blue)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-opacity-20 transition-all"
+                  className="input-field"
                   placeholder={`Enter weight in ${weightUnit}`}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Bike Weight ({weightUnit})
                 </label>
                 <input
                   type="number"
                   value={bikeWeight}
                   onChange={(e) => setBikeWeight(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[var(--accent-blue)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-opacity-20 transition-all"
+                  className="input-field"
                   placeholder={`Enter weight in ${weightUnit}`}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Tire Width {surfaceType === 'mtb' ? '(inches)' : '(mm)'}
                 </label>
                 <input
@@ -240,10 +240,10 @@ export default function TirePressure() {
                   step={surfaceType === 'mtb' ? '0.1' : '1'}
                   value={tireWidth}
                   onChange={(e) => setTireWidth(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[var(--accent-blue)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-opacity-20 transition-all"
+                  className="input-field"
                   placeholder={surfaceType === 'mtb' ? 'e.g. 2.35' : 'e.g. 47'}
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
                   {surfaceType === 'road' && 'Road: 23-35mm typical'}
                   {surfaceType === 'gravel' && 'Gravel: 35-50mm+ typical'}
                   {surfaceType === 'mtb' && 'MTB: 2.1-2.6" typical'}
@@ -251,13 +251,13 @@ export default function TirePressure() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Surface Type
                 </label>
                 <select
                   value={surfaceType}
                   onChange={(e) => setSurfaceType(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[var(--accent-blue)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-opacity-20 transition-all"
+                  className="input-field"
                 >
                   <option value="road">Road</option>
                   <option value="gravel">Gravel</option>
@@ -267,13 +267,13 @@ export default function TirePressure() {
 
               {(surfaceType === 'gravel' || surfaceType === 'mtb') && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="form-label">
                     Wheel Size
                   </label>
                   <select
                     value={wheelSize}
                     onChange={(e) => setWheelSize(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[var(--accent-blue)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-opacity-20 transition-all"
+                    className="input-field"
                   >
                     {surfaceType === 'mtb' ? (
                       <>
@@ -292,7 +292,7 @@ export default function TirePressure() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Setup
                 </label>
                 <div className="flex space-x-4">
@@ -300,8 +300,8 @@ export default function TirePressure() {
                     onClick={() => setIsTubeless(true)}
                     className={`flex-1 py-2 px-4 rounded-lg transition-all ${
                       isTubeless
-                        ? 'bg-[var(--accent-blue)] text-white'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                        ? 'btn-primary'
+                        : 'input-field hover:bg-[var(--bg-tertiary)]'
                     }`}
                   >
                     Tubeless
@@ -310,8 +310,8 @@ export default function TirePressure() {
                     onClick={() => setIsTubeless(false)}
                     className={`flex-1 py-2 px-4 rounded-lg transition-all ${
                       !isTubeless
-                        ? 'bg-[var(--accent-blue)] text-white'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                        ? 'btn-primary'
+                        : 'input-field hover:bg-[var(--bg-tertiary)]'
                     }`}
                   >
                     Tubes
@@ -320,13 +320,13 @@ export default function TirePressure() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Weather
                 </label>
                 <select
                   value={weatherCondition}
                   onChange={(e) => setWeatherCondition(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[var(--accent-blue)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-opacity-20 transition-all"
+                  className="input-field"
                 >
                   <option value="dry">Dry</option>
                   <option value="wet">Wet</option>
@@ -335,13 +335,13 @@ export default function TirePressure() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="form-label">
                   Riding Style
                 </label>
                 <select
                   value={ridingStyle}
                   onChange={(e) => setRidingStyle(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-[var(--accent-blue)] focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-opacity-20 transition-all"
+                  className="input-field"
                 >
                   <option value="comfort">Comfort</option>
                   <option value="normal">Normal</option>
@@ -377,55 +377,55 @@ export default function TirePressure() {
               {pressure.base ? (
                 <>
                   {/* Main Recommendation */}
-                  <div className="p-6 rounded-lg bg-gray-800 border border-gray-700">
-                    <h2 className="text-2xl font-bold text-[var(--accent-blue)] mb-4">Recommended Pressure</h2>
+                  <div className="card">
+                    <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--accent-blue)' }}>Recommended Pressure</h2>
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div className="text-center">
-                        <div className="text-sm text-gray-400 mb-1">Front</div>
-                        <div className="text-3xl font-bold text-white">
+                        <div className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>Front</div>
+                        <div className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>
                           {pressure.front} PSI
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-sm text-gray-400 mb-1">Rear</div>
-                        <div className="text-3xl font-bold text-white">
+                        <div className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>Rear</div>
+                        <div className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>
                           {pressure.rear} PSI
                         </div>
                       </div>
                     </div>
-                    <div className="text-center text-sm text-gray-400">
+                    <div className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
                       Range: {pressure.ranges.comfort}–{pressure.ranges.performance} PSI
                     </div>
                   </div>
 
                   {/* Detailed Ranges */}
                   <div className="space-y-4">
-                    <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-                      <h3 className="text-lg font-semibold text-green-400 mb-2">Comfort Range</h3>
-                      <div className="text-2xl font-bold text-white mb-1">
+                    <div className="card">
+                      <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--success-green)' }}>Comfort Range</h3>
+                      <div className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
                         {pressure.ranges.comfort} PSI
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                         Maximum grip and comfort, ideal for rough terrain and long rides
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-                      <h3 className="text-lg font-semibold text-[var(--accent-blue)] mb-2">Balanced Range</h3>
-                      <div className="text-2xl font-bold text-white mb-1">
+                    <div className="card">
+                      <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--accent-blue)' }}>Balanced Range</h3>
+                      <div className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
                         {pressure.ranges.balanced} PSI
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                         Optimal balance of grip, comfort, and rolling efficiency
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-                      <h3 className="text-lg font-semibold text-orange-400 mb-2">Performance Range</h3>
-                      <div className="text-2xl font-bold text-white mb-1">
+                    <div className="card">
+                      <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--warning-orange)' }}>Performance Range</h3>
+                      <div className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
                         {pressure.ranges.performance} PSI
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                         Maximum efficiency and speed, ideal for smooth surfaces
                       </p>
                     </div>
@@ -440,10 +440,10 @@ export default function TirePressure() {
                   </div>
                 </>
               ) : (
-                <div className="p-6 rounded-lg bg-gray-800 border border-gray-700 text-center">
+                <div className="card text-center">
                   <div className="text-6xl mb-4">📏</div>
-                  <h3 className="text-xl font-semibold text-gray-300 mb-2">Ready to Calculate</h3>
-                  <p className="text-gray-400">
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Ready to Calculate</h3>
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     Enter your weight, tire width, and riding conditions to get personalized tire pressure recommendations.
                   </p>
                 </div>

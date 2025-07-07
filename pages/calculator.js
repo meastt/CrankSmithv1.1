@@ -475,18 +475,18 @@ export default function Home() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-[var(--accent-blue)]" />
-                      <span className="text-sm text-gray-600">Current Setup: {isNaN(validation.current.completion) ? '0' : Math.round(validation.current.completion)}%</span>
+                      <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Current Setup: {isNaN(validation.current.completion) ? '0' : Math.round(validation.current.completion)}%</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-[var(--accent-performance)]" />
-                      <span className="text-sm text-gray-600">Proposed Setup: {isNaN(validation.proposed.completion) ? '0' : Math.round(validation.proposed.completion)}%</span>
+                      <div className="w-2 h-2 rounded-full bg-[var(--success-green)]" />
+                      <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Proposed Setup: {isNaN(validation.proposed.completion) ? '0' : Math.round(validation.proposed.completion)}%</span>
                     </div>
                     {compatibilityResults && (
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full" 
                              style={{ background: compatibilityResults.status === 'compatible' ? 'var(--success-green)' : 
                                                  compatibilityResults.status === 'warning' ? 'var(--warning-orange)' : 'var(--error-red)' }} />
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                           Compatibility: {compatibilityResults.status === 'compatible' ? 'Good' : 
                                         compatibilityResults.status === 'warning' ? 'Review needed' : 'Issues found'}
                         </span>

@@ -395,14 +395,17 @@ select.input-field option:first-child {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Remove ALL old themed classes */
-.hero-title-fire,
-.section-title-fire,
-.card-fire-accent,
-.quick-start-icon-fire,
-.bottom-line-fire,
-[class*="gradient"],
-[class*="fire"] {
+/* 
+  CORRECTED & SAFER: Old theme cleanup rule.
+  This rule was previously '[class*="gradient"], [class*="fire"]' which was too
+  broad and broke Tailwind's gradient classes. It has been changed to only
+  target classes with "fire-" in their name, which is safer.
+  
+  BEST PRACTICE: The long-term solution is to find all elements using these
+  old '.hero-title-fire', '.card-fire-accent' etc. classes and remove them
+  from the HTML/JSX, then delete this CSS rule entirely.
+*/
+[class*="fire-"] {
   background: none !important;
   color: inherit !important;
 }

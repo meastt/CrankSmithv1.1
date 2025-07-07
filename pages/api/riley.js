@@ -15,6 +15,20 @@ export default async function handler(req, res) {
   // Simple in-memory rate limiting (replace with Redis in production)
   if (!global.rileyRateLimit) {
     global.rileyRateLimit = new Map();
+    global.lastCleanup = now;
+  }
+  
+  // Cleanup old entries every 5 minutes to prevent memory leak
+  if (now - (global.lastCleanup || 0) > 300000) { // 5 minutes
+    for (const [key, requests] of global.rileyRateLimit.entries()) {
+      const validRequests = requests.filter(time => now - time < 60000);
+      if (validRequests.length === 0) {
+        global.rileyRateLimit.delete(key);
+      } else {
+        global.rileyRateLimit.set(key, validRequests);
+      }
+    }
+    global.lastCleanup = now;
   }
   
   const userRequests = global.rileyRateLimit.get(ip) || [];

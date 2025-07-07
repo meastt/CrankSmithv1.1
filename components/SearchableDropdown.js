@@ -33,16 +33,18 @@ export default function SearchableDropdown({
     }
   }, [options, value]);
 
-  // Filter options based on search
-  const filteredOptions = options.filter(option => {
-    if (!searchTerm) return true;
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      option.model?.toLowerCase().includes(searchLower) ||
-      option.variant?.toLowerCase().includes(searchLower) ||
-      option.weight?.toString().includes(searchTerm)
-    );
-  });
+  // Filter options based on search - Fixed: Use useMemo to prevent unnecessary recalculations
+  const filteredOptions = useMemo(() => {
+    return options.filter(option => {
+      if (!searchTerm) return true;
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        option.model?.toLowerCase().includes(searchLower) ||
+        option.variant?.toLowerCase().includes(searchLower) ||
+        option.weight?.toString().includes(searchTerm)
+      );
+    });
+  }, [options, searchTerm]);
 
   // Group options if groupBy function provided
   const groupedOptions = groupBy ? 

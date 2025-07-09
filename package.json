@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",
+    "@upstash/redis": "^1.35.1",
     "autoprefixer": "^10.4.17",
     "chart.js": "^4.5.0",
     "jspdf": "^3.0.1",
@@ -21,6 +22,7 @@
     "postcss": "^8.4.35",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-window": "^1.8.11",
     "recharts": "^2.15.3",
     "tailwindcss": "^3.4.1"
   },

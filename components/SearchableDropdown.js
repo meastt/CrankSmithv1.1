@@ -1,7 +1,6 @@
-// components/SearchableDropdown.js - FIXED VERSION
-// Replaces the unstable version with proper event handling and mobile support
-
+// components/SearchableDropdown.js - COMPLETE FILE with virtualization
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { FixedSizeList as List } from 'react-window';
 
 export default function SearchableDropdown({
   options = [],
@@ -14,74 +13,100 @@ export default function SearchableDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
   const triggerRef = useRef(null);
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
+  const listRef = useRef(null);
 
   // Find selected option
   const selectedOption = useMemo(() => {
     if (!value) return null;
     
-    // Handle both cases: value could be an ID or a full component object
     if (typeof value === 'object' && value.id) {
-      // Value is a full component object
       return options.find(opt => opt.id === value.id);
     } else {
-      // Value is just an ID
       return options.find(opt => opt.id === value);
     }
   }, [options, value]);
 
-  // Filter options based on search - Fixed: Use useMemo to prevent unnecessary recalculations
+  // Filter options based on search with memoization
   const filteredOptions = useMemo(() => {
+    if (!searchTerm) return options;
+    
+    const searchLower = searchTerm.toLowerCase();
     return options.filter(option => {
-      if (!searchTerm) return true;
-      const searchLower = searchTerm.toLowerCase();
-      return (
-        option.model?.toLowerCase().includes(searchLower) ||
-        option.variant?.toLowerCase().includes(searchLower) ||
-        option.weight?.toString().includes(searchTerm)
-      );
+      if (!option) return false;
+      
+      const modelMatch = option.model?.toLowerCase().includes(searchLower);
+      const variantMatch = option.variant?.toLowerCase().includes(searchLower);
+      const weightMatch = option.weight?.toString().includes(searchTerm);
+      
+      return modelMatch || variantMatch || weightMatch;
     });
   }, [options, searchTerm]);
 
   // Group options if groupBy function provided
-  const groupedOptions = groupBy ? 
-    filteredOptions.reduce((acc, option) => {
+  const groupedOptions = useMemo(() => {
+    if (!groupBy) return { 'All': filteredOptions };
+    
+    return filteredOptions.reduce((acc, option) => {
       const group = groupBy(option);
       if (!acc[group]) acc[group] = [];
       acc[group].push(option);
       return acc;
-    }, {}) : 
-    { 'All': filteredOptions };
+    }, {});
+  }, [filteredOptions, groupBy]);
+
+  // Flatten grouped options for virtualization
+  const flattenedOptions = useMemo(() => {
+    const flattened = [];
+    Object.entries(groupedOptions).forEach(([groupName, groupOptions]) => {
+      if (groupBy && Object.keys(groupedOptions).length > 1) {
+        flattened.push({ type: 'group', name: groupName });
+      }
+      flattened.push(...groupOptions.map(opt => ({ type: 'option', data: opt })));
+    });
+    return flattened;
+  }, [groupedOptions, groupBy]);
 
   // Handle selection
   const handleSelect = useCallback((option) => {
-    onChange(option); // Pass the full component object instead of just the ID
+    onChange(option);
     setIsOpen(false);
     setSearchTerm('');
     setHighlightedIndex(0);
-    setCurrentPage(0);
   }, [onChange]);
 
   // Handle keyboard navigation
-  const handleKeyDown = (e) => {
+  const handleKeyDown = useCallback((e) => {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setHighlightedIndex(prev => 
-          prev < filteredOptions.length - 1 ? prev + 1 : prev
-        );
+        setHighlightedIndex(prev => {
+          const newIndex = Math.min(prev + 1, flattenedOptions.length - 1);
+          // Skip group headers
+          if (flattenedOptions[newIndex]?.type === 'group' && newIndex < flattenedOptions.length - 1) {
+            return newIndex + 1;
+          }
+          return newIndex;
+        });
         break;
       case 'ArrowUp':
         e.preventDefault();
-        setHighlightedIndex(prev => prev > 0 ? prev - 1 : prev);
+        setHighlightedIndex(prev => {
+          const newIndex = Math.max(prev - 1, 0);
+          // Skip group headers
+          if (flattenedOptions[newIndex]?.type === 'group' && newIndex > 0) {
+            return newIndex - 1;
+          }
+          return newIndex;
+        });
         break;
       case 'Enter':
         e.preventDefault();
-        if (filteredOptions[highlightedIndex]) {
-          handleSelect(filteredOptions[highlightedIndex]);
+        const highlighted = flattenedOptions[highlightedIndex];
+        if (highlighted?.type === 'option') {
+          handleSelect(highlighted.data);
         }
         break;
       case 'Escape':
@@ -89,7 +114,14 @@ export default function SearchableDropdown({
         setIsOpen(false);
         break;
     }
-  };
+  }, [flattenedOptions, highlightedIndex, handleSelect]);
+
+  // Scroll highlighted item into view
+  useEffect(() => {
+    if (listRef.current && highlightedIndex >= 0) {
+      listRef.current.scrollToItem(highlightedIndex, 'smart');
+    }
+  }, [highlightedIndex]);
 
   // Click outside to close
   useEffect(() => {
@@ -128,6 +160,88 @@ export default function SearchableDropdown({
   const displayValue = selectedOption ? 
     `${selectedOption.model} ${selectedOption.variant}`.trim() : '';
 
+  // Row renderer for react-window
+  const Row = ({ index, style }) => {
+    const item = flattenedOptions[index];
+    
+    if (item.type === 'group') {
+      return (
+        <div
+          style={{
+            ...style,
+            padding: '8px 12px',
+            background: 'var(--bg-secondary)',
+            color: 'var(--text-secondary)',
+            borderBottom: '1px solid var(--border-subtle)',
+            fontSize: '12px',
+            fontWeight: '600',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1
+          }}
+        >
+          {item.name}
+        </div>
+      );
+    }
+
+    const option = item.data;
+    const isHighlighted = index === highlightedIndex;
+    const isSelected = selectedOption?.id === option.id;
+
+    return (
+      <div
+        style={{
+          ...style,
+          padding: '12px 16px',
+          cursor: 'pointer',
+          background: isHighlighted 
+            ? 'var(--accent-blue)' 
+            : isSelected 
+              ? 'var(--surface-elevated)' 
+              : 'transparent',
+          color: isHighlighted ? 'white' : 'var(--text-primary)',
+          transition: 'background-color 0.1s ease'
+        }}
+        onClick={() => handleSelect(option)}
+        onMouseEnter={() => setHighlightedIndex(index)}
+      >
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '12px' }}>
+          <div style={{ fontWeight: '500', fontSize: '16px' }}>
+            {option.model}
+          </div>
+          <div 
+            style={{ 
+              fontSize: '14px',
+              fontWeight: '400',
+              flexShrink: 0,
+              color: isHighlighted 
+                ? 'rgba(255,255,255,0.85)' 
+                : 'var(--text-tertiary)'
+            }}
+          >
+            {option.weight}g
+          </div>
+        </div>
+        <div 
+          style={{ 
+            fontSize: '14px',
+            marginTop: '4px',
+            color: isHighlighted 
+              ? 'rgba(255,255,255,0.75)' 
+              : 'var(--text-tertiary)'
+          }}
+        >
+          {option.variant}
+        </div>
+      </div>
+    );
+  };
+
+  const getItemSize = (index) => {
+    return flattenedOptions[index]?.type === 'group' ? 32 : 64;
+  };
+
   return (
     <div className={`relative ${className}`}>
       {/* Trigger Button */}
@@ -165,8 +279,9 @@ export default function SearchableDropdown({
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
             borderRadius: '8px',
             border: '1px solid var(--border-subtle)',
-            maxHeight: '300px',
-            overflowY: 'auto'
+            maxHeight: '400px',
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           {/* Search Input */}
@@ -192,77 +307,23 @@ export default function SearchableDropdown({
             />
           </div>
 
-          {/* Options List */}
-          <div style={{ maxHeight: '240px', overflowY: 'auto' }}>
-            {Object.keys(groupedOptions).length === 0 ? (
+          {/* Options List with Virtualization */}
+          <div style={{ flex: 1, minHeight: 0 }}>
+            {flattenedOptions.length === 0 ? (
               <div className="px-4 py-3 text-base" style={{ color: 'var(--text-tertiary)' }}>
                 No components found
               </div>
             ) : (
-              Object.entries(groupedOptions).map(([groupName, groupOptions]) => (
-                <div key={groupName}>
-                  {groupBy && Object.keys(groupedOptions).length > 1 && (
-                    <div 
-                      className="px-3 py-2 text-xs font-semibold border-b sticky top-0"
-                      style={{ 
-                        background: 'var(--bg-secondary)',
-                        color: 'var(--text-secondary)',
-                        borderColor: 'var(--border-subtle)',
-                        zIndex: 1
-                      }}
-                    >
-                      {groupName}
-                    </div>
-                  )}
-                  {groupOptions.map((option, index) => {
-                    const globalIndex = filteredOptions.indexOf(option);
-                    return (
-                      <div
-                        key={option.id}
-                        className="px-4 py-3 cursor-pointer transition-colors"
-                        style={{
-                          background: globalIndex === highlightedIndex 
-                            ? 'var(--accent-blue)' 
-                            : selectedOption?.id === option.id 
-                              ? 'var(--surface-elevated)' 
-                              : 'transparent',
-                          color: globalIndex === highlightedIndex 
-                            ? 'white' 
-                            : 'var(--text-primary)'
-                        }}
-                        onClick={() => handleSelect(option)}
-                        onMouseEnter={() => setHighlightedIndex(globalIndex)}
-                      >
-                        <div className="flex items-baseline justify-between gap-3">
-                          <div className="font-medium text-base">
-                            {option.model}
-                          </div>
-                          <div 
-                            className="text-sm font-normal flex-shrink-0" 
-                            style={{ 
-                              color: globalIndex === highlightedIndex 
-                                ? 'rgba(255,255,255,0.85)' 
-                                : 'var(--text-tertiary)'
-                            }}
-                          >
-                            {option.weight}g
-                          </div>
-                        </div>
-                        <div 
-                          className="text-sm mt-1" 
-                          style={{ 
-                            color: globalIndex === highlightedIndex 
-                              ? 'rgba(255,255,255,0.75)' 
-                              : 'var(--text-tertiary)'
-                          }}
-                        >
-                          {option.variant}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ))
+              <List
+                ref={listRef}
+                height={Math.min(300, flattenedOptions.length * 64)}
+                itemCount={flattenedOptions.length}
+                itemSize={getItemSize}
+                width="100%"
+                overscanCount={5}
+              >
+                {Row}
+              </List>
             )}
           </div>
         </div>

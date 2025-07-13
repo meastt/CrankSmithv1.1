@@ -367,7 +367,7 @@ export default function SearchableDropdown({
                   ref={listRef}
                   height={Math.min(300, flattenedOptions.length * 64)}
                   itemCount={flattenedOptions.length}
-                  itemSize={getItemSize}
+                  itemSize={64}
                   width="100%"
                   overscanCount={5}
                 >

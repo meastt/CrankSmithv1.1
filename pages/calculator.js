@@ -1,5 +1,6 @@
 // pages/calculator.js - Enhanced calculator with Riley AI integration and compatibility checking
 // CORRECTED: Replaced all inline styles with Tailwind classes, converted JS hover effects to CSS, and implemented a React-based toast notification system.
+// UPDATED: Removed email verification requirements - free access for all users
 
 import { useState, useEffect } from 'react';
 import GearSelectorPanel from '../components/GearSelectorPanel';

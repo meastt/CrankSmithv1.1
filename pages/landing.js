@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SEOHead from '../components/SEOHead';
 import AppDownloadCTA from '../components/AppDownloadCTA';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function Landing() {
   const router = useRouter();
@@ -13,28 +14,18 @@ export default function Landing() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // If no email provided, just redirect to calculator
+    if (!email.trim()) {
+      router.push('/calculator');
+      return;
+    }
+
     setLoading(true);
     setStatus({ type: '', message: '' });
 
     try {
-      // First check if email is in beta list
-      const verifyResponse = await fetch('/api/verify-beta', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      
-      const verifyData = await verifyResponse.json();
-      
-      if (verifyData.success && verifyData.hasAccess) {
-        // Email is in beta list, grant access
-        localStorage.setItem('cranksmith_beta_verified', 'true');
-        localStorage.setItem('cranksmith_beta_email', email);
-        router.push('/calculator');
-        return;
-      }
-
-      // If not in beta list, sign up for early access
+      // Sign up for community updates
       const response = await fetch('/api/early-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -44,16 +35,21 @@ export default function Landing() {
       const data = await response.json();
 
       if (data.success) {
-        setStatus({ type: 'success', message: '🎉 You\'re on the list! Check your email for beta access.' });
+        setStatus({ type: 'success', message: '🎉 Thanks for joining! You\'ll receive updates about new features and cycling tips.' });
         setEmail('');
         
         // Track conversion
         if (typeof window !== 'undefined' && window.gtag) {
           window.gtag('event', 'sign_up', {
             event_category: 'engagement',
-            event_label: 'early_access'
+            event_label: 'community_updates'
           });
         }
+        
+        // Redirect to calculator after a brief delay
+        setTimeout(() => {
+          router.push('/calculator');
+        }, 2000);
       } else {
         setStatus({ type: 'error', message: data.error || 'Something went wrong. Please try again.' });
       }
@@ -67,8 +63,8 @@ export default function Landing() {
   return (
     <>
       <SEOHead
-        title="CrankSmith - Bike Gear Calculator for Serious Cyclists"
-        description="Compare bike components and optimize your setup. Real parts, real math, real results. Join the beta."
+        title="CrankSmith - Free Bike Gear Calculator"
+        description="Free bike gear ratio calculator and component compatibility checker. No signup required. Calculate gear ratios, check drivetrain compatibility, and optimize your bike setup instantly."
         url="https://cranksmith.com"
         image="/og-image.jpg"
       />
@@ -96,30 +92,46 @@ export default function Landing() {
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center" style={{ color: 'var(--text-primary)' }}>
-              Stop guessing. Start knowing.
+              The best bike gear calculator is here!
             </h2>
-            <p className="text-lg md:text-xl mb-12 max-w-2xl mx-auto text-center" style={{ color: 'var(--text-secondary)' }}>
-              This tool is completely free to use. Just enter your email below to unlock instant access and start optimizing your ride.
+            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-center" style={{ color: 'var(--text-secondary)' }}>
+              Calculate gear ratios, check compatibility, and optimize your bike setup. Completely free to use, no email required!
             </p>
 
-            {/* Early Access Form - More Prominent */}
+            {/* Direct Access Button */}
+            <div className="mb-8">
+              <Link 
+                href="/calculator"
+                className="inline-block px-12 py-4 rounded-xl font-medium transition-all text-lg text-white bg-[var(--accent-blue)] shadow-[0_4px_12px_rgba(0,115,230,0.2)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,115,230,0.3)]"
+              >
+                🚀 Start Using CrankSmith Now
+              </Link>
+            </div>
+
+            <div className="text-center mb-4" style={{ color: 'var(--text-tertiary)' }}>
+              <p className="text-sm">— or —</p>
+            </div>
+
+            <p className="text-base mb-4 max-w-2xl mx-auto text-center" style={{ color: 'var(--text-secondary)' }}>
+              Want to stay updated on new features and cycling tech content? Join our community (optional):
+            </p>
+
+            {/* Optional Email Signup */}
             <div className="max-w-md mx-auto mb-16">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
+                  placeholder="Enter your email (optional)"
                   className="input-field text-lg"
                 />
-                {/* Corrected Button: Uses Tailwind for hover effects, not JS */}
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full px-8 py-4 rounded-xl font-medium transition-all text-lg text-white bg-[var(--accent-blue)] shadow-[0_4px_12px_rgba(0,115,230,0.2)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,115,230,0.3)] disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full px-8 py-4 rounded-xl font-medium transition-all text-lg text-white bg-gray-600 hover:bg-gray-500 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Checking...' : 'Get Started'}
+                  {loading ? 'Checking...' : 'Join Community Updates'}
                 </button>
               </form>
               
@@ -132,8 +144,8 @@ export default function Landing() {
               )}
             </div>
 
-            <p style={{ color: 'var(--text-tertiary)' }}>
-              🚀 Join 150+ cyclists already optimizing their rides
+            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+              ✨ Join 150+ cyclists already optimizing their rides
             </p>
           </div>
         </div>

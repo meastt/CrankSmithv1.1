@@ -1,18 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-
-// Lazy load components only when needed
-const loadComponentsForBikeType = async (bikeType) => {
-  if (!bikeType) return { cranksets: [], cassettes: [] };
-  
-  try {
-    // Dynamic import based on bike type
-    const { getComponentsForBikeType } = await import('../lib/components');
-    return getComponentsForBikeType(bikeType);
-  } catch (error) {
-    console.error('Error loading components:', error);
-    return { cranksets: [], cassettes: [] };
-  }
-};
+import { getComponentsForBikeType } from '../lib/components';
 
 export const useComponentDatabase = (bikeType) => {
   const [components, setComponents] = useState({ cranksets: [], cassettes: [] });
@@ -30,9 +17,16 @@ export const useComponentDatabase = (bikeType) => {
       setError(null);
       
       try {
-        const loadedComponents = await loadComponentsForBikeType(bikeType);
+        // Direct function call instead of dynamic import
+        const loadedComponents = getComponentsForBikeType(bikeType);
+        console.log('🔧 useComponentDatabase loaded:', {
+          bikeType,
+          cranksets: loadedComponents.cranksets?.length || 0,
+          cassettes: loadedComponents.cassettes?.length || 0
+        });
         setComponents(loadedComponents);
       } catch (err) {
+        console.error('🚨 useComponentDatabase error:', err);
         setError(err.message);
         setComponents({ cranksets: [], cassettes: [] });
       } finally {

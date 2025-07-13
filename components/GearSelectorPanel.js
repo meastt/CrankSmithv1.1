@@ -58,8 +58,12 @@ const GearSelectorPanel = React.memo(({
   );
 
   console.log(`🔧 Transformed options for ${title}:`, {
-    cranksetOptions,
-    cassetteOptions
+    cranksetOptions: cranksetOptions,
+    cassetteOptions: cassetteOptions,
+    cranksetOptionsLength: cranksetOptions?.length || 0,
+    cassetteOptionsLength: cassetteOptions?.length || 0,
+    firstCrankset: cranksetOptions[0],
+    firstCassette: cassetteOptions[0]
   });
 
   // Memoized event handlers to prevent unnecessary re-renders

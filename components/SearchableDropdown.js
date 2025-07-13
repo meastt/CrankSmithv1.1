@@ -11,6 +11,17 @@ export default function SearchableDropdown({
   className = ''
 }) {
 
+  // Debug logging
+  console.log('🔍 SearchableDropdown render:', {
+    optionsLength: options?.length || 0,
+    placeholder,
+    value,
+    options: options,
+    firstOption: options[0],
+    optionsType: typeof options,
+    isArray: Array.isArray(options)
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(0);

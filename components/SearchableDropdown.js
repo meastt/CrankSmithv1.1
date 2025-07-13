@@ -78,8 +78,19 @@ export default function SearchableDropdown({
       }
       flattened.push(...groupOptions.map(opt => ({ type: 'option', data: opt })));
     });
+    
+    console.log('🚀 flattenedOptions created:', {
+      placeholder,
+      originalOptionsLength: options?.length || 0,
+      groupedOptionsKeys: Object.keys(groupedOptions),
+      flattenedLength: flattened.length,
+      firstFlattened: flattened[0],
+      groupBy: groupBy,
+      searchTerm: searchTerm
+    });
+    
     return flattened;
-  }, [groupedOptions, groupBy]);
+  }, [groupedOptions, groupBy, placeholder, options, searchTerm]);
 
   // Handle selection
   const handleSelect = useCallback((option) => {
@@ -176,6 +187,16 @@ export default function SearchableDropdown({
   const Row = ({ index, style }) => {
     const item = flattenedOptions[index];
     
+    if (index === 0) {
+      console.log('🎯 Row component rendering:', {
+        placeholder,
+        index,
+        item,
+        flattenedOptionsLength: flattenedOptions.length,
+        isOpen
+      });
+    }
+    
     if (item.type === 'group') {
       return (
         <div
@@ -260,7 +281,16 @@ export default function SearchableDropdown({
       <button
         ref={triggerRef}
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          console.log('🖱️ Dropdown trigger clicked:', {
+            placeholder,
+            currentIsOpen: isOpen,
+            willBeOpen: !isOpen,
+            optionsLength: options?.length || 0,
+            flattenedOptionsLength: flattenedOptions?.length || 0
+          });
+          setIsOpen(!isOpen);
+        }}
         className="input-field cursor-pointer flex items-center justify-between w-full"
         style={{ 
           background: isOpen ? 'var(--bg-elevated)' : 'var(--bg-tertiary)',
@@ -326,16 +356,24 @@ export default function SearchableDropdown({
                 No components found
               </div>
             ) : (
-              <List
-                ref={listRef}
-                height={Math.min(300, flattenedOptions.length * 64)}
-                itemCount={flattenedOptions.length}
-                itemSize={getItemSize}
-                width="100%"
-                overscanCount={5}
-              >
-                {Row}
-              </List>
+              <>
+                {console.log('📋 About to render List:', {
+                  placeholder,
+                  flattenedOptionsLength: flattenedOptions.length,
+                  listHeight: Math.min(300, flattenedOptions.length * 64),
+                  itemCount: flattenedOptions.length
+                })}
+                <List
+                  ref={listRef}
+                  height={Math.min(300, flattenedOptions.length * 64)}
+                  itemCount={flattenedOptions.length}
+                  itemSize={getItemSize}
+                  width="100%"
+                  overscanCount={5}
+                >
+                  {Row}
+                </List>
+              </>
             )}
           </div>
         </div>

@@ -10,6 +10,8 @@ export default function SearchableDropdown({
   groupBy,
   className = ''
 }) {
+
+
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(0);

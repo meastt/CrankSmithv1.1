@@ -18,9 +18,12 @@ const GearSelectorPanel = React.memo(({
 
   // Debug logging
   console.log(`🔍 GearSelectorPanel (${title}):`, {
+    bikeType,
     components,
     cranksets: components?.cranksets,
     cassettes: components?.cassettes,
+    cranksetsLength: components?.cranksets?.length,
+    cassettesLength: components?.cassettes?.length,
     setup,
     config,
     loading,

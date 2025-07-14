@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import SEOHead from '../components/SEOHead';
 import Link from 'next/link';
+import { RileyAI } from '../lib/rileyAI';
 
 export default function AskRiley() {
+  const [riley] = useState(() => new RileyAI());
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -49,21 +51,13 @@ export default function AskRiley() {
     setIsLoading(true);
 
     try {
-      // Simulate AI response (replace with actual API call)
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-      
-      const responses = [
-        "That's a great question! Based on my training on thousands of bike manuals, here's what I recommend...",
-        "I've analyzed this scenario against multiple brand specifications and maintenance guides. Here's the best approach...",
-        "This is a common compatibility question I see often. Let me break down the key factors you need to consider...",
-        "From a maintenance perspective, here's what the professional guides suggest...",
-        "I've cross-referenced this with multiple manufacturer documentation. Here's what you need to know..."
-      ];
+      // Use the existing Riley AI implementation
+      const response = await riley.askRiley(userMessage.content);
 
       const botMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: responses[Math.floor(Math.random() * responses.length)] + "\n\nThis is a simplified demo response. In the full version, I would provide detailed, accurate answers based on real bike maintenance data and compatibility databases.",
+        content: response,
         timestamp: new Date()
       };
 

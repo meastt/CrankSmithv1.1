@@ -117,7 +117,7 @@ export default function MobileDropdown({
           cursor: 'pointer',
           transition: 'all 0.2s ease',
           position: 'relative',
-          zIndex: 1
+          zIndex: 30
         }}
       >
         <div className="flex-1">
@@ -149,14 +149,13 @@ export default function MobileDropdown({
         createPortal(
           <div 
             ref={portalRef}
-            className="dropdown-overlay"
+            className="mobile-dropdown-overlay"
             style={{
               position: 'fixed',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              zIndex: 999999, // This z-index will now work globally
               backgroundColor: '#000000', // Moved background here for simplicity
             }}
           >

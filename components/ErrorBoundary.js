@@ -49,7 +49,7 @@ export default class ErrorBoundary extends React.Component {
       const titleSize = context === 'page' ? 'text-xl' : 'text-lg';
       
       return (
-        <div className={`${containerStyle} flex items-center justify-center p-8`}>
+        <div className={`${containerStyle} flex items-center justify-center p-8 error-boundary-fallback`}>
           <div className="text-center max-w-md mx-auto">
             <div className="mb-6">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">

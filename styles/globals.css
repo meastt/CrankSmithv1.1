@@ -66,6 +66,17 @@
   2. Z-INDEX & STACKING CONTEXT STRATEGY
 ==========================================================================
 */
+/* 
+  Z-INDEX HIERARCHY:
+  1-9: Background elements
+  10-19: Main content sections  
+  20-49: Interactive elements
+  50-99: Header/navigation
+  100-999: Active dropdowns and modals
+  1000-9999: Overlays and tooltips
+  10000+: Critical system notifications and mobile overlays
+*/
+
 /* The container that needs to stay in the background */
 #garage-section {
   position: relative;
@@ -94,9 +105,32 @@ header {
 /* Dropdown portals must be on top of everything */
 .searchable-dropdown-portal {
   position: fixed !important;
+  z-index: 1000 !important;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Mobile dropdown overlays - highest priority for mobile UX */
+.mobile-dropdown-overlay {
+  position: fixed !important;
   z-index: 10000 !important;
   backface-visibility: hidden;
   transform: translateZ(0);
+}
+
+/* PWA update notifications - must be above mobile overlays */
+.sw-update-notification {
+  z-index: 10001 !important;
+}
+
+/* Toast notifications - system level */
+.toast-notification {
+  z-index: 10001 !important;
+}
+
+/* Error boundary fallbacks - emergency level */
+.error-boundary-fallback {
+  z-index: 10002 !important;
 }
 
 

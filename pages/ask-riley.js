@@ -57,7 +57,7 @@ export default function AskRiley() {
       const botMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: rileyResponse.success ? rileyResponse.response : rileyResponse.error,
+        content: rileyResponse.success ? stripHtml(rileyResponse.response) : rileyResponse.error,
         timestamp: new Date()
       };
 
@@ -79,6 +79,12 @@ export default function AskRiley() {
   const handleQuickQuestion = (question) => {
     setInputMessage(question);
     inputRef.current?.focus();
+  };
+
+  // Function to strip HTML tags for chat display
+  const stripHtml = (html) => {
+    if (typeof html !== 'string') return html;
+    return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
   };
 
   return (

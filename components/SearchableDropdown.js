@@ -11,16 +11,29 @@ export default function SearchableDropdown({
   className = ''
 }) {
 
-  // Debug logging
-  console.log('🔍 SearchableDropdown render:', {
+  // Enhanced debug logging with better context
+  const debugContext = {
     optionsLength: options?.length || 0,
     placeholder,
     value,
     options: options,
     firstOption: options[0],
     optionsType: typeof options,
-    isArray: Array.isArray(options)
-  });
+    isArray: Array.isArray(options),
+    isEmpty: !options || options.length === 0,
+    hasValue: !!value,
+    context: options?.length === 0 ? 'Empty options - likely due to no bikeType selected' : 'Options loaded successfully'
+  };
+
+  console.log('🔍 SearchableDropdown render:', debugContext);
+
+  // Show helpful warning if options are empty
+  if (debugContext.isEmpty) {
+    console.warn('⚠️  SearchableDropdown: No options provided. This usually means:');
+    console.warn('   1. bikeType is not set yet (initial render)');
+    console.warn('   2. Component database failed to load');
+    console.warn('   3. Invalid bikeType provided');
+  }
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -281,7 +294,12 @@ export default function SearchableDropdown({
       <button
         ref={triggerRef}
         type="button"
+        disabled={options.length === 0}
         onClick={() => {
+          if (options.length === 0) {
+            console.log('🖱️ Dropdown trigger clicked but no options available');
+            return;
+          }
           console.log('🖱️ Dropdown trigger clicked:', {
             placeholder,
             currentIsOpen: isOpen,
@@ -291,7 +309,9 @@ export default function SearchableDropdown({
           });
           setIsOpen(!isOpen);
         }}
-        className="input-field cursor-pointer flex items-center justify-between w-full"
+        className={`input-field flex items-center justify-between w-full ${
+          options.length === 0 ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
+        }`}
         style={{ 
           background: isOpen ? 'var(--bg-elevated)' : 'var(--bg-tertiary)',
           borderColor: isOpen ? 'var(--border-focus)' : 'var(--border-subtle)',
@@ -352,8 +372,15 @@ export default function SearchableDropdown({
           {/* Options List with Virtualization */}
           <div style={{ flex: 1, minHeight: 0 }}>
             {flattenedOptions.length === 0 ? (
-              <div className="px-4 py-3 text-base" style={{ color: 'var(--text-tertiary)' }}>
-                No components found
+              <div className="px-4 py-6 text-center">
+                <div className="text-base mb-2" style={{ color: 'var(--text-secondary)' }}>
+                  {searchTerm ? 'No matching components found' : 'No components available'}
+                </div>
+                {!searchTerm && (
+                  <div className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+                    {options.length === 0 ? 'Please select a bike type first' : 'Try adjusting your search'}
+                  </div>
+                )}
               </div>
             ) : (
               <>

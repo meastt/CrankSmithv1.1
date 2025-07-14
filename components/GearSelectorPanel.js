@@ -13,10 +13,40 @@ const GearSelectorPanel = React.memo(({
   bikeType,
   icon: Icon 
 }) => {
+  // Early return if bikeType is not set - prevents empty options rendering
+  if (!bikeType || bikeType === '') {
+    console.log(`🔍 GearSelectorPanel (${title}): No bikeType provided, skipping component loading`);
+    return (
+      <div className="card group">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+              {Icon}
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-[var(--text-primary)]">{title}</h3>
+              <p className="text-sm text-[var(--text-secondary)]">{subtitle}</p>
+            </div>
+          </div>
+          {badge && (
+            <div className={`px-3 py-1 rounded-full text-xs font-medium ${badgeColor || 'bg-gray-100 text-gray-800'}`}>
+              {badge}
+            </div>
+          )}
+        </div>
+        <div className="text-center py-8">
+          <div className="text-[var(--text-secondary)] text-sm">
+            Please select a bike type to view components
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Use the optimized hook for component loading
   const { components, loading, error } = useComponentDatabase(bikeType);
 
-  // Debug logging
+  // Enhanced debug logging with better context
   console.log(`🔍 GearSelectorPanel (${title}):`, {
     bikeType,
     components,
@@ -27,7 +57,8 @@ const GearSelectorPanel = React.memo(({
     setup,
     config,
     loading,
-    error
+    error,
+    context: `Rendering for bikeType: ${bikeType}`
   });
 
   // Transform components data for SearchableDropdown - memoized to prevent recalculation

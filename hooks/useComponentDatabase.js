@@ -8,7 +8,7 @@ export const useComponentDatabase = (bikeType) => {
 
   useEffect(() => {
     if (!bikeType) {
-      console.log('🔧 useComponentDatabase: No bikeType provided');
+      console.log('🔧 useComponentDatabase: No bikeType provided, returning empty components');
       setComponents({ cranksets: [], cassettes: [] });
       return;
     }
@@ -23,13 +23,23 @@ export const useComponentDatabase = (bikeType) => {
         // Direct function call instead of dynamic import
         const loadedComponents = getComponentsForBikeType(bikeType);
         
-        console.log('🔧 useComponentDatabase RAW loaded data:', {
+        console.log('🔧 useComponentDatabase: Components loaded successfully:', {
           bikeType,
           cranksets: loadedComponents.cranksets,
           cassettes: loadedComponents.cassettes,
           cranksetsLength: loadedComponents.cranksets?.length || 0,
-          cassettesLength: loadedComponents.cassettes?.length || 0
+          cassettesLength: loadedComponents.cassettes?.length || 0,
+          status: loadedComponents.cranksets?.length > 0 ? '✅ Success' : '⚠️ No components found'
         });
+        
+        // Validate that we got components
+        if (!loadedComponents.cranksets || !loadedComponents.cassettes) {
+          throw new Error(`Invalid component data structure for bikeType: ${bikeType}`);
+        }
+        
+        if (loadedComponents.cranksets.length === 0 && loadedComponents.cassettes.length === 0) {
+          console.warn(`⚠️  useComponentDatabase: No components found for bikeType: ${bikeType}`);
+        }
         
         setComponents(loadedComponents);
       } catch (err) {

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { RileyAI } from '../lib/rileyAI';
 
 export default function AskRiley() {
-  const [riley] = useState(() => new RileyAI());
+  const [riley] = useState(() => new RileyAI(null, null));
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -52,12 +52,12 @@ export default function AskRiley() {
 
     try {
       // Use the existing Riley AI implementation
-      const response = await riley.askRiley(userMessage.content);
+      const rileyResponse = await riley.askRiley(userMessage.content);
 
       const botMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: response,
+        content: rileyResponse.success ? rileyResponse.response : rileyResponse.error,
         timestamp: new Date()
       };
 

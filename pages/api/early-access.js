@@ -1,10 +1,10 @@
-// pages/api/early-access.js - FIXED VERSION with Zoho + Supabase
+// pages/api/early-access.js - Community signup with Zoho + Supabase
 import nodemailer from 'nodemailer';
 import { supabase } from '../../lib/supabase';
 import { validateRequestBody } from '../../lib/validation';
 
 export default async function handler(req, res) {
-  console.log('Early access API called');
+  console.log('Community signup API called');
   
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -147,12 +147,12 @@ export default async function handler(req, res) {
         <body>
           <div class="container">
             <div class="header">
-              <h1>Welcome to CrankSmith! 🚴‍♂️</h1>
+              <h1>Welcome to the CrankSmith community! 🚴‍♂️</h1>
             </div>
             <div class="content">
               <h2>Hey fellow cyclist! 👋</h2>
               
-              <p>Thanks for joining CrankSmith! You're among the first to get access to the most comprehensive bike gear calculator ever built.</p>
+              <p>Thanks for joining our community! CrankSmith is a completely free bike gear calculator and compatibility checker that you can start using right away.</p>
               
               <p>I built CrankSmith because I was tired of:</p>
               <ul>
@@ -162,27 +162,28 @@ export default async function handler(req, res) {
               </ul>
               
               <div class="feature-list">
-                <p><strong>🎯 What you get with early access:</strong></p>
+                <p><strong>🎯 What's included (completely free):</strong></p>
                 <ul>
-                  <li>✅ First access when we officially launch</li>
-                  <li>✅ 50% off lifetime discount (just for early supporters)</li>
-                  <li>✅ Direct input on new features</li>
-                  <li>✅ Access to our beta right now</li>
+                  <li>✅ Professional gear ratio calculator</li>
+                  <li>✅ Component compatibility checker</li>
+                  <li>✅ Tire pressure calculator</li>
+                  <li>✅ Performance optimization tools</li>
+                  <li>✅ Works offline on your phone</li>
                 </ul>
               </div>
               
               <p style="text-align: center;">
-                <a href="https://cranksmith.com?beta=true" class="button">
-                  🚀 Access Beta Now
+                <a href="https://cranksmith.com/calculator" class="button">
+                  🚀 Start Using CrankSmith
                 </a>
               </p>
               
               <p style="text-align: center; color: #666; font-size: 14px;">
-                <em>Bookmark this link - it's your secret access!</em>
+                <em>No signup required - bookmark it for easy access!</em>
               </p>
               
               <div class="signature">
-                <p>Got questions? Just reply to this email. I personally read every message and usually respond within a day.</p>
+                <p>By joining our community, you'll get occasional updates about new features, cycling tips, and useful content. Got questions? Just reply to this email. I personally read every message and usually respond within a day.</p>
                 
                 <p>
                   Ride on!<br>
@@ -193,7 +194,7 @@ export default async function handler(req, res) {
               </div>
             </div>
             <div class="footer">
-              <p>You're receiving this because you signed up at cranksmith.com</p>
+              <p>You're receiving this because you signed up for community updates at cranksmith.com</p>
               <p>
                 <a href="https://cranksmith.com" style="color: #007aff; text-decoration: none;">CrankSmith</a> | 
                 Built with ❤️ by cyclists, for cyclists
@@ -209,21 +210,22 @@ export default async function handler(req, res) {
     const mailOptions = {
       from: `"CrankSmith" <${process.env.ZOHO_EMAIL}>`,
       to: email,
-      subject: 'Welcome to CrankSmith! 🚴‍♂️ Your beta access is here',
+      subject: 'Welcome to the CrankSmith community! 🚴‍♂️',
       html: emailHtml,
-      text: `Welcome to CrankSmith!
+      text: `Welcome to the CrankSmith community!
 
-Thanks for joining! You're among the first to get access to the most comprehensive bike gear calculator ever built.
+Thanks for joining! CrankSmith is a completely free bike gear calculator and compatibility checker that you can start using right away.
 
-Access the beta here: https://cranksmith.com?beta=true
+Start using CrankSmith: https://cranksmith.com/calculator
 
-What you get with early access:
-- First access when we officially launch
-- 50% off lifetime discount
-- Direct input on new features
-- Access to our beta right now
+What's included (completely free):
+- Professional gear ratio calculator
+- Component compatibility checker  
+- Tire pressure calculator
+- Performance optimization tools
+- Works offline on your phone
 
-Got questions? Just reply to this email.
+By joining our community, you'll get occasional updates about new features, cycling tips, and useful content. Got questions? Just reply to this email.
 
 Ride on!
 Mike
@@ -238,18 +240,18 @@ Founder, CrankSmith`
       await transporter.sendMail({
         from: `"CrankSmith" <${process.env.ZOHO_EMAIL}>`,
         to: process.env.ADMIN_EMAIL,
-        subject: '🎉 New CrankSmith Beta Signup!',
-        text: `New signup: ${email}\n\nTotal signups: Check Supabase dashboard`,
+        subject: '🎉 New CrankSmith Community Member!',
+        text: `New community signup: ${email}\n\nTotal signups: Check Supabase dashboard`,
       });
     }
     
     res.status(200).json({ 
       success: true, 
-      message: 'Welcome aboard! Check your email for beta access.' 
+      message: 'Welcome to the community! Check your email and start using the free tools right away.' 
     });
     
   } catch (error) {
-    console.error('Early access signup error:', error);
+    console.error('Community signup error:', error);
     
     // More specific error messages
     if (error.message?.includes('auth')) {

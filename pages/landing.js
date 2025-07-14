@@ -35,7 +35,7 @@ export default function Landing() {
       const data = await response.json();
 
       if (data.success) {
-        setStatus({ type: 'success', message: '🎉 Thanks for joining! You\'ll receive updates about new features and cycling tips.' });
+        setStatus({ type: 'success', message: '🎉 Welcome to the community! You\'ll receive updates about new features and cycling tips.' });
         setEmail('');
         
         // Track conversion

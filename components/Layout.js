@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import InstallBanner from './InstallBanner';
 import FloatingInstallButton from './FloatingInstallButton';
+import FloatingAskRileyButton from './FloatingAskRileyButton';
 import ErrorBoundary from './ErrorBoundary';
 import ThemeToggle from './ThemeToggle';
 
@@ -46,6 +47,7 @@ export default function Layout({ children }) {
   const navLinks = [
     { href: '/calculator', label: 'Gear Calculator', icon: '⚙️' },
     { href: '/tire-pressure', label: 'Tire Pressure', icon: '🔧' },
+    { href: '/ask-riley', label: 'Ask Riley', icon: '🤖' },
     { href: '/blog', label: 'Learn', icon: '📚' },
     { href: '/about', label: 'About', icon: '👥' },
   ];
@@ -227,6 +229,11 @@ export default function Layout({ children }) {
       {/* Floating Install Button */}
       <ErrorBoundary context="component">
         <FloatingInstallButton />
+      </ErrorBoundary>
+
+      {/* Floating Ask Riley Button */}
+      <ErrorBoundary context="component">
+        <FloatingAskRileyButton />
       </ErrorBoundary>
 
       {/* Premium Footer */}

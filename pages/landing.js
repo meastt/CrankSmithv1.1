@@ -178,15 +178,15 @@ export default function Landing() {
               </p>
             </div>
 
-            <div className="card text-center">
+            <Link href="/ask-riley" className="card text-center hover:shadow-lg transition-shadow cursor-pointer">
               <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white">
-                <span className="text-2xl">🔧</span>
+                <span className="text-2xl">🤖</span>
               </div>
               <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Ask Riley</h3>
               <p style={{ color: 'var(--text-tertiary)' }}>
                 Get personalized advice from your AI bike expert
               </p>
-            </div>
+            </Link>
           </div>
         </div>
         
@@ -216,12 +216,12 @@ export default function Landing() {
                   Avoid costly mistakes by understanding component compatibility before you buy. Get the right parts the first time.
                 </p>
               </div>
-              <div className="card text-left">
-                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Expert Guidance</h3>
+              <Link href="/ask-riley" className="card text-left hover:shadow-lg transition-shadow cursor-pointer">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>Ask Riley - AI Expert</h3>
                 <p style={{ color: 'var(--text-secondary)' }}>
-                  Get answers to your technical questions with Riley, your AI bike expert. No more conflicting advice from forums.
+                  Get instant answers to your technical questions with Riley, your AI bike expert trained on thousands of maintenance manuals. No more conflicting advice from forums.
                 </p>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

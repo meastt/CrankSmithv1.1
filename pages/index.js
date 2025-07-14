@@ -134,22 +134,28 @@ export default function Home() {
             </div>
 
             <div className="grid-responsive">
-              {features.map((feature, index) => (
-                <div
-                  key={feature.title}
-                  className={`card-premium p-8 text-center hover-lift animation-delay-${index * 100}`}
-                >
-                  <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg`}>
-                    <span className="text-3xl">{feature.icon}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-neutral-900 dark:text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
+              {features.map((feature, index) => {
+                const isAIExpert = feature.title === 'AI Expert';
+                const href = isAIExpert ? '/ask-riley' : (feature.title === 'Gear Calculator' ? '/calculator' : '/tire-pressure');
+                
+                return (
+                  <Link
+                    key={feature.title}
+                    href={href}
+                    className={`card-premium p-8 text-center hover-lift animation-delay-${index * 100} cursor-pointer`}
+                  >
+                    <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg`}>
+                      <span className="text-3xl">{feature.icon}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 text-neutral-900 dark:text-white">
+                      {feature.title}
+                    </h3>
+                    <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -185,6 +191,37 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Ask Riley CTA Section */}
+        <section className="py-20 bg-gradient-to-br from-neutral-900 to-neutral-800 text-white">
+          <div className="container-responsive">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple flex items-center justify-center">
+                <span className="text-4xl">🤖</span>
+              </div>
+              <h2 className="text-responsive-3xl font-bold mb-4">
+                Meet Riley, Your AI Bike Expert
+              </h2>
+              <p className="text-responsive-lg text-neutral-300 max-w-2xl mx-auto mb-8">
+                Get instant answers to your bike questions from Riley, trained on thousands of maintenance manuals and brand support docs. Whether it's upgrades, installations, or compatibility - Riley knows bikes.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                <Link href="/ask-riley" className="btn-secondary bg-white text-neutral-900 hover:bg-neutral-100">
+                  <span>Ask Riley Now</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-3 justify-center text-sm">
+                <span className="px-3 py-1 bg-white/20 rounded-full">Upgrade Questions</span>
+                <span className="px-3 py-1 bg-white/20 rounded-full">Installation Guides</span>
+                <span className="px-3 py-1 bg-white/20 rounded-full">Compatibility Checks</span>
+                <span className="px-3 py-1 bg-white/20 rounded-full">Maintenance Tips</span>
+              </div>
             </div>
           </div>
         </section>

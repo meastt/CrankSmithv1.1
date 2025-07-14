@@ -12,6 +12,7 @@ import MobileInstallPrompt from '../components/mobile/InstallPrompt';
 import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
 import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
 import { CompatibilityChecker } from '../lib/compatibilityChecker';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 export default function MobileApp() {
   const router = useRouter();
@@ -260,7 +261,9 @@ export default function MobileApp() {
         isOnline={isOnline}
         hasResults={!!results}
       >
-        {renderCurrentScreen()}
+        <ErrorBoundary context="page" fallback={<div className="p-8 text-center text-gray-500">Error loading mobile screen. Please try refreshing the page.</div>}>
+          {renderCurrentScreen()}
+        </ErrorBoundary>
       </MobileLayout>
 
       {/* Mobile Install Prompt */}

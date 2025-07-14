@@ -12,6 +12,7 @@ import { CompatibilityChecker } from '../lib/compatibilityChecker';
 import { bikeConfig, componentDatabase } from '../lib/components';
 import SEOHead from '../components/SEOHead';
 import { useCalculatorState } from '../hooks/useCalculatorState';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 // Enhanced compatibility display component
 const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
@@ -340,42 +341,46 @@ export default function Home() {
         {bikeType && (
           <div className="space-y-8">
             <div className="calculator-section grid md:grid-cols-2 gap-8">
-               <GearSelectorPanel
-                title="Current Setup"
-                subtitle="Your current components"
-                setup={currentSetup}
-                setSetup={updateCurrentSetup}
-                config={{
-                  wheelSizes: bikeConfig[bikeType].wheelSizes,
-                  tireWidths: bikeConfig[bikeType].tireWidths,
-                  onWheelChange: handleCurrentWheelChange,
-                  onTireChange: handleCurrentTireChange,
-                  onCranksetChange: handleCurrentCranksetChange,
-                  onCassetteChange: handleCurrentCassetteChange
-                }}
-                bikeType={bikeType}
-                icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>}
-              />
-              <GearSelectorPanel
-                title="Proposed Setup"
-                subtitle="Components you're considering"
-                setup={proposedSetup}
-                setSetup={updateProposedSetup}
-                config={{
-                  wheelSizes: bikeConfig[bikeType].wheelSizes,
-                  tireWidths: bikeConfig[bikeType].tireWidths,
-                  onWheelChange: handleProposedWheelChange,
-                  onTireChange: handleProposedTireChange,
-                  onCranksetChange: handleProposedCranksetChange,
-                  onCassetteChange: handleProposedCassetteChange
-                }}
-                bikeType={bikeType}
-                icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>}
-              />
+              <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading current setup panel</div>}>
+                <GearSelectorPanel
+                  title="Current Setup"
+                  subtitle="Your current components"
+                  setup={currentSetup}
+                  setSetup={updateCurrentSetup}
+                  config={{
+                    wheelSizes: bikeConfig[bikeType].wheelSizes,
+                    tireWidths: bikeConfig[bikeType].tireWidths,
+                    onWheelChange: handleCurrentWheelChange,
+                    onTireChange: handleCurrentTireChange,
+                    onCranksetChange: handleCurrentCranksetChange,
+                    onCassetteChange: handleCurrentCassetteChange
+                  }}
+                  bikeType={bikeType}
+                  icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>}
+                />
+              </ErrorBoundary>
+              <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading proposed setup panel</div>}>
+                <GearSelectorPanel
+                  title="Proposed Setup"
+                  subtitle="Components you're considering"
+                  setup={proposedSetup}
+                  setSetup={updateProposedSetup}
+                  config={{
+                    wheelSizes: bikeConfig[bikeType].wheelSizes,
+                    tireWidths: bikeConfig[bikeType].tireWidths,
+                    onWheelChange: handleProposedWheelChange,
+                    onTireChange: handleProposedTireChange,
+                    onCranksetChange: handleProposedCranksetChange,
+                    onCassetteChange: handleProposedCassetteChange
+                  }}
+                  bikeType={bikeType}
+                  icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>}
+                />
+              </ErrorBoundary>
             </div>
 
             {compatibilityResults && (
@@ -446,12 +451,14 @@ export default function Home() {
 
             {showRiley && (
               <div className="max-w-4xl mx-auto">
-                <RileyChat 
-                  userSetup={proposedSetup}
-                  analysisResults={results}
-                  componentDatabase={componentDatabase}
-                  bikeType={bikeType}
-                />
+                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading Riley AI chat. Please try refreshing the page.</div>}>
+                  <RileyChat 
+                    userSetup={proposedSetup}
+                    analysisResults={results}
+                    componentDatabase={componentDatabase}
+                    bikeType={bikeType}
+                  />
+                </ErrorBoundary>
               </div>
             )}
           </div>
@@ -459,22 +466,28 @@ export default function Home() {
 
         {results && (
           <div className="max-w-4xl mx-auto mt-12">
-            <SimulationResults 
-              results={results}
-              speedUnit={speedUnit}
-              bikeType={bikeType}
-            />
-            <PerformanceChart 
-              current={results.current}
-              proposed={results.proposed}
-              speedUnit={speedUnit}
-            />
-            <BuildSummaryCard 
-              currentSetup={currentSetup}
-              proposedSetup={proposedSetup}
-              results={results}
-              onSave={handleSaveConfig}
-            />
+            <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading simulation results</div>}>
+              <SimulationResults 
+                results={results}
+                speedUnit={speedUnit}
+                bikeType={bikeType}
+              />
+            </ErrorBoundary>
+            <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading performance chart</div>}>
+              <PerformanceChart 
+                current={results.current}
+                proposed={results.proposed}
+                speedUnit={speedUnit}
+              />
+            </ErrorBoundary>
+            <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading build summary</div>}>
+              <BuildSummaryCard 
+                currentSetup={currentSetup}
+                proposedSetup={proposedSetup}
+                results={results}
+                onSave={handleSaveConfig}
+              />
+            </ErrorBoundary>
 
             {!showRiley && (
               <div className="mt-8 p-6 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-subtle)]">

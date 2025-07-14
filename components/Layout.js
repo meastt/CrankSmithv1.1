@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import InstallBanner from './InstallBanner';
 import FloatingInstallButton from './FloatingInstallButton';
+import ErrorBoundary from './ErrorBoundary';
 
 export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,7 +13,9 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
       {/* Install Banner */}
-      <InstallBanner />
+      <ErrorBoundary context="component">
+        <InstallBanner />
+      </ErrorBoundary>
       
       {/* PWA Debug Tool - Remove this after testing */}
       {/* <PWATest /> */}
@@ -153,7 +156,9 @@ export default function Layout({ children }) {
       </main>
 
       {/* Floating Install Button */}
-      <FloatingInstallButton />
+      <ErrorBoundary context="component">
+        <FloatingInstallButton />
+      </ErrorBoundary>
 
       {/* Footer */}
       <footer className="border-t mt-16 py-8" 

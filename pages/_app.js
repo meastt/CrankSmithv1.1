@@ -8,6 +8,7 @@ import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { registerServiceWorker, isMobileDevice } from '../lib/pwa-utils';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -81,7 +82,10 @@ export default function App({ Component, pageProps }) {
           `}
         </Script>
         
-        <Component {...pageProps} />
+        {/* Mobile App with Error Boundary */}
+        <ErrorBoundary context="page">
+          <Component {...pageProps} />
+        </ErrorBoundary>
       </>
     );
   }
@@ -121,11 +125,16 @@ export default function App({ Component, pageProps }) {
       </Script>
       
       {/* Mobile App Suggestion Banner */}
-      <MobileAppBanner />
+      <ErrorBoundary context="component">
+        <MobileAppBanner />
+      </ErrorBoundary>
       
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      {/* Main App Content with Error Boundary */}
+      <ErrorBoundary context="page">
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ErrorBoundary>
     </>
   );
 }

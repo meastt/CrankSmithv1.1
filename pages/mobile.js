@@ -13,28 +13,20 @@ import { calculateRealPerformance, validateSetupComplete } from '../lib/calculat
 import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
 import { CompatibilityChecker } from '../lib/compatibilityChecker';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { useCalculatorState } from '../hooks/useCalculatorState';
 
 export default function MobileApp() {
   const router = useRouter();
   
-  // Main app state
+  // Use centralized calculator state
+  const {
+    bikeType, currentSetup, proposedSetup, results, loading, speedUnit,
+    setBikeType, updateCurrentSetup, updateProposedSetup, setResults, 
+    setSpeedUnit, resetCalculator, calculateResults: centralizedCalculateResults
+  } = useCalculatorState();
+  
+  // Mobile-specific state only
   const [currentScreen, setCurrentScreen] = useState('calculator'); // calculator, results, garage, settings
-  const [bikeType, setBikeType] = useState('');
-  const [currentSetup, setCurrentSetup] = useState({
-    wheel: '',
-    tire: '',
-    crankset: null,
-    cassette: null
-  });
-  const [proposedSetup, setProposedSetup] = useState({
-    wheel: '',
-    tire: '',
-    crankset: null,
-    cassette: null
-  });
-  const [results, setResults] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [speedUnit, setSpeedUnit] = useState('mph');
   const [savedConfigs, setSavedConfigs] = useState([]);
 
   // Mobile-specific state
@@ -95,36 +87,14 @@ export default function MobileApp() {
   };
 
   const calculateResults = async () => {
-    const currentValidation = validateSetupComplete(currentSetup);
-    const proposedValidation = validateSetupComplete(proposedSetup);
-
-    if (!currentValidation.isComplete || !proposedValidation.isComplete) {
-      alert('Please complete both setups before analyzing');
-      return;
-    }
-
-    setLoading(true);
     try {
-      // Add small delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Use centralized calculation logic
+      await centralizedCalculateResults();
       
-      const realResults = calculateRealPerformance(currentSetup, proposedSetup, speedUnit);
-      
-      // Add compatibility check
-      const compatibility = compatibilityChecker.checkCompatibility(proposedSetup, bikeType);
-      const compatibilitySummary = compatibilityChecker.generateCompatibilitySummary(compatibility);
-      
-      setResults({
-        ...realResults,
-        compatibility: compatibilitySummary
-      });
-      
+      // Mobile-specific: navigate to results screen after calculation
       setCurrentScreen('results');
     } catch (error) {
       console.error('Error calculating results:', error);
-      alert('Error calculating results. Please check your component selections.');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -154,11 +124,10 @@ export default function MobileApp() {
     }
   };
 
-  const resetCalculator = () => {
-    setBikeType('');
-    setCurrentSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-    setProposedSetup({ wheel: '', tire: '', crankset: null, cassette: null });
-    setResults(null);
+  const handleResetCalculator = () => {
+    // Use centralized reset logic
+    resetCalculator();
+    // Mobile-specific reset actions
     setSetupStep(1);
     setCurrentScreen('calculator');
   };
@@ -179,14 +148,14 @@ export default function MobileApp() {
           <ComponentSelector
             bikeType={bikeType}
             currentSetup={currentSetup}
-            setCurrentSetup={setCurrentSetup}
+            setCurrentSetup={updateCurrentSetup}
             proposedSetup={proposedSetup}
-            setProposedSetup={setProposedSetup}
+            setProposedSetup={updateProposedSetup}
             setupStep={setupStep}
             setSetupStep={setSetupStep}
             onCalculate={calculateResults}
             loading={loading}
-            onReset={resetCalculator}
+            onReset={handleResetCalculator}
           />
         );
       
@@ -198,7 +167,7 @@ export default function MobileApp() {
             bikeType={bikeType}
             onSave={saveConfiguration}
             onBack={() => setCurrentScreen('calculator')}
-            onNewCalculation={resetCalculator}
+            onNewCalculation={handleResetCalculator}
           />
         );
       
@@ -209,8 +178,8 @@ export default function MobileApp() {
             setSavedConfigs={setSavedConfigs}
             onLoadConfig={(config) => {
               setBikeType(config.bikeType);
-              setCurrentSetup(config.currentSetup);
-              setProposedSetup(config.proposedSetup);
+              updateCurrentSetup(config.currentSetup);
+              updateProposedSetup(config.proposedSetup);
               setResults(config.results);
               setCurrentScreen('results');
             }}

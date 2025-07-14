@@ -1,6 +1,7 @@
 // pages/api/early-access.js - FIXED VERSION with Zoho + Supabase
 import nodemailer from 'nodemailer';
 import { supabase } from '../../lib/supabase';
+import { validateRequestBody } from '../../lib/validation';
 
 export default async function handler(req, res) {
   console.log('Early access API called');
@@ -9,12 +10,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email } = req.body;
-  console.log('Email received:', email);
-
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Valid email required' });
+  // Validate request body with comprehensive validation
+  const validationSchema = {
+    email: { type: 'email', required: true },
+    source: { type: 'string', maxLength: 50 }
+  };
+  
+  const validation = validateRequestBody(req.body, validationSchema);
+  
+  if (!validation.isValid) {
+    console.log('Validation errors:', validation.errors);
+    return res.status(400).json({ 
+      error: validation.errors[0], // Return first error for user-friendly response
+      errors: validation.errors // Include all errors for debugging
+    });
   }
+  
+  const { email, source = 'landing_page' } = validation.sanitized;
+  console.log('Valid email received:', email);
 
   try {
     // Save to Supabase
@@ -23,7 +36,7 @@ export default async function handler(req, res) {
       .from('early_access')
       .insert([{ 
         email, 
-        source: 'landing_page',
+        source,
         created_at: new Date().toISOString()
       }])
       .select()

@@ -42,6 +42,7 @@ export default function SearchableDropdown({
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
   const listRef = useRef(null);
+  const focusTimeout = useRef(null);
 
   // Find selected option
   const selectedOption = useMemo(() => {
@@ -176,15 +177,21 @@ export default function SearchableDropdown({
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('touchstart', handleClickOutside);
       
-      // Focus search input
+      // Focus search input with cleanup
       if (inputRef.current) {
-        setTimeout(() => inputRef.current?.focus(), 100);
+        focusTimeout.current = setTimeout(() => inputRef.current?.focus(), 100);
       }
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
+      
+      // Clear focus timeout to prevent memory leaks
+      if (focusTimeout.current) {
+        clearTimeout(focusTimeout.current);
+        focusTimeout.current = null;
+      }
     };
   }, [isOpen]);
 

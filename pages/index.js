@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Image from 'next/image';
 import SEOHead from '../components/SEOHead';
 
 export default function Home() {
@@ -80,8 +81,14 @@ export default function Home() {
               <div className="flex justify-center mb-8">
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-performance rounded-3xl blur-2xl opacity-30" />
-                  <div className="relative w-20 h-20 bg-gradient-performance rounded-3xl flex items-center justify-center shadow-2xl">
-                    <span className="text-white font-bold text-3xl">C</span>
+                  <div className="relative w-20 h-20 bg-white dark:bg-neutral-800 rounded-3xl flex items-center justify-center shadow-2xl p-3">
+                    <Image 
+                      src="/cranksmith-logo.png" 
+                      alt="CrankSmith" 
+                      width={56}
+                      height={56}
+                      className="object-contain"
+                    />
                   </div>
                 </div>
               </div>

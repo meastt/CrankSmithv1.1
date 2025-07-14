@@ -11,17 +11,17 @@ export default function GravelVsRoadGearing() {
         url="https://cranksmith.com/blog/gravel-vs-road-gearing"
       />
       
-      <div className="min-h-screen bg-zinc-900 text-white">
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <div className="max-w-3xl mx-auto px-4 py-12">
           {/* Back Link */}
-          <Link href="/blog" className="text-blue-400 hover:text-blue-300 mb-8 inline-block">
+          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
             ← Back to Blog
           </Link>
 
           {/* Article Header */}
           <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4 text-sm text-zinc-400">
-              <span className="bg-green-600 text-white px-2 py-1 rounded text-xs">
+            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
+              <span className="bg-[var(--success-green)] text-white px-2 py-1 rounded text-xs">
                 Bike Setup
               </span>
               <time>June 10, 2025</time>
@@ -32,7 +32,7 @@ export default function GravelVsRoadGearing() {
               Gravel vs Road Bike Gearing: What's the Difference?
             </h1>
             
-            <p className="text-xl text-zinc-300">
+            <p className="text-xl text-[var(--text-secondary)]">
               Understanding why gravel bikes need different gear ratios and how to optimize for mixed terrain riding.
             </p>
           </header>
@@ -107,14 +107,14 @@ export default function GravelVsRoadGearing() {
             </ul>
 
             {/* CTA Section */}
-            <div className="bg-zinc-800 rounded-lg p-6 my-8">
+            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
               <h3 className="text-xl font-bold mb-3">Find Your Perfect Gravel Gearing</h3>
-              <p className="text-zinc-300 mb-4">
+              <p className="text-[var(--text-secondary)] mb-4">
                 Use CrankSmith's calculator to compare different chainring and cassette combinations for your gravel adventures.
               </p>
               <Link 
                 href="/calculator"
-                className="inline-block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded font-semibold transition-colors"
+                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
               >
                 Calculate Your Setup
               </Link>

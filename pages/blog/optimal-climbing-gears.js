@@ -11,17 +11,17 @@ export default function OptimalClimbingGears() {
         url="https://cranksmith.com/blog/optimal-climbing-gears"
       />
       
-      <div className="min-h-screen bg-zinc-900 text-white">
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <div className="max-w-3xl mx-auto px-4 py-12">
           {/* Back Link */}
-          <Link href="/blog" className="text-blue-400 hover:text-blue-300 mb-8 inline-block">
+          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
             ← Back to Blog
           </Link>
 
           {/* Article Header */}
           <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4 text-sm text-zinc-400">
-              <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
+            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
+              <span className="bg-[var(--accent-blue)] text-white px-2 py-1 rounded text-xs">
                 Gear Selection
               </span>
               <time>June 15, 2025</time>
@@ -32,7 +32,7 @@ export default function OptimalClimbingGears() {
               How to Choose Optimal Climbing Gears for Your Next Hill Climb
             </h1>
             
-            <p className="text-xl text-zinc-300">
+            <p className="text-xl text-[var(--text-secondary)]">
               Learn the science behind gear selection for steep climbs and maintain your cadence when the road goes up.
             </p>
           </header>
@@ -68,14 +68,14 @@ export default function OptimalClimbingGears() {
             </p>
 
             {/* CTA Section */}
-            <div className="bg-zinc-800 rounded-lg p-6 my-8">
+            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
               <h3 className="text-xl font-bold mb-3">Calculate Your Perfect Climbing Setup</h3>
-              <p className="text-zinc-300 mb-4">
+              <p className="text-[var(--text-secondary)] mb-4">
                 Use CrankSmith's gear calculator to find the exact chainring and cassette combination for your climbing goals.
               </p>
               <Link 
                 href="/calculator"
-                className="inline-block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded font-semibold transition-colors"
+                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
               >
                 Try the Calculator
               </Link>

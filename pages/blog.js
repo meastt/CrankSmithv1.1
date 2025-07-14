@@ -39,12 +39,12 @@ export default function BlogPage() {
         url="https://cranksmith.com/blog"
       />
       
-      <div className="min-h-screen bg-zinc-900 text-white">
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <div className="max-w-4xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl font-bold mb-4">CrankSmith Blog</h1>
-            <p className="text-zinc-400 text-lg">
+            <p className="text-[var(--text-secondary)] text-lg">
               Expert tips on bike gearing, performance, and optimization
             </p>
           </div>
@@ -57,14 +57,14 @@ export default function BlogPage() {
           </div>
 
           {/* Call to Action */}
-          <div className="mt-16 bg-zinc-800 rounded-lg p-8 text-center">
+          <div className="mt-16 bg-[var(--bg-secondary)] rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold mb-4">Ready to Optimize Your Setup?</h2>
-            <p className="text-zinc-300 mb-6">
+            <p className="text-[var(--text-secondary)] mb-6">
               Use CrankSmith's gear calculator to find your perfect drivetrain configuration
             </p>
             <Link 
               href="/calculator"
-              className="inline-block bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Try the Calculator
             </Link>
@@ -78,28 +78,28 @@ export default function BlogPage() {
 // Blog Post Card Component
 function BlogPostCard({ post }) {
   return (
-    <article className="bg-zinc-800 rounded-lg p-6 hover:bg-zinc-750 transition-colors">
-      <div className="flex items-center gap-4 mb-3 text-sm text-zinc-400">
-        <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
+    <article className="bg-[var(--bg-secondary)] rounded-lg p-6 hover:bg-[var(--bg-tertiary)] transition-colors">
+      <div className="flex items-center gap-4 mb-3 text-sm text-[var(--text-secondary)]">
+        <span className="bg-[var(--accent-blue)] text-white px-2 py-1 rounded text-xs">
           {post.category}
         </span>
         <time>{new Date(post.date).toLocaleDateString()}</time>
         <span>{post.readTime}</span>
       </div>
       
-      <h2 className="text-xl font-bold mb-3 hover:text-blue-400">
+      <h2 className="text-xl font-bold mb-3 hover:text-[var(--accent-blue)]">
         <Link href={`/blog/${post.id}`}>
           {post.title}
         </Link>
       </h2>
       
-      <p className="text-zinc-300 mb-4">
+      <p className="text-[var(--text-secondary)] mb-4">
         {post.excerpt}
       </p>
       
       <Link 
         href={`/blog/${post.id}`}
-        className="text-blue-400 hover:text-blue-300 font-medium"
+        className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] font-medium"
       >
         Read More →
       </Link>

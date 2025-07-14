@@ -161,7 +161,7 @@ function MobileAppBanner() {
 
   return (
     <div 
-      className="fixed bottom-4 left-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-lg shadow-lg flex items-center justify-between"
+              className="fixed bottom-4 left-4 right-4 z-50 bg-[var(--accent-blue)] text-white p-3 rounded-lg shadow-lg flex items-center justify-between"
       style={{ fontSize: '14px' }}
     >
       <div className="flex items-center gap-2">
@@ -171,7 +171,7 @@ function MobileAppBanner() {
       <div className="flex gap-2">
         <button
           onClick={() => router.push('/mobile')}
-          className="bg-white text-blue-600 px-3 py-1 rounded text-sm font-medium"
+          className="bg-white text-[var(--accent-blue)] px-3 py-1 rounded text-sm font-medium"
         >
           Try Mobile
         </button>

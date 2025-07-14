@@ -10,23 +10,23 @@ export default function DocsPage() {
         url="https://cranksmith.com/docs"
       />
       
-      <div className="min-h-screen bg-zinc-900 text-white">
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <div className="max-w-4xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl font-bold mb-4">User Guide & FAQ</h1>
-            <p className="text-zinc-400 text-lg">
+            <p className="text-[var(--text-secondary)] text-lg">
               Everything you need to know about using CrankSmith
             </p>
           </div>
 
           {/* Quick Start Guide */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold mb-6 text-blue-400">Quick Start Guide</h2>
+            <h2 className="text-2xl font-bold mb-6 text-[var(--accent-blue)]">Quick Start Guide</h2>
             
-            <div className="bg-zinc-800 rounded-lg p-6 mb-6">
+            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 mb-6">
               <h3 className="text-xl font-semibold mb-4">Using the Gear Calculator</h3>
-              <ol className="space-y-3 text-zinc-300">
+              <ol className="space-y-3 text-[var(--text-secondary)]">
                 <li><strong>1.</strong> Select your crankset (chainrings)</li>
                 <li><strong>2.</strong> Choose your cassette (rear cogs)</li>
                 <li><strong>3.</strong> Pick your derailleur</li>
@@ -35,9 +35,9 @@ export default function DocsPage() {
               </ol>
             </div>
 
-            <div className="bg-zinc-800 rounded-lg p-6">
+            <div className="bg-[var(--bg-secondary)] rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-4">Understanding Your Results</h3>
-              <ul className="space-y-2 text-zinc-300">
+              <ul className="space-y-2 text-[var(--text-secondary)]">
                 <li><strong>Gear Inches:</strong> Higher numbers = harder to pedal, faster speeds</li>
                 <li><strong>Cadence:</strong> Your pedaling rate (aim for 80-100 RPM)</li>
                 <li><strong>Compatibility:</strong> Green = good, Yellow = caution, Red = won't work</li>
@@ -47,7 +47,7 @@ export default function DocsPage() {
 
           {/* FAQ Section */}
           <section>
-            <h2 className="text-2xl font-bold mb-6 text-blue-400">Frequently Asked Questions</h2>
+            <h2 className="text-2xl font-bold mb-6 text-[var(--accent-blue)]">Frequently Asked Questions</h2>
             
             <div className="space-y-4">
               <FAQItem 
@@ -80,9 +80,9 @@ export default function DocsPage() {
 // FAQ Item Component
 function FAQItem({ question, answer }) {
   return (
-    <div className="bg-zinc-800 rounded-lg p-6">
-      <h3 className="text-lg font-semibold mb-3 text-white">{question}</h3>
-      <p className="text-zinc-300">{answer}</p>
+    <div className="bg-[var(--bg-secondary)] rounded-lg p-6">
+      <h3 className="text-lg font-semibold mb-3 text-[var(--text-primary)]">{question}</h3>
+      <p className="text-[var(--text-secondary)]">{answer}</p>
     </div>
   );
 }

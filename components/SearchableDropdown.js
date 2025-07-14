@@ -249,11 +249,11 @@ export default function SearchableDropdown({
           padding: '12px 16px',
           cursor: 'pointer',
           background: isHighlighted 
-            ? 'var(--accent-blue)' 
+            ? 'rgb(var(--brand-blue))' 
             : isSelected 
-              ? 'var(--surface-elevated)' 
+              ? 'rgb(var(--bg-tertiary))' 
               : 'transparent',
-          color: isHighlighted ? 'white' : 'var(--text-primary)',
+          color: isHighlighted ? 'white' : 'rgb(var(--text-primary))',
           transition: 'background-color 0.1s ease'
         }}
         onClick={() => handleSelect(option)}
@@ -270,7 +270,7 @@ export default function SearchableDropdown({
               flexShrink: 0,
               color: isHighlighted 
                 ? 'rgba(255,255,255,0.85)' 
-                : 'var(--text-tertiary)'
+                : 'rgb(var(--text-tertiary))'
             }}
           >
             {option.weight}g
@@ -282,7 +282,7 @@ export default function SearchableDropdown({
             marginTop: '4px',
             color: isHighlighted 
               ? 'rgba(255,255,255,0.75)' 
-              : 'var(--text-tertiary)'
+              : 'rgb(var(--text-tertiary))'
           }}
         >
           {option.variant}
@@ -320,8 +320,9 @@ export default function SearchableDropdown({
           options.length === 0 ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
         }`}
         style={{ 
-          background: isOpen ? 'var(--bg-elevated)' : 'var(--bg-tertiary)',
-          borderColor: isOpen ? 'var(--border-focus)' : 'var(--border-subtle)',
+          background: isOpen ? 'rgb(var(--bg-elevated))' : 'rgb(var(--bg-secondary))',
+          borderColor: isOpen ? 'rgb(var(--border-focus))' : 'rgb(var(--border-primary))',
+          color: 'rgb(var(--text-primary))',
           minHeight: '48px'
         }}
       >
@@ -344,17 +345,17 @@ export default function SearchableDropdown({
           ref={dropdownRef}
           className="absolute z-50 w-full mt-1"
           style={{
-            background: 'var(--bg-secondary)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-            borderRadius: '8px',
-            border: '1px solid var(--border-subtle)',
+            background: 'rgb(var(--bg-elevated))',
+            boxShadow: 'var(--shadow-lg)',
+            borderRadius: '12px',
+            border: '1px solid rgb(var(--border-primary))',
             maxHeight: '400px',
             display: 'flex',
             flexDirection: 'column'
           }}
         >
           {/* Search Input */}
-          <div className="p-3 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+          <div className="p-3 border-b" style={{ borderColor: 'rgb(var(--border-primary))' }}>
             <input
               ref={inputRef}
               type="text"
@@ -362,11 +363,8 @@ export default function SearchableDropdown({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full px-3 py-2 rounded-lg text-base"
+              className="input-premium"
               style={{ 
-                background: 'var(--bg-tertiary)',
-                border: '1px solid var(--border-subtle)',
-                color: 'var(--text-primary)',
                 fontSize: '16px'
               }}
               autoComplete="off"

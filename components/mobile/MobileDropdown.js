@@ -100,36 +100,28 @@ export default function MobileDropdown({
       <button
         type="button"
         onClick={handleOpen}
-        className="dropdown-trigger"
+        className="input-premium"
         style={{
-          width: '100%',
-          background: 'rgba(255, 255, 255, 0.1)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          borderRadius: '12px',
-          padding: '16px',
-          color: 'white',
-          fontSize: '16px',
-          textAlign: 'left',
+          minHeight: '56px',
+          cursor: 'pointer',
+          position: 'relative',
+          zIndex: 30,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          minHeight: '56px',
-          cursor: 'pointer',
-          transition: 'all 0.2s ease',
-          position: 'relative',
-          zIndex: 30
+          textAlign: 'left'
         }}
       >
         <div className="flex-1">
           {displayValue ? (
             <div>
-              <div className="font-medium">{displayValue}</div>
+              <div className="font-medium" style={{ color: 'rgb(var(--text-primary))' }}>{displayValue}</div>
               {typeof value === 'object' && value && value.weight && (
-                <div className="text-sm text-gray-400">{value.weight}g • {value.speeds || ''}</div>
+                <div className="text-sm" style={{ color: 'rgb(var(--text-tertiary))' }}>{value.weight}g • {value.speeds || ''}</div>
               )}
             </div>
           ) : (
-            <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+            <span style={{ color: 'rgb(var(--text-placeholder))' }}>
               {placeholder}
             </span>
           )}
@@ -156,7 +148,7 @@ export default function MobileDropdown({
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: '#000000', // Moved background here for simplicity
+              backgroundColor: 'rgb(var(--bg-primary))',
             }}
           >
             <div 
@@ -171,24 +163,22 @@ export default function MobileDropdown({
               {/* Header */}
               <div className="dropdown-header" style={{
                 padding: '20px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                borderBottom: '1px solid rgb(var(--border-primary))',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                backgroundColor: '#1a1a1a', // Keep a slightly different bg for the header
+                backgroundColor: 'rgb(var(--bg-secondary))',
                 flexShrink: 0
               }}>
-                <h3 className="text-lg font-semibold" style={{ color: 'white' }}>
+                <h3 className="text-lg font-semibold" style={{ color: 'rgb(var(--text-primary))' }}>
                   {placeholder}
                 </h3>
                 <button
                   onClick={() => setIsOpen(false)}
+                  className="btn-secondary p-2"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '8px',
-                    color: 'white'
+                    minWidth: 'auto',
+                    minHeight: 'auto'
                   }}
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,14 +199,8 @@ export default function MobileDropdown({
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search components..."
+                    className="input-premium"
                     style={{
-                      width: '100%',
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      borderRadius: '12px',
-                      padding: '12px 16px',
-                      color: 'white',
-                      fontSize: '16px',
                       WebkitAppearance: 'none'
                     }}
                   />
@@ -241,34 +225,26 @@ export default function MobileDropdown({
                         <button
                           key={option.id}
                           onClick={() => handleSelect(option)}
-                          className="option-item"
+                          className={`option-item ${value === option.value ? "card-premium bg-brand-blue/10 border-brand-blue" : "card-premium"}`}
                           style={{
                             width: '100%',
-                            background: value === option.value ? 
-                              'rgba(59, 130, 246, 0.2)' : 
-                              'rgba(255, 255, 255, 0.05)',
-                            border: `1px solid ${value === option.value ? 
-                              '#3B82F6' : 
-                              'rgba(255, 255, 255, 0.1)'}`,
-                            borderRadius: '12px',
-                            padding: '16px',
-                            color: 'white',
+                            color: 'rgb(var(--text-primary))',
                             textAlign: 'left',
                             minHeight: '60px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            transition: 'all 0.2s ease'
+                            padding: '16px'
                           }}
                         >
                           <div className="flex-1">
-                            <div className="font-medium text-base">{option.label || ''}</div>
+                            <div className="font-medium text-base" style={{ color: 'rgb(var(--text-primary))' }}>{option.label || ''}</div>
                             {option.subtitle && (
-                              <div className="text-sm text-gray-400 mt-1">{option.subtitle}</div>
+                              <div className="text-sm mt-1" style={{ color: 'rgb(var(--text-tertiary))' }}>{option.subtitle}</div>
                             )}
                           </div>
                           {value === option.value && (
-                            <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5" style={{ color: 'rgb(var(--brand-blue))' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                           )}
@@ -280,7 +256,7 @@ export default function MobileDropdown({
                   <div className="no-options" style={{
                     textAlign: 'center',
                     padding: '40px 20px',
-                    color: 'rgba(255, 255, 255, 0.6)'
+                    color: 'rgb(var(--text-tertiary))'
                   }}>
                     <svg className="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 20.4a7.962 7.962 0 01-5-1.691c-.9-.69-1.628-1.565-2.13-2.548L3 12l1.87-4.161C5.372 6.296 6.6 4.785 8.5 3.734A7.96 7.96 0 0112 3c1.441 0 2.783.302 4.013.834 1.9 1.051 3.128 2.562 3.63 4.105L21 12l-1.357 3.839A7.967 7.967 0 0112 20.4z" />

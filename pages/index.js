@@ -164,9 +164,20 @@ export default function Home() {
         <section className="py-20">
           <div className="container-responsive">
             <div className="text-center mb-16">
-              <h2 className="text-responsive-3xl font-bold mb-4 text-neutral-900 dark:text-white">
-                Why Choose CrankSmith?
-              </h2>
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center p-1.5 shadow-lg bg-white dark:bg-neutral-800">
+                  <Image 
+                    src="/cranksmith-logo.png" 
+                    alt="CrankSmith" 
+                    width={32}
+                    height={32}
+                    className="object-contain"
+                  />
+                </div>
+                <h2 className="text-responsive-3xl font-bold text-neutral-900 dark:text-white">
+                  Why Choose <span className="bg-gradient-performance bg-clip-text text-transparent">CrankSmith</span>?
+                </h2>
+              </div>
               <p className="text-responsive-lg text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto">
                 Trusted by cyclists, shops, and professionals worldwide
               </p>

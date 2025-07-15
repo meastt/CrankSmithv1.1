@@ -108,7 +108,7 @@ export default function SettingsScreen({
         color: 'white'
       }}>
         <h1 className="text-2xl font-bold mb-2">Settings</h1>
-        <p className="text-gray-200">
+        <p style={{ color: 'var(--text-secondary)' }}>
           Customize your CrankSmith experience
         </p>
       </div>
@@ -191,14 +191,14 @@ export default function SettingsScreen({
                         <div className="flex-1">
                           <div className="font-medium">{item.label}</div>
                           {item.description && (
-                            <div className="text-sm text-gray-400 mt-1">
-                              {item.description}
-                            </div>
+                                          <div className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                {item.description}
+              </div>
                           )}
                         </div>
-                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                                        <svg className="w-5 h-5" style={{ color: 'var(--text-tertiary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
                       </button>
                     )}
 
@@ -206,7 +206,7 @@ export default function SettingsScreen({
                     {item.type === 'info' && (
                       <div className="flex items-center justify-between">
                         <div className="font-medium text-white">{item.label}</div>
-                        <div className="text-gray-400">{item.value}</div>
+                        <div style={{ color: 'var(--text-tertiary)' }}>{item.value}</div>
                       </div>
                     )}
 
@@ -235,10 +235,10 @@ export default function SettingsScreen({
           borderTop: '1px solid rgba(255, 255, 255, 0.1)',
           textAlign: 'center'
         }}>
-          <p className="text-gray-400 text-sm">
+          <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
             Made with ❤️ by cyclists, for cyclists
           </p>
-          <p className="text-gray-500 text-xs mt-2">
+          <p className="text-xs mt-2" style={{ color: 'var(--text-placeholder)' }}>
             © 2024 CrankSmith. All rights reserved.
           </p>
         </div>
@@ -278,7 +278,7 @@ export default function SettingsScreen({
             <div className="modal-header mb-6 text-center">
               <div className="text-4xl mb-3">🔧</div>
               <h3 className="text-xl font-bold text-white mb-2">About CrankSmith</h3>
-              <p className="text-gray-300 text-sm">
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                 The ultimate bike gear calculator
               </p>
             </div>
@@ -286,7 +286,7 @@ export default function SettingsScreen({
             <div className="modal-body space-y-4 text-sm">
               <div>
                 <h4 className="font-semibold text-white mb-2">What We Do</h4>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                   CrankSmith helps cyclists optimize their bike setups with real component data, 
                   compatibility checking, and performance analysis. Make informed decisions about 
                   your gear upgrades.
@@ -295,7 +295,7 @@ export default function SettingsScreen({
 
               <div>
                 <h4 className="font-semibold text-white mb-2">Features</h4>
-                <ul className="text-gray-300 space-y-1">
+                <ul className="space-y-1" style={{ color: 'var(--text-secondary)' }}>
                   <li>• Real component database</li>
                   <li>• Compatibility analysis</li>
                   <li>• Performance calculations</li>
@@ -306,7 +306,7 @@ export default function SettingsScreen({
 
               <div>
                 <h4 className="font-semibold text-white mb-2">Built For Cyclists</h4>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                   Created by riders who understand the frustration of incompatible parts and 
                   suboptimal setups. Every calculation is based on real-world data.
                 </p>

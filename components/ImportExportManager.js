@@ -178,7 +178,7 @@ export default class ErrorBoundary extends React.Component {
       const errorSuggestions = this.getErrorSuggestions();
       
       return (
-        <div className={`${containerClass} flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-900`}>
+        <div className={`${containerClass} flex items-center justify-center p-8`} style={{ backgroundColor: 'var(--bg-secondary)' }}>
           <div className="text-center max-w-lg mx-auto">
             {/* Error Icon */}
             <div className="mb-6">
@@ -190,12 +190,12 @@ export default class ErrorBoundary extends React.Component {
             </div>
             
             {/* Error Title */}
-            <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
               {errorSuggestions.title}
             </h3>
             
             {/* Error Description */}
-            <p className="text-sm mb-6 text-gray-600 dark:text-gray-300">
+            <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
               {context === 'page' 
                 ? "We're having trouble loading this page. This is usually temporary."
                 : "This component encountered an error. You can try the suggestions below or continue using other features."
@@ -203,16 +203,16 @@ export default class ErrorBoundary extends React.Component {
             </p>
 
             {/* Error ID for support */}
-            <div className="mb-6 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="mb-6 p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
                 Error ID: <span className="font-mono">{this.state.errorId}</span>
               </p>
             </div>
 
             {/* Suggestions */}
             <div className="mb-6 text-left">
-              <h4 className="font-medium mb-2 text-gray-900 dark:text-white">What you can try:</h4>
-              <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                          <h4 className="font-medium mb-2" style={{ color: 'var(--text-primary)' }}>What you can try:</h4>
+            <ul className="text-sm space-y-1" style={{ color: 'var(--text-secondary)' }}>
                 {errorSuggestions.suggestions.map((suggestion, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
@@ -233,14 +233,36 @@ export default class ErrorBoundary extends React.Component {
               
               <button
                 onClick={this.handleReload}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium"
+                className="px-4 py-2 border rounded-md transition-colors text-sm font-medium"
+                style={{ 
+                  borderColor: 'var(--border-primary)',
+                  color: 'var(--text-primary)',
+                  backgroundColor: 'var(--bg-secondary)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--bg-tertiary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--bg-secondary)';
+                }}
               >
                 Refresh Page
               </button>
 
               <button
                 onClick={this.handleReportError}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium"
+                className="px-4 py-2 border rounded-md transition-colors text-sm font-medium"
+                style={{ 
+                  borderColor: 'var(--border-primary)',
+                  color: 'var(--text-primary)',
+                  backgroundColor: 'var(--bg-secondary)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--bg-tertiary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--bg-secondary)';
+                }}
               >
                 Report Error
               </button>
@@ -249,10 +271,14 @@ export default class ErrorBoundary extends React.Component {
             {/* Debug info in development */}
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-6 text-left">
-                <summary className="cursor-pointer text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">
+                <summary className="cursor-pointer text-sm font-medium mb-2" style={{ color: 'var(--text-tertiary)' }}>
                   Debug Info (Development Only)
                 </summary>
-                <pre className="text-xs p-3 rounded bg-gray-200 dark:bg-gray-700 overflow-auto max-h-40 text-gray-800 dark:text-gray-200">
+                <pre className="text-xs p-3 rounded overflow-auto max-h-40" style={{ 
+                  backgroundColor: 'var(--bg-tertiary)',
+                  color: 'var(--text-primary)',
+                  border: `1px solid var(--border-primary)`
+                }}>
                   {this.state.error.toString()}
                   {this.state.errorInfo && this.state.errorInfo.componentStack}
                 </pre>

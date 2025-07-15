@@ -156,7 +156,7 @@ export default function AppDownloadCTA() {
               </div>
               
               <h3 className="text-2xl font-bold text-white mb-4">Download CrankSmith</h3>
-              <p className="text-gray-200 mb-8">
+              <p className="mb-8" style={{ color: 'var(--text-secondary)' }}>
                 Get the complete bike gear calculator experience on your device
               </p>
 

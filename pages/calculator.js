@@ -44,7 +44,7 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
   const styles = statusStyles[status] || {
     bg: 'bg-[var(--surface-elevated)]',
     border: 'border-[var(--border-subtle)]',
-    iconBg: 'bg-gray-400',
+              iconBg: 'bg-neutral-400',
     titleColor: 'text-[var(--text-primary)]'
   };
 
@@ -341,7 +341,7 @@ export default function Home() {
         {bikeType && (
           <div className="space-y-8">
             <div className="calculator-section grid md:grid-cols-2 gap-8">
-              <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading current setup panel</div>}>
+              <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading current setup panel</div>}>
                 <GearSelectorPanel
                   title="Current Setup"
                   subtitle="Your current components"
@@ -361,7 +361,7 @@ export default function Home() {
                   </svg>}
                 />
               </ErrorBoundary>
-              <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading proposed setup panel</div>}>
+              <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading proposed setup panel</div>}>
                 <GearSelectorPanel
                   title="Proposed Setup"
                   subtitle="Components you're considering"
@@ -451,7 +451,7 @@ export default function Home() {
 
             {showRiley && (
               <div className="max-w-4xl mx-auto">
-                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading Riley AI chat. Please try refreshing the page.</div>}>
+                <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading Riley AI chat. Please try refreshing the page.</div>}>
                   <RileyChat 
                     userSetup={proposedSetup}
                     analysisResults={results}
@@ -466,21 +466,21 @@ export default function Home() {
 
         {results && (
           <div className="max-w-4xl mx-auto mt-12">
-            <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading simulation results</div>}>
+            <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading simulation results</div>}>
               <SimulationResults 
                 results={results}
                 speedUnit={speedUnit}
                 bikeType={bikeType}
               />
             </ErrorBoundary>
-            <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading performance chart</div>}>
+            <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading performance chart</div>}>
               <PerformanceChart 
                 current={results.current}
                 proposed={results.proposed}
                 speedUnit={speedUnit}
               />
             </ErrorBoundary>
-            <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-gray-500">Error loading build summary</div>}>
+            <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading build summary</div>}>
               <BuildSummaryCard 
                 currentSetup={currentSetup}
                 proposedSetup={proposedSetup}
@@ -610,7 +610,10 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
         )}
       </div>
       
-      <button onClick={handleLoadConfig} disabled={isLoading} className="garage-load-btn w-full py-3 rounded font-semibold transition-all text-white bg-[var(--accent-blue)] disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-60 hover:enabled:opacity-90">
+              <button onClick={handleLoadConfig} disabled={isLoading} className="garage-load-btn w-full py-3 rounded font-semibold transition-all text-white bg-[var(--accent-blue)] disabled:cursor-not-allowed disabled:opacity-60 hover:enabled:opacity-90" style={{ 
+          backgroundColor: isLoading ? 'var(--bg-tertiary)' : 'var(--accent-blue)',
+          color: isLoading ? 'var(--text-disabled)' : 'white'
+        }}>
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
             <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>

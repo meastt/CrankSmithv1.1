@@ -419,18 +419,18 @@ export default function ResultsScreen({
                   }}
                 >
                   <div className="metric-icon text-2xl mb-2">{metric.icon}</div>
-                  <div className="metric-title text-sm text-gray-400 mb-3">{metric.title}</div>
+                  <div className="metric-title text-sm mb-3" style={{ color: 'var(--text-tertiary)' }}>{metric.title}</div>
                   
                   <div className="metric-values space-y-2">
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-500">Current</span>
+                      <span style={{ color: 'var(--text-placeholder)' }}>Current</span>
                       <span className="font-mono text-white">{metric.current}{metric.unit}</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-500">Proposed</span>
+                      <span style={{ color: 'var(--text-placeholder)' }}>Proposed</span>
                       <span className="font-mono text-white">{metric.proposed}{metric.unit}</span>
                     </div>
-                    <div className="border-t border-gray-600 pt-2">
+                    <div className="border-t pt-2" style={{ borderColor: 'var(--border-primary)' }}>
                       <div
                         className="text-lg font-bold"
                         style={{ color: getChangeColor(metric.change, metric.isGoodWhenHigher) }}
@@ -452,7 +452,7 @@ export default function ResultsScreen({
                   borderRadius: '8px',
                   padding: '12px'
                 }}>
-                  <div className="text-sm text-gray-400">Crankset</div>
+                  <div className="text-sm" style={{ color: 'var(--text-tertiary)' }}>Crankset</div>
                   <div className="text-white font-medium">
                     {proposed.setup.crankset?.model} {proposed.setup.crankset?.variant}
                   </div>
@@ -462,7 +462,7 @@ export default function ResultsScreen({
                   borderRadius: '8px',
                   padding: '12px'
                 }}>
-                  <div className="text-sm text-gray-400">Cassette</div>
+                  <div className="text-sm" style={{ color: 'var(--text-tertiary)' }}>Cassette</div>
                   <div className="text-white font-medium">
                     {proposed.setup.cassette?.model} {proposed.setup.cassette?.variant}
                   </div>
@@ -477,7 +477,7 @@ export default function ResultsScreen({
             {/* Chart Header */}
             <div className="chart-header text-center">
               <h3 className="text-lg font-semibold mb-2 text-white">Performance Comparison</h3>
-              <p className="text-sm text-gray-400">Visual comparison of your setups</p>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>Visual comparison of your setups</p>
             </div>
 
             {/* Chart Container */}
@@ -509,7 +509,7 @@ export default function ResultsScreen({
               border: '1px solid rgba(59, 130, 246, 0.2)'
             }}>
               <h4 className="font-medium text-white mb-2">How to read this chart:</h4>
-              <div className="space-y-2 text-sm text-gray-300">
+              <div className="space-y-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(59, 130, 246, 1)' }}></div>
                   <span>Current setup</span>
@@ -518,7 +518,7 @@ export default function ResultsScreen({
                   <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(16, 185, 129, 1)' }}></div>
                   <span>Proposed setup</span>
                 </div>
-                <p className="mt-3 text-xs text-gray-400">
+                <p className="mt-3 text-xs" style={{ color: 'var(--text-tertiary)' }}>
                   Larger area = better performance. Weight shows "better" (lighter = higher score).
                 </p>
               </div>
@@ -539,7 +539,7 @@ export default function ResultsScreen({
                 <div className="text-2xl font-bold text-white">
                   {Math.round((parseFloat(proposed.metrics.highSpeed) / parseFloat(current.metrics.highSpeed)) * 100)}%
                 </div>
-                <div className="text-xs text-gray-400">Top Speed</div>
+                <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Top Speed</div>
               </div>
               <div style={{
                 background: 'rgba(255, 255, 255, 0.05)',
@@ -550,7 +550,7 @@ export default function ResultsScreen({
                 <div className="text-2xl font-bold text-white">
                   {Math.round((parseFloat(proposed.metrics.lowSpeed) / parseFloat(current.metrics.lowSpeed)) * 100)}%
                 </div>
-                <div className="text-xs text-gray-400">Climbing</div>
+                <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Climbing</div>
               </div>
             </div>
           </div>
@@ -570,13 +570,13 @@ export default function ResultsScreen({
                   <h4 className="font-medium text-white mb-3">Gear Ratios</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">High Ratio:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>High Ratio:</span>
                       <span className="font-mono text-white">
                         {current.metrics.highRatio} → {proposed.metrics.highRatio}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Low Ratio:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Low Ratio:</span>
                       <span className="font-mono text-white">
                         {current.metrics.lowRatio} → {proposed.metrics.lowRatio}
                       </span>
@@ -592,13 +592,13 @@ export default function ResultsScreen({
                   <h4 className="font-medium text-white mb-3">Speed Analysis</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Top Speed @ 90 RPM:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Top Speed @ 90 RPM:</span>
                       <span className="font-mono text-white">
                         {proposed.metrics.highSpeed} {speedUnit}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Climbing Speed @ 90 RPM:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Climbing Speed @ 90 RPM:</span>
                       <span className="font-mono text-white">
                         {proposed.metrics.lowSpeed} {speedUnit}
                       </span>
@@ -614,11 +614,11 @@ export default function ResultsScreen({
                   <h4 className="font-medium text-white mb-3">Weight Breakdown</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Total Weight:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Total Weight:</span>
                       <span className="font-mono text-white">{proposed.totalWeight}g</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Weight Change:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Weight Change:</span>
                       <span className="font-mono" style={{ 
                         color: getChangeColor(proposed.totalWeight - current.totalWeight, false) 
                       }}>
@@ -651,7 +651,7 @@ export default function ResultsScreen({
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">{compatibility.title}</h3>
-                    <p className="text-gray-300 text-sm">{compatibility.message}</p>
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{compatibility.message}</p>
                   </div>
                 </div>
 

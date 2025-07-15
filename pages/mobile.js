@@ -230,7 +230,7 @@ export default function MobileApp() {
         isOnline={isOnline}
         hasResults={!!results}
       >
-        <ErrorBoundary context="page" fallback={<div className="p-8 text-center text-gray-500">Error loading mobile screen. Please try refreshing the page.</div>}>
+        <ErrorBoundary context="page" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading mobile screen. Please try refreshing the page.</div>}>
           {renderCurrentScreen()}
         </ErrorBoundary>
       </MobileLayout>

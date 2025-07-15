@@ -29,7 +29,7 @@ const GearSelectorPanel = React.memo(({
             </div>
           </div>
           {badge && (
-            <div className={`px-3 py-1 rounded-full text-xs font-medium ${badgeColor || 'bg-gray-100 text-gray-800'}`}>
+            <div className={`px-3 py-1 rounded-full text-xs font-medium ${badgeColor || 'badge'}`}>
               {badge}
             </div>
           )}

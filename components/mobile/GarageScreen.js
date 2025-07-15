@@ -78,7 +78,7 @@ export default function GarageScreen({ savedConfigs, setSavedConfigs, onLoadConf
                       <h3 className="font-semibold text-white text-base leading-tight">
                         {config.name}
                       </h3>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
                         {formatDate(config.created_at)}
                       </p>
                     </div>
@@ -110,7 +110,7 @@ export default function GarageScreen({ savedConfigs, setSavedConfigs, onLoadConf
                         padding: '8px',
                         textAlign: 'center'
                       }}>
-                        <div className="text-xs text-gray-400">Weight</div>
+                        <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Weight</div>
                         <div className="text-sm font-semibold text-white">
                           {config.results.proposed?.totalWeight}g
                         </div>
@@ -121,7 +121,7 @@ export default function GarageScreen({ savedConfigs, setSavedConfigs, onLoadConf
                         padding: '8px',
                         textAlign: 'center'
                       }}>
-                        <div className="text-xs text-gray-400">Range</div>
+                        <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Range</div>
                         <div className="text-sm font-semibold text-white">
                           {config.results.proposed?.gearRange}%
                         </div>
@@ -132,7 +132,7 @@ export default function GarageScreen({ savedConfigs, setSavedConfigs, onLoadConf
                         padding: '8px',
                         textAlign: 'center'
                       }}>
-                        <div className="text-xs text-gray-400">Top Speed</div>
+                        <div className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Top Speed</div>
                         <div className="text-sm font-semibold text-white">
                           {config.results.proposed?.metrics?.highSpeed} mph
                         </div>
@@ -145,13 +145,13 @@ export default function GarageScreen({ savedConfigs, setSavedConfigs, onLoadConf
                 <div className="components-summary mb-4">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Crankset:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Crankset:</span>
                       <span className="text-white font-medium text-right flex-1 ml-2 truncate">
                         {config.proposedSetup?.crankset?.model || 'Not set'}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Cassette:</span>
+                      <span style={{ color: 'var(--text-tertiary)' }}>Cassette:</span>
                       <span className="text-white font-medium text-right flex-1 ml-2 truncate">
                         {config.proposedSetup?.cassette?.model || 'Not set'}
                       </span>
@@ -235,7 +235,7 @@ export default function GarageScreen({ savedConfigs, setSavedConfigs, onLoadConf
             <div className="modal-header mb-4 text-center">
               <div className="text-4xl mb-3">🗑️</div>
               <h3 className="text-lg font-semibold text-white mb-2">Delete Configuration?</h3>
-              <p className="text-gray-300 text-sm">
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                 This action cannot be undone. The configuration will be permanently removed.
               </p>
             </div>

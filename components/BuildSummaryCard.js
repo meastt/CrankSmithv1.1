@@ -278,7 +278,21 @@ export default function BuildSummaryCard({
         <button
           onClick={exportToPDF}
           disabled={isExporting}
-          className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
+          className="text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
+          style={{ 
+            backgroundColor: (!proposedSetup.crankset || !proposedSetup.cassette) ? 'var(--bg-tertiary)' : 'var(--brand-green)',
+            color: (!proposedSetup.crankset || !proposedSetup.cassette) ? 'var(--text-disabled)' : 'white'
+          }}
+          onMouseEnter={(e) => {
+            if (!e.target.disabled) {
+              e.target.style.backgroundColor = 'rgba(var(--brand-green) / 0.8)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!e.target.disabled) {
+              e.target.style.backgroundColor = 'var(--brand-green)';
+            }
+          }}
         >
           <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
@@ -289,7 +303,17 @@ export default function BuildSummaryCard({
         
         <button
           onClick={() => window.print()}
-          className="bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
+          className="text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
+          style={{ 
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'var(--bg-secondary)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'var(--bg-tertiary)';
+          }}
         >
           <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 

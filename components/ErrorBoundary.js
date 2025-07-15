@@ -80,7 +80,18 @@ export default class ErrorBoundary extends React.Component {
               
               <button
                 onClick={this.handleReload}
-                className="px-4 py-2 border rounded-md hover:bg-gray-50 transition-colors text-sm font-medium"
+                className="px-4 py-2 border rounded-md transition-colors text-sm font-medium"
+            style={{ 
+              borderColor: 'var(--border-primary)',
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'var(--bg-tertiary)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'var(--bg-secondary)';
+            }}
                 style={{ 
                   borderColor: 'var(--border-light)', 
                   color: 'var(--text-primary)',
@@ -97,7 +108,11 @@ export default class ErrorBoundary extends React.Component {
                 <summary className="cursor-pointer text-sm font-medium mb-2" style={{ color: 'var(--text-tertiary)' }}>
                   Debug Info (Development Only)
                 </summary>
-                <pre className="text-xs p-3 rounded bg-gray-100 overflow-auto max-h-40" style={{ color: 'var(--text-primary)' }}>
+                <pre className="text-xs p-3 rounded overflow-auto max-h-40" style={{ 
+              backgroundColor: 'var(--bg-tertiary)',
+              color: 'var(--text-primary)',
+              border: `1px solid var(--border-primary)`
+            }}>
                   {this.state.error.toString()}
                   {this.state.errorInfo && this.state.errorInfo.componentStack}
                 </pre>

@@ -129,7 +129,17 @@ export default function Landing() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full px-8 py-4 rounded-xl font-medium transition-all text-lg text-white bg-gray-600 hover:bg-gray-500 shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full px-8 py-4 rounded-xl font-medium transition-all text-lg text-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] disabled:opacity-70 disabled:cursor-not-allowed"
+                  style={{ 
+                    backgroundColor: 'var(--bg-tertiary)',
+                    color: 'var(--text-primary)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = 'var(--bg-secondary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'var(--bg-tertiary)';
+                  }}
                 >
                   {loading ? 'Checking...' : 'Join Community Updates'}
                 </button>

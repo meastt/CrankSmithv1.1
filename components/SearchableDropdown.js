@@ -343,7 +343,7 @@ export default function SearchableDropdown({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute z-50 w-full mt-1"
+          className="absolute z-[9999] w-full mt-1"
           style={{
             background: 'rgb(var(--bg-elevated))',
             boxShadow: 'var(--shadow-lg)',

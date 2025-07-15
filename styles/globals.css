@@ -501,6 +501,12 @@
   overflow: visible !important;
 }
 
+/* Ensure searchable dropdowns appear above all other content */
+.searchable-dropdown {
+  z-index: 9999 !important;
+  position: relative;
+}
+
 /* Button Enhancements */
 .btn-primary:disabled, .btn-secondary:disabled {
   background: rgb(var(--bg-tertiary)) !important;

@@ -296,7 +296,7 @@ export default function SearchableDropdown({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative searchable-dropdown ${className}`}>
       {/* Trigger Button */}
       <button
         ref={triggerRef}

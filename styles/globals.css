@@ -495,6 +495,12 @@
   border-color: rgb(var(--border-secondary));
 }
 
+/* Override for cards containing dropdowns - allows dropdown content to be visible outside card */
+.card:has(.searchable-dropdown),
+.card.dropdown-container {
+  overflow: visible !important;
+}
+
 /* Button Enhancements */
 .btn-primary:disabled, .btn-secondary:disabled {
   background: rgb(var(--bg-tertiary)) !important;

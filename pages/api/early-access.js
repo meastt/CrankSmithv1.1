@@ -3,8 +3,12 @@ import nodemailer from 'nodemailer';
 import { supabase } from '../../lib/supabase';
 import { validateRequestBody } from '../../lib/validation';
 
+// At the top of the file, add development check utility
+const isDevelopment = process.env.NODE_ENV === 'development';
+const devLog = (...args) => isDevelopment && console.log(...args);
+
 export default async function handler(req, res) {
-  console.log('Community signup API called');
+  devLog('Community signup API called');
   
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -19,19 +23,19 @@ export default async function handler(req, res) {
   const validation = validateRequestBody(req.body, validationSchema);
   
   if (!validation.isValid) {
-    console.log('Validation errors:', validation.errors);
+    devLog('Validation errors:', validation.errors);
     return res.status(400).json({ 
-      error: validation.errors[0], // Return first error for user-friendly response
-      errors: validation.errors // Include all errors for debugging
+      success: false, 
+      error: 'Validation failed',
+      details: validation.errors 
     });
   }
   
   const { email, source = 'landing_page' } = validation.sanitized;
-  console.log('Valid email received:', email);
+  devLog('Valid email received:', email);
 
   try {
-    // Save to Supabase
-    console.log('Attempting to save to Supabase...');
+    devLog('Attempting to save to Supabase...');
     const { data, error } = await supabase
       .from('early_access')
       .insert([{ 
@@ -54,10 +58,10 @@ export default async function handler(req, res) {
       throw error;
     }
 
-    console.log('Saved to Supabase successfully:', data);
+    devLog('Saved to Supabase successfully:', data);
 
     // Send email with Zoho
-    console.log('Setting up Zoho transporter...');
+    devLog('Setting up Zoho transporter...');
     const transporter = nodemailer.createTransport({
       host: 'smtp.zoho.com',
       port: 465,
@@ -69,9 +73,9 @@ export default async function handler(req, res) {
     });
 
     // Verify transporter
-    console.log('Verifying Zoho connection...');
+    devLog('Verifying Zoho connection...');
     await transporter.verify();
-    console.log('Zoho connection verified');
+    devLog('Zoho connection verified');
 
     // Email HTML template
     const emailHtml = `
@@ -206,7 +210,7 @@ export default async function handler(req, res) {
     `;
 
     // Send email
-    console.log('Sending welcome email...');
+    devLog('Sending welcome email...');
     const mailOptions = {
       from: `"CrankSmith" <${process.env.ZOHO_EMAIL}>`,
       to: email,
@@ -233,7 +237,7 @@ Founder, CrankSmith`
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('Welcome email sent successfully');
+    devLog('Welcome email sent successfully');
 
     // Optional: Send yourself a notification
     if (process.env.ADMIN_EMAIL) {
@@ -251,14 +255,16 @@ Founder, CrankSmith`
     });
     
   } catch (error) {
-    console.error('Community signup error:', error);
+    console.error('Community signup error:', error); // Keep error logging
     
     // More specific error messages
     if (error.message?.includes('auth')) {
-      console.error('Email auth error - check ZOHO credentials');
+      console.error('Email auth error - check ZOHO credentials'); // Keep error logging
+      return res.status(500).json({ success: false, error: 'Email service configuration error' });
     }
-    if (error.message?.includes('supabase')) {
-      console.error('Supabase error - check connection');
+    if (error.message?.includes('supabase') || error.code) {
+      console.error('Supabase error - check connection'); // Keep error logging
+      return res.status(500).json({ success: false, error: 'Database connection error' });
     }
     
     res.status(500).json({ 

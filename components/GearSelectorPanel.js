@@ -15,7 +15,6 @@ const GearSelectorPanel = React.memo(({
 }) => {
   // Early return if bikeType is not set - prevents empty options rendering
   if (!bikeType || bikeType === '') {
-    console.log(`🔍 GearSelectorPanel (${title}): No bikeType provided, skipping component loading`);
     return (
       <div className="card group">
         <div className="flex items-center justify-between mb-6">
@@ -47,19 +46,19 @@ const GearSelectorPanel = React.memo(({
   const { components, loading, error } = useComponentDatabase(bikeType);
 
   // Enhanced debug logging with better context
-  console.log(`🔍 GearSelectorPanel (${title}):`, {
-    bikeType,
-    components,
-    cranksets: components?.cranksets,
-    cassettes: components?.cassettes,
-    cranksetsLength: components?.cranksets?.length,
-    cassettesLength: components?.cassettes?.length,
-    setup,
-    config,
-    loading,
-    error,
-    context: `Rendering for bikeType: ${bikeType}`
-  });
+  // console.log(`🔍 GearSelectorPanel (${title}):`, {
+  //   bikeType,
+  //   components,
+  //   cranksets: components?.cranksets,
+  //   cassettes: components?.cassettes,
+  //   cranksetsLength: components?.cranksets?.length,
+  //   cassettesLength: components?.cassettes?.length,
+  //   setup,
+  //   config,
+  //   loading,
+  //   error,
+  //   context: `Rendering for bikeType: ${bikeType}`
+  // });
 
   // Transform components data for SearchableDropdown - memoized to prevent recalculation
   const cranksetOptions = useMemo(() => 
@@ -88,18 +87,18 @@ const GearSelectorPanel = React.memo(({
     })) || [], [components?.cassettes]
   );
 
-  console.log(`🔧 Transformed options for ${title}:`, {
-    cranksetOptions: cranksetOptions,
-    cassetteOptions: cassetteOptions,
-    cranksetOptionsLength: cranksetOptions?.length || 0,
-    cassetteOptionsLength: cassetteOptions?.length || 0,
-    firstCrankset: cranksetOptions[0],
-    firstCassette: cassetteOptions[0]
-  });
+  // console.log(`🔧 Transformed options for ${title}:`, {
+  //   cranksetOptions: cranksetOptions,
+  //   cassetteOptions: cassetteOptions,
+  //   cranksetOptionsLength: cranksetOptions?.length || 0,
+  //   cassetteOptionsLength: cassetteOptions?.length || 0,
+  //   firstCrankset: cranksetOptions[0],
+  //   firstCassette: cassetteOptions[0]
+  // });
 
   // Memoized event handlers to prevent unnecessary re-renders
   const handleCranksetChange = useCallback((selectedOption) => {
-    console.log('🔄 Crankset selected:', selectedOption);
+    // console.log('🔄 Crankset selected:', selectedOption);
     // Update the setup state directly with the full component object
     setSetup({ ...setup, crankset: selectedOption });
     
@@ -110,7 +109,7 @@ const GearSelectorPanel = React.memo(({
   }, [setup, setSetup, config]);
 
   const handleCassetteChange = useCallback((selectedOption) => {
-    console.log('🔄 Cassette selected:', selectedOption);
+    // console.log('🔄 Cassette selected:', selectedOption);
     // Update the setup state directly with the full component object
     setSetup({ ...setup, cassette: selectedOption });
     

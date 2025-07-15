@@ -11,7 +11,7 @@ export default function SearchableDropdown({
   className = ''
 }) {
 
-  // Enhanced debug logging with better context
+  // Enhanced debug logging with better context - REMOVED for production performance
   const debugContext = {
     optionsLength: options?.length || 0,
     placeholder,
@@ -25,15 +25,15 @@ export default function SearchableDropdown({
     context: options?.length === 0 ? 'Empty options - likely due to no bikeType selected' : 'Options loaded successfully'
   };
 
-  console.log('🔍 SearchableDropdown render:', debugContext);
+  // REMOVED: console.log('🔍 SearchableDropdown render:', debugContext);
 
-  // Show helpful warning if options are empty
-  if (debugContext.isEmpty) {
-    console.warn('⚠️  SearchableDropdown: No options provided. This usually means:');
-    console.warn('   1. bikeType is not set yet (initial render)');
-    console.warn('   2. Component database failed to load');
-    console.warn('   3. Invalid bikeType provided');
-  }
+  // REMOVED: Show helpful warning if options are empty
+  // if (debugContext.isEmpty) {
+  //   console.warn('⚠️  SearchableDropdown: No options provided. This usually means:');
+  //   console.warn('   1. bikeType is not set yet (initial render)');
+  //   console.warn('   2. Component database failed to load');
+  //   console.warn('   3. Invalid bikeType provided');
+  // }
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -93,15 +93,15 @@ export default function SearchableDropdown({
       flattened.push(...groupOptions.map(opt => ({ type: 'option', data: opt })));
     });
     
-    console.log('🚀 flattenedOptions created:', {
-      placeholder,
-      originalOptionsLength: options?.length || 0,
-      groupedOptionsKeys: Object.keys(groupedOptions),
-      flattenedLength: flattened.length,
-      firstFlattened: flattened[0],
-      groupBy: groupBy,
-      searchTerm: searchTerm
-    });
+    // console.log('🚀 flattenedOptions created:', {
+    //   placeholder,
+    //   originalOptionsLength: options?.length || 0,
+    //   groupedOptionsKeys: Object.keys(groupedOptions),
+    //   flattenedLength: flattened.length,
+    //   firstFlattened: flattened[0],
+    //   groupBy: groupBy,
+    //   searchTerm: searchTerm
+    // });
     
     return flattened;
   }, [groupedOptions, groupBy, placeholder, options, searchTerm]);
@@ -207,15 +207,15 @@ export default function SearchableDropdown({
   const Row = ({ index, style }) => {
     const item = flattenedOptions[index];
     
-    if (index === 0) {
-      console.log('🎯 Row component rendering:', {
-        placeholder,
-        index,
-        item,
-        flattenedOptionsLength: flattenedOptions.length,
-        isOpen
-      });
-    }
+    // if (index === 0) {
+    //   console.log('🎯 Row component rendering:', {
+    //     placeholder,
+    //     index,
+    //     item,
+    //     flattenedOptionsLength: flattenedOptions.length,
+    //     isOpen
+    //   });
+    // }
     
     if (item.type === 'group') {
       return (
@@ -304,16 +304,16 @@ export default function SearchableDropdown({
         disabled={options.length === 0}
         onClick={() => {
           if (options.length === 0) {
-            console.log('🖱️ Dropdown trigger clicked but no options available');
+            // console.log('🖱️ Dropdown trigger clicked but no options available');
             return;
           }
-          console.log('🖱️ Dropdown trigger clicked:', {
-            placeholder,
-            currentIsOpen: isOpen,
-            willBeOpen: !isOpen,
-            optionsLength: options?.length || 0,
-            flattenedOptionsLength: flattenedOptions?.length || 0
-          });
+          // console.log('🖱️ Dropdown trigger clicked:', {
+          //   placeholder,
+          //   currentIsOpen: isOpen,
+          //   willBeOpen: !isOpen,
+          //   optionsLength: options?.length || 0,
+          //   flattenedOptionsLength: flattenedOptions?.length || 0
+          // });
           setIsOpen(!isOpen);
         }}
         className={`input-field flex items-center justify-between w-full ${
@@ -389,12 +389,12 @@ export default function SearchableDropdown({
               </div>
             ) : (
               <>
-                {console.log('📋 About to render List:', {
+                {/* console.log('📋 About to render List:', {
                   placeholder,
                   flattenedOptionsLength: flattenedOptions.length,
                   listHeight: Math.min(300, flattenedOptions.length * 64),
                   itemCount: flattenedOptions.length
-                })}
+                }) */}
                 <List
                   ref={listRef}
                   height={Math.min(300, flattenedOptions.length * 64)}

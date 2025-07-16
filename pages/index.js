@@ -15,26 +15,26 @@ export default function Home() {
   const features = [
     {
       icon: '⚙️',
-      title: 'Gear Calculator',
-      description: 'Compare components and see exact performance impacts with real-world data',
+      title: 'Bike Gear Calculator',
+      description: 'Professional gear ratio calculator for road, mountain, gravel, and touring bikes. Compare drivetrain components and optimize your bike gearing setup.',
       color: 'from-brand-orange to-brand-yellow'
     },
     {
       icon: '🚴‍♂️',
-      title: 'Bike Fit Calculator',
-      description: 'Calculate optimal saddle height, reach, and stack based on your body measurements',
+      title: 'Professional Bike Fit Calculator',
+      description: 'Calculate optimal saddle height, reach, and stack using LeMond, Holmes, and Hamley bike fitting methods based on your body measurements.',
       color: 'from-purple-500 to-pink-500'
     },
     {
       icon: '🔧',
-      title: 'Tire Pressure',
-      description: 'Get perfect tire pressure for your weight, terrain, and riding style',
+      title: 'Cycling Tire Pressure Calculator',
+      description: 'Get perfect tire pressure for road, mountain, and gravel bikes based on your weight, terrain, and riding style for optimal performance.',
       color: 'from-brand-blue to-brand-purple'
     },
     {
       icon: '📊',
-      title: 'Performance Analysis',
-      description: 'Deep insights into speed, cadence, and efficiency across different terrains',
+      title: 'Cycling Performance Analysis',
+      description: 'Deep insights into cycling speed, cadence, and efficiency across different terrains. Optimize your bike setup for maximum performance.',
       color: 'from-brand-green to-emerald-400'
     }
   ];
@@ -42,33 +42,103 @@ export default function Home() {
   const benefits = [
     {
       icon: '💰',
-      title: 'Save Money',
-      description: 'Avoid costly mistakes by understanding component compatibility before you buy'
+      title: 'Save Money on Bike Components',
+      description: 'Avoid costly mistakes by understanding bike component compatibility and drivetrain matching before you buy cycling gear'
     },
     {
       icon: '🎯',
-      title: 'Perfect Setup',
-      description: 'Get personalized recommendations based on your riding style and goals'
+      title: 'Perfect Bike Setup',
+      description: 'Get personalized bike recommendations based on your cycling style, body measurements, and performance goals'
     },
     {
       icon: '🚀',
-      title: 'Real Data',
-      description: 'Access accurate specifications for thousands of bike components'
+      title: 'Real Cycling Data',
+      description: 'Access accurate specifications for thousands of bike components, drivetrains, and cycling equipment from top brands'
     },
     {
       icon: '🤖',
-      title: 'AI Expert',
-      description: 'Get answers to technical questions with Riley, your AI bike expert'
+      title: 'AI Cycling Expert',
+      description: 'Get answers to technical bike questions with Riley, your AI cycling and bike mechanic expert assistant'
     }
   ];
 
   return (
     <>
       <SEOHead
-        title="CrankSmith - Premium Bike Gear Calculator & Analysis"
-        description="Professional bike gear ratio calculator and component compatibility checker. Calculate gear ratios, check drivetrain compatibility, and optimize your bike setup with precision tools for serious cyclists."
+        title="CrankSmith - Professional Bike Gear Calculator, Bike Fit & Cycling Tools"
+        description="Free professional bike gear calculator, bike fit calculator, and cycling optimization tools. Calculate gear ratios, drivetrain compatibility, bike fitting, and optimize your road, mountain, gravel, or touring bike setup. Used by cyclists and bike shops worldwide."
         url="https://cranksmith.com"
         image="/og-image.jpg"
+        keywords="bike gear calculator, bike fit calculator, gear ratio calculator, cycling gear calculator, bicycle gear ratios, drivetrain compatibility, bike fitting calculator, cycling tools, bike setup calculator, bicycle calculator, bike gearing, cycling optimization, bike mechanics tools, cycling gear optimization, bicycle fitting, bike shop tools"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "CrankSmith",
+          "alternateName": ["Bike Gear Calculator", "Cycling Calculator", "Bike Fit Calculator"],
+          "description": "Professional bike gear calculator, bike fit calculator, and cycling optimization tools for cyclists and bike shops",
+          "url": "https://cranksmith.com",
+          "applicationCategory": "Sports & Recreation",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "Bike Gear Ratio Calculator",
+            "Drivetrain Compatibility Checker", 
+            "Professional Bike Fit Calculator",
+            "Tire Pressure Calculator",
+            "Cycling Performance Optimization",
+            "Multi-Bike Type Support (Road, Mountain, Gravel, Touring)"
+          ],
+          "audience": [
+            {
+              "@type": "Audience",
+              "audienceType": "Cyclists"
+            },
+            {
+              "@type": "Audience", 
+              "audienceType": "Bike Mechanics"
+            },
+            {
+              "@type": "Audience",
+              "audienceType": "Bike Shops"
+            },
+            {
+              "@type": "Audience",
+              "audienceType": "Cycling Enthusiasts"
+            }
+          ],
+          "creator": {
+            "@type": "Organization",
+            "name": "CrankSmith",
+            "url": "https://cranksmith.com",
+            "description": "Professional cycling tools and calculators",
+            "sameAs": [
+              "https://instagram.com/cranksmithapp"
+            ]
+          },
+          "mainEntity": [
+            {
+              "@type": "SoftwareApplication",
+              "name": "Bike Gear Calculator",
+              "description": "Calculate optimal gear ratios for any bike",
+              "url": "https://cranksmith.com/calculator"
+            },
+            {
+              "@type": "SoftwareApplication", 
+              "name": "Bike Fit Calculator",
+              "description": "Professional bike fitting based on body measurements",
+              "url": "https://cranksmith.com/bike-fit"
+            }
+          ],
+          "keywords": "bike gear calculator, bike fit calculator, cycling tools, bicycle calculator, gear ratio calculator, bike fitting",
+          "inLanguage": "en-US",
+          "isAccessibleForFree": true,
+          "usageInfo": "Free cycling tools for gear calculation and bike fitting",
+          "supportingData": "Professional bike fitting methods and gear ratio calculations"
+        }}
       />
 
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
@@ -100,7 +170,7 @@ export default function Home() {
               </div>
 
               <h1 className="text-responsive-5xl font-bold text-balance mb-6 text-neutral-900 dark:text-white">
-                <span className="text-gradient-performance">Precision</span> tools for <span className="text-gradient-premium">serious</span> cyclists
+                <span className="text-gradient-performance">Professional</span> Bike Gear Calculator & <span className="text-gradient-premium">Cycling</span> Tools
               </h1>
               
               <p className="text-responsive-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto mb-8 text-balance">
@@ -143,10 +213,10 @@ export default function Home() {
               {features.map((feature, index) => {
                 const getFeatureHref = (title) => {
                   switch (title) {
-                    case 'Gear Calculator': return '/calculator';
-                    case 'Bike Fit Calculator': return '/bike-fit';
-                    case 'Tire Pressure': return '/tire-pressure';
-                    case 'AI Expert': return '/ask-riley';
+                    case 'Bike Gear Calculator': return '/calculator';
+                    case 'Professional Bike Fit Calculator': return '/bike-fit';
+                    case 'Cycling Tire Pressure Calculator': return '/tire-pressure';
+                    case 'AI Cycling Expert': return '/ask-riley';
                     default: return '/calculator';
                   }
                 };

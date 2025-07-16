@@ -1,0 +1,48 @@
+# CrankSmith Robots.txt - Cycling Tools and Calculators
+
+# Allow all search engines to crawl everything
+User-agent: *
+Allow: /
+
+# Specific optimization for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# Block access to system files and directories
+Disallow: /_next/
+Disallow: /api/
+Disallow: /.next/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /scripts/
+Disallow: *.json$
+Disallow: /CrankSmith_Source_Code.txt
+
+# Allow important cycling-related pages (explicit)
+Allow: /calculator
+Allow: /bike-fit
+Allow: /tire-pressure
+Allow: /builder
+Allow: /ask-riley
+Allow: /docs
+Allow: /blog
+Allow: /blog/*
+
+# Sitemap location
+Sitemap: https://cranksmith.com/sitemap.xml
+
+# Additional sitemaps (if you create category-specific ones later)
+# Sitemap: https://cranksmith.com/sitemap-tools.xml
+# Sitemap: https://cranksmith.com/sitemap-blog.xml
+
+# Host declaration
+Host: https://cranksmith.com

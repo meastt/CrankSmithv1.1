@@ -179,8 +179,99 @@ export default function BikeFit(): JSX.Element {
   return (
     <>
       <Head>
-        <title>Bike Fit Calculator - CrankSmith</title>
-        <meta name="description" content="Calculate optimal saddle height, reach, and stack based on your body measurements. Professional bike fitting made simple." />
+        <title>Professional Bike Fit Calculator | Body Measurements to Bike Setup | CrankSmith</title>
+        <meta name="description" content="Free professional bike fit calculator. Calculate optimal saddle height, reach, and stack based on your body measurements. LeMond, Holmes, Hamley methods. Perfect bike fitting for road, mountain, gravel bikes." />
+        <meta name="keywords" content="bike fit calculator, bike fitting, saddle height calculator, bike reach calculator, bike stack calculator, LeMond method, Holmes method, bike fit measurements, bicycle fitting, bike position calculator, cycling fit, bike geometry calculator" />
+        
+        {/* Structured Data for Bike Fit Calculator */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Professional Bike Fit Calculator",
+              "description": "Calculate optimal saddle height, reach, and stack based on your body measurements using professional bike fitting methods",
+              "url": "https://cranksmith.com/bike-fit",
+              "applicationCategory": "Sports & Recreation",
+              "operatingSystem": "Web Browser",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "featureList": [
+                "Saddle Height Calculation (LeMond Method)",
+                "Saddle Height Calculation (Holmes Method)", 
+                "Saddle Height Calculation (Hamley Method)",
+                "Saddle Height Calculation (Competitive Method)",
+                "Reach Calculation",
+                "Stack Calculation",
+                "Dual Unit Support (Metric/Imperial)",
+                "Real-time Calculations"
+              ],
+              "audience": {
+                "@type": "Audience",
+                "audienceType": "Cyclists, Bike Fitters, Bike Shops"
+              },
+              "creator": {
+                "@type": "Organization",
+                "name": "CrankSmith",
+                "url": "https://cranksmith.com"
+              },
+              "mainEntity": {
+                "@type": "HowTo",
+                "name": "How to Calculate Bike Fit Measurements",
+                "description": "Step-by-step guide to calculate optimal bike fit using body measurements",
+                "step": [
+                  {
+                    "@type": "HowToStep",
+                    "name": "Measure Inseam",
+                    "text": "Measure from floor to crotch while barefoot"
+                  },
+                  {
+                    "@type": "HowToStep", 
+                    "name": "Measure Torso",
+                    "text": "Measure from shoulder to hip bone"
+                  },
+                  {
+                    "@type": "HowToStep",
+                    "name": "Measure Arm Length", 
+                    "text": "Measure from shoulder to fingertip"
+                  },
+                  {
+                    "@type": "HowToStep",
+                    "name": "Select Riding Style",
+                    "text": "Choose from comfort, endurance, sport, aggressive, or racing"
+                  },
+                  {
+                    "@type": "HowToStep",
+                    "name": "Get Results",
+                    "text": "View calculated saddle height, reach, and stack measurements"
+                  }
+                ]
+              },
+              "keywords": "bike fit calculator, bike fitting, saddle height calculator, bike measurements",
+              "inLanguage": "en-US",
+              "isAccessibleForFree": true
+            })
+          }}
+        />
+        
+        {/* Open Graph for Bike Fit */}
+        <meta property="og:title" content="Professional Bike Fit Calculator | Body Measurements to Bike Setup | CrankSmith" />
+        <meta property="og:description" content="Free professional bike fit calculator. Calculate optimal saddle height, reach, and stack based on your body measurements. LeMond, Holmes, Hamley methods." />
+        <meta property="og:url" content="https://cranksmith.com/bike-fit" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://cranksmith.com/og-bike-fit.jpg" />
+        
+        {/* Twitter Card for Bike Fit */}
+        <meta name="twitter:title" content="Professional Bike Fit Calculator | Body Measurements to Bike Setup" />
+        <meta name="twitter:description" content="Free professional bike fit calculator. Calculate optimal saddle height, reach, and stack based on your body measurements." />
+        <meta name="twitter:image" content="https://cranksmith.com/og-bike-fit.jpg" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://cranksmith.com/bike-fit" />
       </Head>
 
       <Layout>

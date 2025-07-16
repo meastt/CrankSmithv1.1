@@ -118,8 +118,8 @@ export default function SEOHead({
       <meta name="page-topic" content="cycling gear calculation" />
       <meta name="page-type" content="tool" />
       
-      {/* Verification Tags (ready for when you claim these) */}
-      {/* <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" /> */}
+      {/* Search Engine Verification Tags */}
+      <meta name="google-site-verification" content="_OejAgyGekugOzvl7MqpGFmUY6cqxE1tF3frnHRb2vk" />
       {/* <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" /> */}
       {/* <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE" /> */}
     </Head>

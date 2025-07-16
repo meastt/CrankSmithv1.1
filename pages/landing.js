@@ -238,13 +238,6 @@ export default function Landing() {
 
         {/* App Download CTA */}
         <AppDownloadCTA />
-
-        {/* Footer */}
-        <footer className="border-t mt-16 py-8" style={{ borderColor: 'var(--border-light)' }}>
-          <div className="container mx-auto px-4 text-center" style={{ color: 'var(--text-tertiary)' }}>
-            <p>© 2024 CrankSmith. Made with ❤️ by a cyclist who got tired of bad calculators.</p>
-          </div>
-        </footer>
       </div>
     </>
   );

@@ -185,3 +185,50 @@ export interface APIResponse<T = any> {
 export interface RileyAPIResponse extends APIResponse {
   response?: string;
 }
+
+// Bike Fit Calculator Types
+export type FlexibilityLevel = 'low' | 'average' | 'high';
+export type RidingStyle = 'comfort' | 'endurance' | 'sport' | 'aggressive' | 'racing';
+export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced' | 'professional';
+export type MeasurementUnits = 'metric' | 'imperial';
+
+export interface BodyMeasurements {
+  inseam: string;
+  torso: string;
+  armLength: string;
+  flexibility: FlexibilityLevel;
+  ridingStyle: RidingStyle;
+  experience: ExperienceLevel;
+  units: MeasurementUnits;
+}
+
+export interface SaddleHeightResults {
+  lemond: number;
+  holmes: number;
+  hamley: number;
+  competitive: number;
+}
+
+export interface HandlebarDropOptions {
+  comfort: number;
+  sport: number;
+  aggressive: number;
+}
+
+export interface BikeFitResults {
+  saddleHeight: SaddleHeightResults;
+  reach: number;
+  stack: number;
+  handlebarDrop: HandlebarDropOptions;
+}
+
+export interface BikeFitCalculations {
+  saddleHeight: {
+    lemond: (inseam: number) => number;
+    holmes: (inseam: number) => number;
+    hamley: (inseam: number) => number;
+    competitive: (inseam: number) => number;
+  };
+  reach: (torso: number, armLength: number, flexibility: FlexibilityLevel, ridingStyle: RidingStyle) => number;
+  stack: (torso: number, flexibility: FlexibilityLevel, ridingStyle: RidingStyle, experience: ExperienceLevel) => number;
+}

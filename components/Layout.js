@@ -41,6 +41,7 @@ export default function Layout({ children }) {
 
   const navLinks = [
     { href: '/calculator', label: 'Gear Calculator', icon: '⚙️' },
+    { href: '/bike-fit', label: 'Bike Fit', icon: '🚴‍♂️' },
     { href: '/tire-pressure', label: 'Tire Pressure', icon: '🔧' },
     { href: '/ask-riley', label: 'Ask Riley', icon: '🤖' },
     { href: '/blog', label: 'Learn', icon: '📚' },

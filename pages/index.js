@@ -20,6 +20,12 @@ export default function Home() {
       color: 'from-brand-orange to-brand-yellow'
     },
     {
+      icon: '🚴‍♂️',
+      title: 'Bike Fit Calculator',
+      description: 'Calculate optimal saddle height, reach, and stack based on your body measurements',
+      color: 'from-purple-500 to-pink-500'
+    },
+    {
       icon: '🔧',
       title: 'Tire Pressure',
       description: 'Get perfect tire pressure for your weight, terrain, and riding style',
@@ -98,7 +104,7 @@ export default function Home() {
               </h1>
               
               <p className="text-responsive-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto mb-8 text-balance">
-                Calculate gear ratios, check compatibility, and optimize your bike setup with professional-grade tools trusted by cyclists worldwide.
+                Calculate gear ratios, optimize bike fit, check compatibility, and perfect your setup with professional-grade tools trusted by cyclists worldwide.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -135,8 +141,16 @@ export default function Home() {
 
             <div className="grid-responsive">
               {features.map((feature, index) => {
-                const isAIExpert = feature.title === 'AI Expert';
-                const href = isAIExpert ? '/ask-riley' : (feature.title === 'Gear Calculator' ? '/calculator' : '/tire-pressure');
+                const getFeatureHref = (title) => {
+                  switch (title) {
+                    case 'Gear Calculator': return '/calculator';
+                    case 'Bike Fit Calculator': return '/bike-fit';
+                    case 'Tire Pressure': return '/tire-pressure';
+                    case 'AI Expert': return '/ask-riley';
+                    default: return '/calculator';
+                  }
+                };
+                const href = getFeatureHref(feature.title);
                 
                 return (
                   <Link

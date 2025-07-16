@@ -256,7 +256,7 @@ export default function BikeFit(): JSX.Element {
                             onChange={(e) => handleInputChange('inseam', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter inseam in ${getUnitLabel()}`}
-                            step={isMetric ? "0.1" : "0.25"}
+                            step={measurements.units === 'metric' ? "0.1" : "0.25"}
                             min="0"
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
@@ -274,7 +274,7 @@ export default function BikeFit(): JSX.Element {
                             onChange={(e) => handleInputChange('torso', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter torso in ${getUnitLabel()}`}
-                            step={isMetric ? "0.1" : "0.25"}
+                            step={measurements.units === 'metric' ? "0.1" : "0.25"}
                             min="0"
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
@@ -292,7 +292,7 @@ export default function BikeFit(): JSX.Element {
                             onChange={(e) => handleInputChange('armLength', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter arm length in ${getUnitLabel()}`}
-                            step={isMetric ? "0.1" : "0.25"}
+                            step={measurements.units === 'metric' ? "0.1" : "0.25"}
                             min="0"
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">

@@ -81,21 +81,16 @@ export default class ErrorBoundary extends React.Component {
               <button
                 onClick={this.handleReload}
                 className="px-4 py-2 border rounded-md transition-colors text-sm font-medium"
-            style={{ 
-              borderColor: 'var(--border-primary)',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-primary)'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'var(--bg-tertiary)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'var(--bg-secondary)';
-            }}
                 style={{ 
                   borderColor: 'var(--border-light)', 
                   color: 'var(--text-primary)',
-                  backgroundColor: 'transparent'
+                  backgroundColor: 'var(--bg-secondary)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--bg-tertiary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--bg-secondary)';
                 }}
               >
                 Refresh Page

@@ -110,3 +110,78 @@ export interface ToastState {
   message: string;
   type?: 'success' | 'error' | 'warning';
 }
+
+// Enhanced Toast System Types
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+export interface Toast {
+  id: number;
+  type: ToastType;
+  message: string;
+  duration: number;
+}
+
+export interface ToastAPI {
+  success: (message: string, duration?: number) => void;
+  error: (message: string, duration?: number) => void;
+  warning: (message: string, duration?: number) => void;
+  info: (message: string, duration?: number) => void;
+}
+
+// Searchable Dropdown Types
+export interface DropdownOption {
+  id: string;
+  label: string;
+  model?: string;
+  variant?: string;
+  teeth?: number[];
+  speeds?: string;
+  weight?: number;
+  bikeType?: string;
+  subtitle?: string;
+  value?: any;
+}
+
+export interface GroupedOptions {
+  [groupName: string]: DropdownOption[];
+}
+
+// Enhanced Calculator State Types
+export interface CalculatorState {
+  bikeType: string;
+  currentSetup: BikeSetup;
+  proposedSetup: BikeSetup;
+  results: AnalysisResults | null;
+  loading: boolean;
+  speedUnit: 'mph' | 'kmh';
+  compatibilityResults: CompatibilitySummary | null;
+  validation: {
+    current: ValidationResult;
+    proposed: ValidationResult;
+    canAnalyze: boolean;
+    totalCompletion: number;
+  };
+}
+
+// PWA Types
+export interface PWAInstallPrompt {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
+export interface ServiceWorkerMessage {
+  type: 'CACHE_UPDATED' | 'OFFLINE_READY' | 'UPDATE_AVAILABLE';
+  payload?: any;
+}
+
+// API Response Types
+export interface APIResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  timestamp: string;
+}
+
+export interface RileyAPIResponse extends APIResponse {
+  response?: string;
+}

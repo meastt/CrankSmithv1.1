@@ -1,6 +1,18 @@
-// components/SearchableDropdown.js - COMPLETE FILE with virtualization
-import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+// components/SearchableDropdown.tsx - Enhanced with TypeScript and performance optimizations
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { FixedSizeList as List } from 'react-window';
+import { DropdownOption, GroupedOptions } from '../types';
+
+interface SearchableDropdownProps {
+  options: DropdownOption[];
+  value?: DropdownOption | string | null;
+  onChange: (value: DropdownOption | null) => void;
+  placeholder?: string;
+  groupBy?: (option: DropdownOption) => string;
+  className?: string;
+  searchable?: boolean;
+  debounceMs?: number;
+}
 
 export default function SearchableDropdown({
   options = [],
@@ -8,74 +20,79 @@ export default function SearchableDropdown({
   onChange,
   placeholder = 'Select an option',
   groupBy,
-  className = ''
-}) {
+  className = '',
+  searchable = true,
+  debounceMs = 150
+}: SearchableDropdownProps): JSX.Element {
 
-  // Enhanced debug logging with better context - REMOVED for production performance
-  const debugContext = {
-    optionsLength: options?.length || 0,
-    placeholder,
-    value,
-    options: options,
-    firstOption: options[0],
-    optionsType: typeof options,
-    isArray: Array.isArray(options),
-    isEmpty: !options || options.length === 0,
-    hasValue: !!value,
-    context: options?.length === 0 ? 'Empty options - likely due to no bikeType selected' : 'Options loaded successfully'
-  };
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('');
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<List>(null);
+  const focusTimeout = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // REMOVED: console.log('🔍 SearchableDropdown render:', debugContext);
+  // Debounced search implementation
+  useEffect(() => {
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+    
+    debounceTimeout.current = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, debounceMs);
 
-  // REMOVED: Show helpful warning if options are empty
-  // if (debugContext.isEmpty) {
-  //   console.warn('⚠️  SearchableDropdown: No options provided. This usually means:');
-  //   console.warn('   1. bikeType is not set yet (initial render)');
-  //   console.warn('   2. Component database failed to load');
-  //   console.warn('   3. Invalid bikeType provided');
-  // }
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+    };
+  }, [searchTerm, debounceMs]);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const triggerRef = useRef(null);
-  const inputRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const listRef = useRef(null);
-  const focusTimeout = useRef(null);
-
-  // Find selected option
-  const selectedOption = useMemo(() => {
+  // Find selected option with improved type safety
+  const selectedOption = useMemo((): DropdownOption | null => {
     if (!value) return null;
     
     if (typeof value === 'object' && value.id) {
-      return options.find(opt => opt.id === value.id);
+      return options.find(opt => opt.id === value.id) || null;
     } else {
-      return options.find(opt => opt.id === value);
+      return options.find(opt => opt.id === value) || null;
     }
   }, [options, value]);
 
-  // Filter options based on search with memoization
-  const filteredOptions = useMemo(() => {
-    if (!searchTerm) return options;
+  // Enhanced filtering with debounced search and better performance
+  const filteredOptions = useMemo((): DropdownOption[] => {
+    if (!debouncedSearchTerm || !searchable) return options;
     
-    const searchLower = searchTerm.toLowerCase();
+    const searchLower = debouncedSearchTerm.toLowerCase();
+    const searchTerms = searchLower.split(' ').filter(Boolean);
+    
     return options.filter(option => {
       if (!option) return false;
       
-      const modelMatch = option.model?.toLowerCase().includes(searchLower);
-      const variantMatch = option.variant?.toLowerCase().includes(searchLower);
-      const weightMatch = option.weight?.toString().includes(searchTerm);
+      const searchableText = [
+        option.model || '',
+        option.variant || '',
+        option.label || '',
+        option.speeds || '',
+        option.weight?.toString() || '',
+        option.teeth?.join(',') || ''
+      ].join(' ').toLowerCase();
       
-      return modelMatch || variantMatch || weightMatch;
+      // All search terms must match
+      return searchTerms.every(term => searchableText.includes(term));
     });
-  }, [options, searchTerm]);
+  }, [options, debouncedSearchTerm, searchable]);
 
-  // Group options if groupBy function provided
-  const groupedOptions = useMemo(() => {
+  // Group options if groupBy function provided with better typing
+  const groupedOptions = useMemo((): GroupedOptions => {
     if (!groupBy) return { 'All': filteredOptions };
     
-    return filteredOptions.reduce((acc, option) => {
+    return filteredOptions.reduce((acc: GroupedOptions, option) => {
       const group = groupBy(option);
       if (!acc[group]) acc[group] = [];
       acc[group].push(option);
@@ -83,39 +100,38 @@ export default function SearchableDropdown({
     }, {});
   }, [filteredOptions, groupBy]);
 
-  // Flatten grouped options for virtualization
-  const flattenedOptions = useMemo(() => {
-    const flattened = [];
+  // Flatten grouped options for virtualization with proper typing
+  interface FlattenedItem {
+    type: 'group' | 'option';
+    name?: string;
+    data?: DropdownOption;
+  }
+
+  const flattenedOptions = useMemo((): FlattenedItem[] => {
+    const flattened: FlattenedItem[] = [];
     Object.entries(groupedOptions).forEach(([groupName, groupOptions]) => {
       if (groupBy && Object.keys(groupedOptions).length > 1) {
         flattened.push({ type: 'group', name: groupName });
       }
-      flattened.push(...groupOptions.map(opt => ({ type: 'option', data: opt })));
+      flattened.push(...groupOptions.map(opt => ({ type: 'option' as const, data: opt })));
     });
     
-    // console.log('🚀 flattenedOptions created:', {
-    //   placeholder,
-    //   originalOptionsLength: options?.length || 0,
-    //   groupedOptionsKeys: Object.keys(groupedOptions),
-    //   flattenedLength: flattened.length,
-    //   firstFlattened: flattened[0],
-    //   groupBy: groupBy,
-    //   searchTerm: searchTerm
-    // });
-    
     return flattened;
-  }, [groupedOptions, groupBy, placeholder, options, searchTerm]);
+  }, [groupedOptions, groupBy]);
 
-  // Handle selection
-  const handleSelect = useCallback((option) => {
-    onChange(option);
-    setIsOpen(false);
-    setSearchTerm('');
-    setHighlightedIndex(0);
+  // Handle selection with proper typing
+  const handleSelect = useCallback((option: DropdownOption | null): void => {
+    if (option) {
+      onChange(option);
+      setIsOpen(false);
+      setSearchTerm('');
+      setDebouncedSearchTerm('');
+      setHighlightedIndex(0);
+    }
   }, [onChange]);
 
-  // Handle keyboard navigation
-  const handleKeyDown = useCallback((e) => {
+  // Handle keyboard navigation with proper typing
+  const handleKeyDown = useCallback((e: React.KeyboardEvent): void => {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
@@ -142,7 +158,7 @@ export default function SearchableDropdown({
       case 'Enter':
         e.preventDefault();
         const highlighted = flattenedOptions[highlightedIndex];
-        if (highlighted?.type === 'option') {
+        if (highlighted?.type === 'option' && highlighted.data) {
           handleSelect(highlighted.data);
         }
         break;
@@ -160,14 +176,15 @@ export default function SearchableDropdown({
     }
   }, [highlightedIndex]);
 
-  // Click outside to close
+  // Click outside to close with proper typing
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent): void => {
+      const target = event.target as Node;
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
+        !dropdownRef.current.contains(target) &&
         triggerRef.current &&
-        !triggerRef.current.contains(event.target)
+        !triggerRef.current.contains(target)
       ) {
         setIsOpen(false);
       }
@@ -178,7 +195,7 @@ export default function SearchableDropdown({
       document.addEventListener('touchstart', handleClickOutside);
       
       // Focus search input with cleanup
-      if (inputRef.current) {
+      if (inputRef.current && searchable) {
         focusTimeout.current = setTimeout(() => inputRef.current?.focus(), 100);
       }
     }
@@ -193,29 +210,24 @@ export default function SearchableDropdown({
         focusTimeout.current = null;
       }
     };
-  }, [isOpen]);
+  }, [isOpen, searchable]);
 
   // Reset highlighted index when search changes
   useEffect(() => {
     setHighlightedIndex(0);
-  }, [searchTerm]);
+  }, [debouncedSearchTerm]);
 
   const displayValue = selectedOption ? 
     `${selectedOption.model} ${selectedOption.variant}`.trim() : '';
 
-  // Row renderer for react-window
-  const Row = ({ index, style }) => {
+  // Row renderer for react-window with proper typing
+  interface RowProps {
+    index: number;
+    style: React.CSSProperties;
+  }
+
+  const Row = ({ index, style }: RowProps): JSX.Element => {
     const item = flattenedOptions[index];
-    
-    // if (index === 0) {
-    //   console.log('🎯 Row component rendering:', {
-    //     placeholder,
-    //     index,
-    //     item,
-    //     flattenedOptionsLength: flattenedOptions.length,
-    //     isOpen
-    //   });
-    // }
     
     if (item.type === 'group') {
       return (
@@ -239,6 +251,8 @@ export default function SearchableDropdown({
     }
 
     const option = item.data;
+    if (!option) return <div style={style}></div>;
+    
     const isHighlighted = index === highlightedIndex;
     const isSelected = selectedOption?.id === option.id;
 
@@ -291,9 +305,7 @@ export default function SearchableDropdown({
     );
   };
 
-  const getItemSize = (index) => {
-    return flattenedOptions[index]?.type === 'group' ? 32 : 64;
-  };
+
 
   return (
     <div className={`relative searchable-dropdown ${className}`}>
@@ -415,15 +427,15 @@ export default function SearchableDropdown({
 }
 
 // Export grouping functions for backward compatibility
-export const groupByBrand = (component) => {
-  if (component.model.includes('Shimano')) return 'Shimano';
-  if (component.model.includes('SRAM')) return 'SRAM';
-  if (component.model.includes('Campagnolo')) return 'Campagnolo';
+export const groupByBrand = (component: DropdownOption): string => {
+  if (component.model?.includes('Shimano')) return 'Shimano';
+  if (component.model?.includes('SRAM')) return 'SRAM';
+  if (component.model?.includes('Campagnolo')) return 'Campagnolo';
   return 'Other';
 };
 
-export const groupBySeries = (component) => {
-  const model = component.model.toLowerCase();
+export const groupBySeries = (component: DropdownOption): string => {
+  const model = component.model?.toLowerCase() || '';
   
   // Shimano series
   if (model.includes('xtr') && model.includes('di2')) return 'XTR Di2';

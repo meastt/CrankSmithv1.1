@@ -1,29 +1,30 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Toast, ToastType, ToastAPI } from '../types';
 
 let toastId = 0;
-const toastStack = [];
-let toastListener = null;
+const toastStack: Toast[] = [];
+let toastListener: ((toasts: Toast[]) => void) | null = null;
 
-export const toast = {
-  success: (message, duration = 4000) => {
+export const toast: ToastAPI = {
+  success: (message: string, duration = 4000) => {
     showToast({ type: 'success', message, duration });
   },
-  error: (message, duration = 6000) => {
+  error: (message: string, duration = 6000) => {
     showToast({ type: 'error', message, duration });
   },
-  warning: (message, duration = 5000) => {
+  warning: (message: string, duration = 5000) => {
     showToast({ type: 'warning', message, duration });
   },
-  info: (message, duration = 4000) => {
+  info: (message: string, duration = 4000) => {
     showToast({ type: 'info', message, duration });
   }
 };
 
-function showToast({ type, message, duration }) {
+function showToast({ type, message, duration }: { type: ToastType; message: string; duration: number }): void {
   const id = ++toastId;
-  const toast = { id, type, message, duration };
+  const newToast: Toast = { id, type, message, duration };
   
-  toastStack.push(toast);
+  toastStack.push(newToast);
   
   if (toastListener) {
     toastListener([...toastStack]);
@@ -35,7 +36,7 @@ function showToast({ type, message, duration }) {
   }, duration);
 }
 
-function removeToast(id) {
+function removeToast(id: number): void {
   const index = toastStack.findIndex(toast => toast.id === id);
   if (index > -1) {
     toastStack.splice(index, 1);
@@ -45,8 +46,8 @@ function removeToast(id) {
   }
 }
 
-export function ToastContainer() {
-  const [toasts, setToasts] = useState([]);
+export function ToastContainer(): JSX.Element | null {
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
   useEffect(() => {
     toastListener = setToasts;
@@ -72,8 +73,13 @@ export function ToastContainer() {
   );
 }
 
-function ToastItem({ toast, onClose }) {
-  const [isVisible, setIsVisible] = useState(false);
+interface ToastItemProps {
+  toast: Toast;
+  onClose: () => void;
+}
+
+function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   useEffect(() => {
     // Trigger animation after mount
@@ -81,7 +87,7 @@ function ToastItem({ toast, onClose }) {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsVisible(false);
     setTimeout(onClose, 300); // Wait for animation
   };

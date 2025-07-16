@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
+import { toast } from '../components/Toast';
 
 const initialSetup = {
   wheel: '',
@@ -68,13 +69,19 @@ const useCalculatorStore = create(
           };
         },
 
-        // Async actions
+        // Async actions with race condition prevention
         calculateResults: async () => {
           const state = get();
           const validation = state.validation;
           
           if (!validation.canAnalyze) {
-            alert('Please complete both setups before analyzing');
+            toast.warning('Please complete both setups before analyzing');
+            return null;
+          }
+
+          // Prevent concurrent calculations
+          if (state.loading) {
+            console.log('Calculation already in progress, skipping...');
             return null;
           }
 
@@ -90,10 +97,11 @@ const useCalculatorStore = create(
             );
             
             set({ results: realResults });
+            toast.success('Analysis complete! Check your results below.');
             return realResults;
           } catch (error) {
             console.error('Error calculating results:', error);
-            alert('Error calculating results. Please check your component selections.');
+            toast.error('Error calculating results. Please check your component selections and try again.');
             throw error;
           } finally {
             set({ loading: false });

@@ -13,6 +13,7 @@ import { calculateRealPerformance, validateSetupComplete } from '../lib/calculat
 import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
 import { CompatibilityChecker } from '../lib/compatibilityChecker';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { toast } from '../components/Toast';
 import { useCalculatorState } from '../hooks/useCalculatorState';
 
 export default function MobileApp() {
@@ -117,10 +118,10 @@ export default function MobileApp() {
       localStorage.setItem('cranksmith_configs', JSON.stringify(updatedConfigs));
       
       // Show success feedback
-      alert('Configuration saved to garage!');
+      toast.success('Configuration saved to garage!');
     } catch (error) {
       console.error('Error saving configuration:', error);
-      alert('Failed to save configuration');
+      toast.error('Failed to save configuration. Please try again.');
     }
   };
 

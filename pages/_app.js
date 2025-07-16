@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { registerServiceWorker, handleMobileRouting } from '../lib/pwa-utils';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { ToastContainer } from '../components/Toast';
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -104,6 +105,9 @@ export default function App({ Component, pageProps }) {
           <Component {...pageProps} />
         </Layout>
       </ErrorBoundary>
+      
+      {/* Toast Notifications */}
+      <ToastContainer />
     </>
   );
 }

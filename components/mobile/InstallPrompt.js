@@ -1,6 +1,7 @@
 // components/mobile/InstallPrompt.js - Mobile-specific install prompt
 import { useState, useEffect } from 'react';
 import { canInstall, getInstallPrompt, installPWA, checkIfPWA } from '../../lib/pwa-utils';
+import { toast } from '../Toast';
 
 export default function MobileInstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
@@ -8,6 +9,8 @@ export default function MobileInstallPrompt() {
   const [isInstalling, setIsInstalling] = useState(false);
 
   useEffect(() => {
+    let timeoutId = null;
+    
     const checkInstallability = async () => {
       // Don't show if already installed as PWA
       if (checkIfPWA()) return;
@@ -24,12 +27,19 @@ export default function MobileInstallPrompt() {
         if (prompt) {
           setDeferredPrompt(prompt);
           // Show after user has used the app for a bit
-          setTimeout(() => setShowPrompt(true), 10000);
+          timeoutId = setTimeout(() => setShowPrompt(true), 10000);
         }
       }
     };
 
     checkInstallability();
+
+    // Cleanup timeout to prevent memory leaks
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
   const handleInstall = async () => {
@@ -41,7 +51,7 @@ export default function MobileInstallPrompt() {
       if (success) {
         setShowPrompt(false);
         // Show success message
-        alert('🎉 CrankSmith installed! You can now access it from your home screen.');
+        toast.success('🎉 CrankSmith installed! You can now access it from your home screen.');
       }
     } catch (error) {
       console.error('Install failed:', error);

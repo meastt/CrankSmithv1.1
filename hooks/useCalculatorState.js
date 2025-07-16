@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
+import { toast } from '../components/Toast';
 
 const initialSetup = {
   wheel: '',
@@ -51,10 +52,16 @@ export const useCalculatorState = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  // Calculate function
+  // Calculate function with race condition prevention
   const calculateResults = useCallback(async () => {
     if (!validation.canAnalyze) {
-      alert('Please complete both setups before analyzing');
+      toast.warning('Please complete both setups before analyzing');
+      return;
+    }
+
+    // Prevent concurrent calculations
+    if (loading) {
+      console.log('Calculation already in progress, skipping...');
       return;
     }
 
@@ -65,16 +72,17 @@ export const useCalculatorState = () => {
       
       const realResults = calculateRealPerformance(currentSetup, proposedSetup, speedUnit);
       setResults(realResults);
+      toast.success('Analysis complete! Check your results below.');
       
       return realResults;
     } catch (error) {
       console.error('Error calculating results:', error);
-      alert('Error calculating results. Please check your component selections.');
+      toast.error('Error calculating results. Please check your component selections and try again.');
       throw error;
     } finally {
       setLoading(false);
     }
-  }, [currentSetup, proposedSetup, speedUnit, validation.canAnalyze]);
+  }, [currentSetup, proposedSetup, speedUnit, validation.canAnalyze, loading]);
 
   return {
     // State

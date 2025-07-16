@@ -39,6 +39,8 @@ export default function MobileDropdown({
 
   // Handle click outside to close
   useEffect(() => {
+    let focusTimeoutId = null;
+    
     const handleClickOutside = (event) => {
       if (
         (dropdownRef.current && dropdownRef.current.contains(event.target)) ||
@@ -59,7 +61,7 @@ export default function MobileDropdown({
       
       // Focus search input if searchable
       if (searchable && searchInputRef.current) {
-        setTimeout(() => {
+        focusTimeoutId = setTimeout(() => {
           searchInputRef.current.focus();
         }, 100);
       }
@@ -71,6 +73,11 @@ export default function MobileDropdown({
       document.removeEventListener('touchstart', handleClickOutside);
       document.removeEventListener('mousedown', handleClickOutside);
       document.body.style.overflow = '';
+      
+      // Clear focus timeout to prevent memory leaks
+      if (focusTimeoutId) {
+        clearTimeout(focusTimeoutId);
+      }
     };
   }, [isOpen, searchable]);
 

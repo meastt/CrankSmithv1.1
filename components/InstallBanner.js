@@ -1,6 +1,7 @@
 // components/InstallBanner.js - Top banner for app installation
 import { useState, useEffect } from 'react';
 import { canInstall, getInstallPrompt, installPWA, checkIfPWA } from '../lib/pwa-utils';
+import { toast } from './Toast';
 
 export default function InstallBanner() {
   const [showBanner, setShowBanner] = useState(false);
@@ -43,7 +44,7 @@ export default function InstallBanner() {
       if (success) {
         setShowBanner(false);
         // Show success message
-        alert('🎉 CrankSmith installed successfully! You can now access it from your home screen.');
+        toast.success('🎉 CrankSmith installed successfully! You can now access it from your home screen.');
       }
     } catch (error) {
       console.error('Install failed:', error);

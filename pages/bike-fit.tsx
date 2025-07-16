@@ -184,7 +184,7 @@ export default function BikeFit(): JSX.Element {
       </Head>
 
       <Layout>
-        <div className="min-h-screen bg-[var(--bg-primary)]">
+        <div className="bg-[var(--bg-primary)]">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
             <div className="container mx-auto px-4 py-16">
@@ -256,7 +256,8 @@ export default function BikeFit(): JSX.Element {
                             onChange={(e) => handleInputChange('inseam', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter inseam in ${getUnitLabel()}`}
-                            step="0.1"
+                            step={isMetric ? "0.1" : "0.25"}
+                            min="0"
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
                             Measure from floor to crotch while barefoot
@@ -273,7 +274,8 @@ export default function BikeFit(): JSX.Element {
                             onChange={(e) => handleInputChange('torso', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter torso in ${getUnitLabel()}`}
-                            step="0.1"
+                            step={isMetric ? "0.1" : "0.25"}
+                            min="0"
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
                             From shoulder to hip bone
@@ -290,7 +292,8 @@ export default function BikeFit(): JSX.Element {
                             onChange={(e) => handleInputChange('armLength', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter arm length in ${getUnitLabel()}`}
-                            step="0.1"
+                            step={isMetric ? "0.1" : "0.25"}
+                            min="0"
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
                             From shoulder to fingertip

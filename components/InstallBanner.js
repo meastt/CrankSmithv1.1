@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { canInstall, getInstallPrompt, installPWA, checkIfPWA } from '../lib/pwa-utils';
 import { toast } from './Toast';
 
+// Global state to prevent multiple banners
+let globalBannerShown = false;
+
 export default function InstallBanner() {
   const [showBanner, setShowBanner] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -12,6 +15,9 @@ export default function InstallBanner() {
     const checkInstallability = async () => {
       // Don't show if already installed as PWA
       if (checkIfPWA()) return;
+      
+      // Don't show if another banner is already shown globally
+      if (globalBannerShown) return;
       
       // Don't show if user dismissed recently
       const dismissedTime = localStorage.getItem('cranksmith_banner_dismissed');
@@ -25,6 +31,7 @@ export default function InstallBanner() {
         if (prompt) {
           setDeferredPrompt(prompt);
           setShowBanner(true);
+          globalBannerShown = true;
         }
       }
     };
@@ -43,6 +50,7 @@ export default function InstallBanner() {
       const success = await installPWA(deferredPrompt);
       if (success) {
         setShowBanner(false);
+        globalBannerShown = false;
         // Show success message
         toast.success('🎉 CrankSmith installed successfully! You can now access it from your home screen.');
       }
@@ -55,6 +63,7 @@ export default function InstallBanner() {
 
   const handleDismiss = () => {
     setShowBanner(false);
+    globalBannerShown = false;
     // Remember dismissal for 1 hour
     localStorage.setItem('cranksmith_banner_dismissed', Date.now().toString());
   };

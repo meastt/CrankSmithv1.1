@@ -232,23 +232,55 @@ export default function BikeFit(): JSX.Element {
     // Additional NaN protection and input sanitization
     const numValue = parseFloat(value.trim());
     if (isNaN(numValue) || !isFinite(numValue)) {
+      // Only show error for clearly invalid input (not incomplete numbers)
+      if (value.trim().length > 0 && !value.match(/^\d*\.?\d*$/)) {
+        toast.error(`Please enter a valid number for ${field}`);
+      }
+      return;
+    }
+
+    // Allow incomplete input during typing - only validate complete values
+    // Don't validate single digits or very short input that might be incomplete
+    if (value.trim().length <= 1 || numValue < 1) {
+      // Store the raw value temporarily without validation
+      // We'll validate on blur or when input seems complete
+      return;
+    }
+
+    // Validate the input for complete values
+    const validation = validateMeasurement(field, value, measurements.units);
+    
+    if (validation.isValid && validation.valueInMm !== null) {
+      // Valid input - store the value in mm
+      handleMeasurementChange(field, validation.valueInMm);
+    } else {
+      // For invalid but potentially incomplete input, don't show error yet
+      // The validation will happen on blur
+      handleMeasurementChange(field, null);
+    }
+  };
+
+  const handleInputBlur = (field: 'inseam' | 'torso' | 'armLength', value: string): void => {
+    // Only validate on blur if there's actually a value
+    if (!value || value.trim() === '') {
+      return;
+    }
+
+    const numValue = parseFloat(value.trim());
+    if (isNaN(numValue) || !isFinite(numValue)) {
       toast.error(`Please enter a valid number for ${field}`);
       return;
     }
 
-    // Validate the input
+    // Validate the final input
     const validation = validateMeasurement(field, value, measurements.units);
     
     if (validation.isValid && validation.valueInMm !== null) {
       // Valid input - store the value in mm
       handleMeasurementChange(field, validation.valueInMm);
     } else if (validation.error) {
-      // Invalid input with error message - show toast and don't update state
+      // Show validation error on blur
       toast.error(validation.error);
-      // Don't update state with invalid values
-    } else {
-      // Invalid but no specific error (e.g., incomplete input) - set to null
-      handleMeasurementChange(field, null);
     }
   };
 
@@ -435,6 +467,7 @@ export default function BikeFit(): JSX.Element {
                             type="number"
                             value={convertToDisplayUnits(measurements.inseam)}
                             onChange={(e) => handleInputChange('inseam', e.target.value)}
+                            onBlur={(e) => handleInputBlur('inseam', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter inseam in ${getUnitLabel()}`}
                             step={measurements.units === 'metric' ? "1" : "0.5"}
@@ -454,6 +487,7 @@ export default function BikeFit(): JSX.Element {
                             type="number"
                             value={convertToDisplayUnits(measurements.torso)}
                             onChange={(e) => handleInputChange('torso', e.target.value)}
+                            onBlur={(e) => handleInputBlur('torso', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter torso in ${getUnitLabel()}`}
                             step={measurements.units === 'metric' ? "1" : "0.5"}
@@ -473,6 +507,7 @@ export default function BikeFit(): JSX.Element {
                             type="number"
                             value={convertToDisplayUnits(measurements.armLength)}
                             onChange={(e) => handleInputChange('armLength', e.target.value)}
+                            onBlur={(e) => handleInputBlur('armLength', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter arm length in ${getUnitLabel()}`}
                             step={measurements.units === 'metric' ? "1" : "0.5"}

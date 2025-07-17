@@ -449,35 +449,42 @@
   .aspect-hero { aspect-ratio: 21 / 9; }
 }
 
-/* --- Legacy Support & Additional Form Styles --- */
-.input-field, select.input-field, input[type="text"], input[type="email"] {
+/* --- Enhanced Form Styles with Better Specificity --- */
+.input-field, 
+select.input-field, 
+input[type="text"].input-field, 
+input[type="email"].input-field,
+input[type="number"].input-field {
   @apply w-full px-4 py-3 text-base rounded-xl;
-  background: rgb(var(--bg-elevated)) !important;
-  border: 1px solid rgb(var(--border-primary)) !important;
-  color: rgb(var(--text-primary)) !important;
+  background: rgb(var(--bg-elevated));
+  border: 1px solid rgb(var(--border-primary));
+  color: rgb(var(--text-primary));
   transition: all var(--duration-fast) var(--ease-out);
 }
 
-.input-field::placeholder, input::placeholder {
-  color: rgb(var(--text-placeholder)) !important;
+.input-field::placeholder, 
+input.input-field::placeholder {
+  color: rgb(var(--text-placeholder));
 }
 
-.input-field:hover {
-  border-color: rgb(var(--border-secondary)) !important;
-  background: rgb(var(--bg-secondary)) !important;
+.input-field:hover:not(:focus) {
+  border-color: rgb(var(--border-secondary));
+  background: rgb(var(--bg-secondary));
 }
 
 .input-field:focus {
-  outline: none !important;
-  border-color: rgb(var(--brand-blue)) !important;
-  background: rgb(var(--bg-elevated)) !important;
-  box-shadow: 0 0 0 3px rgb(var(--brand-blue) / 0.1) !important;
+  outline: none;
+  border-color: rgb(var(--brand-blue));
+  background: rgb(var(--bg-elevated));
+  box-shadow: 0 0 0 3px rgb(var(--brand-blue) / 0.1);
 }
 
 /* Form Labels */
-.form-label, .mobile-label {
+.form-label, 
+.mobile-label,
+label.form-label {
   @apply block text-sm font-medium mb-2;
-  color: rgb(var(--text-secondary)) !important;
+  color: rgb(var(--text-secondary));
 }
 
 /* Card Styles */
@@ -508,13 +515,16 @@
 }
 
 /* Button Enhancements */
-.btn-primary:disabled, .btn-secondary:disabled {
-  background: rgb(var(--bg-tertiary)) !important;
-  color: rgb(var(--text-disabled)) !important;
-  border-color: rgb(var(--border-primary)) !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-  box-shadow: none !important;
+button.btn-primary:disabled, 
+button.btn-secondary:disabled,
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  background: rgb(var(--bg-tertiary));
+  color: rgb(var(--text-disabled));
+  border-color: rgb(var(--border-primary));
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Mobile Label */

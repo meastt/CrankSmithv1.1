@@ -25,17 +25,62 @@ export default function Layout({ children }) {
   }, []);
 
   useEffect(() => {
-    // Load theme preference
-    const savedTheme = localStorage.getItem('cranksmith-theme') || 'light';
+    // Load theme preference with fallback for incognito mode
+    let savedTheme = 'light';
+    
+    try {
+      // Try to access localStorage (may fail in incognito mode)
+      savedTheme = localStorage.getItem('cranksmith-theme');
+    } catch (error) {
+      console.warn('localStorage not available, using system preference');
+    }
+    
+    // If no saved theme or localStorage failed, use system preference
+    if (!savedTheme) {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        savedTheme = 'dark';
+      } else {
+        savedTheme = 'light';
+      }
+    }
+    
     setTheme(savedTheme);
     document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      // Only auto-switch if no saved preference or localStorage is unavailable
+      try {
+        const hasSavedTheme = localStorage.getItem('cranksmith-theme');
+        if (!hasSavedTheme) {
+          const systemTheme = e.matches ? 'dark' : 'light';
+          setTheme(systemTheme);
+          document.documentElement.setAttribute('data-theme', systemTheme);
+        }
+      } catch (error) {
+        // In incognito mode, always follow system preference
+        const systemTheme = e.matches ? 'dark' : 'light';
+        setTheme(systemTheme);
+        document.documentElement.setAttribute('data-theme', systemTheme);
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('cranksmith-theme', newTheme);
+    
+    // Try to save theme preference (may fail in incognito mode)
+    try {
+      localStorage.setItem('cranksmith-theme', newTheme);
+    } catch (error) {
+      console.warn('Could not save theme preference - localStorage not available');
+    }
   };
 
   const navLinks = [

@@ -11,7 +11,8 @@ import {
   FlexibilityLevel,
   RidingStyle,
   ExperienceLevel,
-  MeasurementValidationRanges
+  MeasurementValidationRanges,
+  MeasurementValidationResult
 } from '../types';
 
 // Validation ranges for body measurements (in millimeters)
@@ -26,7 +27,7 @@ const validateMeasurement = (
   field: 'inseam' | 'torso' | 'armLength', 
   value: string, 
   units: 'metric' | 'imperial'
-): { isValid: boolean; valueInMm: number | null; error?: string } => {
+): MeasurementValidationResult => {
   // Check if input is empty
   if (!value || value.trim() === '') {
     return { isValid: false, valueInMm: null };
@@ -228,6 +229,13 @@ export default function BikeFit(): JSX.Element {
       return;
     }
 
+    // Additional NaN protection and input sanitization
+    const numValue = parseFloat(value.trim());
+    if (isNaN(numValue) || !isFinite(numValue)) {
+      toast.error(`Please enter a valid number for ${field}`);
+      return;
+    }
+
     // Validate the input
     const validation = validateMeasurement(field, value, measurements.units);
     
@@ -237,6 +245,7 @@ export default function BikeFit(): JSX.Element {
     } else if (validation.error) {
       // Invalid input with error message - show toast and don't update state
       toast.error(validation.error);
+      // Don't update state with invalid values
     } else {
       // Invalid but no specific error (e.g., incomplete input) - set to null
       handleMeasurementChange(field, null);
@@ -429,7 +438,8 @@ export default function BikeFit(): JSX.Element {
                             className="input-field w-full"
                             placeholder={`Enter inseam in ${getUnitLabel()}`}
                             step={measurements.units === 'metric' ? "1" : "0.5"}
-                            min="0"
+                            min={measurements.units === 'metric' ? "25" : "9.8"}
+                            max={measurements.units === 'metric' ? "120" : "47.2"}
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
                             Measure from floor to crotch while barefoot
@@ -447,7 +457,8 @@ export default function BikeFit(): JSX.Element {
                             className="input-field w-full"
                             placeholder={`Enter torso in ${getUnitLabel()}`}
                             step={measurements.units === 'metric' ? "1" : "0.5"}
-                            min="0"
+                            min={measurements.units === 'metric' ? "20" : "7.9"}
+                            max={measurements.units === 'metric' ? "85" : "33.5"}
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
                             From shoulder to hip bone
@@ -465,7 +476,8 @@ export default function BikeFit(): JSX.Element {
                             className="input-field w-full"
                             placeholder={`Enter arm length in ${getUnitLabel()}`}
                             step={measurements.units === 'metric' ? "1" : "0.5"}
-                            min="0"
+                            min={measurements.units === 'metric' ? "20" : "7.9"}
+                            max={measurements.units === 'metric' ? "95" : "37.4"}
                           />
                           <p className="text-xs text-[var(--text-secondary)] mt-1">
                             From shoulder to fingertip

@@ -273,35 +273,11 @@ export interface RileyAPIResponse extends APIResponse {
 }
 
 // ============================================================================
-// DEPRECATED/LEGACY TYPES (KEPT FOR BACKWARD COMPATIBILITY)
+// MEASUREMENT VALIDATION TYPES
 // ============================================================================
 
-/**
- * @deprecated Use the Toast interface instead
- * Legacy toast state - kept for backward compatibility
- */
-export interface ToastState {
-  show: boolean;
-  message: string;
-  type?: 'success' | 'error' | 'warning';
-}
-
-/**
- * @deprecated Use PWA detection functions instead
- * Legacy PWA install prompt interface
- */
-export interface PWAInstallPrompt {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-}
-
-/**
- * @deprecated Compatibility checks are now handled internally
- * Legacy compatibility check interface
- */
-export interface CompatibilityCheck {
-  derailleurCapacity: boolean;
-  chainLength: boolean;
-  speedCompatibility: boolean;
-  chainLine: boolean;
+export interface MeasurementValidationResult {
+  isValid: boolean;
+  valueInMm: number | null;
+  error?: string;
 }

@@ -795,9 +795,51 @@ async function syncOfflineRequests() {
   }
 }
 
-// Sync a single request with retry logic
+// Sync a single request with exponential backoff retry logic
 async function syncSingleRequest(cache, requestKey) {
   try {
+    const response = await cache.match(requestKey);
+    if (!response) {
+      throw new Error('Request not found in cache');
+    }
+    
+    const requestData = await response.json();
+    
+    // Check if we've exceeded max retry attempts
+    if (requestData.retryCount >= RETRY_CONFIG.maxRetries) {
+      console.warn(`Enhanced SW: Request ${requestData.id} exceeded max retries, removing`);
+      await cache.delete(requestKey);
+      return { success: false, reason: 'max_retries_exceeded' };
+    }
+    
+    // Calculate delay for exponential backoff
+    if (requestData.retryCount > 0) {
+      const delay = Math.min(
+        RETRY_CONFIG.baseDelay * Math.pow(RETRY_CONFIG.backoffMultiplier, requestData.retryCount - 1),
+        RETRY_CONFIG.maxDelay
+      );
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+    
+    // Attempt to replay the request
+    const fetchResponse = await fetch(requestData.url, {
+      method: requestData.method,
+      headers: requestData.headers,
+      body: requestData.body
+    });
+    
+    if (fetchResponse.ok) {
+      // Success - remove from cache
+      await cache.delete(requestKey);
+      console.log(`Enhanced SW: Successfully synced request ${requestData.id}`);
+      return { success: true, requestId: requestData.id };
+    } else {
+      // Update retry count and store back
+      requestData.retryCount++;
+      await cache.put(requestKey, new Response(JSON.stringify(requestData)));
+      throw new Error(`HTTP ${fetchResponse.status}: ${fetchResponse.statusText}`);
+    }
+  } catch (error) {
     const cachedResponse = await cache.match(requestKey);
     if (!cachedResponse) {
       console.warn('Cached request not found:', requestKey.url);

@@ -96,7 +96,7 @@ export default function Custom404() {
     <>
       <SEOHead 
         title="Page Not Found - CrankSmith"
-        description="The page you're looking for doesn't exist. Explore our bike calculators and tools instead."
+        description="The page you&apos;re looking for doesn&apos;t exist. Explore our bike calculators and tools instead."
         url="https://cranksmith.com/404"
       />
       
@@ -117,7 +117,7 @@ export default function Custom404() {
             Looks like you took a wrong turn!
           </h1>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            The page you're looking for doesn't exist, but don't worry - we'll help you find what you need.
+            The page you&apos;re looking for doesn&apos;t exist, but don&apos;t worry - we&apos;ll help you find what you need.
           </p>
 
           {/* Auto Redirect Notice */}
@@ -150,7 +150,7 @@ export default function Custom404() {
               Popular Cycling Tools
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {popularPages.map((page, index) => (
+              {popularPages.map((page) => (
                 <Link
                   key={page.title}
                   href={page.href}
@@ -196,7 +196,7 @@ export default function Custom404() {
           {/* Help Text */}
           <div className="text-sm text-blue-200">
             <p className="mb-2">
-              Still can't find what you're looking for?{' '}
+              Still can&apos;t find what you&apos;re looking for?{' '}
               <Link href="/ask-riley" className="text-yellow-300 hover:text-yellow-200 underline">
                 Ask Riley, our AI expert
               </Link>

@@ -17,10 +17,10 @@ export default function About() {
             </h2>
             <div className="space-y-4" style={{ color: 'var(--text-secondary)' }}>
               <p>
-                As a lifelong cyclist, NICA coach, and competitive gravel racer, I've built countless bikes and witnessed the same struggles repeatedly: cyclists wanting to optimize their setups but facing confusing math, expensive components, and limited resources.
+                As a lifelong cyclist, NICA coach, and competitive gravel racer, I&apos;ve built countless bikes and witnessed the same struggles repeatedly: cyclists wanting to optimize their setups but facing confusing math, expensive components, and limited resources.
               </p>
               <p>
-                Existing tools on forums and basic gear calculators are clunky, outdated, and don't reflect modern component reality. Meanwhile, cyclists are stuck buying expensive parts to "see what happens" or settling for suboptimal setups.
+                Existing tools on forums and basic gear calculators are clunky, outdated, and don&apos;t reflect modern component reality. Meanwhile, cyclists are stuck buying expensive parts to &quot;see what happens&quot; or settling for suboptimal setups.
               </p>
             </div>
           </section>
@@ -31,7 +31,7 @@ export default function About() {
             </h2>
             <div className="space-y-4" style={{ color: 'var(--text-secondary)' }}>
               <p>
-                CrankSmith brings professional-grade gear analysis to every cyclist. We've built a comprehensive database of real components with accurate specs, modern crossover options (gravel + MTB), and intelligent analysis that considers weight, speed, and compatibility.
+                CrankSmith brings professional-grade gear analysis to every cyclist. We&apos;ve built a comprehensive database of real components with accurate specs, modern crossover options (gravel + MTB), and intelligent analysis that considers weight, speed, and compatibility.
               </p>
               <p>
                 Our AI mechanic Riley provides expert advice 24/7, answering the questions that arise after seeing your analysis. No more guessing about compatibility or wondering if an upgrade is worth it.
@@ -58,7 +58,7 @@ export default function About() {
                   🔧 Real Components
                 </h3>
                 <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                  Accurate database with actual model numbers, weights, and specs. SRAM GX Eagle XG-1275, not just "SRAM cassette."
+                  Accurate database with actual model numbers, weights, and specs. SRAM GX Eagle XG-1275, not just &quot;SRAM cassette.&quot;
                 </p>
               </div>
               
@@ -88,7 +88,7 @@ export default function About() {
             </h2>
             <div className="space-y-4" style={{ color: 'var(--text-secondary)' }}>
               <p>
-                Have questions, feedback, or want to contribute to making CrankSmith better? We'd love to hear from you.
+                Have questions, feedback, or want to contribute to making CrankSmith better? We&apos;d love to hear from you.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 

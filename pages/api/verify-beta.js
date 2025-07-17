@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   try {
     // First, let's see ALL emails in the table for debugging
     console.log('Getting all emails for comparison...');
-    const { data: allEmails, error: allError } = await supabase
+    const { data: allEmails, error: _allError } = await supabase
       .from('early_access')
       .select('email');
     

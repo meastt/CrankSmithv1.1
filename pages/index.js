@@ -5,7 +5,7 @@ import Image from 'next/image';
 import SEOHead from '../components/SEOHead';
 
 export default function Home() {
-  const router = useRouter();
+  const _router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -302,7 +302,7 @@ export default function Home() {
                 Meet Riley, Your AI Bike Expert
               </h2>
               <p className="text-responsive-lg text-neutral-300 max-w-2xl mx-auto mb-8">
-                Get instant answers to your bike questions from Riley, trained on thousands of maintenance manuals and brand support docs. Whether it's upgrades, installations, or compatibility - Riley knows bikes.
+                Get instant answers to your bike questions from Riley, trained on thousands of maintenance manuals and brand support docs. Whether it&apos;s upgrades, installations, or compatibility - Riley knows bikes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
                 <Link href="/ask-riley" className="btn-secondary bg-white text-neutral-900 hover:bg-neutral-100">
@@ -329,7 +329,7 @@ export default function Home() {
               Ready to Optimize Your Setup?
             </h2>
             <p className="text-responsive-lg text-blue-100 max-w-2xl mx-auto mb-8">
-              Join thousands of cyclists who've already optimized their bike setup with CrankSmith
+              Join thousands of cyclists who&apos;ve already optimized their bike setup with CrankSmith
             </p>
             <Link href="/calculator" className="btn-secondary bg-white text-brand-blue hover:bg-neutral-100">
               Get Started Free

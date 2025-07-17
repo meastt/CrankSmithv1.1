@@ -13,6 +13,59 @@ const GearSelectorPanel = React.memo(({
   bikeType,
   icon: Icon 
 }) => {
+  // All hooks must be called before any early returns
+  const { components, loading, error } = useComponentDatabase(bikeType || '');
+
+  // Transform components data for SearchableDropdown - memoized to prevent recalculation
+  const cranksetOptions = useMemo(() => 
+    components?.cranksets?.map(crankset => ({
+      id: crankset.id,
+      label: `${crankset.model} ${crankset.variant}`,
+      model: crankset.model,
+      variant: crankset.variant,
+      teeth: crankset.teeth,
+      speeds: crankset.speeds,
+      weight: crankset.weight,
+      bikeType: crankset.bikeType
+    })) || [], [components?.cranksets]
+  );
+
+  const cassetteOptions = useMemo(() => 
+    components?.cassettes?.map(cassette => ({
+      id: cassette.id,
+      label: `${cassette.model} ${cassette.variant}`,
+      model: cassette.model,
+      variant: cassette.variant,
+      teeth: cassette.teeth,
+      speeds: cassette.speeds,
+      weight: cassette.weight,
+      bikeType: cassette.bikeType
+    })) || [], [components?.cassettes]
+  );
+
+  // Memoized event handlers to prevent unnecessary re-renders
+  const handleCranksetChange = useCallback((selectedOption) => {
+    setSetup({ ...setup, crankset: selectedOption });
+    if (config?.onCranksetChange) {
+      config.onCranksetChange(selectedOption);
+    }
+  }, [setup, setSetup, config]);
+
+  const handleCassetteChange = useCallback((selectedOption) => {
+    setSetup({ ...setup, cassette: selectedOption });
+    if (config?.onCassetteChange) {
+      config.onCassetteChange(selectedOption);
+    }
+  }, [setup, setSetup, config]);
+
+  const handleWheelChange = useCallback((value) => {
+    config.onWheelChange(value);
+  }, [config]);
+
+  const handleTireChange = useCallback((value) => {
+    config.onTireChange(value);
+  }, [config]);
+
   // Early return if bikeType is not set - prevents empty options rendering
   if (!bikeType || bikeType === '') {
     return (
@@ -42,51 +95,6 @@ const GearSelectorPanel = React.memo(({
     );
   }
 
-  // Use the optimized hook for component loading
-  const { components, loading, error } = useComponentDatabase(bikeType);
-
-  // Enhanced debug logging with better context
-  // console.log(`🔍 GearSelectorPanel (${title}):`, {
-  //   bikeType,
-  //   components,
-  //   cranksets: components?.cranksets,
-  //   cassettes: components?.cassettes,
-  //   cranksetsLength: components?.cranksets?.length,
-  //   cassettesLength: components?.cassettes?.length,
-  //   setup,
-  //   config,
-  //   loading,
-  //   error,
-  //   context: `Rendering for bikeType: ${bikeType}`
-  // });
-
-  // Transform components data for SearchableDropdown - memoized to prevent recalculation
-  const cranksetOptions = useMemo(() => 
-    components?.cranksets?.map(crankset => ({
-      id: crankset.id,
-      label: `${crankset.model} ${crankset.variant}`,
-      model: crankset.model,
-      variant: crankset.variant,
-      teeth: crankset.teeth,
-      speeds: crankset.speeds,
-      weight: crankset.weight,
-      bikeType: crankset.bikeType
-    })) || [], [components?.cranksets]
-  );
-
-  const cassetteOptions = useMemo(() => 
-    components?.cassettes?.map(cassette => ({
-      id: cassette.id,
-      label: `${cassette.model} ${cassette.variant}`,
-      model: cassette.model,
-      variant: cassette.variant,
-      teeth: cassette.teeth,
-      speeds: cassette.speeds,
-      weight: cassette.weight,
-      bikeType: cassette.bikeType
-    })) || [], [components?.cassettes]
-  );
-
   // console.log(`🔧 Transformed options for ${title}:`, {
   //   cranksetOptions: cranksetOptions,
   //   cassetteOptions: cassetteOptions,
@@ -96,38 +104,7 @@ const GearSelectorPanel = React.memo(({
   //   firstCassette: cassetteOptions[0]
   // });
 
-  // Memoized event handlers to prevent unnecessary re-renders
-  const handleCranksetChange = useCallback((selectedOption) => {
-    // console.log('🔄 Crankset selected:', selectedOption);
-    // Update the setup state directly with the full component object
-    setSetup({ ...setup, crankset: selectedOption });
-    
-    // Also call the config handler if it exists
-    if (config?.onCranksetChange) {
-      config.onCranksetChange(selectedOption);
-    }
-  }, [setup, setSetup, config]);
 
-  const handleCassetteChange = useCallback((selectedOption) => {
-    // console.log('🔄 Cassette selected:', selectedOption);
-    // Update the setup state directly with the full component object
-    setSetup({ ...setup, cassette: selectedOption });
-    
-    // Also call the config handler if it exists
-    if (config?.onCassetteChange) {
-      config.onCassetteChange(selectedOption);
-    }
-  }, [setup, setSetup, config]);
-
-  // Memoized wheel change handler
-  const handleWheelChange = useCallback((value) => {
-    config.onWheelChange(value);
-  }, [config]);
-
-  // Memoized tire change handler
-  const handleTireChange = useCallback((value) => {
-    config.onTireChange(value);
-  }, [config]);
 
   // Show loading state if components are still loading
   if (loading) {

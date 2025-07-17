@@ -273,7 +273,7 @@ export default function AskRiley() {
               Need More Tools?
             </h2>
             <p className="text-lg text-neutral-600 dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
-              Combine Riley's expertise with our precision calculators for the ultimate bike optimization experience
+              Combine Riley&apos;s expertise with our precision calculators for the ultimate bike optimization experience
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/calculator" className="btn-primary">

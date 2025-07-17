@@ -44,57 +44,68 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
   const styles = statusStyles[status] || {
     bg: 'bg-[var(--surface-elevated)]',
     border: 'border-[var(--border-subtle)]',
-              iconBg: 'bg-neutral-400',
+    iconBg: 'bg-neutral-400',
     titleColor: 'text-[var(--text-primary)]'
   };
 
+  const getStatusIcon = () => {
+    switch (status) {
+      case 'compatible': return '✓';
+      case 'warning': return '⚠';
+      case 'error': return '✗';
+      default: return '?';
+    }
+  };
+
   return (
-    <div className={`p-4 rounded-lg border ${className} ${styles.bg} ${styles.border}`}>
+    <div className={`rounded-xl border p-4 ${styles.bg} ${styles.border} ${className}`}>
       <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 mt-1">
-          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold ${styles.iconBg}`}>
-            {status === 'compatible' ? '✓' : status === 'warning' ? '!' : '×'}
-          </div>
+        <div className={`w-6 h-6 rounded-full ${styles.iconBg} flex items-center justify-center text-white text-sm font-bold flex-shrink-0`}>
+          {getStatusIcon()}
         </div>
-        
         <div className="flex-1 min-w-0">
-          <h3 className={`font-medium text-sm mb-1 ${styles.titleColor}`}>
-            {title}
-          </h3>
-          <p className="text-sm mb-3 text-[var(--text-secondary)]">
-            {message}
-          </p>
+          <h4 className={`font-medium ${styles.titleColor} mb-1`}>{title}</h4>
+          <p className="text-sm text-[var(--text-secondary)] mb-3">{message}</p>
           
-          {criticalIssues?.length > 0 && (
+          {criticalIssues && criticalIssues.length > 0 && (
             <div className="mb-3">
-              <div className="text-xs font-medium mb-1 text-red-500">
-                Critical Issues:
-              </div>
-              {criticalIssues.map((issue, index) => (
-                <div key={index} className="text-xs mb-1 text-[var(--text-secondary)]">• {issue}</div>
-              ))}
+              <p className="text-xs font-medium text-red-600 dark:text-red-400 mb-1">Critical Issues:</p>
+              <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                {criticalIssues.map((issue, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-red-500 mt-0.5">•</span>
+                    <span>{issue}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
-          
-          {minorWarnings?.length > 0 && (
+
+          {minorWarnings && minorWarnings.length > 0 && (
             <div className="mb-3">
-              <div className="text-xs font-medium mb-1 text-yellow-500">
-                Considerations:
-              </div>
-              {minorWarnings.slice(0, 2).map((warning, index) => (
-                <div key={index} className="text-xs mb-1 text-[var(--text-secondary)]">• {warning}</div>
-              ))}
+              <p className="text-xs font-medium text-yellow-600 dark:text-yellow-400 mb-1">Considerations:</p>
+              <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                {minorWarnings.map((warning, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-yellow-500 mt-0.5">•</span>
+                    <span>{warning}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
-          
-          {actionItems?.length > 0 && (
+
+          {actionItems && actionItems.length > 0 && (
             <div>
-              <div className="text-xs font-medium mb-1 text-[var(--text-secondary)]">
-                Recommendations:
-              </div>
-              {actionItems.slice(0, 2).map((item, index) => (
-                <div key={index} className="text-xs mb-1 text-[var(--text-tertiary)]">• {item}</div>
-              ))}
+              <p className="text-xs font-medium text-[var(--text-primary)] mb-1">Recommendations:</p>
+              <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                {actionItems.map((item, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
@@ -188,8 +199,7 @@ const Toast = ({ message, show, onDismiss }) => {
   );
 };
 
-
-export default function Home() {
+export default function Calculator() {
   const {
     bikeType, currentSetup, proposedSetup, results, loading, speedUnit,
     compatibilityResults, validation, setBikeType, updateCurrentSetup,
@@ -202,26 +212,46 @@ export default function Home() {
   const [showRiley, setShowRiley] = useState(false);
   const [compatibilityChecker] = useState(new CompatibilityChecker());
   const [toast, setToast] = useState({ show: false, message: '' });
+  const [calculationError, setCalculationError] = useState(null);
 
   useEffect(() => {
-    const handler = () => { resetCalculator(); setShowRiley(false); };
+    const handler = () => { 
+      resetCalculator(); 
+      setShowRiley(false); 
+      setCalculationError(null);
+    };
     window.addEventListener('reset-calculator', handler);
     return () => window.removeEventListener('reset-calculator', handler);
   }, [resetCalculator]);
 
   useEffect(() => {
     const loadSavedConfigs = async () => {
-      const { data } = await localStorageDB.getConfigs();
-      if (data) setSavedConfigs(data);
+      try {
+        const { data } = await localStorageDB.getConfigs();
+        if (data) setSavedConfigs(data);
+      } catch (error) {
+        console.error('Error loading saved configurations:', error);
+        showToast('Error loading saved configurations');
+      }
     };
     loadSavedConfigs();
   }, []);
 
   const checkCompatibility = () => {
-    if (proposedSetup.crankset && proposedSetup.cassette && bikeType) {
-      const compatibility = compatibilityChecker.checkCompatibility(proposedSetup, bikeType);
-      const summary = compatibilityChecker.generateCompatibilitySummary(compatibility);
-      setCompatibilityResults(summary);
+    try {
+      if (proposedSetup.crankset && proposedSetup.cassette && bikeType) {
+        const compatibility = compatibilityChecker.checkCompatibility(proposedSetup, bikeType);
+        const summary = compatibilityChecker.generateCompatibilitySummary(compatibility);
+        setCompatibilityResults(summary);
+      }
+    } catch (error) {
+      console.error('Compatibility check failed:', error);
+      setCompatibilityResults({
+        status: 'error',
+        title: 'Compatibility Check Failed',
+        message: 'Unable to analyze compatibility. Please check your component selections.',
+        actionItems: ['Verify component selections', 'Try refreshing the page']
+      });
     }
   };
 
@@ -236,10 +266,24 @@ export default function Home() {
 
   const handleCalculate = async () => {
     try {
+      setCalculationError(null);
       await calculateResults();
-      setTimeout(() => setShowRiley(true), 2000);
+      
+      // Run compatibility check after successful calculation
       checkCompatibility();
-    } catch (error) { console.error('Calculation failed:', error); }
+      
+      // Show Riley AI after a brief delay if calculation was successful
+      setTimeout(() => {
+        if (results && !calculationError) {
+          setShowRiley(true);
+        }
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Calculation failed:', error);
+      setCalculationError(error.message || 'Calculation failed. Please check your inputs and try again.');
+      showToast('Calculation failed. Please try again.');
+    }
   };
 
   const showToast = (message) => {
@@ -247,39 +291,66 @@ export default function Home() {
   };
   
   const handleSaveConfig = async () => {
-    if (!results) { showToast('Please calculate results before saving'); return; }
-    const config = {
-      name: `${bikeType.charAt(0).toUpperCase() + bikeType.slice(1)} Setup ${new Date().toLocaleDateString()}`,
-      bikeType, currentSetup, proposedSetup, results, compatibilityResults,
-    };
-    const { error } = await localStorageDB.saveConfig(config);
-    if (error) { showToast('Failed to save configuration.'); } 
-    else {
-      const { data } = await localStorageDB.getConfigs();
-      setSavedConfigs(data || []);
-      showToast('Configuration saved to garage!');
+    if (!results) { 
+      showToast('Please calculate results before saving'); 
+      return; 
+    }
+    
+    try {
+      const config = {
+        name: `${bikeType.charAt(0).toUpperCase() + bikeType.slice(1)} Setup ${new Date().toLocaleDateString()}`,
+        bikeType, 
+        currentSetup, 
+        proposedSetup, 
+        results, 
+        compatibilityResults,
+      };
+      
+      const { error } = await localStorageDB.saveConfig(config);
+      if (error) { 
+        showToast('Failed to save configuration.'); 
+      } else {
+        const { data } = await localStorageDB.getConfigs();
+        setSavedConfigs(data || []);
+        showToast('Configuration saved to garage!');
+      }
+    } catch (error) {
+      console.error('Error saving configuration:', error);
+      showToast('Failed to save configuration.');
     }
   };
 
   const handleLoadConfig = (config) => {
-    updateCurrentSetup(config.currentSetup);
-    updateProposedSetup(config.proposedSetup);
-    setResults(config.results);
-    setBikeType(config.bikeType);
-    setCompatibilityResults(config.compatibilityResults);
-    showToast(`Loaded "${config.name}" successfully!`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    try {
+      updateCurrentSetup(config.currentSetup);
+      updateProposedSetup(config.proposedSetup);
+      setResults(config.results);
+      setBikeType(config.bikeType);
+      setCompatibilityResults(config.compatibilityResults);
+      setCalculationError(null);
+      showToast(`Loaded "${config.name}" successfully!`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      console.error('Error loading configuration:', error);
+      showToast('Failed to load configuration.');
+    }
   };
 
   const handleDeleteConfig = async (id) => {
     if (window.confirm(`Are you sure you want to delete this configuration?`)) {
+      try {
         const { error } = await localStorageDB.deleteConfig(id);
-        if (error) { showToast('Failed to delete configuration.'); } 
-        else {
+        if (error) { 
+          showToast('Failed to delete configuration.'); 
+        } else {
           const { data } = await localStorageDB.getConfigs();
           setSavedConfigs(data || []);
           showToast('Configuration deleted.');
         }
+      } catch (error) {
+        console.error('Error deleting configuration:', error);
+        showToast('Failed to delete configuration.');
+      }
     }
   };
 
@@ -299,99 +370,59 @@ export default function Home() {
           <p className="hero-subtitle max-w-2xl mx-auto">
             See exactly how component changes affect your bike's performance with real-world data and AI-powered insights.
           </p>
-          {(bikeType || results) && (
-            <button
-              onClick={resetCalculator}
-              className="mt-6 px-6 py-3 rounded-xl font-medium transition-all text-base bg-[var(--accent-blue)] text-white border border-[var(--accent-blue)]"
-            >
-              <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-              Start New Analysis
-            </button>
-          )}
         </div>
 
-        {!bikeType && (
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="mb-8">
-              <h2 className="text-4xl font-extrabold mb-2 text-center text-[var(--text-primary)]">
-                Select Your Bike Type
-              </h2>
-              <p className="text-lg text-center mb-6 text-[var(--text-secondary)]">
-                Choose your bike style to unlock the full gear configurator with AI-powered compatibility checking and personalized recommendations.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {Object.entries(bikeConfig).map(([type, config]) => (
-                  <button
-                    key={type}
-                    onClick={() => setBikeType(type)}
-                    className="p-6 rounded-lg border-2 transition-all duration-200 hover:scale-105 border-[var(--border-light)] bg-[var(--bg-primary)] hover:border-[var(--accent-blue)] hover:bg-blue-500/5"
-                  >
-                    <div className="w-16 h-16 mx-auto mb-4 text-[var(--accent-blue)]">
-                      {BikeIcons[type]}
-                    </div>
-                    <h3 className="text-lg font-semibold mb-2 text-[var(--text-primary)]">{config.name}</h3>
-                    <p className="text-sm text-[var(--text-secondary)]">{config.description}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
+        {/* Bike Type Selection */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <h2 className="text-2xl font-bold mb-6 text-center text-[var(--text-primary)]">Select Your Bike Type</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {Object.entries(bikeConfig).map(([type, config]) => (
+              <button
+                key={type}
+                onClick={() => setBikeType(type)}
+                className={`p-6 rounded-xl border-2 transition-all duration-200 ${
+                  bikeType === type
+                    ? 'border-[var(--accent-blue)] bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-[var(--border-subtle)] bg-[var(--surface-elevated)] hover:border-[var(--accent-blue)]/50'
+                }`}
+              >
+                <div className="w-16 h-16 mx-auto mb-4 text-[var(--accent-blue)]">
+                  {BikeIcons[type]}
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-[var(--text-primary)]">
+                  {config.name}
+                </h3>
+                <p className="text-sm text-[var(--text-secondary)]">
+                  {config.description}
+                </p>
+              </button>
+            ))}
           </div>
-        )}
+        </div>
 
         {bikeType && (
           <div className="space-y-8">
-            <div className="calculator-section grid md:grid-cols-2 gap-8">
-              <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading current setup panel</div>}>
+            {/* Gear Selection */}
+            <div className="max-w-6xl mx-auto">
+              <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-[var(--text-tertiary)]">Error loading gear selector</div>}>
                 <GearSelectorPanel
-                  title="Current Setup"
-                  subtitle="Your current components"
-                  setup={currentSetup}
-                  setSetup={updateCurrentSetup}
-                  config={{
-                    wheelSizes: bikeConfig[bikeType].wheelSizes,
-                    tireWidths: bikeConfig[bikeType].tireWidths,
-                    onWheelChange: handleCurrentWheelChange,
-                    onTireChange: handleCurrentTireChange,
-                    onCranksetChange: handleCurrentCranksetChange,
-                    onCassetteChange: handleCurrentCassetteChange
-                  }}
                   bikeType={bikeType}
-                  icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>}
+                  currentSetup={currentSetup}
+                  proposedSetup={proposedSetup}
+                  onCurrentCranksetChange={handleCurrentCranksetChange}
+                  onCurrentCassetteChange={handleCurrentCassetteChange}
+                  onCurrentWheelChange={handleCurrentWheelChange}
+                  onCurrentTireChange={handleCurrentTireChange}
+                  onProposedCranksetChange={handleProposedCranksetChange}
+                  onProposedCassetteChange={handleProposedCassetteChange}
+                  onProposedWheelChange={handleProposedWheelChange}
+                  onProposedTireChange={handleProposedTireChange}
                 />
               </ErrorBoundary>
-              <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading proposed setup panel</div>}>
-                <GearSelectorPanel
-                  title="Proposed Setup"
-                  subtitle="Components you're considering"
-                  setup={proposedSetup}
-                  setSetup={updateProposedSetup}
-                  config={{
-                    wheelSizes: bikeConfig[bikeType].wheelSizes,
-                    tireWidths: bikeConfig[bikeType].tireWidths,
-                    onWheelChange: handleProposedWheelChange,
-                    onTireChange: handleProposedTireChange,
-                    onCranksetChange: handleProposedCranksetChange,
-                    onCassetteChange: handleProposedCassetteChange
-                  }}
-                  bikeType={bikeType}
-                  icon={<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>}
-                />
-              </ErrorBoundary>
-            </div>
 
-            {compatibilityResults && (
-              <div className="max-w-4xl mx-auto">
-                <CompatibilityDisplay compatibilityResults={compatibilityResults} className="mb-4"/>
-              </div>
-            )}
-
-            <div className="max-w-4xl mx-auto">
-              <div className="card">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              {/* Analysis Controls */}
+              <div className="bg-[var(--surface-elevated)] rounded-xl p-6 border border-[var(--border-subtle)] mt-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-[var(--accent-blue)]" />
@@ -446,9 +477,32 @@ export default function Home() {
                     </button>
                   </div>
                 </div>
+
+                {/* Error Display */}
+                {calculationError && (
+                  <div className="mt-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                        !
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-red-800 dark:text-red-200 mb-1">Calculation Error</h4>
+                        <p className="text-sm text-red-700 dark:text-red-300">{calculationError}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Compatibility Results */}
+                {compatibilityResults && (
+                  <div className="mt-4">
+                    <CompatibilityDisplay compatibilityResults={compatibilityResults} />
+                  </div>
+                )}
               </div>
             </div>
 
+            {/* Riley AI Chat */}
             {showRiley && (
               <div className="max-w-4xl mx-auto">
                 <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading Riley AI chat. Please try refreshing the page.</div>}>
@@ -457,6 +511,7 @@ export default function Home() {
                     analysisResults={results}
                     componentDatabase={componentDatabase}
                     bikeType={bikeType}
+                    compatibilityResults={compatibilityResults}
                   />
                 </ErrorBoundary>
               </div>
@@ -464,6 +519,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Results Section */}
         {results && (
           <div className="max-w-4xl mx-auto mt-12">
             <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading simulation results</div>}>
@@ -473,6 +529,7 @@ export default function Home() {
                 bikeType={bikeType}
               />
             </ErrorBoundary>
+            
             <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading performance chart</div>}>
               <PerformanceChart 
                 current={results.current}
@@ -480,6 +537,7 @@ export default function Home() {
                 speedUnit={speedUnit}
               />
             </ErrorBoundary>
+            
             <ErrorBoundary context="component" fallback={<div className="p-8 text-center" style={{ color: 'var(--text-tertiary)' }}>Error loading build summary</div>}>
               <BuildSummaryCard 
                 currentSetup={currentSetup}
@@ -489,6 +547,7 @@ export default function Home() {
               />
             </ErrorBoundary>
 
+            {/* Riley AI Prompt */}
             {!showRiley && (
               <div className="mt-8 p-6 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-subtle)]">
                 <div className="flex items-center justify-between">
@@ -508,6 +567,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Garage Section */}
         <div id="garage-section" className="mt-16">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center space-x-3 mb-4">
@@ -576,50 +636,85 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
   };
 
   return (
-    <div className="garage-card">
+    <div className="garage-card p-6 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-subtle)] hover:border-[var(--accent-blue)]/50 transition-all duration-200">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h3 className="text-lg font-semibold mb-1 text-[var(--text-primary)]">{config.name}</h3>
           <p className="text-sm text-[var(--text-tertiary)]">{config.bikeType ? config.bikeType.charAt(0).toUpperCase() + config.bikeType.slice(1) : 'Unknown'} Bike</p>
         </div>
-        <button onClick={() => onDelete(config.id)} className="p-2 rounded-lg transition-colors text-[var(--text-tertiary)] hover:bg-red-100 dark:hover:bg-red-900/50" title="Delete configuration">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+        <button 
+          onClick={() => onDelete(config.id)} 
+          className="p-2 rounded-lg transition-colors text-[var(--text-tertiary)] hover:bg-red-100 dark:hover:bg-red-900/50 hover:text-red-600" 
+          title="Delete configuration"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
         </button>
       </div>
 
-      {config.compatibilityResults && (<div className="mb-4"><CompatibilityDisplay compatibilityResults={config.compatibilityResults} className="text-xs"/></div>)}
+      {config.compatibilityResults && (
+        <div className="mb-4">
+          <CompatibilityDisplay compatibilityResults={config.compatibilityResults} className="text-xs"/>
+        </div>
+      )}
       
       <div className="space-y-3 mb-4">
         <div>
           <h4 className="text-sm font-medium mb-2 text-[var(--text-secondary)]">Components</h4>
           <div className="space-y-1 text-sm text-[var(--text-tertiary)]">
-            <div className="flex justify-between"><span>Crankset:</span><span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.crankset?.model || 'Not set'}</span></div>
-            <div className="flex justify-between"><span>Cassette:</span><span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.cassette?.model || 'Not set'}</span></div>
-            <div className="flex justify-between"><span>Wheel:</span><span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.wheel || 'Not set'}</span></div>
-            <div className="flex justify-between"><span>Tire:</span><span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.tire || 'Not set'}</span></div>
+            <div className="flex justify-between">
+              <span>Crankset:</span>
+              <span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.crankset?.model || 'Not set'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Cassette:</span>
+              <span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.cassette?.model || 'Not set'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Wheel:</span>
+              <span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.wheel || 'Not set'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Tire:</span>
+              <span className="font-medium text-[var(--text-secondary)]">{config.proposedSetup?.tire || 'Not set'}</span>
+            </div>
           </div>
         </div>
+        
         {config.results && (
           <div>
             <h4 className="text-sm font-medium mb-2 text-[var(--text-secondary)]">Performance</h4>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="text-center p-2 rounded bg-[var(--surface-elevated)]"><div className="font-semibold text-[var(--text-primary)]">{config.results.proposed?.totalWeight}g</div><div className="text-xs text-[var(--text-tertiary)]">Weight</div></div>
-              <div className="text-center p-2 rounded bg-[var(--surface-elevated)]"><div className="font-semibold text-[var(--text-primary)]">{config.results.proposed?.gearRange}%</div><div className="text-xs text-[var(--text-tertiary)]">Range</div></div>
+              <div className="text-center p-2 rounded bg-[var(--surface-elevated)]">
+                <div className="font-semibold text-[var(--text-primary)]">{config.results.proposed?.totalWeight}g</div>
+                <div className="text-xs text-[var(--text-tertiary)]">Weight</div>
+              </div>
+              <div className="text-center p-2 rounded bg-[var(--surface-elevated)]">
+                <div className="font-semibold text-[var(--text-primary)]">{config.results.proposed?.gearRange}%</div>
+                <div className="text-xs text-[var(--text-tertiary)]">Range</div>
+              </div>
             </div>
           </div>
         )}
       </div>
       
-              <button onClick={handleLoadConfig} disabled={isLoading} className="garage-load-btn w-full py-3 rounded font-semibold transition-all text-white bg-[var(--accent-blue)] disabled:cursor-not-allowed disabled:opacity-60 hover:enabled:opacity-90" style={{ 
-          backgroundColor: isLoading ? 'var(--bg-tertiary)' : 'var(--accent-blue)',
-          color: isLoading ? 'var(--text-disabled)' : 'white'
-        }}>
+      <button 
+        onClick={handleLoadConfig} 
+        disabled={isLoading} 
+        className="garage-load-btn w-full py-3 rounded font-semibold transition-all text-white bg-[var(--accent-blue)] disabled:cursor-not-allowed disabled:opacity-60 hover:enabled:opacity-90"
+      >
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
             Loading...
           </span>
-        ) : ( 'Load Configuration' )}
+        ) : ( 
+          'Load Configuration' 
+        )}
       </button>
     </div>
   );

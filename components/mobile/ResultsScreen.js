@@ -15,12 +15,10 @@ export default function ResultsScreen({
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
-  if (!results) return null;
-
-  const { current, proposed, comparison, compatibility } = results;
-
-  // Radar Chart Effect
+  // Radar Chart Effect (must be called before any conditional returns)
   useEffect(() => {
+    if (!results || !activeTab) return;
+    const { current, proposed } = results;
     if (!current || !proposed || activeTab !== 'chart') return;
 
     if (chartInstance.current) {
@@ -188,6 +186,10 @@ export default function ResultsScreen({
       }
     };
   }, [current, proposed, speedUnit, activeTab]);
+
+  if (!results) return null;
+
+  const { current, proposed, comparison, compatibility } = results;
 
   const metrics = [
     {

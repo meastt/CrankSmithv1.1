@@ -37,6 +37,7 @@ export default function App({ Component, pageProps }) {
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
           <meta name="apple-mobile-web-app-title" content="CrankSmith" />
+          <meta name='impact-site-verification' value='8d751d83-117e-4b87-b7c0-253d7bb08754' />
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         </Head>
@@ -76,6 +77,7 @@ export default function App({ Component, pageProps }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="CrankSmith" />
+        <meta name='impact-site-verification' value='8d751d83-117e-4b87-b7c0-253d7bb08754' />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

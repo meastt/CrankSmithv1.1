@@ -10,8 +10,70 @@ import {
   BikeFitCalculations,
   FlexibilityLevel,
   RidingStyle,
-  ExperienceLevel
+  ExperienceLevel,
+  MeasurementValidationRanges
 } from '../types';
+
+// Validation ranges for body measurements (in millimeters)
+const validationRanges: MeasurementValidationRanges = {
+  inseam: { min: 600, max: 1200 }, // 60cm to 120cm
+  torso: { min: 400, max: 800 },   // 40cm to 80cm  
+  armLength: { min: 500, max: 900 } // 50cm to 90cm
+};
+
+// Input validation function
+const validateMeasurement = (
+  field: 'inseam' | 'torso' | 'armLength', 
+  value: string, 
+  units: 'metric' | 'imperial'
+): { isValid: boolean; valueInMm: number | null; error?: string } => {
+  // Check if input is empty
+  if (!value || value.trim() === '') {
+    return { isValid: false, valueInMm: null };
+  }
+
+  // Parse the numeric value
+  const numValue = parseFloat(value.trim());
+  
+  // Check if it's a valid number
+  if (isNaN(numValue)) {
+    return { 
+      isValid: false, 
+      valueInMm: null, 
+      error: `Please enter a valid number for ${field}` 
+    };
+  }
+
+  // Check for negative values
+  if (numValue <= 0) {
+    return { 
+      isValid: false, 
+      valueInMm: null, 
+      error: `${field} must be a positive number` 
+    };
+  }
+
+  // Convert to millimeters for validation
+  const valueInMm = units === 'imperial' ? numValue * 25.4 : numValue * 10;
+  const range = validationRanges[field];
+
+  // Check realistic ranges
+  if (valueInMm < range.min || valueInMm > range.max) {
+    const minDisplay = units === 'imperial' ? 
+      (range.min / 25.4).toFixed(1) : (range.min / 10).toFixed(1);
+    const maxDisplay = units === 'imperial' ? 
+      (range.max / 25.4).toFixed(1) : (range.max / 10).toFixed(1);
+    const unitLabel = units === 'imperial' ? 'inches' : 'cm';
+    
+    return { 
+      isValid: false, 
+      valueInMm: null, 
+      error: `${field} must be between ${minDisplay} and ${maxDisplay} ${unitLabel}` 
+    };
+  }
+
+  return { isValid: true, valueInMm: Math.round(valueInMm) };
+};
 
 // Bike fit calculation methods and formulas
 const bikeFitCalculations: BikeFitCalculations = {
@@ -75,9 +137,9 @@ const bikeFitCalculations: BikeFitCalculations = {
 export default function BikeFit(): JSX.Element {
   // Body measurements state
   const [measurements, setMeasurements] = useState<BodyMeasurements>({
-    inseam: '',
-    torso: '',
-    armLength: '',
+    inseam: null,
+    torso: null,
+    armLength: null,
     flexibility: 'average',
     ridingStyle: 'endurance',
     experience: 'intermediate',
@@ -92,22 +154,21 @@ export default function BikeFit(): JSX.Element {
   useEffect(() => {
     const { inseam, torso, armLength, flexibility, ridingStyle, experience } = measurements;
     
-    if (inseam && torso && armLength) {
-      const inseamMm = parseFloat(inseam);
-      const torsoMm = parseFloat(torso);
-      const armMm = parseFloat(armLength);
+    // Only calculate if all measurements are valid numbers
+    if (inseam !== null && torso !== null && armLength !== null && 
+        inseam > 0 && torso > 0 && armLength > 0) {
       
-      if (inseamMm > 0 && torsoMm > 0 && armMm > 0) {
-        const calculatedStack = bikeFitCalculations.stack(torsoMm, flexibility, ridingStyle, experience);
+      try {
+        const calculatedStack = bikeFitCalculations.stack(torso, flexibility, ridingStyle, experience);
         
         const newResults: BikeFitResults = {
           saddleHeight: {
-            lemond: bikeFitCalculations.saddleHeight.lemond(inseamMm),
-            holmes: bikeFitCalculations.saddleHeight.holmes(inseamMm),
-            hamley: bikeFitCalculations.saddleHeight.hamley(inseamMm),
-            competitive: bikeFitCalculations.saddleHeight.competitive(inseamMm)
+            lemond: bikeFitCalculations.saddleHeight.lemond(inseam),
+            holmes: bikeFitCalculations.saddleHeight.holmes(inseam),
+            hamley: bikeFitCalculations.saddleHeight.hamley(inseam),
+            competitive: bikeFitCalculations.saddleHeight.competitive(inseam)
           },
-          reach: bikeFitCalculations.reach(torsoMm, armMm, flexibility, ridingStyle),
+          reach: bikeFitCalculations.reach(torso, armLength, flexibility, ridingStyle),
           stack: calculatedStack,
           handlebarDrop: {
             comfort: calculatedStack - 20,
@@ -117,11 +178,18 @@ export default function BikeFit(): JSX.Element {
         };
         
         setResults(newResults);
+      } catch (error) {
+        console.error('Bike fit calculation error:', error);
+        setResults(null);
+        toast.error('Calculation error. Please check your measurements.');
       }
+    } else {
+      // Clear results if measurements are incomplete
+      setResults(null);
     }
   }, [measurements]);
 
-  const handleMeasurementChange = (field: keyof BodyMeasurements, value: string) => {
+  const handleMeasurementChange = (field: keyof BodyMeasurements, value: any) => {
     setMeasurements(prev => ({
       ...prev,
       [field]: value
@@ -139,7 +207,8 @@ export default function BikeFit(): JSX.Element {
     return showMm ? `${Math.round(value)}mm` : `${(value / 10).toFixed(1)}cm`;
   };
 
-  const convertToDisplayUnits = (mm: number): string => {
+  const convertToDisplayUnits = (mm: number | null): string => {
+    if (mm === null) return '';
     if (measurements.units === 'imperial') {
       return (mm / 25.4).toFixed(1);
     }
@@ -151,22 +220,32 @@ export default function BikeFit(): JSX.Element {
   };
 
   const handleInputChange = (field: 'inseam' | 'torso' | 'armLength', value: string): void => {
-    // Convert input to mm for calculations
-    let mmValue: number;
-    if (measurements.units === 'imperial') {
-      mmValue = parseFloat(value) * 25.4;
-    } else {
-      mmValue = parseFloat(value) * 10;
+    // If input is empty, set to null
+    if (!value || value.trim() === '') {
+      handleMeasurementChange(field, null);
+      return;
     }
+
+    // Validate the input
+    const validation = validateMeasurement(field, value, measurements.units);
     
-    handleMeasurementChange(field, mmValue.toString());
+    if (validation.isValid && validation.valueInMm !== null) {
+      // Valid input - store the value in mm
+      handleMeasurementChange(field, validation.valueInMm);
+    } else if (validation.error) {
+      // Invalid input with error message - show toast and don't update state
+      toast.error(validation.error);
+    } else {
+      // Invalid but no specific error (e.g., incomplete input) - set to null
+      handleMeasurementChange(field, null);
+    }
   };
 
   const resetCalculator = (): void => {
     setMeasurements({
-      inseam: '',
-      torso: '',
-      armLength: '',
+      inseam: null,
+      torso: null,
+      armLength: null,
       flexibility: 'average',
       ridingStyle: 'endurance',
       experience: 'intermediate',
@@ -343,7 +422,7 @@ export default function BikeFit(): JSX.Element {
                           </label>
                           <input
                             type="number"
-                            value={measurements.inseam ? convertToDisplayUnits(parseFloat(measurements.inseam)) : ''}
+                            value={convertToDisplayUnits(measurements.inseam)}
                             onChange={(e) => handleInputChange('inseam', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter inseam in ${getUnitLabel()}`}
@@ -361,7 +440,7 @@ export default function BikeFit(): JSX.Element {
                           </label>
                           <input
                             type="number"
-                            value={measurements.torso ? convertToDisplayUnits(parseFloat(measurements.torso)) : ''}
+                            value={convertToDisplayUnits(measurements.torso)}
                             onChange={(e) => handleInputChange('torso', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter torso in ${getUnitLabel()}`}
@@ -379,7 +458,7 @@ export default function BikeFit(): JSX.Element {
                           </label>
                           <input
                             type="number"
-                            value={measurements.armLength ? convertToDisplayUnits(parseFloat(measurements.armLength)) : ''}
+                            value={convertToDisplayUnits(measurements.armLength)}
                             onChange={(e) => handleInputChange('armLength', e.target.value)}
                             className="input-field w-full"
                             placeholder={`Enter arm length in ${getUnitLabel()}`}

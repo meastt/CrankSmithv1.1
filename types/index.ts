@@ -193,13 +193,20 @@ export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced' | 'profes
 export type MeasurementUnits = 'metric' | 'imperial';
 
 export interface BodyMeasurements {
-  inseam: string;
-  torso: string;
-  armLength: string;
+  inseam: number | null;
+  torso: number | null;
+  armLength: number | null;
   flexibility: FlexibilityLevel;
   ridingStyle: RidingStyle;
   experience: ExperienceLevel;
   units: MeasurementUnits;
+}
+
+// Validation ranges for body measurements (in mm)
+export interface MeasurementValidationRanges {
+  inseam: { min: number; max: number };
+  torso: { min: number; max: number };
+  armLength: { min: number; max: number };
 }
 
 export interface SaddleHeightResults {

@@ -28,13 +28,13 @@
     --neutral-900: 23 23 23;
     --neutral-950: 10 10 10;
 
-    /* --- Brand Colors --- */
+    /* --- Brand Colors (Improved for better contrast) --- */
     --brand-orange: 255 107 53;  /* #FF6B35 - Energy */
-    --brand-yellow: 247 147 30;  /* #F7931E - Warning */
+    --brand-yellow: 217 119 6;   /* #D97706 - Warning (darker for better contrast) */
     --brand-blue: 0 122 255;     /* #007AFF - Primary */
     --brand-purple: 88 86 214;   /* #5856D6 - Premium */
-    --brand-green: 52 199 89;    /* #34C759 - Success */
-    --brand-red: 255 59 48;      /* #FF3B30 - Error */
+    --brand-green: 34 197 94;    /* #22C55E - Success (improved from #34C759) */
+    --brand-red: 239 68 68;      /* #EF4444 - Error (improved contrast) */
 
     /* --- Semantic Colors (Light Mode) --- */
     --bg-primary: var(--white);
@@ -43,6 +43,7 @@
     --bg-elevated: var(--white);
     --bg-inverse: var(--neutral-950);
     
+    /* Improved text contrast ratios */
     --text-primary: var(--neutral-900);
     --text-secondary: var(--neutral-700);     /* Improved from 600 for better contrast */
     --text-tertiary: var(--neutral-600);     /* Improved from 500 for better contrast */
@@ -54,10 +55,27 @@
     --border-secondary: var(--neutral-300);
     --border-focus: var(--brand-blue);
     
+    /* --- Status Colors (Light Mode) --- */
+    --status-success-bg: 34 197 94 / 0.1;
+    --status-success-border: 34 197 94 / 0.3;
+    --status-success-text: 21 128 61;        /* Darker green for better contrast */
+    
+    --status-warning-bg: 217 119 6 / 0.1;
+    --status-warning-border: 217 119 6 / 0.3;
+    --status-warning-text: 154 52 18;        /* Darker amber for better contrast */
+    
+    --status-error-bg: 239 68 68 / 0.1;
+    --status-error-border: 239 68 68 / 0.3;
+    --status-error-text: 185 28 28;          /* Darker red for better contrast */
+    
+    --status-info-bg: 0 122 255 / 0.1;
+    --status-info-border: 0 122 255 / 0.3;
+    --status-info-text: 30 58 138;           /* Darker blue for better contrast */
+    
     /* --- Gradients --- */
     --gradient-performance: linear-gradient(135deg, rgb(var(--brand-orange)) 0%, rgb(var(--brand-yellow)) 100%);
     --gradient-premium: linear-gradient(135deg, rgb(var(--brand-blue)) 0%, rgb(var(--brand-purple)) 100%);
-    --gradient-success: linear-gradient(135deg, rgb(var(--brand-green)) 0%, rgb(52 199 89 / 0.8) 100%);
+    --gradient-success: linear-gradient(135deg, rgb(var(--brand-green)) 0%, rgb(34 197 94 / 0.8) 100%);
     
     /* --- Shadows --- */
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.05);
@@ -111,6 +129,7 @@
     --bg-elevated: var(--neutral-900);
     --bg-inverse: var(--white);
     
+    /* Improved dark mode text contrast */
     --text-primary: var(--white);
     --text-secondary: var(--neutral-200);  /* Improved from 300 for better contrast */
     --text-tertiary: var(--neutral-300);   /* Improved from 400 for better contrast */
@@ -120,6 +139,23 @@
     
     --border-primary: var(--neutral-800);
     --border-secondary: var(--neutral-700);
+    
+    /* --- Status Colors (Dark Mode) --- */
+    --status-success-bg: 34 197 94 / 0.15;
+    --status-success-border: 34 197 94 / 0.4;
+    --status-success-text: 74 222 128;       /* Lighter green for dark mode */
+    
+    --status-warning-bg: 217 119 6 / 0.15;
+    --status-warning-border: 217 119 6 / 0.4;
+    --status-warning-text: 251 191 36;       /* Lighter amber for dark mode */
+    
+    --status-error-bg: 239 68 68 / 0.15;
+    --status-error-border: 239 68 68 / 0.4;
+    --status-error-text: 248 113 113;        /* Lighter red for dark mode */
+    
+    --status-info-bg: 0 122 255 / 0.15;
+    --status-info-border: 0 122 255 / 0.4;
+    --status-info-text: 96 165 250;          /* Lighter blue for dark mode */
     
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.2);
     --shadow-sm: 0 2px 4px rgb(0 0 0 / 0.3);
@@ -258,7 +294,7 @@
     cursor: not-allowed;
   }
   
-  /* --- Badge --- */
+  /* --- Status Badges --- */
   .badge {
     @apply inline-flex items-center px-3 py-1 text-xs font-medium rounded-full;
     background: rgb(var(--bg-tertiary));
@@ -266,18 +302,56 @@
   }
   
   .badge-success {
-    background: rgb(var(--brand-green) / 0.1);
-    color: rgb(var(--brand-green));
+    background: rgb(var(--status-success-bg));
+    border: 1px solid rgb(var(--status-success-border));
+    color: rgb(var(--status-success-text));
   }
   
   .badge-warning {
-    background: rgb(var(--brand-yellow) / 0.1);
-    color: rgb(var(--brand-yellow));
+    background: rgb(var(--status-warning-bg));
+    border: 1px solid rgb(var(--status-warning-border));
+    color: rgb(var(--status-warning-text));
   }
   
   .badge-error {
-    background: rgb(var(--brand-red) / 0.1);
-    color: rgb(var(--brand-red));
+    background: rgb(var(--status-error-bg));
+    border: 1px solid rgb(var(--status-error-border));
+    color: rgb(var(--status-error-text));
+  }
+  
+  .badge-info {
+    background: rgb(var(--status-info-bg));
+    border: 1px solid rgb(var(--status-info-border));
+    color: rgb(var(--status-info-text));
+  }
+  
+  /* --- Status Messages --- */
+  .status-success {
+    @apply p-4 rounded-xl;
+    background: rgb(var(--status-success-bg));
+    border: 1px solid rgb(var(--status-success-border));
+    color: rgb(var(--status-success-text));
+  }
+  
+  .status-warning {
+    @apply p-4 rounded-xl;
+    background: rgb(var(--status-warning-bg));
+    border: 1px solid rgb(var(--status-warning-border));
+    color: rgb(var(--status-warning-text));
+  }
+  
+  .status-error {
+    @apply p-4 rounded-xl;
+    background: rgb(var(--status-error-bg));
+    border: 1px solid rgb(var(--status-error-border));
+    color: rgb(var(--status-error-text));
+  }
+  
+  .status-info {
+    @apply p-4 rounded-xl;
+    background: rgb(var(--status-info-bg));
+    border: 1px solid rgb(var(--status-info-border));
+    color: rgb(var(--status-info-text));
   }
   
   /* --- Metric Display --- */
@@ -449,7 +523,7 @@
   .aspect-hero { aspect-ratio: 21 / 9; }
 }
 
-/* --- Legacy Support & Additional Form Styles --- */
+/* --- Legacy Support & Improved Form Styles --- */
 .input-field, select.input-field, input[type="text"], input[type="email"] {
   @apply w-full px-4 py-3 text-base rounded-xl;
   background: rgb(var(--bg-elevated)) !important;
@@ -515,12 +589,6 @@
   cursor: not-allowed !important;
   transform: none !important;
   box-shadow: none !important;
-}
-
-/* Mobile Label */
-.mobile-label {
-  @apply block text-sm font-medium mb-2;
-  color: rgb(var(--text-secondary)) !important;
 }
 
 /* Better contrast for spans and divs */
@@ -591,6 +659,13 @@ input::placeholder, textarea::placeholder {
   :root {
     --border-primary: var(--neutral-400);
     --border-secondary: var(--neutral-500);
+    --text-secondary: var(--neutral-800);
+    --text-tertiary: var(--neutral-700);
+  }
+  
+  [data-theme="dark"] {
+    --text-secondary: var(--neutral-100);
+    --text-tertiary: var(--neutral-200);
   }
   
   .btn-primary {

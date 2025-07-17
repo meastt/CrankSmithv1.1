@@ -115,24 +115,24 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
 
   const typeStyles = {
     success: {
-      bg: 'bg-green-500/10 border-green-500/30',
+      bg: 'status-success',
       icon: '✓',
-      iconColor: 'text-green-500'
+      iconColor: ''
     },
     error: {
-      bg: 'bg-red-500/10 border-red-500/30',
+      bg: 'status-error',
       icon: '✕',
-      iconColor: 'text-red-500'
+      iconColor: ''
     },
     warning: {
-      bg: 'bg-yellow-500/10 border-yellow-500/30',
+      bg: 'status-warning',
       icon: '⚠',
-      iconColor: 'text-yellow-500'
+      iconColor: ''
     },
     info: {
-      bg: 'bg-blue-500/10 border-blue-500/30',
+      bg: 'status-info',
       icon: 'ℹ',
-      iconColor: 'text-blue-500'
+      iconColor: ''
     }
   };
 
@@ -141,7 +141,7 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
   return (
     <div
       className={`
-        ${style.bg} border backdrop-blur-sm rounded-lg p-4 shadow-lg
+        ${style.bg} backdrop-blur-sm shadow-lg
         transform transition-all duration-300 ease-out
         ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
       `}
@@ -151,7 +151,7 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
           {style.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-[var(--text-primary)] break-words">
+          <p className="text-sm text-neutral-900 dark:text-neutral-100 break-words">
             {toast.message}
           </p>
           {toast.actions && toast.actions.length > 0 && (
@@ -167,7 +167,7 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
                     px-3 py-1.5 text-xs font-medium rounded-md transition-colors
                     ${action.variant === 'primary' 
                       ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                      : 'bg-neutral-200 dark:bg-neutral-700 text-[var(--text-primary)] hover:bg-neutral-300 dark:hover:bg-neutral-600'
+                      : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 dark:hover:bg-neutral-600'
                     }
                   `}
                 >
@@ -179,7 +179,7 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
         </div>
         <button
           onClick={handleClose}
-          className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+          className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

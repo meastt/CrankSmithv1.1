@@ -657,9 +657,9 @@ export default function ResultsScreen({
 
                 {compatibility.criticalIssues && compatibility.criticalIssues.length > 0 && (
                   <div className="issues-section mb-4">
-                    <h4 className="font-medium text-red-400 mb-2">Critical Issues:</h4>
-                    {compatibility.criticalIssues.map((issue, index) => (
-                      <div key={index} className="text-sm text-red-300 mb-1">• {issue}</div>
+                                  <h4 className="font-medium text-red-600 dark:text-red-400 mb-2">Critical Issues:</h4>
+              {compatibility.criticalIssues.map((issue, index) => (
+                <div key={index} className="text-sm text-red-700 dark:text-red-300 mb-1">• {issue}</div>
                     ))}
                   </div>
                 )}

@@ -245,9 +245,9 @@ export default function BuildSummaryCard({
         
         {compatibility.issues.length > 0 && (
           <div className="mb-2">
-            <p className="text-sm font-medium text-red-600 mb-1">Issues:</p>
-            {compatibility.issues.map((issue, index) => (
-              <p key={index} className="text-sm text-red-700">• {issue}</p>
+                          <p className="text-sm font-medium text-red-600 dark:text-red-400 mb-1">Issues:</p>
+              {compatibility.issues.map((issue, index) => (
+                <p key={index} className="text-sm text-red-700 dark:text-red-400">• {issue}</p>
             ))}
           </div>
         )}

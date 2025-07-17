@@ -22,34 +22,30 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
 
   const statusStyles = {
     compatible: {
-      bg: 'bg-green-500/10',
-      border: 'border-green-500',
+      bg: 'status-success',
       iconBg: 'bg-green-500',
-      titleColor: 'text-green-600 dark:text-green-400'
+      titleColor: ''
     },
     warning: {
-      bg: 'bg-yellow-500/10',
-      border: 'border-yellow-500',
+      bg: 'status-warning',
       iconBg: 'bg-yellow-500',
-      titleColor: 'text-yellow-600 dark:text-yellow-400'
+      titleColor: ''
     },
     error: {
-      bg: 'bg-red-500/10',
-      border: 'border-red-500',
+      bg: 'status-error',
       iconBg: 'bg-red-500',
-      titleColor: 'text-red-600 dark:text-red-400'
+      titleColor: ''
     }
   };
 
   const styles = statusStyles[status] || {
-    bg: 'bg-[var(--surface-elevated)]',
-    border: 'border-[var(--border-subtle)]',
-              iconBg: 'bg-neutral-400',
-    titleColor: 'text-[var(--text-primary)]'
+    bg: 'p-4 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700',
+    iconBg: 'bg-neutral-400',
+    titleColor: 'text-neutral-600 dark:text-neutral-300'
   };
 
   return (
-    <div className={`p-4 rounded-lg border ${className} ${styles.bg} ${styles.border}`}>
+    <div className={`${className} ${styles.bg}`}>
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 mt-1">
           <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold ${styles.iconBg}`}>
@@ -61,39 +57,39 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
           <h3 className={`font-medium text-sm mb-1 ${styles.titleColor}`}>
             {title}
           </h3>
-          <p className="text-sm mb-3 text-[var(--text-secondary)]">
+          <p className="text-sm mb-3 text-neutral-700 dark:text-neutral-300">
             {message}
           </p>
           
           {criticalIssues?.length > 0 && (
             <div className="mb-3">
-              <div className="text-xs font-medium mb-1 text-red-500">
+              <div className="text-xs font-medium mb-1 text-red-600 dark:text-red-400">
                 Critical Issues:
               </div>
               {criticalIssues.map((issue, index) => (
-                <div key={index} className="text-xs mb-1 text-[var(--text-secondary)]">• {issue}</div>
+                <div key={index} className="text-xs mb-1 text-neutral-600 dark:text-neutral-400">• {issue}</div>
               ))}
             </div>
           )}
           
           {minorWarnings?.length > 0 && (
             <div className="mb-3">
-              <div className="text-xs font-medium mb-1 text-yellow-500">
+              <div className="text-xs font-medium mb-1 text-yellow-600 dark:text-yellow-400">
                 Considerations:
               </div>
               {minorWarnings.slice(0, 2).map((warning, index) => (
-                <div key={index} className="text-xs mb-1 text-[var(--text-secondary)]">• {warning}</div>
+                <div key={index} className="text-xs mb-1 text-neutral-600 dark:text-neutral-400">• {warning}</div>
               ))}
             </div>
           )}
           
           {actionItems?.length > 0 && (
             <div>
-              <div className="text-xs font-medium mb-1 text-[var(--text-secondary)]">
+              <div className="text-xs font-medium mb-1 text-neutral-600 dark:text-neutral-300">
                 Recommendations:
               </div>
               {actionItems.slice(0, 2).map((item, index) => (
-                <div key={index} className="text-xs mb-1 text-[var(--text-tertiary)]">• {item}</div>
+                <div key={index} className="text-xs mb-1 text-neutral-500 dark:text-neutral-400">• {item}</div>
               ))}
             </div>
           )}
@@ -582,7 +578,7 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
           <h3 className="text-lg font-semibold mb-1 text-[var(--text-primary)]">{config.name}</h3>
           <p className="text-sm text-[var(--text-tertiary)]">{config.bikeType ? config.bikeType.charAt(0).toUpperCase() + config.bikeType.slice(1) : 'Unknown'} Bike</p>
         </div>
-        <button onClick={() => onDelete(config.id)} className="p-2 rounded-lg transition-colors text-[var(--text-tertiary)] hover:bg-red-100 dark:hover:bg-red-900/50" title="Delete configuration">
+                          <button onClick={() => onDelete(config.id)} className="p-2 rounded-lg transition-colors text-neutral-500 dark:text-neutral-400 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400" title="Delete configuration">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
         </button>
       </div>

@@ -147,7 +147,7 @@ export default function Landing() {
               
               {status.message && (
                 <div className={`mt-4 p-4 rounded-lg ${
-                  status.type === 'success' ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'
+                  status.type === 'success' ? 'bg-green-500/20 text-green-400 dark:text-green-300' : 'bg-red-500/20 text-red-400 dark:text-red-300'
                 }`}>
                   {status.message}
                 </div>

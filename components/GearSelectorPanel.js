@@ -146,7 +146,7 @@ const GearSelectorPanel = React.memo(({
     return (
       <div className="card group">
         <div className="flex items-center justify-center py-8">
-          <span className="text-red-500">Error loading components: {error}</span>
+                      <span className="text-red-600 dark:text-red-400">Error loading components: {error}</span>
         </div>
       </div>
     );

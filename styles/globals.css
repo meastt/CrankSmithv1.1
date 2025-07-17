@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CRITICAL: Advanced Footer Whitespace Fix */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Force remove all bottom spacing with highest priority */
+html {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.15; /* Normalize line-height */
+  overflow-x: hidden;
+}
+
+body {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 100vh !important;
+  overflow-x: hidden;
+}
+
 /* 
 ==========================================================================
   CRANKSMITH V2 - PREMIUM DESIGN SYSTEM
@@ -26,20 +50,111 @@
     box-sizing: inherit;
   }
 
+  /* Root container and layout management */
   #__next {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Force proper layout structure */
+  body > div:first-child {
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   /* Ensure main content area takes available space */
   main {
-    flex: 1 0 auto;
+    flex: 1 1 auto !important;
   }
 
-  /* Ensure footer is always at bottom */
+  /* Ensure footer is always at bottom with no extra space */
   footer {
-    flex-shrink: 0;
+    flex: 0 0 auto !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    position: relative !important;
+  }
+
+  /* Override any conflicting min-height on page content */
+  .page-content {
+    flex: 1;
+  }
+
+  /* Force removal of extra whitespace */
+  body {
+    line-height: 1;
+  }
+
+  /* Prevent any extra spacing after footer */
+  body::after,
+  html::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Ensure no extra margin/padding on root elements */
+  div[id="__next"] {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Absolute positioning fallback for footer */
+  footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Ensure page ends exactly at footer */
+  footer::after {
+    content: '';
+    display: block;
+    height: 0;
+    clear: both;
+  }
+
+  /* Remove any potential spacing issues */
+  body > * {
+    vertical-align: top;
+  }
+
+  /* Advanced footer whitespace elimination */
+  footer::after {
+    content: '' !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  /* Prevent any element after footer from adding space */
+  footer ~ * {
+    display: none !important;
+  }
+
+  /* Force viewport constraints */
+  html, body {
+    max-height: 100vh !important;
+  }
+
+  /* Override Tailwind's min-h-screen on individual pages */
+  .min-h-screen {
+    min-height: auto !important;
+  }
+
+  /* Ensure no trailing whitespace or elements */
+  body:after,
+  #__next:after {
+    content: none !important;
+    display: none !important;
   }
 
 :root {

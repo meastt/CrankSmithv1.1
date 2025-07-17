@@ -52,7 +52,7 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen transition-colors duration-300 bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white" suppressHydrationWarning>
+    <div className="transition-colors duration-300 bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white" suppressHydrationWarning>
       <ErrorBoundary context="component">
         <InstallBanner />
       </ErrorBoundary>

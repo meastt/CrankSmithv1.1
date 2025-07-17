@@ -13,6 +13,59 @@ const GearSelectorPanel = React.memo(({
   bikeType,
   icon: Icon 
 }) => {
+  // Use the optimized hook for component loading (must be called before any conditional returns)
+  const { components, loading, error } = useComponentDatabase(bikeType);
+
+  // Transform components data for SearchableDropdown - memoized to prevent recalculation
+  const cranksetOptions = useMemo(() => 
+    components?.cranksets?.map(crankset => ({
+      id: crankset.id,
+      label: `${crankset.model} ${crankset.variant}`,
+      model: crankset.model,
+      variant: crankset.variant,
+      teeth: crankset.teeth,
+      speeds: crankset.speeds,
+      weight: crankset.weight,
+      bikeType: crankset.bikeType
+    })) || [], [components?.cranksets]
+  );
+
+  const cassetteOptions = useMemo(() => 
+    components?.cassettes?.map(cassette => ({
+      id: cassette.id,
+      label: `${cassette.model} ${cassette.variant}`,
+      model: cassette.model,
+      variant: cassette.variant,
+      teeth: cassette.teeth,
+      speeds: cassette.speeds,
+      weight: cassette.weight,
+      bikeType: cassette.bikeType
+    })) || [], [components?.cassettes]
+  );
+
+  // Memoized event handlers to prevent unnecessary re-renders
+  const handleCranksetChange = useCallback((selectedOption) => {
+    setSetup({ ...setup, crankset: selectedOption });
+    if (config?.onCranksetChange) {
+      config.onCranksetChange(selectedOption);
+    }
+  }, [setup, setSetup, config]);
+
+  const handleCassetteChange = useCallback((selectedOption) => {
+    setSetup({ ...setup, cassette: selectedOption });
+    if (config?.onCassetteChange) {
+      config.onCassetteChange(selectedOption);
+    }
+  }, [setup, setSetup, config]);
+
+  const handleWheelChange = useCallback((value) => {
+    config.onWheelChange(value);
+  }, [config]);
+
+  const handleTireChange = useCallback((value) => {
+    config.onTireChange(value);
+  }, [config]);
+
   // Early return if bikeType is not set - prevents empty options rendering
   if (!bikeType || bikeType === '') {
     return (
@@ -42,9 +95,6 @@ const GearSelectorPanel = React.memo(({
     );
   }
 
-  // Use the optimized hook for component loading
-  const { components, loading, error } = useComponentDatabase(bikeType);
-
   // Enhanced debug logging with better context
   // console.log(`🔍 GearSelectorPanel (${title}):`, {
   //   bikeType,
@@ -60,33 +110,6 @@ const GearSelectorPanel = React.memo(({
   //   context: `Rendering for bikeType: ${bikeType}`
   // });
 
-  // Transform components data for SearchableDropdown - memoized to prevent recalculation
-  const cranksetOptions = useMemo(() => 
-    components?.cranksets?.map(crankset => ({
-      id: crankset.id,
-      label: `${crankset.model} ${crankset.variant}`,
-      model: crankset.model,
-      variant: crankset.variant,
-      teeth: crankset.teeth,
-      speeds: crankset.speeds,
-      weight: crankset.weight,
-      bikeType: crankset.bikeType
-    })) || [], [components?.cranksets]
-  );
-
-  const cassetteOptions = useMemo(() => 
-    components?.cassettes?.map(cassette => ({
-      id: cassette.id,
-      label: `${cassette.model} ${cassette.variant}`,
-      model: cassette.model,
-      variant: cassette.variant,
-      teeth: cassette.teeth,
-      speeds: cassette.speeds,
-      weight: cassette.weight,
-      bikeType: cassette.bikeType
-    })) || [], [components?.cassettes]
-  );
-
   // console.log(`🔧 Transformed options for ${title}:`, {
   //   cranksetOptions: cranksetOptions,
   //   cassetteOptions: cassetteOptions,
@@ -96,38 +119,7 @@ const GearSelectorPanel = React.memo(({
   //   firstCassette: cassetteOptions[0]
   // });
 
-  // Memoized event handlers to prevent unnecessary re-renders
-  const handleCranksetChange = useCallback((selectedOption) => {
-    // console.log('🔄 Crankset selected:', selectedOption);
-    // Update the setup state directly with the full component object
-    setSetup({ ...setup, crankset: selectedOption });
-    
-    // Also call the config handler if it exists
-    if (config?.onCranksetChange) {
-      config.onCranksetChange(selectedOption);
-    }
-  }, [setup, setSetup, config]);
 
-  const handleCassetteChange = useCallback((selectedOption) => {
-    // console.log('🔄 Cassette selected:', selectedOption);
-    // Update the setup state directly with the full component object
-    setSetup({ ...setup, cassette: selectedOption });
-    
-    // Also call the config handler if it exists
-    if (config?.onCassetteChange) {
-      config.onCassetteChange(selectedOption);
-    }
-  }, [setup, setSetup, config]);
-
-  // Memoized wheel change handler
-  const handleWheelChange = useCallback((value) => {
-    config.onWheelChange(value);
-  }, [config]);
-
-  // Memoized tire change handler
-  const handleTireChange = useCallback((value) => {
-    config.onTireChange(value);
-  }, [config]);
 
   // Show loading state if components are still loading
   if (loading) {
@@ -246,36 +238,4 @@ GearSelectorPanel.displayName = 'GearSelectorPanel';
 
 export default GearSelectorPanel;
 
-function ChainringIcon({ teeth }) {
-  const isDouble = teeth.length === 2;
-  return (
-    <div className="w-8 h-8 flex items-center justify-center rounded-full border-2" 
-         style={{ borderColor: 'var(--accent-blue)' }}>
-      <span className="text-xs font-bold" style={{ color: 'var(--accent-blue)' }}>
-        {isDouble ? `${teeth[0]}/${teeth[1]}` : teeth[0]}
-      </span>
-    </div>
-  );
-}
-
-function CassetteIcon({ teeth }) {
-  return (
-    <div className="w-8 h-8 flex items-center justify-center" 
-         style={{ color: 'var(--text-tertiary)' }}>
-      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="2"/>
-        <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" strokeWidth="1"/>
-        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1"/>
-      </svg>
-    </div>
-  );
-}
-
-// Helper functions
-function formatWheelSize(size) {
-  return size.replace('c', 'mm');
-}
-
-function formatTireWidth(width) {
-  return `${width}mm`;
-} 
+ 

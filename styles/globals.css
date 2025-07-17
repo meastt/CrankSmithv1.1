@@ -10,6 +10,38 @@
 */
 
 @layer base {
+  /* --- Reset and Base Styles --- */
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  html {
+    box-sizing: border-box;
+  }
+
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
+  #__next {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Ensure main content area takes available space */
+  main {
+    flex: 1 0 auto;
+  }
+
+  /* Ensure footer is always at bottom */
+  footer {
+    flex-shrink: 0;
+  }
+
 :root {
     /* --- Core Colors --- */
     --white: 255 255 255;

@@ -52,7 +52,7 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="min-h-screen transition-colors duration-300 bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white" suppressHydrationWarning>
+    <div className="flex flex-col min-h-screen transition-colors duration-300 bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white" suppressHydrationWarning>
       <ErrorBoundary context="component">
         <InstallBanner />
       </ErrorBoundary>
@@ -192,7 +192,7 @@ export default function Layout({ children }) {
       </header>
 
       {/* Main Content */}
-      <main className="pt-20">
+      <main className="flex-1 pt-20">
         {children}
       </main>
 
@@ -207,7 +207,7 @@ export default function Layout({ children }) {
       </ErrorBoundary>
 
       {/* Premium Footer */}
-      <footer className="border-t mt-20 py-12 border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+      <footer className="border-t py-12 border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
         <div className="container-responsive">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Brand Section */}

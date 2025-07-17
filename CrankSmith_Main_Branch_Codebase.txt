@@ -1,89 +1,140 @@
-# CrankSmith v1.1 - Complete Codebase
-# Generated: 2025-07-17T17:19:22.224Z
-# Bike Fit Calculator with Fixed Validation Ranges
-# Professional Cycling Tools & Calculators
+# CrankSmith v1.1 - Complete Codebase (Main Branch)
+# Generated: 2025-07-17T17:25:42.555Z
+# Git Branch: main
+# Git Commit: a19f0a9
+# Last Commit: 2025-07-17 11:23:10 -0600
+#
+# 🚴‍♂️ BIKE FIT CALCULATOR - FIXED & WORKING! 
+# ✅ Accepts normal measurements like 32cm inseam, 24cm arm length
+# ✅ Expanded validation ranges for all body types
+# ✅ Build passing successfully
+# ✅ Professional cycling tools & calculators
+
+===============================================================================
+🎯 KEY FEATURES:
+- Bike Fit Calculator with realistic validation ranges (25-120cm inseam)
+- Professional gear ratio calculator with real component database
+- Performance analysis tools
+- Mobile-optimized interface
+- PWA (Progressive Web App) capabilities
+- Modern React/Next.js architecture with TypeScript
+
+🔧 RECENT FIXES (Included in this codebase):
+- Fixed bike fit calculator input validation for normal body measurements
+- Resolved React Hooks violations blocking deployment
+- Updated ESLint configuration for successful builds
+- Enhanced mobile routing and UX improvements
+- Comprehensive service worker implementation
 
 ===============================================================================
 TABLE OF CONTENTS:
-1. .eslintrc.json
-2. README.MD
-3. components/AppDownloadCTA.js
-4. components/BuildSummaryCard.js
-5. components/ErrorBoundary.js
-6. components/FloatingAskRileyButton.js
-7. components/FloatingInstallButton.js
-8. components/GearSelectorPanel.js
-9. components/ImportExportManager.js
-10. components/InstallBanner.js
-11. components/InstallPrompt.js
-12. components/Layout.js
-13. components/PerformanceChart.js
-14. components/SEOHead.js
-15. components/SearchableDropdown.tsx
-16. components/SearchableDropdown/index.js
-17. components/SimulationResults.js
-18. components/ThemeToggle.js
-19. components/Toast.tsx
-20. components/mobile/BikeTypeSelector.js
-21. components/mobile/ComponentSelector.js
-22. components/mobile/GarageScreen.js
-23. components/mobile/InstallPrompt.js
-24. components/mobile/MobileDropdown.js
-25. components/mobile/MobileLayout.js
-26. components/mobile/ResultsScreen.js
-27. components/mobile/SettingsScreen.js
-28. data/early-access.json
-29. hooks/useCalculatorState.js
-30. hooks/useComponentDatabase.js
-31. hooks/useFormValidation.js
-32. lib/calculateRealPerformance.js
-33. lib/calculations.js
-34. lib/compatibilityChecker.js
-35. lib/components.js
-36. lib/pwa-enhanced.ts
-37. lib/pwa-utils.js
-38. lib/rileyAI.js
-39. lib/supabase.js
-40. lib/validation.js
-41. next.config.js
-42. package.json
-43. pages/404.js
-44. pages/_app.js
-45. pages/about.js
-46. pages/api/early-access.js
-47. pages/api/riley.js
-48. pages/api/verify-beta.js
-49. pages/ask-riley.js
-50. pages/bike-fit.tsx
-51. pages/blog.js
-52. pages/blog/gravel-vs-road-gearing.js
-53. pages/blog/optimal-climbing-gears.js
-54. pages/blog/tire-pressure-performance.js
-55. pages/builder.js
-56. pages/calculator.js
-57. pages/docs.js
-58. pages/index.js
-59. pages/landing.js
-60. pages/mobile.js
-61. pages/performance-analysis.js
-62. pages/tire-pressure.js
-63. postcss.config.js
-64. public/manifest.json
-65. public/offline.html
-66. public/robots.txt
-67. public/sw-enhanced.js
-68. public/sw.js
-69. store/calculatorStore.js
-70. styles/globals.css
-71. tailwind.config.js
-72. tsconfig.json
-73. types/index.ts
+  1. .eslintrc.json
+  2. next.config.js
+  3. package.json
+  4. postcss.config.js
+  5. README.MD
+  6. tailwind.config.js
+  7. tsconfig.json
 
+📁 COMPONENTS/
+  8. AppDownloadCTA.js
+  9. BuildSummaryCard.js
+  10. ErrorBoundary.js
+  11. FloatingAskRileyButton.js
+  12. FloatingInstallButton.js
+  13. GearSelectorPanel.js
+  14. ImportExportManager.js
+  15. InstallBanner.js
+  16. InstallPrompt.js
+  17. Layout.js
+  18. PerformanceChart.js
+  19. SearchableDropdown.tsx
+  20. SEOHead.js
+  21. SimulationResults.js
+  22. ThemeToggle.js
+  23. Toast.tsx
+
+📁 COMPONENTS/MOBILE/
+  24. BikeTypeSelector.js
+  25. ComponentSelector.js
+  26. GarageScreen.js
+  27. InstallPrompt.js
+  28. MobileDropdown.js
+  29. MobileLayout.js
+  30. ResultsScreen.js
+  31. SettingsScreen.js
+
+📁 COMPONENTS/SEARCHABLEDROPDOWN/
+  32. index.js
+
+📁 DATA/
+  33. early-access.json
+
+📁 HOOKS/
+  34. useCalculatorState.js
+  35. useComponentDatabase.js
+  36. useFormValidation.js
+
+📁 LIB/
+  37. calculateRealPerformance.js
+  38. calculations.js
+  39. compatibilityChecker.js
+  40. components.js
+  41. pwa-enhanced.ts
+  42. pwa-utils.js
+  43. rileyAI.js
+  44. supabase.js
+  45. validation.js
+
+📁 PAGES/
+  46. _app.js
+  47. 404.js
+  48. about.js
+  49. ask-riley.js
+  50. bike-fit.tsx
+  51. blog.js
+  52. builder.js
+  53. calculator.js
+  54. docs.js
+  55. index.js
+  56. landing.js
+  57. mobile.js
+  58. performance-analysis.js
+  59. tire-pressure.js
+
+📁 PAGES/API/
+  60. early-access.js
+  61. riley.js
+  62. verify-beta.js
+
+📁 PAGES/BLOG/
+  63. gravel-vs-road-gearing.js
+  64. optimal-climbing-gears.js
+  65. tire-pressure-performance.js
+
+📁 PUBLIC/
+  66. manifest.json
+  67. offline.html
+  68. robots.txt
+  69. sw-enhanced.js
+  70. sw.js
+
+📁 STORE/
+  71. calculatorStore.js
+
+📁 STYLES/
+  72. globals.css
+
+📁 TYPES/
+  73. index.ts
+
+===============================================================================
+TOTAL FILES: 73
 ===============================================================================
 
 
 ================================================================================
-FILE 1: .eslintrc.json
+FILE 1: .eslintrc.json [json]
 ================================================================================
 
 {
@@ -148,7 +199,92 @@ FILE 1: .eslintrc.json
 
 
 ================================================================================
-FILE 2: README.MD
+FILE 2: next.config.js [javascript]
+================================================================================
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Remove the swcMinify line if it's there
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Exclude service worker from server-side bundling
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'sw.js': false,
+      };
+    }
+    return config;
+  },
+};
+
+module.exports = nextConfig;
+
+
+
+================================================================================
+FILE 3: package.json [json]
+================================================================================
+
+{
+  "name": "cranksmith-v2",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0",
+    "@upstash/redis": "^1.35.1",
+    "autoprefixer": "^10.4.17",
+    "chart.js": "^4.5.0",
+    "jspdf": "^3.0.1",
+    "next": "^15.3.3",
+    "nodemailer": "^7.0.3",
+    "postcss": "^8.4.35",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-window": "^1.8.11",
+    "recharts": "^2.15.3",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/nodemailer": "^6.4.14",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-window": "^1.8.8",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.1.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "typescript": "^5.3.3"
+  }
+}
+
+
+
+================================================================================
+FILE 4: postcss.config.js [javascript]
+================================================================================
+
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+
+
+================================================================================
+FILE 5: README.MD [markdown]
 ================================================================================
 
 # CrankSmith
@@ -195,7 +331,160 @@ Have questions or feedback?
 
 
 ================================================================================
-FILE 3: components/AppDownloadCTA.js
+FILE 6: tailwind.config.js [javascript]
+================================================================================
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  darkMode: ['class', '[data-theme="dark"]'],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          orange: 'rgb(var(--brand-orange) / <alpha-value>)',
+          yellow: 'rgb(var(--brand-yellow) / <alpha-value>)',
+          blue: 'rgb(var(--brand-blue) / <alpha-value>)',
+          purple: 'rgb(var(--brand-purple) / <alpha-value>)',
+          green: 'rgb(var(--brand-green) / <alpha-value>)',
+          red: 'rgb(var(--brand-red) / <alpha-value>)',
+        },
+        neutral: {
+          50: 'rgb(var(--neutral-50) / <alpha-value>)',
+          100: 'rgb(var(--neutral-100) / <alpha-value>)',
+          200: 'rgb(var(--neutral-200) / <alpha-value>)',
+          300: 'rgb(var(--neutral-300) / <alpha-value>)',
+          400: 'rgb(var(--neutral-400) / <alpha-value>)',
+          500: 'rgb(var(--neutral-500) / <alpha-value>)',
+          600: 'rgb(var(--neutral-600) / <alpha-value>)',
+          700: 'rgb(var(--neutral-700) / <alpha-value>)',
+          800: 'rgb(var(--neutral-800) / <alpha-value>)',
+          900: 'rgb(var(--neutral-900) / <alpha-value>)',
+          950: 'rgb(var(--neutral-950) / <alpha-value>)',
+        },
+      },
+      fontFamily: {
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        mono: ['"SF Mono"', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '120': '30rem',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'spin-slow': 'spin 3s linear infinite',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
+        'bounce-slow': 'bounce 2s infinite',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+      },
+      boxShadow: {
+        'glow-sm': '0 0 10px rgb(var(--brand-blue) / 0.3)',
+        'glow-md': '0 0 20px rgb(var(--brand-blue) / 0.4)',
+        'glow-lg': '0 0 40px rgb(var(--brand-blue) / 0.5)',
+        'inner-lg': 'inset 0 2px 4px 0 rgb(0 0 0 / 0.1)',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-performance': 'var(--gradient-performance)',
+        'gradient-premium': 'var(--gradient-premium)',
+        'gradient-success': 'var(--gradient-success)',
+      },
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
+    },
+  },
+  plugins: [
+    function({ addUtilities }) {
+      const newUtilities = {
+        '.text-balance': {
+          'text-wrap': 'balance',
+        },
+        '.animation-delay-100': {
+          'animation-delay': '100ms',
+        },
+        '.animation-delay-200': {
+          'animation-delay': '200ms',
+        },
+        '.animation-delay-300': {
+          'animation-delay': '300ms',
+        },
+        '.animation-delay-500': {
+          'animation-delay': '500ms',
+        },
+        '.animation-delay-1000': {
+          'animation-delay': '1000ms',
+        },
+      }
+      addUtilities(newUtilities)
+    },
+  ],
+}
+
+
+
+================================================================================
+FILE 7: tsconfig.json [json]
+================================================================================
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out"
+  ]
+}
+
+
+================================================================================
+FILE 8: components/AppDownloadCTA.js [javascript]
 ================================================================================
 
 // components/AppDownloadCTA.js - Landing page CTA for app download
@@ -447,7 +736,7 @@ export default function AppDownloadCTA() {
 
 
 ================================================================================
-FILE 4: components/BuildSummaryCard.js
+FILE 9: components/BuildSummaryCard.js [javascript]
 ================================================================================
 
 // components/BuildSummaryCard.js - FIXED VERSION
@@ -780,7 +1069,7 @@ export default function BuildSummaryCard({
 
 
 ================================================================================
-FILE 5: components/ErrorBoundary.js
+FILE 10: components/ErrorBoundary.js [javascript]
 ================================================================================
 
 // components/ErrorBoundary.js - Error boundary component to catch React errors
@@ -920,7 +1209,7 @@ export const withErrorBoundary = (Component, errorBoundaryProps = {}) => {
 
 
 ================================================================================
-FILE 6: components/FloatingAskRileyButton.js
+FILE 11: components/FloatingAskRileyButton.js [javascript]
 ================================================================================
 
 import { useState, useEffect } from 'react';
@@ -996,7 +1285,7 @@ export default function FloatingAskRileyButton() {
 
 
 ================================================================================
-FILE 7: components/FloatingInstallButton.js
+FILE 12: components/FloatingInstallButton.js [javascript]
 ================================================================================
 
 // components/FloatingInstallButton.js - Floating install button
@@ -1121,7 +1410,7 @@ export default function FloatingInstallButton() {
 
 
 ================================================================================
-FILE 8: components/GearSelectorPanel.js
+FILE 13: components/GearSelectorPanel.js [javascript]
 ================================================================================
 
 import React, { useCallback, useMemo } from 'react';
@@ -1368,7 +1657,7 @@ export default GearSelectorPanel;
 
 
 ================================================================================
-FILE 9: components/ImportExportManager.js
+FILE 14: components/ImportExportManager.js [javascript]
 ================================================================================
 
 // components/ErrorBoundary.js - IMPROVED VERSION
@@ -1703,7 +1992,7 @@ export const useErrorReporting = () => {
 
 
 ================================================================================
-FILE 10: components/InstallBanner.js
+FILE 15: components/InstallBanner.js [javascript]
 ================================================================================
 
 // components/InstallBanner.js - Top banner for app installation
@@ -1840,7 +2129,7 @@ export default function InstallBanner() {
 
 
 ================================================================================
-FILE 11: components/InstallPrompt.js
+FILE 16: components/InstallPrompt.js [javascript]
 ================================================================================
 
 // components/InstallPrompt.js - PWA Install Prompt
@@ -2179,7 +2468,7 @@ export default function InstallPrompt({ variant = 'banner' }) {
 
 
 ================================================================================
-FILE 12: components/Layout.js
+FILE 17: components/Layout.js [javascript]
 ================================================================================
 
 "use client";
@@ -2498,7 +2787,7 @@ export default function Layout({ children }) {
 
 
 ================================================================================
-FILE 13: components/PerformanceChart.js
+FILE 18: components/PerformanceChart.js [javascript]
 ================================================================================
 
 // PerformanceChart.js - OPTIMIZED VERSION
@@ -2708,140 +2997,7 @@ export default function PerformanceChart({ current, proposed, speedUnit = 'mph' 
 
 
 ================================================================================
-FILE 14: components/SEOHead.js
-================================================================================
-
-import Head from 'next/head';
-
-export default function SEOHead({ 
-  title = "CrankSmith - Professional Bike Gear Calculator & Drivetrain Compatibility Tool",
-  description = "Professional bike gear ratio calculator, drivetrain compatibility checker, and bike fit calculator. Perfect for cyclists, bike shops, and bike mechanics. Calculate optimal gearing for road, mountain, gravel, and touring bikes.",
-  url = "https://cranksmith.com",
-  image = "/og-image.jpg",
-  keywords = "bike gear calculator, gear ratio calculator, drivetrain compatibility, bike fit calculator, cycling gear, bicycle gearing, bike setup, cycling tools, bike mechanics, cycling optimization",
-  type = "website",
-  structuredData = null,
-  author = "CrankSmith",
-  category = "cycling tools"
-}) {
-  
-  // Default structured data for the site
-  const defaultStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "CrankSmith",
-    "description": description,
-    "url": url,
-    "applicationCategory": "Sports & Recreation",
-    "operatingSystem": "Web Browser",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "creator": {
-      "@type": "Organization",
-      "name": "CrankSmith",
-      "url": url
-    },
-    "audience": {
-      "@type": "Audience",
-      "audienceType": "Cyclists, Bike Mechanics, Bike Shops"
-    },
-    "keywords": keywords,
-    "inLanguage": "en-US",
-    "isAccessibleForFree": true
-  };
-
-  const finalStructuredData = structuredData || defaultStructuredData;
-  
-  return (
-    <Head>
-      {/* Basic Meta Tags */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      <meta name="author" content={author} />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="language" content="en-US" />
-      <meta name="category" content={category} />
-      
-      {/* Enhanced SEO Meta Tags */}
-      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-      <meta name="googlebot" content="index, follow" />
-      <meta name="revisit-after" content="1 days" />
-      <meta name="distribution" content="global" />
-      <meta name="rating" content="general" />
-      <meta name="referrer" content="origin-when-cross-origin" />
-      
-      {/* Geographic and Industry Targeting */}
-      <meta name="geo.region" content="US" />
-      <meta name="geo.placename" content="United States" />
-      <meta name="target" content="cyclists, bike mechanics, cycling enthusiasts" />
-      <meta name="audience" content="cyclists" />
-      <meta name="coverage" content="worldwide" />
-      
-      {/* Open Graph (Facebook/Social) Enhanced */}
-      <meta property="og:type" content={type} />
-      <meta property="og:site_name" content="CrankSmith" />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={url} />
-      <meta property="og:image" content={image} />
-      <meta property="og:image:alt" content="CrankSmith - Professional Bike Gear Calculator" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:locale" content="en_US" />
-      
-      {/* Twitter Card Enhanced */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@cranksmithapp" />
-      <meta name="twitter:creator" content="@cranksmithapp" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
-      <meta name="twitter:image:alt" content="CrankSmith - Professional Bike Gear Calculator" />
-      
-      {/* Additional Platform Meta Tags */}
-      <meta property="fb:app_id" content="CrankSmith" />
-      <meta name="pinterest-rich-pin" content="true" />
-      
-      {/* Search Engine Optimization */}
-      <link rel="canonical" href={url} />
-      <meta name="format-detection" content="telephone=no" />
-      
-      {/* Structured Data (JSON-LD) */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(finalStructuredData)
-        }}
-      />
-      
-      {/* Additional Bike-Specific Meta Tags */}
-      <meta name="subject" content="Cycling Tools and Calculators" />
-      <meta name="topic" content="Bicycle Gear Ratios and Compatibility" />
-      <meta name="summary" content="Professional bike gear calculator and compatibility checker for cyclists" />
-      <meta name="classification" content="Sports & Recreation - Cycling" />
-      <meta name="owner" content="CrankSmith" />
-      <meta name="url" content={url} />
-      <meta name="identifier-URL" content={url} />
-      <meta name="directory" content="submission" />
-      <meta name="pagename" content={title} />
-      <meta name="page-topic" content="cycling gear calculation" />
-      <meta name="page-type" content="tool" />
-      
-      {/* Search Engine Verification Tags */}
-      <meta name="google-site-verification" content="_OejAgyGekugOzvl7MqpGFmUY6cqxE1tF3frnHRb2vk" />
-      {/* <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" /> */}
-      {/* <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE" /> */}
-    </Head>
-  );
-} 
-
-
-================================================================================
-FILE 15: components/SearchableDropdown.tsx
+FILE 19: components/SearchableDropdown.tsx [tsx]
 ================================================================================
 
 // components/SearchableDropdown.tsx - Enhanced with TypeScript and performance optimizations
@@ -3307,128 +3463,140 @@ export const groupBySeries = (component: DropdownOption): string => {
 
 
 ================================================================================
-FILE 16: components/SearchableDropdown/index.js
+FILE 20: components/SEOHead.js [javascript]
 ================================================================================
 
-import React, { useState, useRef, useEffect } from 'react';
-import DropdownTrigger from './DropdownTrigger';
-import DropdownPortal from './DropdownPortal';
+import Head from 'next/head';
 
-const SearchableDropdown = ({
-  options,
-  value,
-  onChange,
-  placeholder,
-  groupBy,
-  className = ''
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const triggerRef = useRef(null);
-  const inputRef = useRef(null);
-
-  const selectedOption = options.find(opt => opt.id === value);
-
-  const filteredOptions = options.filter(option => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      option.model.toLowerCase().includes(searchLower) ||
-      option.variant.toLowerCase().includes(searchLower) ||
-      option.weight.toString().includes(searchTerm)
-    );
-  });
-
-  const groupedOptions = filteredOptions.reduce((acc, option) => {
-    const group = groupBy ? option[groupBy] : 'All';
-    if (!acc[group]) {
-      acc[group] = [];
-    }
-    acc[group].push(option);
-    return acc;
-  }, {});
-
-  const handleSelect = (option) => {
-    onChange(option.id);
-    setIsOpen(false);
-    setSearchTerm('');
-    setHighlightedIndex(0);
+export default function SEOHead({ 
+  title = "CrankSmith - Professional Bike Gear Calculator & Drivetrain Compatibility Tool",
+  description = "Professional bike gear ratio calculator, drivetrain compatibility checker, and bike fit calculator. Perfect for cyclists, bike shops, and bike mechanics. Calculate optimal gearing for road, mountain, gravel, and touring bikes.",
+  url = "https://cranksmith.com",
+  image = "/og-image.jpg",
+  keywords = "bike gear calculator, gear ratio calculator, drivetrain compatibility, bike fit calculator, cycling gear, bicycle gearing, bike setup, cycling tools, bike mechanics, cycling optimization",
+  type = "website",
+  structuredData = null,
+  author = "CrankSmith",
+  category = "cycling tools"
+}) {
+  
+  // Default structured data for the site
+  const defaultStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CrankSmith",
+    "description": description,
+    "url": url,
+    "applicationCategory": "Sports & Recreation",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "CrankSmith",
+      "url": url
+    },
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Cyclists, Bike Mechanics, Bike Shops"
+    },
+    "keywords": keywords,
+    "inLanguage": "en-US",
+    "isAccessibleForFree": true
   };
 
-  const handleKeyDown = (e) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setHighlightedIndex(prev => 
-          prev < filteredOptions.length - 1 ? prev + 1 : prev
-        );
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setHighlightedIndex(prev => prev > 0 ? prev - 1 : prev);
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (filteredOptions[highlightedIndex]) {
-          handleSelect(filteredOptions[highlightedIndex]);
-        }
-        break;
-      case 'Escape':
-        e.preventDefault();
-        setIsOpen(false);
-        break;
-    }
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target) &&
-        !e.target.closest('.dropdown-portal')
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
+  const finalStructuredData = structuredData || defaultStructuredData;
+  
   return (
-    <div className={`relative ${className}`}>
-      <DropdownTrigger
-        isOpen={isOpen}
-        displayValue={selectedOption?.model}
-        placeholder={placeholder}
-        onClick={() => setIsOpen(true)}
-        triggerRef={triggerRef}
+    <Head>
+      {/* Basic Meta Tags */}
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
+      <meta name="author" content={author} />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="language" content="en-US" />
+      <meta name="category" content={category} />
+      
+      {/* Enhanced SEO Meta Tags */}
+      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+      <meta name="googlebot" content="index, follow" />
+      <meta name="revisit-after" content="1 days" />
+      <meta name="distribution" content="global" />
+      <meta name="rating" content="general" />
+      <meta name="referrer" content="origin-when-cross-origin" />
+      
+      {/* Geographic and Industry Targeting */}
+      <meta name="geo.region" content="US" />
+      <meta name="geo.placename" content="United States" />
+      <meta name="target" content="cyclists, bike mechanics, cycling enthusiasts" />
+      <meta name="audience" content="cyclists" />
+      <meta name="coverage" content="worldwide" />
+      
+      {/* Open Graph (Facebook/Social) Enhanced */}
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content="CrankSmith" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta property="og:image" content={image} />
+      <meta property="og:image:alt" content="CrankSmith - Professional Bike Gear Calculator" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:locale" content="en_US" />
+      
+      {/* Twitter Card Enhanced */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@cranksmithapp" />
+      <meta name="twitter:creator" content="@cranksmithapp" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image:alt" content="CrankSmith - Professional Bike Gear Calculator" />
+      
+      {/* Additional Platform Meta Tags */}
+      <meta property="fb:app_id" content="CrankSmith" />
+      <meta name="pinterest-rich-pin" content="true" />
+      
+      {/* Search Engine Optimization */}
+      <link rel="canonical" href={url} />
+      <meta name="format-detection" content="telephone=no" />
+      
+      {/* Structured Data (JSON-LD) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(finalStructuredData)
+        }}
       />
-      <DropdownPortal
-        isOpen={isOpen}
-        triggerRef={triggerRef}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        setHighlightedIndex={setHighlightedIndex}
-        handleKeyDown={handleKeyDown}
-        inputRef={inputRef}
-        groupedOptions={groupedOptions}
-        groupBy={groupBy}
-        filteredOptions={filteredOptions}
-        highlightedIndex={highlightedIndex}
-        selectedOption={selectedOption}
-        handleSelect={handleSelect}
-        onClose={() => setIsOpen(false)}
-      />
-    </div>
+      
+      {/* Additional Bike-Specific Meta Tags */}
+      <meta name="subject" content="Cycling Tools and Calculators" />
+      <meta name="topic" content="Bicycle Gear Ratios and Compatibility" />
+      <meta name="summary" content="Professional bike gear calculator and compatibility checker for cyclists" />
+      <meta name="classification" content="Sports & Recreation - Cycling" />
+      <meta name="owner" content="CrankSmith" />
+      <meta name="url" content={url} />
+      <meta name="identifier-URL" content={url} />
+      <meta name="directory" content="submission" />
+      <meta name="pagename" content={title} />
+      <meta name="page-topic" content="cycling gear calculation" />
+      <meta name="page-type" content="tool" />
+      
+      {/* Search Engine Verification Tags */}
+      <meta name="google-site-verification" content="_OejAgyGekugOzvl7MqpGFmUY6cqxE1tF3frnHRb2vk" />
+      {/* <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" /> */}
+      {/* <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE" /> */}
+    </Head>
   );
-};
-
-export default SearchableDropdown; 
+} 
 
 
 ================================================================================
-FILE 17: components/SimulationResults.js
+FILE 21: components/SimulationResults.js [javascript]
 ================================================================================
 
 // components/SimulationResults.js - Enhanced results with real-world performance context and mobile optimization
@@ -4109,7 +4277,7 @@ function generateBottomLine(comparison, speedUnit, bikeType) {
 
 
 ================================================================================
-FILE 18: components/ThemeToggle.js
+FILE 22: components/ThemeToggle.js [javascript]
 ================================================================================
 
 import React from 'react';
@@ -4163,7 +4331,7 @@ export default function ThemeToggle({ theme, toggleTheme }) {
 
 
 ================================================================================
-FILE 19: components/Toast.tsx
+FILE 23: components/Toast.tsx [tsx]
 ================================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -4360,7 +4528,7 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
 
 
 ================================================================================
-FILE 20: components/mobile/BikeTypeSelector.js
+FILE 24: components/mobile/BikeTypeSelector.js [javascript]
 ================================================================================
 
 // components/mobile/BikeTypeSelector.js - Mobile-optimized bike type selection
@@ -4514,7 +4682,7 @@ export default function BikeTypeSelector({ bikeType, setBikeType, onNext }) {
 
 
 ================================================================================
-FILE 21: components/mobile/ComponentSelector.js
+FILE 25: components/mobile/ComponentSelector.js [javascript]
 ================================================================================
 
 // components/mobile/ComponentSelector.js - Fixed z-index and layout issues
@@ -4864,7 +5032,7 @@ export default function ComponentSelector({
 
 
 ================================================================================
-FILE 22: components/mobile/GarageScreen.js
+FILE 26: components/mobile/GarageScreen.js [javascript]
 ================================================================================
 
 // components/mobile/GarageScreen.js - Mobile garage for saved configurations
@@ -5149,7 +5317,7 @@ export default function GarageScreen({ savedConfigs, setSavedConfigs, onLoadConf
 
 
 ================================================================================
-FILE 23: components/mobile/InstallPrompt.js
+FILE 27: components/mobile/InstallPrompt.js [javascript]
 ================================================================================
 
 // components/mobile/InstallPrompt.js - Mobile-specific install prompt
@@ -5311,7 +5479,7 @@ export default function MobileInstallPrompt() {
 
 
 ================================================================================
-FILE 24: components/mobile/MobileDropdown.js
+FILE 28: components/mobile/MobileDropdown.js [javascript]
 ================================================================================
 
 // components/mobile/MobileDropdown.js - Touch-optimized dropdown for mobile with proper opacity fix
@@ -5601,7 +5769,7 @@ export default function MobileDropdown({
 
 
 ================================================================================
-FILE 25: components/mobile/MobileLayout.js
+FILE 29: components/mobile/MobileLayout.js [javascript]
 ================================================================================
 
 // components/mobile/MobileLayout.js - Mobile-first layout with bottom navigation
@@ -5789,7 +5957,7 @@ export default function MobileLayout({
 
 
 ================================================================================
-FILE 26: components/mobile/ResultsScreen.js
+FILE 30: components/mobile/ResultsScreen.js [javascript]
 ================================================================================
 
 // components/mobile/ResultsScreen.js - Mobile-optimized results display
@@ -6636,7 +6804,7 @@ export default function ResultsScreen({
 
 
 ================================================================================
-FILE 27: components/mobile/SettingsScreen.js
+FILE 31: components/mobile/SettingsScreen.js [javascript]
 ================================================================================
 
 // components/mobile/SettingsScreen.js - Mobile settings and app management
@@ -6980,7 +7148,128 @@ export default function SettingsScreen({
 
 
 ================================================================================
-FILE 28: data/early-access.json
+FILE 32: components/SearchableDropdown/index.js [javascript]
+================================================================================
+
+import React, { useState, useRef, useEffect } from 'react';
+import DropdownTrigger from './DropdownTrigger';
+import DropdownPortal from './DropdownPortal';
+
+const SearchableDropdown = ({
+  options,
+  value,
+  onChange,
+  placeholder,
+  groupBy,
+  className = ''
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const triggerRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const selectedOption = options.find(opt => opt.id === value);
+
+  const filteredOptions = options.filter(option => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      option.model.toLowerCase().includes(searchLower) ||
+      option.variant.toLowerCase().includes(searchLower) ||
+      option.weight.toString().includes(searchTerm)
+    );
+  });
+
+  const groupedOptions = filteredOptions.reduce((acc, option) => {
+    const group = groupBy ? option[groupBy] : 'All';
+    if (!acc[group]) {
+      acc[group] = [];
+    }
+    acc[group].push(option);
+    return acc;
+  }, {});
+
+  const handleSelect = (option) => {
+    onChange(option.id);
+    setIsOpen(false);
+    setSearchTerm('');
+    setHighlightedIndex(0);
+  };
+
+  const handleKeyDown = (e) => {
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setHighlightedIndex(prev => 
+          prev < filteredOptions.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setHighlightedIndex(prev => prev > 0 ? prev - 1 : prev);
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (filteredOptions[highlightedIndex]) {
+          handleSelect(filteredOptions[highlightedIndex]);
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        setIsOpen(false);
+        break;
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        triggerRef.current &&
+        !triggerRef.current.contains(e.target) &&
+        !e.target.closest('.dropdown-portal')
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className={`relative ${className}`}>
+      <DropdownTrigger
+        isOpen={isOpen}
+        displayValue={selectedOption?.model}
+        placeholder={placeholder}
+        onClick={() => setIsOpen(true)}
+        triggerRef={triggerRef}
+      />
+      <DropdownPortal
+        isOpen={isOpen}
+        triggerRef={triggerRef}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        setHighlightedIndex={setHighlightedIndex}
+        handleKeyDown={handleKeyDown}
+        inputRef={inputRef}
+        groupedOptions={groupedOptions}
+        groupBy={groupBy}
+        filteredOptions={filteredOptions}
+        highlightedIndex={highlightedIndex}
+        selectedOption={selectedOption}
+        handleSelect={handleSelect}
+        onClose={() => setIsOpen(false)}
+      />
+    </div>
+  );
+};
+
+export default SearchableDropdown; 
+
+
+================================================================================
+FILE 33: data/early-access.json [json]
 ================================================================================
 
 [
@@ -7003,7 +7292,7 @@ FILE 28: data/early-access.json
 
 
 ================================================================================
-FILE 29: hooks/useCalculatorState.js
+FILE 34: hooks/useCalculatorState.js [javascript]
 ================================================================================
 
 import { useState, useCallback, useMemo } from 'react';
@@ -7117,7 +7406,7 @@ export const useCalculatorState = () => {
 
 
 ================================================================================
-FILE 30: hooks/useComponentDatabase.js
+FILE 35: hooks/useComponentDatabase.js [javascript]
 ================================================================================
 
 import { useState, useEffect, useMemo } from 'react';
@@ -7181,7 +7470,7 @@ export const useComponentDatabase = (bikeType) => {
 
 
 ================================================================================
-FILE 31: hooks/useFormValidation.js
+FILE 36: hooks/useFormValidation.js [javascript]
 ================================================================================
 
 // hooks/useFormValidation.js - React hook for form validation
@@ -7378,7 +7667,7 @@ export const useCalculatorValidation = () => {
 
 
 ================================================================================
-FILE 32: lib/calculateRealPerformance.js
+FILE 37: lib/calculateRealPerformance.js [javascript]
 ================================================================================
 
 // calculateRealPerformance.js - Real calculations using component data
@@ -7534,7 +7823,7 @@ export function validateSetupComplete(setup) {
 
 
 ================================================================================
-FILE 33: lib/calculations.js
+FILE 38: lib/calculations.js [javascript]
 ================================================================================
 
 // Constants
@@ -7709,7 +7998,7 @@ export function compareSetups(currentSetup, proposedSetup, speedUnit = 'KMH') {
 
 
 ================================================================================
-FILE 34: lib/compatibilityChecker.js
+FILE 39: lib/compatibilityChecker.js [javascript]
 ================================================================================
 
 // lib/compatibilityChecker.js - Enhanced compatibility checking with detailed explanations
@@ -8176,7 +8465,7 @@ export class CompatibilityChecker {
 
 
 ================================================================================
-FILE 35: lib/components.js
+FILE 40: lib/components.js [javascript]
 ================================================================================
 
 /**
@@ -8661,7 +8950,7 @@ export const getComponentsForBikeType = (bikeType) => {
 
 
 ================================================================================
-FILE 36: lib/pwa-enhanced.ts
+FILE 41: lib/pwa-enhanced.ts [typescript]
 ================================================================================
 
 // lib/pwa-enhanced.ts - Enhanced PWA utilities with offline support and background sync
@@ -8977,7 +9266,7 @@ export const connectionManager = ConnectionManager.getInstance();
 
 
 ================================================================================
-FILE 37: lib/pwa-utils.js
+FILE 42: lib/pwa-utils.js [javascript]
 ================================================================================
 
 // lib/pwa-utils.js - FIXED VERSION
@@ -9312,7 +9601,7 @@ export const cleanup = () => {
 
 
 ================================================================================
-FILE 38: lib/rileyAI.js
+FILE 43: lib/rileyAI.js [javascript]
 ================================================================================
 
 // lib/rileyAI.js - Enhanced Riley with gear analysis integration and PWA optimization
@@ -9859,7 +10148,7 @@ export function RileyChat({ userSetup, analysisResults, componentDatabase, bikeT
 
 
 ================================================================================
-FILE 39: lib/supabase.js
+FILE 44: lib/supabase.js [javascript]
 ================================================================================
 
 import { createClient } from '@supabase/supabase-js'
@@ -9910,7 +10199,7 @@ export const localStorageDB = {
 
 
 ================================================================================
-FILE 40: lib/validation.js
+FILE 45: lib/validation.js [javascript]
 ================================================================================
 
 // lib/validation.js - Input validation utilities for CrankSmith
@@ -10226,80 +10515,126 @@ export const sanitizeString = (str) => {
 
 
 ================================================================================
-FILE 41: next.config.js
+FILE 46: pages/_app.js [javascript]
 ================================================================================
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Remove the swcMinify line if it's there
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Exclude service worker from server-side bundling
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        'sw.js': false,
-      };
-    }
-    return config;
-  },
-};
+// pages/_app.js - FIXED VERSION
+// Critical Bug Fix: Simplified mobile routing that doesn't confuse users
+// Quick Win: Less intrusive mobile detection
 
-module.exports = nextConfig;
+import '../styles/globals.css';
+import Head from 'next/head';
+import Layout from '../components/Layout';
+import Script from 'next/script';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { registerServiceWorker, handleMobileRouting, isMobileApp } from '../lib/pwa-utils';
+import ErrorBoundary from '../components/ErrorBoundary';
+import { ToastContainer } from '../components/Toast';
 
+export default function App({ Component, pageProps }) {
+  const router = useRouter();
 
+  useEffect(() => {
+    // Register service worker for PWA functionality
+    registerServiceWorker();
+    
+    // Handle mobile routing suggestions (non-intrusive)
+    handleMobileRouting(router);
+  }, [router]);
 
-================================================================================
-FILE 42: package.json
-================================================================================
-
-{
-  "name": "cranksmith-v2",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.50.0",
-    "@upstash/redis": "^1.35.1",
-    "autoprefixer": "^10.4.17",
-    "chart.js": "^4.5.0",
-    "jspdf": "^3.0.1",
-    "next": "^15.3.3",
-    "nodemailer": "^7.0.3",
-    "postcss": "^8.4.35",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-window": "^1.8.11",
-    "recharts": "^2.15.3",
-    "tailwindcss": "^3.4.1"
-  },
-  "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/nodemailer": "^6.4.14",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
-    "@types/react-window": "^1.8.8",
-    "@typescript-eslint/eslint-plugin": "^8.37.0",
-    "@typescript-eslint/parser": "^8.37.0",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "^14.1.0",
-    "eslint-plugin-unused-imports": "^4.1.4",
-    "typescript": "^5.3.3"
+  // Use different layout for mobile app
+  const isMobileAppPage = isMobileApp(router.pathname);
+  
+  if (isMobileAppPage) {
+    return (
+      <>
+        <Head>
+          <title>CrankSmith Mobile</title>
+          <meta name="description" content="Mobile bike gear calculator" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+          <meta name="theme-color" content="#3B82F6" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="apple-mobile-web-app-title" content="CrankSmith" />
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        </Head>
+        
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-TR57T617HK"
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TR57T617HK', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+        
+        {/* Mobile App with Error Boundary */}
+        <ErrorBoundary context="page">
+          <Component {...pageProps} />
+        </ErrorBoundary>
+      </>
+    );
   }
+
+  return (
+    <>
+      <Head>
+        <title>CrankSmith</title>
+        <meta name="description" content="Optimize your bike's performance with CrankSmith's gear ratio calculator" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#3B82F6" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="CrankSmith" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </Head>
+      
+      {/* Google Analytics */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-TR57T617HK"
+        strategy="afterInteractive"
+      />
+      <Script id="ga-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-TR57T617HK', {
+            page_path: window.location.pathname,
+          });
+        `}
+      </Script>
+      
+      {/* Main App Content with Error Boundary */}
+      <ErrorBoundary context="page">
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ErrorBoundary>
+      
+      {/* Toast Notifications */}
+      <ToastContainer />
+    </>
+  );
 }
 
 
-
 ================================================================================
-FILE 43: pages/404.js
+FILE 47: pages/404.js [javascript]
 ================================================================================
 
 import React, { useEffect, useState } from 'react';
@@ -10521,126 +10856,7 @@ export default function Custom404() {
 
 
 ================================================================================
-FILE 44: pages/_app.js
-================================================================================
-
-// pages/_app.js - FIXED VERSION
-// Critical Bug Fix: Simplified mobile routing that doesn't confuse users
-// Quick Win: Less intrusive mobile detection
-
-import '../styles/globals.css';
-import Head from 'next/head';
-import Layout from '../components/Layout';
-import Script from 'next/script';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { registerServiceWorker, handleMobileRouting, isMobileApp } from '../lib/pwa-utils';
-import ErrorBoundary from '../components/ErrorBoundary';
-import { ToastContainer } from '../components/Toast';
-
-export default function App({ Component, pageProps }) {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Register service worker for PWA functionality
-    registerServiceWorker();
-    
-    // Handle mobile routing suggestions (non-intrusive)
-    handleMobileRouting(router);
-  }, [router]);
-
-  // Use different layout for mobile app
-  const isMobileAppPage = isMobileApp(router.pathname);
-  
-  if (isMobileAppPage) {
-    return (
-      <>
-        <Head>
-          <title>CrankSmith Mobile</title>
-          <meta name="description" content="Mobile bike gear calculator" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-          <meta name="theme-color" content="#3B82F6" />
-          <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-          <meta name="apple-mobile-web-app-title" content="CrankSmith" />
-          <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        </Head>
-        
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-TR57T617HK"
-          strategy="afterInteractive"
-        />
-        <Script id="ga-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-TR57T617HK', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
-        
-        {/* Mobile App with Error Boundary */}
-        <ErrorBoundary context="page">
-          <Component {...pageProps} />
-        </ErrorBoundary>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <Head>
-        <title>CrankSmith</title>
-        <meta name="description" content="Optimize your bike's performance with CrankSmith's gear ratio calculator" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#3B82F6" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="CrankSmith" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-      </Head>
-      
-      {/* Google Analytics */}
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-TR57T617HK"
-        strategy="afterInteractive"
-      />
-      <Script id="ga-init" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-TR57T617HK', {
-            page_path: window.location.pathname,
-          });
-        `}
-      </Script>
-      
-      {/* Main App Content with Error Boundary */}
-      <ErrorBoundary context="page">
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ErrorBoundary>
-      
-      {/* Toast Notifications */}
-      <ToastContainer />
-    </>
-  );
-}
-
-
-================================================================================
-FILE 45: pages/about.js
+FILE 48: pages/about.js [javascript]
 ================================================================================
 
 export default function About() {
@@ -10756,608 +10972,7 @@ export default function About() {
 
 
 ================================================================================
-FILE 46: pages/api/early-access.js
-================================================================================
-
-// pages/api/early-access.js - Community signup with Zoho + Supabase
-import nodemailer from 'nodemailer';
-import { supabase } from '../../lib/supabase';
-import { validateRequestBody } from '../../lib/validation';
-
-// At the top of the file, add development check utility
-const isDevelopment = process.env.NODE_ENV === 'development';
-const devLog = (...args) => isDevelopment && console.log(...args);
-
-export default async function handler(req, res) {
-  devLog('Community signup API called');
-  
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // Validate request body with comprehensive validation
-  const validationSchema = {
-    email: { type: 'email', required: true },
-    source: { type: 'string', maxLength: 50 }
-  };
-  
-  const validation = validateRequestBody(req.body, validationSchema);
-  
-  if (!validation.isValid) {
-    devLog('Validation errors:', validation.errors);
-    return res.status(400).json({ 
-      success: false, 
-      error: 'Validation failed',
-      details: validation.errors 
-    });
-  }
-  
-  const { email, source = 'landing_page' } = validation.sanitized;
-  devLog('Valid email received:', email);
-
-  try {
-    devLog('Attempting to save to Supabase...');
-    const { data, error } = await supabase
-      .from('early_access')
-      .insert([{ 
-        email, 
-        source,
-        created_at: new Date().toISOString()
-      }])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Supabase error:', error);
-      // If email already exists, that's ok
-      if (error.code === '23505') {
-        return res.status(200).json({ 
-          success: true, 
-          message: 'You\'re already on the list!' 
-        });
-      }
-      throw error;
-    }
-
-    devLog('Saved to Supabase successfully:', data);
-
-    // Send email with Zoho
-    devLog('Setting up Zoho transporter...');
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.zoho.com',
-      port: 465,
-      secure: true, // true for 465, false for 587
-      auth: {
-        user: process.env.ZOHO_EMAIL, // your-email@yourdomain.com
-        pass: process.env.ZOHO_PASSWORD // your zoho password or app-specific password
-      }
-    });
-
-    // Verify transporter
-    devLog('Verifying Zoho connection...');
-    await transporter.verify();
-    devLog('Zoho connection verified');
-
-    // Email HTML template
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <style>
-            body { 
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
-              line-height: 1.6; 
-              color: #333; 
-              margin: 0;
-              padding: 0;
-            }
-            .container { 
-              max-width: 600px; 
-              margin: 0 auto; 
-              background: #ffffff;
-            }
-            .header { 
-              background: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #007aff 100%); 
-              color: white; 
-              padding: 40px 30px; 
-              text-align: center; 
-            }
-            .header h1 {
-              margin: 0;
-              font-size: 32px;
-              font-weight: 700;
-            }
-            .content { 
-              padding: 40px 30px; 
-              background: #ffffff;
-            }
-            .content h2 {
-              color: #1a1a1a;
-              margin-top: 0;
-            }
-            .button { 
-              display: inline-block; 
-              padding: 14px 32px; 
-              background: linear-gradient(135deg, #007aff 0%, #5856d6 100%); 
-              color: white; 
-              text-decoration: none; 
-              border-radius: 30px; 
-              margin: 20px 0; 
-              font-weight: 600;
-              font-size: 16px;
-            }
-            .feature-list {
-              background: #f8f9fa;
-              border-radius: 12px;
-              padding: 20px;
-              margin: 20px 0;
-            }
-            .feature-list li {
-              margin: 10px 0;
-            }
-            .footer { 
-              text-align: center; 
-              padding: 30px; 
-              color: #666; 
-              font-size: 14px;
-              background: #f8f9fa;
-            }
-            .signature {
-              margin-top: 30px;
-              padding-top: 20px;
-              border-top: 1px solid #eee;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>Welcome to the CrankSmith community! 🚴‍♂️</h1>
-            </div>
-            <div class="content">
-              <h2>Hey fellow cyclist! 👋</h2>
-              
-              <p>Thanks for joining our community! CrankSmith is a completely free bike gear calculator and compatibility checker that you can start using right away.</p>
-              
-              <p>I built CrankSmith because I was tired of:</p>
-              <ul>
-                <li>Guessing if an upgrade would actually help</li>
-                <li>Using clunky calculators with generic data</li>
-                <li>Wasting money on components that didn't improve my ride</li>
-              </ul>
-              
-              <div class="feature-list">
-                <p><strong>🎯 What's included (completely free):</strong></p>
-                <ul>
-                  <li>✅ Professional gear ratio calculator</li>
-                  <li>✅ Component compatibility checker</li>
-                  <li>✅ Tire pressure calculator</li>
-                  <li>✅ Performance optimization tools</li>
-                  <li>✅ Works offline on your phone</li>
-                </ul>
-              </div>
-              
-              <p style="text-align: center;">
-                <a href="https://cranksmith.com/calculator" class="button">
-                  🚀 Start Using CrankSmith
-                </a>
-              </p>
-              
-              <p style="text-align: center; color: #666; font-size: 14px;">
-                <em>No signup required - bookmark it for easy access!</em>
-              </p>
-              
-              <div class="signature">
-                <p>By joining our community, you'll get occasional updates about new features, cycling tips, and useful content. Got questions? Just reply to this email. I personally read every message and usually respond within a day.</p>
-                
-                <p>
-                  Ride on!<br>
-                  <strong>Mike</strong><br>
-                  Founder, CrankSmith<br>
-                  <em style="color: #666;">Fellow bike nerd who spent way too much on the wrong cassette once</em>
-                </p>
-              </div>
-            </div>
-            <div class="footer">
-              <p>You're receiving this because you signed up for community updates at cranksmith.com</p>
-              <p>
-                <a href="https://cranksmith.com" style="color: #007aff; text-decoration: none;">CrankSmith</a> | 
-                Built with ❤️ by cyclists, for cyclists
-              </p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `;
-
-    // Send email
-    devLog('Sending welcome email...');
-    const mailOptions = {
-      from: `"CrankSmith" <${process.env.ZOHO_EMAIL}>`,
-      to: email,
-      subject: 'Welcome to the CrankSmith community! 🚴‍♂️',
-      html: emailHtml,
-      text: `Welcome to the CrankSmith community!
-
-Thanks for joining! CrankSmith is a completely free bike gear calculator and compatibility checker that you can start using right away.
-
-Start using CrankSmith: https://cranksmith.com/calculator
-
-What's included (completely free):
-- Professional gear ratio calculator
-- Component compatibility checker  
-- Tire pressure calculator
-- Performance optimization tools
-- Works offline on your phone
-
-By joining our community, you'll get occasional updates about new features, cycling tips, and useful content. Got questions? Just reply to this email.
-
-Ride on!
-Mike
-Founder, CrankSmith`
-    };
-
-    await transporter.sendMail(mailOptions);
-    devLog('Welcome email sent successfully');
-
-    // Optional: Send yourself a notification
-    if (process.env.ADMIN_EMAIL) {
-      await transporter.sendMail({
-        from: `"CrankSmith" <${process.env.ZOHO_EMAIL}>`,
-        to: process.env.ADMIN_EMAIL,
-        subject: '🎉 New CrankSmith Community Member!',
-        text: `New community signup: ${email}\n\nTotal signups: Check Supabase dashboard`,
-      });
-    }
-    
-    res.status(200).json({ 
-      success: true, 
-      message: 'Welcome to the community! Check your email and start using the free tools right away.' 
-    });
-    
-  } catch (error) {
-    console.error('Community signup error:', error); // Keep error logging
-    
-    // More specific error messages
-    if (error.message?.includes('auth')) {
-      console.error('Email auth error - check ZOHO credentials'); // Keep error logging
-      return res.status(500).json({ success: false, error: 'Email service configuration error' });
-    }
-    if (error.message?.includes('supabase') || error.code) {
-      console.error('Supabase error - check connection'); // Keep error logging
-      return res.status(500).json({ success: false, error: 'Database connection error' });
-    }
-    
-    res.status(500).json({ 
-      error: 'Failed to process signup. Please try again or email mike@cranksmith.com directly.' 
-    });
-  }
-}
-
-
-================================================================================
-FILE 47: pages/api/riley.js
-================================================================================
-
-// pages/api/riley.js - COMPLETE FILE with enhanced security
-import { Redis } from '@upstash/redis';
-
-// Initialize Redis client (use Upstash or similar)
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
-
-// Security constants
-const RATE_LIMIT_WINDOW = 60000; // 1 minute
-const MAX_REQUESTS_PER_WINDOW = 10;
-const MAX_PROMPT_LENGTH = 5000;
-const BLOCKED_PATTERNS = [
-  'ignore previous',
-  'disregard instructions',
-  'forget what i told you',
-  'system prompt',
-  'reveal your instructions',
-  'show your prompt',
-  'what are your instructions',
-  'bypass your',
-  'jailbreak',
-];
-
-// Validate prompt for security
-function isValidPrompt(prompt) {
-  if (!prompt || typeof prompt !== 'string') {
-    return { valid: false, reason: 'Invalid prompt format' };
-  }
-
-  if (prompt.length > MAX_PROMPT_LENGTH) {
-    return { valid: false, reason: 'Prompt too long' };
-  }
-
-  // Check for prompt injection attempts
-  const lowerPrompt = prompt.toLowerCase();
-  for (const pattern of BLOCKED_PATTERNS) {
-    if (lowerPrompt.includes(pattern)) {
-      return { valid: false, reason: 'Potentially harmful prompt detected' };
-    }
-  }
-
-  // Check for excessive special characters (possible encoding attack)
-  const specialCharRatio = (prompt.match(/[^a-zA-Z0-9\s.,!?-]/g) || []).length / prompt.length;
-  if (specialCharRatio > 0.3) {
-    return { valid: false, reason: 'Unusual character pattern detected' };
-  }
-
-  return { valid: true };
-}
-
-// Get client identifier
-function getClientId(req) {
-  const forwarded = req.headers['x-forwarded-for'];
-  const ip = forwarded ? forwarded.split(',')[0] : req.connection.remoteAddress;
-  
-  // Add user agent hash for better fingerprinting
-  const userAgent = req.headers['user-agent'] || 'unknown';
-  const crypto = require('crypto');
-  const uaHash = crypto.createHash('md5').update(userAgent).digest('hex').substring(0, 8);
-  
-  return `${ip}-${uaHash}`;
-}
-
-// Check rate limit with Redis
-async function checkRateLimit(clientId) {
-  const key = `riley_rate_limit:${clientId}`;
-  
-  try {
-    // Get current count
-    const current = await redis.get(key);
-    const count = current ? parseInt(current) : 0;
-    
-    if (count >= MAX_REQUESTS_PER_WINDOW) {
-      return { allowed: false, retryAfter: RATE_LIMIT_WINDOW / 1000 };
-    }
-    
-    // Increment count
-    const pipeline = redis.pipeline();
-    pipeline.incr(key);
-    pipeline.expire(key, Math.ceil(RATE_LIMIT_WINDOW / 1000));
-    await pipeline.exec();
-    
-    return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - count - 1 };
-  } catch (error) {
-    console.error('Redis error:', error);
-    // Fallback to allowing request if Redis fails
-    return { allowed: true, remaining: -1 };
-  }
-}
-
-// Log suspicious activity
-async function logSuspiciousActivity(clientId, reason) {
-  const key = `riley_suspicious:${clientId}`;
-  const timestamp = new Date().toISOString();
-  
-  try {
-    await redis.zadd(key, {
-      score: Date.now(),
-      member: `${timestamp}:${reason}`
-    });
-    
-    // Keep logs for 7 days
-    await redis.expire(key, 7 * 24 * 60 * 60);
-  } catch (error) {
-    console.error('Failed to log suspicious activity:', error);
-  }
-}
-
-export default async function handler(req, res) {
-  // Only allow POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const clientId = getClientId(req);
-  
-  try {
-    // Check rate limit
-    const rateLimitResult = await checkRateLimit(clientId);
-    
-    if (!rateLimitResult.allowed) {
-      res.setHeader('Retry-After', rateLimitResult.retryAfter);
-      return res.status(429).json({ 
-        error: 'Rate limit exceeded. Please wait before making another request.',
-        retryAfter: rateLimitResult.retryAfter,
-        timestamp: new Date().toISOString()
-      });
-    }
-    
-    // Add rate limit headers
-    if (rateLimitResult.remaining >= 0) {
-      res.setHeader('X-RateLimit-Limit', MAX_REQUESTS_PER_WINDOW);
-      res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining);
-      res.setHeader('X-RateLimit-Reset', new Date(Date.now() + RATE_LIMIT_WINDOW).toISOString());
-    }
-
-    const { prompt } = req.body;
-    
-    // Validate prompt
-    const validation = isValidPrompt(prompt);
-    if (!validation.valid) {
-      await logSuspiciousActivity(clientId, validation.reason);
-      return res.status(400).json({ 
-        error: validation.reason,
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    // Check for API key
-    if (!process.env.ANTHROPIC_API_KEY) {
-      console.error('ANTHROPIC_API_KEY not configured');
-      return res.status(500).json({ 
-        error: 'Service temporarily unavailable. Please try again later.',
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    // Make API request with timeout
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': process.env.ANTHROPIC_API_KEY,
-          'Content-Type': 'application/json',
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-3-5-sonnet-20241022',
-          max_tokens: 1024,
-          messages: [
-            {
-              role: 'user',
-              content: prompt
-            }
-          ],
-          temperature: 0.7,
-          system: "You are Riley, a helpful bike mechanic assistant. Provide concise, accurate advice about bike components and compatibility."
-        }),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeout);
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('Claude API error:', response.status, errorData);
-        
-        return res.status(500).json({
-          error: 'Sorry, I\'m having trouble connecting right now. Please try again in a moment.',
-          timestamp: new Date().toISOString()
-        });
-      }
-
-      const data = await response.json();
-      
-      // Sanitize response
-      const responseText = data.content[0].text
-        .replace(/<script[^>]*>.*?<\/script>/gi, '') // Remove scripts
-        .replace(/javascript:/gi, '') // Remove javascript: URIs
-        .substring(0, 2000); // Limit response length
-      
-      res.status(200).json({
-        success: true,
-        response: responseText,
-        timestamp: new Date().toISOString()
-      });
-
-    } catch (fetchError) {
-      if (fetchError.name === 'AbortError') {
-        return res.status(504).json({
-          error: 'Request timeout. Please try again.',
-          timestamp: new Date().toISOString()
-        });
-      }
-      throw fetchError;
-    }
-
-  } catch (error) {
-    console.error('Riley API Error:', error);
-    
-    // Log error but don't expose internal details
-    await logSuspiciousActivity(clientId, `Error: ${error.message}`);
-    
-    res.status(500).json({
-      success: false,
-      error: 'An unexpected error occurred. Please try again later.',
-      timestamp: new Date().toISOString()
-    });
-  }
-}
-
-// Export config for Vercel
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10kb',
-    },
-  },
-};
-
-
-
-================================================================================
-FILE 48: pages/api/verify-beta.js
-================================================================================
-
-// pages/api/verify-beta.js
-import { supabase } from '../../lib/supabase';
-
-export default async function handler(req, res) {
-  console.log('Beta verification API called');
-  
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const { email } = req.body;
-  console.log('Verifying email:', email);
-
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Valid email required' });
-  }
-
-  try {
-    // First, let's see ALL emails in the table for debugging
-    console.log('Getting all emails for comparison...');
-    const { data: allEmails, error: allError } = await supabase
-      .from('early_access')
-      .select('email');
-    
-    console.log('All emails in database:', allEmails);
-    
-    // Now try the specific query
-    console.log('Checking for specific email...');
-    const { data, error } = await supabase
-      .from('early_access')
-      .select('email, created_at')
-      .ilike('email', email.trim());
-
-    if (error) {
-      console.log('Supabase error:', error);
-      throw error;
-    }
-
-    console.log('Specific query returned:', data);
-
-    if (data && data.length > 0) {
-      console.log('Email found in database:', data[0]);
-      return res.status(200).json({ 
-        success: true, 
-        hasAccess: true,
-        message: 'Welcome to the beta!',
-        signupDate: data[0].created_at
-      });
-    } else {
-      console.log('No matching email found');
-      return res.status(200).json({ 
-        success: true, 
-        hasAccess: false,
-        message: 'Email not found in beta list' 
-      });
-    }
-
-  } catch (error) {
-    console.error('Beta verification error:', error);
-    return res.status(500).json({ 
-      error: 'Verification failed' 
-    });
-  }
-}
-
-
-================================================================================
-FILE 49: pages/ask-riley.js
+FILE 49: pages/ask-riley.js [javascript]
 ================================================================================
 
 import { useState, useRef, useEffect } from 'react';
@@ -11654,7 +11269,7 @@ export default function AskRiley() {
 
 
 ================================================================================
-FILE 50: pages/bike-fit.tsx
+FILE 50: pages/bike-fit.tsx [tsx]
 ================================================================================
 
 // pages/bike-fit.tsx - Comprehensive bike fit calculator with TypeScript
@@ -12368,7 +11983,7 @@ export default function BikeFit(): JSX.Element {
 
 
 ================================================================================
-FILE 51: pages/blog.js
+FILE 51: pages/blog.js [javascript]
 ================================================================================
 
 // pages/blog.js
@@ -12482,385 +12097,7 @@ function BlogPostCard({ post }) {
 
 
 ================================================================================
-FILE 52: pages/blog/gravel-vs-road-gearing.js
-================================================================================
-
-// pages/blog/gravel-vs-road-gearing.js
-import Link from 'next/link';
-import SEOHead from '../../components/SEOHead';
-
-export default function GravelVsRoadGearing() {
-  return (
-    <>
-      <SEOHead 
-        title="Gravel vs Road Bike Gearing: What's the Difference? - CrankSmith"
-        description="Understanding why gravel bikes need different gear ratios and how to optimize for mixed terrain riding."
-        url="https://cranksmith.com/blog/gravel-vs-road-gearing"
-      />
-      
-      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
-        <div className="max-w-3xl mx-auto px-4 py-12">
-          {/* Back Link */}
-          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
-            ← Back to Blog
-          </Link>
-
-          {/* Article Header */}
-          <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
-              <span className="bg-[var(--success-green)] text-white px-2 py-1 rounded text-xs">
-                Bike Setup
-              </span>
-              <time>June 10, 2025</time>
-              <span>7 min read</span>
-            </div>
-            
-            <h1 className="text-4xl font-bold mb-4">
-              Gravel vs Road Bike Gearing: What's the Difference?
-            </h1>
-            
-            <p className="text-xl text-[var(--text-secondary)]">
-              Understanding why gravel bikes need different gear ratios and how to optimize for mixed terrain riding.
-            </p>
-          </header>
-
-          {/* Article Content */}
-          <article className="prose prose-invert max-w-none">
-            <p>
-              If you've ever wondered why your road bike feels inadequate on gravel trails, or why gravel bikes have such different gearing, you're not alone. The terrain demands completely different approaches to gear selection.
-            </p>
-
-            <h2>The Core Differences</h2>
-            <p>
-              Road bikes prioritize speed and efficiency on smooth pavement, while gravel bikes need versatility for everything from loose dirt to steep off-road climbs. This fundamental difference drives every gearing decision.
-            </p>
-
-            <h3>Gear Range Comparison</h3>
-            <p>
-              <strong>Road bikes:</strong> Typically 34/50 chainrings with 11-28 or 11-32 cassettes<br/>
-              <strong>Gravel bikes:</strong> Often 40/48 or single chainring setups with 11-42 or wider cassettes
-            </p>
-
-            <h2>Why Gravel Needs Lower Gears</h2>
-            <p>
-              Gravel riding presents unique challenges that demand different gearing strategies:
-            </p>
-
-            <ul>
-              <li><strong>Loose surfaces:</strong> Less traction means you need easier gears to maintain momentum</li>
-              <li><strong>Steep, loose climbs:</strong> 15-20% grades on dirt require gears as low as 15-18 gear inches</li>
-              <li><strong>Technical sections:</strong> Slow, controlled riding benefits from ultra-low gears</li>
-              <li><strong>Loaded touring:</strong> Bikepacking adds weight, demanding easier climbing gears</li>
-            </ul>
-
-            <h2>The 1x vs 2x Debate for Gravel</h2>
-            <p>
-              Many gravel bikes now use single chainring (1x) setups. Here's when each works best:
-            </p>
-
-            <h3>Choose 1x When:</h3>
-            <ul>
-              <li>Simplicity and low maintenance are priorities</li>
-              <li>You ride varied terrain but don't need extreme high or low gears</li>
-              <li>Typical rides are under 50 miles</li>
-            </ul>
-
-            <h3>Choose 2x When:</h3>
-            <ul>
-              <li>You want the widest possible gear range</li>
-              <li>Long road sections are part of your rides</li>
-              <li>You prioritize small gear steps for optimal cadence</li>
-            </ul>
-
-            <h2>Optimizing Your Gravel Setup</h2>
-            <p>
-              The ideal gravel gearing depends on your specific riding:
-            </p>
-
-            <p>
-              <strong>Fire roads and smooth gravel:</strong> 40t chainring with 11-36 cassette<br/>
-              <strong>Technical singletrack:</strong> 38t chainring with 11-42 cassette<br/>
-              <strong>Bikepacking/loaded touring:</strong> 36t chainring with 11-46+ cassette
-            </p>
-
-            <h2>Real-World Gear Recommendations</h2>
-            <p>
-              For most gravel riders, aim for these gear inch ranges:
-            </p>
-            <ul>
-              <li><strong>Lowest gear:</strong> 18-22 gear inches (for steep, loose climbs)</li>
-              <li><strong>Highest gear:</strong> 90-110 gear inches (for road sections and descents)</li>
-              <li><strong>Most-used range:</strong> 35-65 gear inches (comfortable cruising)</li>
-            </ul>
-
-            {/* CTA Section */}
-            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
-              <h3 className="text-xl font-bold mb-3">Find Your Perfect Gravel Gearing</h3>
-              <p className="text-[var(--text-secondary)] mb-4">
-                Use CrankSmith's calculator to compare different chainring and cassette combinations for your gravel adventures.
-              </p>
-              <Link 
-                href="/calculator"
-                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
-              >
-                Calculate Your Setup
-              </Link>
-            </div>
-
-            <p>
-              Remember: the best gravel gearing is the one that gives you confidence on every surface. Whether you choose 1x or 2x, prioritize having the right gear for your steepest climbs and longest road sections.
-            </p>
-          </article>
-        </div>
-      </div>
-    </>
-  );
-}
-
-
-================================================================================
-FILE 53: pages/blog/optimal-climbing-gears.js
-================================================================================
-
-// pages/blog/optimal-climbing-gears.js
-import Link from 'next/link';
-import SEOHead from '../../components/SEOHead';
-
-export default function OptimalClimbingGears() {
-  return (
-    <>
-      <SEOHead 
-        title="How to Choose Optimal Climbing Gears - CrankSmith"
-        description="Learn the science behind gear selection for steep climbs and maintain your cadence when the road goes up."
-        url="https://cranksmith.com/blog/optimal-climbing-gears"
-      />
-      
-      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
-        <div className="max-w-3xl mx-auto px-4 py-12">
-          {/* Back Link */}
-          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
-            ← Back to Blog
-          </Link>
-
-          {/* Article Header */}
-          <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
-              <span className="bg-[var(--accent-blue)] text-white px-2 py-1 rounded text-xs">
-                Gear Selection
-              </span>
-              <time>June 15, 2025</time>
-              <span>5 min read</span>
-            </div>
-            
-            <h1 className="text-4xl font-bold mb-4">
-              How to Choose Optimal Climbing Gears for Your Next Hill Climb
-            </h1>
-            
-            <p className="text-xl text-[var(--text-secondary)]">
-              Learn the science behind gear selection for steep climbs and maintain your cadence when the road goes up.
-            </p>
-          </header>
-
-          {/* Article Content */}
-          <article className="prose prose-invert max-w-none">
-            <p>
-              When the road tilts skyward, your gear selection can make the difference between a smooth, sustainable climb and a leg-burning struggle. The key is understanding how gear ratios, cadence, and power output work together.
-            </p>
-
-            <h2>The Science of Climbing Gears</h2>
-            <p>
-              For most cyclists, maintaining a cadence between 70-80 RPM on climbs is optimal. This keeps your muscles in their efficient power band while preventing the quad-burning low-cadence grind that leads to early fatigue.
-            </p>
-
-            <h3>Calculating Your Ideal Climbing Gear</h3>
-            <p>
-              Here's a simple formula: On a 10% grade at 8 mph, you'll need approximately 25-30 gear inches to maintain 75 RPM. For steeper climbs (12%+), consider gears as low as 20-22 gear inches.
-            </p>
-
-            <h2>Common Climbing Gear Mistakes</h2>
-            <ul>
-              <li><strong>Too high gears:</strong> Forcing big gears uphill burns matches you can't get back</li>
-              <li><strong>Late shifting:</strong> Shift before you need to, not when you're already struggling</li>
-              <li><strong>Ignoring terrain:</strong> Different climb profiles need different approaches</li>
-            </ul>
-
-            <h2>Gear Recommendations by Climb Type</h2>
-            <p>
-              <strong>Short, steep punches (8-12%):</strong> 22-28 gear inches<br/>
-              <strong>Long, steady climbs (4-8%):</strong> 28-35 gear inches<br/>
-              <strong>Alpine climbing (10%+):</strong> 18-25 gear inches
-            </p>
-
-            {/* CTA Section */}
-            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
-              <h3 className="text-xl font-bold mb-3">Calculate Your Perfect Climbing Setup</h3>
-              <p className="text-[var(--text-secondary)] mb-4">
-                Use CrankSmith's gear calculator to find the exact chainring and cassette combination for your climbing goals.
-              </p>
-              <Link 
-                href="/calculator"
-                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
-              >
-                Try the Calculator
-              </Link>
-            </div>
-
-            <p>
-              Remember: the best climbing gear is the one that lets you maintain a steady, sustainable effort all the way to the top. Your legs will thank you on the next climb.
-            </p>
-          </article>
-        </div>
-      </div>
-    </>
-  );
-}
-
-
-================================================================================
-FILE 54: pages/blog/tire-pressure-performance.js
-================================================================================
-
-// pages/blog/tire-pressure-performance.js
-import Link from 'next/link';
-import SEOHead from '../../components/SEOHead';
-
-export default function TirePressurePerformance() {
-  return (
-    <>
-      <SEOHead 
-        title="The Hidden Performance Cost of Wrong Tire Pressure - CrankSmith"
-        description="How tire pressure affects rolling resistance, comfort, and speed - plus how to find your optimal PSI."
-        url="https://cranksmith.com/blog/tire-pressure-performance"
-      />
-      
-      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
-        <div className="max-w-3xl mx-auto px-4 py-12">
-          {/* Back Link */}
-          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
-            ← Back to Blog
-          </Link>
-
-          {/* Article Header */}
-          <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
-              <span className="bg-[var(--warning-orange)] text-white px-2 py-1 rounded text-xs">
-                Performance
-              </span>
-              <time>June 5, 2025</time>
-              <span>4 min read</span>
-            </div>
-            
-            <h1 className="text-4xl font-bold mb-4">
-              The Hidden Performance Cost of Wrong Tire Pressure
-            </h1>
-            
-            <p className="text-xl text-[var(--text-secondary)]">
-              How tire pressure affects rolling resistance, comfort, and speed - plus how to find your optimal PSI.
-            </p>
-          </header>
-
-          {/* Article Content */}
-          <article className="prose prose-invert max-w-none">
-            <p>
-              Most cyclists obsess over lightweight components and aerodynamics, but ignore one of the biggest performance factors: tire pressure. Getting this wrong can cost you more watts than expensive wheels ever save.
-            </p>
-
-            <h2>The Science of Rolling Resistance</h2>
-            <p>
-              Rolling resistance occurs when your tire deforms as it rolls. Too little pressure and your tire flexes excessively, creating heat and drag. Too much pressure and you lose comfort and traction, plus you'll bounce over small bumps instead of rolling smoothly.
-            </p>
-
-            <h3>The Performance Numbers</h3>
-            <p>
-              Research shows that running 20 PSI too high or too low can increase rolling resistance by 10-15 watts at 25 mph. Over a 40-mile ride, that's the equivalent of carrying an extra 2-3 pounds up every hill.
-            </p>
-
-            <h2>Finding Your Optimal Pressure</h2>
-            <p>
-              The ideal tire pressure depends on several factors that work together:
-            </p>
-
-            <ul>
-              <li><strong>Rider weight:</strong> Heavier riders need higher pressure to prevent tire deformation</li>
-              <li><strong>Tire width:</strong> Wider tires run lower pressures for the same contact patch</li>
-              <li><strong>Road surface:</strong> Smooth roads favor higher pressure; rough roads favor lower</li>
-              <li><strong>Riding style:</strong> Racing demands different pressure than casual riding</li>
-            </ul>
-
-            <h2>Pressure by Tire Width</h2>
-            <p>
-              Here are starting points for a 150-170 lb rider on smooth pavement:
-            </p>
-
-            <p>
-              <strong>23mm tires:</strong> 100-110 PSI<br/>
-              <strong>25mm tires:</strong> 85-95 PSI<br/>
-              <strong>28mm tires:</strong> 70-80 PSI<br/>
-              <strong>32mm tires:</strong> 60-70 PSI<br/>
-              <strong>40mm+ gravel:</strong> 35-50 PSI
-            </p>
-
-            <h2>The Front vs Rear Difference</h2>
-            <p>
-              Your rear tire carries more weight (you + gear), so it needs 5-10 PSI more than the front. This improves comfort without sacrificing performance, since the front tire has less load.
-            </p>
-
-            <h2>Adjusting for Real-World Conditions</h2>
-            <p>
-              Your optimal pressure changes based on conditions:
-            </p>
-
-            <ul>
-              <li><strong>Rough roads:</strong> Drop pressure 5-10 PSI for better comfort and traction</li>
-              <li><strong>Wet conditions:</strong> Lower pressure increases contact patch and grip</li>
-              <li><strong>Long rides:</strong> Start 5 PSI higher - pressure drops as tires warm up</li>
-              <li><strong>Racing:</strong> Higher pressure for maximum speed on smooth courses</li>
-            </ul>
-
-            <h2>Common Pressure Mistakes</h2>
-            <p>
-              Avoid these performance-killing errors:
-            </p>
-
-            <ul>
-              <li><strong>Copying pro settings:</strong> Pros weigh 130 lbs and race on perfect roads</li>
-              <li><strong>Ignoring tire width:</strong> 25mm and 28mm tires need very different pressures</li>
-              <li><strong>Never checking:</strong> Tires lose 1-2 PSI per week naturally</li>
-              <li><strong>One-size-fits-all:</strong> Different rides need different pressures</li>
-            </ul>
-
-            <h2>The Comfort-Performance Balance</h2>
-            <p>
-              Modern research shows that slightly lower pressures often roll faster on real roads. The sweet spot balances rolling resistance, comfort, and puncture protection. Start with the recommendations above and adjust based on feel.
-            </p>
-
-            {/* CTA Section */}
-            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
-              <h3 className="text-xl font-bold mb-3">Calculate Your Optimal Tire Pressure</h3>
-              <p className="text-[var(--text-secondary)] mb-4">
-                Use CrankSmith's tire pressure calculator to find your perfect PSI based on your weight, tire size, and riding conditions.
-              </p>
-              <Link 
-                href="/tire-pressure"
-                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
-              >
-                Try the Pressure Calculator
-              </Link>
-            </div>
-
-            <p>
-              Remember: the fastest tire pressure is the one that rolls smoothly over your actual roads. Experiment within the recommended ranges and pay attention to how your bike feels - your body will tell you when you've found the sweet spot.
-            </p>
-          </article>
-        </div>
-      </div>
-    </>
-  );
-}
-
-
-================================================================================
-FILE 55: pages/builder.js
+FILE 52: pages/builder.js [javascript]
 ================================================================================
 
 import React, { useState } from 'react';
@@ -12905,7 +12142,7 @@ export default function DrivetrainBuilder() {
 
 
 ================================================================================
-FILE 56: pages/calculator.js
+FILE 53: pages/calculator.js [javascript]
 ================================================================================
 
 // pages/calculator.js - Enhanced calculator with Riley AI integration and compatibility checking
@@ -13538,7 +12775,7 @@ const GarageCard = ({ config, onLoad, onDelete }) => {
 
 
 ================================================================================
-FILE 57: pages/docs.js
+FILE 54: pages/docs.js [javascript]
 ================================================================================
 
 // pages/docs.js
@@ -13632,7 +12869,7 @@ function FAQItem({ question, answer }) {
 
 
 ================================================================================
-FILE 58: pages/index.js
+FILE 55: pages/index.js [javascript]
 ================================================================================
 
 import { useState, useEffect } from 'react';
@@ -13980,7 +13217,7 @@ export default function Home() {
 
 
 ================================================================================
-FILE 59: pages/landing.js
+FILE 56: pages/landing.js [javascript]
 ================================================================================
 
 // pages/landing.js
@@ -14231,7 +13468,7 @@ export default function Landing() {
 
 
 ================================================================================
-FILE 60: pages/mobile.js
+FILE 57: pages/mobile.js [javascript]
 ================================================================================
 
 // pages/mobile.js - Mobile-first PWA version of CrankSmith
@@ -14480,7 +13717,7 @@ export default function MobileApp() {
 
 
 ================================================================================
-FILE 61: pages/performance-analysis.js
+FILE 58: pages/performance-analysis.js [javascript]
 ================================================================================
 
 import React from 'react';
@@ -14681,7 +13918,7 @@ export default function PerformanceAnalysis() {
 
 
 ================================================================================
-FILE 62: pages/tire-pressure.js
+FILE 59: pages/tire-pressure.js [javascript]
 ================================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -14973,19 +14210,986 @@ export default function TirePressure() {
 
 
 ================================================================================
-FILE 63: postcss.config.js
+FILE 60: pages/api/early-access.js [javascript]
 ================================================================================
 
-module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+// pages/api/early-access.js - Community signup with Zoho + Supabase
+import nodemailer from 'nodemailer';
+import { supabase } from '../../lib/supabase';
+import { validateRequestBody } from '../../lib/validation';
+
+// At the top of the file, add development check utility
+const isDevelopment = process.env.NODE_ENV === 'development';
+const devLog = (...args) => isDevelopment && console.log(...args);
+
+export default async function handler(req, res) {
+  devLog('Community signup API called');
+  
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Validate request body with comprehensive validation
+  const validationSchema = {
+    email: { type: 'email', required: true },
+    source: { type: 'string', maxLength: 50 }
+  };
+  
+  const validation = validateRequestBody(req.body, validationSchema);
+  
+  if (!validation.isValid) {
+    devLog('Validation errors:', validation.errors);
+    return res.status(400).json({ 
+      success: false, 
+      error: 'Validation failed',
+      details: validation.errors 
+    });
+  }
+  
+  const { email, source = 'landing_page' } = validation.sanitized;
+  devLog('Valid email received:', email);
+
+  try {
+    devLog('Attempting to save to Supabase...');
+    const { data, error } = await supabase
+      .from('early_access')
+      .insert([{ 
+        email, 
+        source,
+        created_at: new Date().toISOString()
+      }])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Supabase error:', error);
+      // If email already exists, that's ok
+      if (error.code === '23505') {
+        return res.status(200).json({ 
+          success: true, 
+          message: 'You\'re already on the list!' 
+        });
+      }
+      throw error;
+    }
+
+    devLog('Saved to Supabase successfully:', data);
+
+    // Send email with Zoho
+    devLog('Setting up Zoho transporter...');
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.zoho.com',
+      port: 465,
+      secure: true, // true for 465, false for 587
+      auth: {
+        user: process.env.ZOHO_EMAIL, // your-email@yourdomain.com
+        pass: process.env.ZOHO_PASSWORD // your zoho password or app-specific password
+      }
+    });
+
+    // Verify transporter
+    devLog('Verifying Zoho connection...');
+    await transporter.verify();
+    devLog('Zoho connection verified');
+
+    // Email HTML template
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { 
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
+              line-height: 1.6; 
+              color: #333; 
+              margin: 0;
+              padding: 0;
+            }
+            .container { 
+              max-width: 600px; 
+              margin: 0 auto; 
+              background: #ffffff;
+            }
+            .header { 
+              background: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #007aff 100%); 
+              color: white; 
+              padding: 40px 30px; 
+              text-align: center; 
+            }
+            .header h1 {
+              margin: 0;
+              font-size: 32px;
+              font-weight: 700;
+            }
+            .content { 
+              padding: 40px 30px; 
+              background: #ffffff;
+            }
+            .content h2 {
+              color: #1a1a1a;
+              margin-top: 0;
+            }
+            .button { 
+              display: inline-block; 
+              padding: 14px 32px; 
+              background: linear-gradient(135deg, #007aff 0%, #5856d6 100%); 
+              color: white; 
+              text-decoration: none; 
+              border-radius: 30px; 
+              margin: 20px 0; 
+              font-weight: 600;
+              font-size: 16px;
+            }
+            .feature-list {
+              background: #f8f9fa;
+              border-radius: 12px;
+              padding: 20px;
+              margin: 20px 0;
+            }
+            .feature-list li {
+              margin: 10px 0;
+            }
+            .footer { 
+              text-align: center; 
+              padding: 30px; 
+              color: #666; 
+              font-size: 14px;
+              background: #f8f9fa;
+            }
+            .signature {
+              margin-top: 30px;
+              padding-top: 20px;
+              border-top: 1px solid #eee;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Welcome to the CrankSmith community! 🚴‍♂️</h1>
+            </div>
+            <div class="content">
+              <h2>Hey fellow cyclist! 👋</h2>
+              
+              <p>Thanks for joining our community! CrankSmith is a completely free bike gear calculator and compatibility checker that you can start using right away.</p>
+              
+              <p>I built CrankSmith because I was tired of:</p>
+              <ul>
+                <li>Guessing if an upgrade would actually help</li>
+                <li>Using clunky calculators with generic data</li>
+                <li>Wasting money on components that didn't improve my ride</li>
+              </ul>
+              
+              <div class="feature-list">
+                <p><strong>🎯 What's included (completely free):</strong></p>
+                <ul>
+                  <li>✅ Professional gear ratio calculator</li>
+                  <li>✅ Component compatibility checker</li>
+                  <li>✅ Tire pressure calculator</li>
+                  <li>✅ Performance optimization tools</li>
+                  <li>✅ Works offline on your phone</li>
+                </ul>
+              </div>
+              
+              <p style="text-align: center;">
+                <a href="https://cranksmith.com/calculator" class="button">
+                  🚀 Start Using CrankSmith
+                </a>
+              </p>
+              
+              <p style="text-align: center; color: #666; font-size: 14px;">
+                <em>No signup required - bookmark it for easy access!</em>
+              </p>
+              
+              <div class="signature">
+                <p>By joining our community, you'll get occasional updates about new features, cycling tips, and useful content. Got questions? Just reply to this email. I personally read every message and usually respond within a day.</p>
+                
+                <p>
+                  Ride on!<br>
+                  <strong>Mike</strong><br>
+                  Founder, CrankSmith<br>
+                  <em style="color: #666;">Fellow bike nerd who spent way too much on the wrong cassette once</em>
+                </p>
+              </div>
+            </div>
+            <div class="footer">
+              <p>You're receiving this because you signed up for community updates at cranksmith.com</p>
+              <p>
+                <a href="https://cranksmith.com" style="color: #007aff; text-decoration: none;">CrankSmith</a> | 
+                Built with ❤️ by cyclists, for cyclists
+              </p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    // Send email
+    devLog('Sending welcome email...');
+    const mailOptions = {
+      from: `"CrankSmith" <${process.env.ZOHO_EMAIL}>`,
+      to: email,
+      subject: 'Welcome to the CrankSmith community! 🚴‍♂️',
+      html: emailHtml,
+      text: `Welcome to the CrankSmith community!
+
+Thanks for joining! CrankSmith is a completely free bike gear calculator and compatibility checker that you can start using right away.
+
+Start using CrankSmith: https://cranksmith.com/calculator
+
+What's included (completely free):
+- Professional gear ratio calculator
+- Component compatibility checker  
+- Tire pressure calculator
+- Performance optimization tools
+- Works offline on your phone
+
+By joining our community, you'll get occasional updates about new features, cycling tips, and useful content. Got questions? Just reply to this email.
+
+Ride on!
+Mike
+Founder, CrankSmith`
+    };
+
+    await transporter.sendMail(mailOptions);
+    devLog('Welcome email sent successfully');
+
+    // Optional: Send yourself a notification
+    if (process.env.ADMIN_EMAIL) {
+      await transporter.sendMail({
+        from: `"CrankSmith" <${process.env.ZOHO_EMAIL}>`,
+        to: process.env.ADMIN_EMAIL,
+        subject: '🎉 New CrankSmith Community Member!',
+        text: `New community signup: ${email}\n\nTotal signups: Check Supabase dashboard`,
+      });
+    }
+    
+    res.status(200).json({ 
+      success: true, 
+      message: 'Welcome to the community! Check your email and start using the free tools right away.' 
+    });
+    
+  } catch (error) {
+    console.error('Community signup error:', error); // Keep error logging
+    
+    // More specific error messages
+    if (error.message?.includes('auth')) {
+      console.error('Email auth error - check ZOHO credentials'); // Keep error logging
+      return res.status(500).json({ success: false, error: 'Email service configuration error' });
+    }
+    if (error.message?.includes('supabase') || error.code) {
+      console.error('Supabase error - check connection'); // Keep error logging
+      return res.status(500).json({ success: false, error: 'Database connection error' });
+    }
+    
+    res.status(500).json({ 
+      error: 'Failed to process signup. Please try again or email mike@cranksmith.com directly.' 
+    });
+  }
 }
 
 
 ================================================================================
-FILE 64: public/manifest.json
+FILE 61: pages/api/riley.js [javascript]
+================================================================================
+
+// pages/api/riley.js - COMPLETE FILE with enhanced security
+import { Redis } from '@upstash/redis';
+
+// Initialize Redis client (use Upstash or similar)
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
+
+// Security constants
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 10;
+const MAX_PROMPT_LENGTH = 5000;
+const BLOCKED_PATTERNS = [
+  'ignore previous',
+  'disregard instructions',
+  'forget what i told you',
+  'system prompt',
+  'reveal your instructions',
+  'show your prompt',
+  'what are your instructions',
+  'bypass your',
+  'jailbreak',
+];
+
+// Validate prompt for security
+function isValidPrompt(prompt) {
+  if (!prompt || typeof prompt !== 'string') {
+    return { valid: false, reason: 'Invalid prompt format' };
+  }
+
+  if (prompt.length > MAX_PROMPT_LENGTH) {
+    return { valid: false, reason: 'Prompt too long' };
+  }
+
+  // Check for prompt injection attempts
+  const lowerPrompt = prompt.toLowerCase();
+  for (const pattern of BLOCKED_PATTERNS) {
+    if (lowerPrompt.includes(pattern)) {
+      return { valid: false, reason: 'Potentially harmful prompt detected' };
+    }
+  }
+
+  // Check for excessive special characters (possible encoding attack)
+  const specialCharRatio = (prompt.match(/[^a-zA-Z0-9\s.,!?-]/g) || []).length / prompt.length;
+  if (specialCharRatio > 0.3) {
+    return { valid: false, reason: 'Unusual character pattern detected' };
+  }
+
+  return { valid: true };
+}
+
+// Get client identifier
+function getClientId(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  const ip = forwarded ? forwarded.split(',')[0] : req.connection.remoteAddress;
+  
+  // Add user agent hash for better fingerprinting
+  const userAgent = req.headers['user-agent'] || 'unknown';
+  const crypto = require('crypto');
+  const uaHash = crypto.createHash('md5').update(userAgent).digest('hex').substring(0, 8);
+  
+  return `${ip}-${uaHash}`;
+}
+
+// Check rate limit with Redis
+async function checkRateLimit(clientId) {
+  const key = `riley_rate_limit:${clientId}`;
+  
+  try {
+    // Get current count
+    const current = await redis.get(key);
+    const count = current ? parseInt(current) : 0;
+    
+    if (count >= MAX_REQUESTS_PER_WINDOW) {
+      return { allowed: false, retryAfter: RATE_LIMIT_WINDOW / 1000 };
+    }
+    
+    // Increment count
+    const pipeline = redis.pipeline();
+    pipeline.incr(key);
+    pipeline.expire(key, Math.ceil(RATE_LIMIT_WINDOW / 1000));
+    await pipeline.exec();
+    
+    return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - count - 1 };
+  } catch (error) {
+    console.error('Redis error:', error);
+    // Fallback to allowing request if Redis fails
+    return { allowed: true, remaining: -1 };
+  }
+}
+
+// Log suspicious activity
+async function logSuspiciousActivity(clientId, reason) {
+  const key = `riley_suspicious:${clientId}`;
+  const timestamp = new Date().toISOString();
+  
+  try {
+    await redis.zadd(key, {
+      score: Date.now(),
+      member: `${timestamp}:${reason}`
+    });
+    
+    // Keep logs for 7 days
+    await redis.expire(key, 7 * 24 * 60 * 60);
+  } catch (error) {
+    console.error('Failed to log suspicious activity:', error);
+  }
+}
+
+export default async function handler(req, res) {
+  // Only allow POST
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const clientId = getClientId(req);
+  
+  try {
+    // Check rate limit
+    const rateLimitResult = await checkRateLimit(clientId);
+    
+    if (!rateLimitResult.allowed) {
+      res.setHeader('Retry-After', rateLimitResult.retryAfter);
+      return res.status(429).json({ 
+        error: 'Rate limit exceeded. Please wait before making another request.',
+        retryAfter: rateLimitResult.retryAfter,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Add rate limit headers
+    if (rateLimitResult.remaining >= 0) {
+      res.setHeader('X-RateLimit-Limit', MAX_REQUESTS_PER_WINDOW);
+      res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining);
+      res.setHeader('X-RateLimit-Reset', new Date(Date.now() + RATE_LIMIT_WINDOW).toISOString());
+    }
+
+    const { prompt } = req.body;
+    
+    // Validate prompt
+    const validation = isValidPrompt(prompt);
+    if (!validation.valid) {
+      await logSuspiciousActivity(clientId, validation.reason);
+      return res.status(400).json({ 
+        error: validation.reason,
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Check for API key
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('ANTHROPIC_API_KEY not configured');
+      return res.status(500).json({ 
+        error: 'Service temporarily unavailable. Please try again later.',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Make API request with timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': process.env.ANTHROPIC_API_KEY,
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-3-5-sonnet-20241022',
+          max_tokens: 1024,
+          messages: [
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          temperature: 0.7,
+          system: "You are Riley, a helpful bike mechanic assistant. Provide concise, accurate advice about bike components and compatibility."
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Claude API error:', response.status, errorData);
+        
+        return res.status(500).json({
+          error: 'Sorry, I\'m having trouble connecting right now. Please try again in a moment.',
+          timestamp: new Date().toISOString()
+        });
+      }
+
+      const data = await response.json();
+      
+      // Sanitize response
+      const responseText = data.content[0].text
+        .replace(/<script[^>]*>.*?<\/script>/gi, '') // Remove scripts
+        .replace(/javascript:/gi, '') // Remove javascript: URIs
+        .substring(0, 2000); // Limit response length
+      
+      res.status(200).json({
+        success: true,
+        response: responseText,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (fetchError) {
+      if (fetchError.name === 'AbortError') {
+        return res.status(504).json({
+          error: 'Request timeout. Please try again.',
+          timestamp: new Date().toISOString()
+        });
+      }
+      throw fetchError;
+    }
+
+  } catch (error) {
+    console.error('Riley API Error:', error);
+    
+    // Log error but don't expose internal details
+    await logSuspiciousActivity(clientId, `Error: ${error.message}`);
+    
+    res.status(500).json({
+      success: false,
+      error: 'An unexpected error occurred. Please try again later.',
+      timestamp: new Date().toISOString()
+    });
+  }
+}
+
+// Export config for Vercel
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10kb',
+    },
+  },
+};
+
+
+
+================================================================================
+FILE 62: pages/api/verify-beta.js [javascript]
+================================================================================
+
+// pages/api/verify-beta.js
+import { supabase } from '../../lib/supabase';
+
+export default async function handler(req, res) {
+  console.log('Beta verification API called');
+  
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const { email } = req.body;
+  console.log('Verifying email:', email);
+
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({ error: 'Valid email required' });
+  }
+
+  try {
+    // First, let's see ALL emails in the table for debugging
+    console.log('Getting all emails for comparison...');
+    const { data: allEmails, error: allError } = await supabase
+      .from('early_access')
+      .select('email');
+    
+    console.log('All emails in database:', allEmails);
+    
+    // Now try the specific query
+    console.log('Checking for specific email...');
+    const { data, error } = await supabase
+      .from('early_access')
+      .select('email, created_at')
+      .ilike('email', email.trim());
+
+    if (error) {
+      console.log('Supabase error:', error);
+      throw error;
+    }
+
+    console.log('Specific query returned:', data);
+
+    if (data && data.length > 0) {
+      console.log('Email found in database:', data[0]);
+      return res.status(200).json({ 
+        success: true, 
+        hasAccess: true,
+        message: 'Welcome to the beta!',
+        signupDate: data[0].created_at
+      });
+    } else {
+      console.log('No matching email found');
+      return res.status(200).json({ 
+        success: true, 
+        hasAccess: false,
+        message: 'Email not found in beta list' 
+      });
+    }
+
+  } catch (error) {
+    console.error('Beta verification error:', error);
+    return res.status(500).json({ 
+      error: 'Verification failed' 
+    });
+  }
+}
+
+
+================================================================================
+FILE 63: pages/blog/gravel-vs-road-gearing.js [javascript]
+================================================================================
+
+// pages/blog/gravel-vs-road-gearing.js
+import Link from 'next/link';
+import SEOHead from '../../components/SEOHead';
+
+export default function GravelVsRoadGearing() {
+  return (
+    <>
+      <SEOHead 
+        title="Gravel vs Road Bike Gearing: What's the Difference? - CrankSmith"
+        description="Understanding why gravel bikes need different gear ratios and how to optimize for mixed terrain riding."
+        url="https://cranksmith.com/blog/gravel-vs-road-gearing"
+      />
+      
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+        <div className="max-w-3xl mx-auto px-4 py-12">
+          {/* Back Link */}
+          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
+            ← Back to Blog
+          </Link>
+
+          {/* Article Header */}
+          <header className="mb-8">
+            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
+              <span className="bg-[var(--success-green)] text-white px-2 py-1 rounded text-xs">
+                Bike Setup
+              </span>
+              <time>June 10, 2025</time>
+              <span>7 min read</span>
+            </div>
+            
+            <h1 className="text-4xl font-bold mb-4">
+              Gravel vs Road Bike Gearing: What's the Difference?
+            </h1>
+            
+            <p className="text-xl text-[var(--text-secondary)]">
+              Understanding why gravel bikes need different gear ratios and how to optimize for mixed terrain riding.
+            </p>
+          </header>
+
+          {/* Article Content */}
+          <article className="prose prose-invert max-w-none">
+            <p>
+              If you've ever wondered why your road bike feels inadequate on gravel trails, or why gravel bikes have such different gearing, you're not alone. The terrain demands completely different approaches to gear selection.
+            </p>
+
+            <h2>The Core Differences</h2>
+            <p>
+              Road bikes prioritize speed and efficiency on smooth pavement, while gravel bikes need versatility for everything from loose dirt to steep off-road climbs. This fundamental difference drives every gearing decision.
+            </p>
+
+            <h3>Gear Range Comparison</h3>
+            <p>
+              <strong>Road bikes:</strong> Typically 34/50 chainrings with 11-28 or 11-32 cassettes<br/>
+              <strong>Gravel bikes:</strong> Often 40/48 or single chainring setups with 11-42 or wider cassettes
+            </p>
+
+            <h2>Why Gravel Needs Lower Gears</h2>
+            <p>
+              Gravel riding presents unique challenges that demand different gearing strategies:
+            </p>
+
+            <ul>
+              <li><strong>Loose surfaces:</strong> Less traction means you need easier gears to maintain momentum</li>
+              <li><strong>Steep, loose climbs:</strong> 15-20% grades on dirt require gears as low as 15-18 gear inches</li>
+              <li><strong>Technical sections:</strong> Slow, controlled riding benefits from ultra-low gears</li>
+              <li><strong>Loaded touring:</strong> Bikepacking adds weight, demanding easier climbing gears</li>
+            </ul>
+
+            <h2>The 1x vs 2x Debate for Gravel</h2>
+            <p>
+              Many gravel bikes now use single chainring (1x) setups. Here's when each works best:
+            </p>
+
+            <h3>Choose 1x When:</h3>
+            <ul>
+              <li>Simplicity and low maintenance are priorities</li>
+              <li>You ride varied terrain but don't need extreme high or low gears</li>
+              <li>Typical rides are under 50 miles</li>
+            </ul>
+
+            <h3>Choose 2x When:</h3>
+            <ul>
+              <li>You want the widest possible gear range</li>
+              <li>Long road sections are part of your rides</li>
+              <li>You prioritize small gear steps for optimal cadence</li>
+            </ul>
+
+            <h2>Optimizing Your Gravel Setup</h2>
+            <p>
+              The ideal gravel gearing depends on your specific riding:
+            </p>
+
+            <p>
+              <strong>Fire roads and smooth gravel:</strong> 40t chainring with 11-36 cassette<br/>
+              <strong>Technical singletrack:</strong> 38t chainring with 11-42 cassette<br/>
+              <strong>Bikepacking/loaded touring:</strong> 36t chainring with 11-46+ cassette
+            </p>
+
+            <h2>Real-World Gear Recommendations</h2>
+            <p>
+              For most gravel riders, aim for these gear inch ranges:
+            </p>
+            <ul>
+              <li><strong>Lowest gear:</strong> 18-22 gear inches (for steep, loose climbs)</li>
+              <li><strong>Highest gear:</strong> 90-110 gear inches (for road sections and descents)</li>
+              <li><strong>Most-used range:</strong> 35-65 gear inches (comfortable cruising)</li>
+            </ul>
+
+            {/* CTA Section */}
+            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
+              <h3 className="text-xl font-bold mb-3">Find Your Perfect Gravel Gearing</h3>
+              <p className="text-[var(--text-secondary)] mb-4">
+                Use CrankSmith's calculator to compare different chainring and cassette combinations for your gravel adventures.
+              </p>
+              <Link 
+                href="/calculator"
+                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
+              >
+                Calculate Your Setup
+              </Link>
+            </div>
+
+            <p>
+              Remember: the best gravel gearing is the one that gives you confidence on every surface. Whether you choose 1x or 2x, prioritize having the right gear for your steepest climbs and longest road sections.
+            </p>
+          </article>
+        </div>
+      </div>
+    </>
+  );
+}
+
+
+================================================================================
+FILE 64: pages/blog/optimal-climbing-gears.js [javascript]
+================================================================================
+
+// pages/blog/optimal-climbing-gears.js
+import Link from 'next/link';
+import SEOHead from '../../components/SEOHead';
+
+export default function OptimalClimbingGears() {
+  return (
+    <>
+      <SEOHead 
+        title="How to Choose Optimal Climbing Gears - CrankSmith"
+        description="Learn the science behind gear selection for steep climbs and maintain your cadence when the road goes up."
+        url="https://cranksmith.com/blog/optimal-climbing-gears"
+      />
+      
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+        <div className="max-w-3xl mx-auto px-4 py-12">
+          {/* Back Link */}
+          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
+            ← Back to Blog
+          </Link>
+
+          {/* Article Header */}
+          <header className="mb-8">
+            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
+              <span className="bg-[var(--accent-blue)] text-white px-2 py-1 rounded text-xs">
+                Gear Selection
+              </span>
+              <time>June 15, 2025</time>
+              <span>5 min read</span>
+            </div>
+            
+            <h1 className="text-4xl font-bold mb-4">
+              How to Choose Optimal Climbing Gears for Your Next Hill Climb
+            </h1>
+            
+            <p className="text-xl text-[var(--text-secondary)]">
+              Learn the science behind gear selection for steep climbs and maintain your cadence when the road goes up.
+            </p>
+          </header>
+
+          {/* Article Content */}
+          <article className="prose prose-invert max-w-none">
+            <p>
+              When the road tilts skyward, your gear selection can make the difference between a smooth, sustainable climb and a leg-burning struggle. The key is understanding how gear ratios, cadence, and power output work together.
+            </p>
+
+            <h2>The Science of Climbing Gears</h2>
+            <p>
+              For most cyclists, maintaining a cadence between 70-80 RPM on climbs is optimal. This keeps your muscles in their efficient power band while preventing the quad-burning low-cadence grind that leads to early fatigue.
+            </p>
+
+            <h3>Calculating Your Ideal Climbing Gear</h3>
+            <p>
+              Here's a simple formula: On a 10% grade at 8 mph, you'll need approximately 25-30 gear inches to maintain 75 RPM. For steeper climbs (12%+), consider gears as low as 20-22 gear inches.
+            </p>
+
+            <h2>Common Climbing Gear Mistakes</h2>
+            <ul>
+              <li><strong>Too high gears:</strong> Forcing big gears uphill burns matches you can't get back</li>
+              <li><strong>Late shifting:</strong> Shift before you need to, not when you're already struggling</li>
+              <li><strong>Ignoring terrain:</strong> Different climb profiles need different approaches</li>
+            </ul>
+
+            <h2>Gear Recommendations by Climb Type</h2>
+            <p>
+              <strong>Short, steep punches (8-12%):</strong> 22-28 gear inches<br/>
+              <strong>Long, steady climbs (4-8%):</strong> 28-35 gear inches<br/>
+              <strong>Alpine climbing (10%+):</strong> 18-25 gear inches
+            </p>
+
+            {/* CTA Section */}
+            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
+              <h3 className="text-xl font-bold mb-3">Calculate Your Perfect Climbing Setup</h3>
+              <p className="text-[var(--text-secondary)] mb-4">
+                Use CrankSmith's gear calculator to find the exact chainring and cassette combination for your climbing goals.
+              </p>
+              <Link 
+                href="/calculator"
+                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
+              >
+                Try the Calculator
+              </Link>
+            </div>
+
+            <p>
+              Remember: the best climbing gear is the one that lets you maintain a steady, sustainable effort all the way to the top. Your legs will thank you on the next climb.
+            </p>
+          </article>
+        </div>
+      </div>
+    </>
+  );
+}
+
+
+================================================================================
+FILE 65: pages/blog/tire-pressure-performance.js [javascript]
+================================================================================
+
+// pages/blog/tire-pressure-performance.js
+import Link from 'next/link';
+import SEOHead from '../../components/SEOHead';
+
+export default function TirePressurePerformance() {
+  return (
+    <>
+      <SEOHead 
+        title="The Hidden Performance Cost of Wrong Tire Pressure - CrankSmith"
+        description="How tire pressure affects rolling resistance, comfort, and speed - plus how to find your optimal PSI."
+        url="https://cranksmith.com/blog/tire-pressure-performance"
+      />
+      
+      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+        <div className="max-w-3xl mx-auto px-4 py-12">
+          {/* Back Link */}
+          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
+            ← Back to Blog
+          </Link>
+
+          {/* Article Header */}
+          <header className="mb-8">
+            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
+              <span className="bg-[var(--warning-orange)] text-white px-2 py-1 rounded text-xs">
+                Performance
+              </span>
+              <time>June 5, 2025</time>
+              <span>4 min read</span>
+            </div>
+            
+            <h1 className="text-4xl font-bold mb-4">
+              The Hidden Performance Cost of Wrong Tire Pressure
+            </h1>
+            
+            <p className="text-xl text-[var(--text-secondary)]">
+              How tire pressure affects rolling resistance, comfort, and speed - plus how to find your optimal PSI.
+            </p>
+          </header>
+
+          {/* Article Content */}
+          <article className="prose prose-invert max-w-none">
+            <p>
+              Most cyclists obsess over lightweight components and aerodynamics, but ignore one of the biggest performance factors: tire pressure. Getting this wrong can cost you more watts than expensive wheels ever save.
+            </p>
+
+            <h2>The Science of Rolling Resistance</h2>
+            <p>
+              Rolling resistance occurs when your tire deforms as it rolls. Too little pressure and your tire flexes excessively, creating heat and drag. Too much pressure and you lose comfort and traction, plus you'll bounce over small bumps instead of rolling smoothly.
+            </p>
+
+            <h3>The Performance Numbers</h3>
+            <p>
+              Research shows that running 20 PSI too high or too low can increase rolling resistance by 10-15 watts at 25 mph. Over a 40-mile ride, that's the equivalent of carrying an extra 2-3 pounds up every hill.
+            </p>
+
+            <h2>Finding Your Optimal Pressure</h2>
+            <p>
+              The ideal tire pressure depends on several factors that work together:
+            </p>
+
+            <ul>
+              <li><strong>Rider weight:</strong> Heavier riders need higher pressure to prevent tire deformation</li>
+              <li><strong>Tire width:</strong> Wider tires run lower pressures for the same contact patch</li>
+              <li><strong>Road surface:</strong> Smooth roads favor higher pressure; rough roads favor lower</li>
+              <li><strong>Riding style:</strong> Racing demands different pressure than casual riding</li>
+            </ul>
+
+            <h2>Pressure by Tire Width</h2>
+            <p>
+              Here are starting points for a 150-170 lb rider on smooth pavement:
+            </p>
+
+            <p>
+              <strong>23mm tires:</strong> 100-110 PSI<br/>
+              <strong>25mm tires:</strong> 85-95 PSI<br/>
+              <strong>28mm tires:</strong> 70-80 PSI<br/>
+              <strong>32mm tires:</strong> 60-70 PSI<br/>
+              <strong>40mm+ gravel:</strong> 35-50 PSI
+            </p>
+
+            <h2>The Front vs Rear Difference</h2>
+            <p>
+              Your rear tire carries more weight (you + gear), so it needs 5-10 PSI more than the front. This improves comfort without sacrificing performance, since the front tire has less load.
+            </p>
+
+            <h2>Adjusting for Real-World Conditions</h2>
+            <p>
+              Your optimal pressure changes based on conditions:
+            </p>
+
+            <ul>
+              <li><strong>Rough roads:</strong> Drop pressure 5-10 PSI for better comfort and traction</li>
+              <li><strong>Wet conditions:</strong> Lower pressure increases contact patch and grip</li>
+              <li><strong>Long rides:</strong> Start 5 PSI higher - pressure drops as tires warm up</li>
+              <li><strong>Racing:</strong> Higher pressure for maximum speed on smooth courses</li>
+            </ul>
+
+            <h2>Common Pressure Mistakes</h2>
+            <p>
+              Avoid these performance-killing errors:
+            </p>
+
+            <ul>
+              <li><strong>Copying pro settings:</strong> Pros weigh 130 lbs and race on perfect roads</li>
+              <li><strong>Ignoring tire width:</strong> 25mm and 28mm tires need very different pressures</li>
+              <li><strong>Never checking:</strong> Tires lose 1-2 PSI per week naturally</li>
+              <li><strong>One-size-fits-all:</strong> Different rides need different pressures</li>
+            </ul>
+
+            <h2>The Comfort-Performance Balance</h2>
+            <p>
+              Modern research shows that slightly lower pressures often roll faster on real roads. The sweet spot balances rolling resistance, comfort, and puncture protection. Start with the recommendations above and adjust based on feel.
+            </p>
+
+            {/* CTA Section */}
+            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 my-8">
+              <h3 className="text-xl font-bold mb-3">Calculate Your Optimal Tire Pressure</h3>
+              <p className="text-[var(--text-secondary)] mb-4">
+                Use CrankSmith's tire pressure calculator to find your perfect PSI based on your weight, tire size, and riding conditions.
+              </p>
+              <Link 
+                href="/tire-pressure"
+                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-4 py-2 rounded font-semibold transition-colors"
+              >
+                Try the Pressure Calculator
+              </Link>
+            </div>
+
+            <p>
+              Remember: the fastest tire pressure is the one that rolls smoothly over your actual roads. Experiment within the recommended ranges and pay attention to how your bike feels - your body will tell you when you've found the sweet spot.
+            </p>
+          </article>
+        </div>
+      </div>
+    </>
+  );
+}
+
+
+================================================================================
+FILE 66: public/manifest.json [json]
 ================================================================================
 
 {
@@ -15100,7 +15304,7 @@ FILE 64: public/manifest.json
 
 
 ================================================================================
-FILE 65: public/offline.html
+FILE 67: public/offline.html [html]
 ================================================================================
 
 <!DOCTYPE html>
@@ -15348,7 +15552,7 @@ FILE 65: public/offline.html
 
 
 ================================================================================
-FILE 66: public/robots.txt
+FILE 68: public/robots.txt [text]
 ================================================================================
 
 # CrankSmith Robots.txt - Cycling Tools and Calculators
@@ -15402,7 +15606,7 @@ Host: https://cranksmith.com
 
 
 ================================================================================
-FILE 67: public/sw-enhanced.js
+FILE 69: public/sw-enhanced.js [javascript]
 ================================================================================
 
 // public/sw-enhanced.js - Advanced Service Worker for PWA with offline capabilities
@@ -16561,7 +16765,7 @@ async function sendCacheStatus(client) {
 
 
 ================================================================================
-FILE 68: public/sw.js
+FILE 70: public/sw.js [javascript]
 ================================================================================
 
 // public/sw.js - Service Worker for PWA offline support
@@ -16939,7 +17143,7 @@ self.addEventListener('notificationclick', (event) => {
 
 
 ================================================================================
-FILE 69: store/calculatorStore.js
+FILE 71: store/calculatorStore.js [javascript]
 ================================================================================
 
 // store/calculatorStore.js - COMPLETE FILE
@@ -17124,7 +17328,7 @@ export default useCalculatorStore;
 
 
 ================================================================================
-FILE 70: styles/globals.css
+FILE 72: styles/globals.css [css]
 ================================================================================
 
 @tailwind base;
@@ -17739,160 +17943,7 @@ input::placeholder, textarea::placeholder {
 
 
 ================================================================================
-FILE 71: tailwind.config.js
-================================================================================
-
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  darkMode: ['class', '[data-theme="dark"]'],
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          orange: 'rgb(var(--brand-orange) / <alpha-value>)',
-          yellow: 'rgb(var(--brand-yellow) / <alpha-value>)',
-          blue: 'rgb(var(--brand-blue) / <alpha-value>)',
-          purple: 'rgb(var(--brand-purple) / <alpha-value>)',
-          green: 'rgb(var(--brand-green) / <alpha-value>)',
-          red: 'rgb(var(--brand-red) / <alpha-value>)',
-        },
-        neutral: {
-          50: 'rgb(var(--neutral-50) / <alpha-value>)',
-          100: 'rgb(var(--neutral-100) / <alpha-value>)',
-          200: 'rgb(var(--neutral-200) / <alpha-value>)',
-          300: 'rgb(var(--neutral-300) / <alpha-value>)',
-          400: 'rgb(var(--neutral-400) / <alpha-value>)',
-          500: 'rgb(var(--neutral-500) / <alpha-value>)',
-          600: 'rgb(var(--neutral-600) / <alpha-value>)',
-          700: 'rgb(var(--neutral-700) / <alpha-value>)',
-          800: 'rgb(var(--neutral-800) / <alpha-value>)',
-          900: 'rgb(var(--neutral-900) / <alpha-value>)',
-          950: 'rgb(var(--neutral-950) / <alpha-value>)',
-        },
-      },
-      fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-        mono: ['"SF Mono"', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
-      },
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '120': '30rem',
-      },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'spin-slow': 'spin 3s linear infinite',
-        'pulse-slow': 'pulse 3s ease-in-out infinite',
-        'bounce-slow': 'bounce 2s infinite',
-      },
-      borderRadius: {
-        '4xl': '2rem',
-      },
-      boxShadow: {
-        'glow-sm': '0 0 10px rgb(var(--brand-blue) / 0.3)',
-        'glow-md': '0 0 20px rgb(var(--brand-blue) / 0.4)',
-        'glow-lg': '0 0 40px rgb(var(--brand-blue) / 0.5)',
-        'inner-lg': 'inset 0 2px 4px 0 rgb(0 0 0 / 0.1)',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'gradient-performance': 'var(--gradient-performance)',
-        'gradient-premium': 'var(--gradient-premium)',
-        'gradient-success': 'var(--gradient-success)',
-      },
-      transitionTimingFunction: {
-        'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
-      },
-    },
-  },
-  plugins: [
-    function({ addUtilities }) {
-      const newUtilities = {
-        '.text-balance': {
-          'text-wrap': 'balance',
-        },
-        '.animation-delay-100': {
-          'animation-delay': '100ms',
-        },
-        '.animation-delay-200': {
-          'animation-delay': '200ms',
-        },
-        '.animation-delay-300': {
-          'animation-delay': '300ms',
-        },
-        '.animation-delay-500': {
-          'animation-delay': '500ms',
-        },
-        '.animation-delay-1000': {
-          'animation-delay': '1000ms',
-        },
-      }
-      addUtilities(newUtilities)
-    },
-  ],
-}
-
-
-
-================================================================================
-FILE 72: tsconfig.json
-================================================================================
-
-{
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "es6"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    },
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    "out"
-  ]
-}
-
-
-================================================================================
-FILE 73: types/index.ts
+FILE 73: types/index.ts [typescript]
 ================================================================================
 
 // types/index.ts - Cleaned and Organized Type Definitions
@@ -18206,7 +18257,12 @@ export interface CompatibilityCheck {
 
 
 ================================================================================
-END OF CODEBASE - CrankSmith v1.1
+END OF CODEBASE - CrankSmith v1.1 (Main Branch)
 Total Files: 73
-Generated: 2025-07-17T17:19:22.231Z
+Generated: 2025-07-17T17:25:42.566Z
+Git Branch: main
+Git Commit: a19f0a9
+
+🚴‍♂️ Ready to share with your friend!
+Bike Fit Calculator is fixed and working!
 ================================================================================

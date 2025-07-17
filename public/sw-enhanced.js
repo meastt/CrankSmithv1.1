@@ -1,5 +1,5 @@
 // public/sw-enhanced.js - Advanced Service Worker for PWA with offline capabilities
-const CACHE_VERSION = '2.1.0';
+const CACHE_VERSION = '2.1.1'; // Incremented for cache cleanup fix
 const STATIC_CACHE_NAME = `cranksmith-static-v${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `cranksmith-dynamic-v${CACHE_VERSION}`;
 const COMPONENTS_CACHE_NAME = `cranksmith-components-v${CACHE_VERSION}`;
@@ -14,7 +14,7 @@ const STATIC_ASSETS = [
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
-  '/offline.html' // We'll create this
+  '/offline.html' // Essential offline fallback
 ];
 
 // Component data endpoints to cache
@@ -39,59 +39,425 @@ const RETRY_CONFIG = {
   backoffMultiplier: 2
 };
 
-// Install event - cache critical assets
+// Cache validation configuration
+const CACHE_VALIDATION = {
+  maxCacheAge: 24 * 60 * 60 * 1000, // 24 hours
+  requiredAssets: ['/offline.html', '/', '/calculator', '/mobile'],
+  criticalEndpoints: ['/lib/components.js']
+};
+
+// Install event - cache critical assets with validation
 self.addEventListener('install', (event) => {
   console.log('Enhanced SW: Installing...');
   
   event.waitUntil(
-    Promise.all([
-      caches.open(STATIC_CACHE_NAME).then(cache => {
-        console.log('Enhanced SW: Caching static assets');
-        return cache.addAll(STATIC_ASSETS.filter(asset => 
-          !asset.includes('offline.html') // Skip if doesn't exist yet
-        ));
-      }),
-      caches.open(COMPONENTS_CACHE_NAME).then(cache => {
-        console.log('Enhanced SW: Pre-caching component data');
-        // Pre-cache component database for offline calculations
-        return cache.add('/lib/components.js');
-      }),
-      caches.open(OFFLINE_REQUESTS_CACHE).then(cache => {
-        console.log('Enhanced SW: Initialized offline requests cache');
-        return Promise.resolve();
+    installAndValidateCaches()
+      .then(() => {
+        console.log('Enhanced SW: Installation completed successfully');
+        self.skipWaiting();
       })
-    ]).catch(error => {
-      console.warn('Enhanced SW: Failed to cache some assets', error);
-      return Promise.resolve();
-    })
+      .catch(error => {
+        console.error('Enhanced SW: Installation failed', error);
+        // Don't skip waiting if installation fails
+        throw error;
+      })
   );
-  
-  self.skipWaiting();
 });
 
-// Activate event - clean up old caches
+// Enhanced installation with cache validation
+async function installAndValidateCaches() {
+  try {
+    // Install caches in parallel but validate each one
+    const cachePromises = await Promise.allSettled([
+      installStaticCache(),
+      installComponentsCache(),
+      installOfflineRequestsCache()
+    ]);
+
+    // Check if any critical cache installation failed
+    const failed = cachePromises.filter(result => result.status === 'rejected');
+    if (failed.length > 0) {
+      console.warn('Enhanced SW: Some caches failed to install:', failed);
+      // Continue installation but log warnings
+    }
+
+    // Validate that critical assets are cached
+    const validationResult = await validateNewCaches();
+    if (!validationResult.isValid) {
+      throw new Error(`Cache validation failed: ${validationResult.errors.join(', ')}`);
+    }
+
+    console.log('Enhanced SW: All caches installed and validated successfully');
+    return true;
+
+  } catch (error) {
+    console.error('Enhanced SW: Cache installation and validation failed:', error);
+    throw error;
+  }
+}
+
+// Install static cache with error handling
+async function installStaticCache() {
+  try {
+    const cache = await caches.open(STATIC_CACHE_NAME);
+    console.log('Enhanced SW: Caching static assets');
+    
+    // Cache assets individually to identify which ones fail
+    const cacheResults = await Promise.allSettled(
+      STATIC_ASSETS.map(async (asset) => {
+        try {
+          await cache.add(asset);
+          console.log(`Enhanced SW: Cached ${asset}`);
+        } catch (error) {
+          console.warn(`Enhanced SW: Failed to cache ${asset}:`, error);
+          throw error;
+        }
+      })
+    );
+
+    // Check for critical failures
+    const failed = cacheResults.filter(result => result.status === 'rejected');
+    if (failed.length > 0) {
+      console.warn(`Enhanced SW: ${failed.length}/${STATIC_ASSETS.length} static assets failed to cache`);
+      
+      // Critical assets that must be cached
+      const criticalAssets = ['/offline.html'];
+      for (const asset of criticalAssets) {
+        const cached = await cache.match(asset);
+        if (!cached) {
+          throw new Error(`Critical asset ${asset} not cached`);
+        }
+      }
+    }
+
+    return cache;
+  } catch (error) {
+    console.error('Enhanced SW: Static cache installation failed:', error);
+    throw error;
+  }
+}
+
+// Install components cache
+async function installComponentsCache() {
+  try {
+    const cache = await caches.open(COMPONENTS_CACHE_NAME);
+    console.log('Enhanced SW: Pre-caching component data');
+    
+    // Try to cache component data
+    try {
+      await cache.add('/lib/components.js');
+      console.log('Enhanced SW: Component data cached successfully');
+    } catch (error) {
+      console.warn('Enhanced SW: Failed to cache component data:', error);
+      // Non-critical, continue installation
+    }
+
+    return cache;
+  } catch (error) {
+    console.error('Enhanced SW: Components cache creation failed:', error);
+    throw error;
+  }
+}
+
+// Install offline requests cache
+async function installOfflineRequestsCache() {
+  try {
+    const cache = await caches.open(OFFLINE_REQUESTS_CACHE);
+    console.log('Enhanced SW: Initialized offline requests cache');
+    return cache;
+  } catch (error) {
+    console.error('Enhanced SW: Offline requests cache creation failed:', error);
+    throw error;
+  }
+}
+
+// Validate that new caches contain required assets
+async function validateNewCaches() {
+  const errors = [];
+  
+  try {
+    // Check static cache for critical assets
+    const staticCache = await caches.open(STATIC_CACHE_NAME);
+    for (const asset of CACHE_VALIDATION.requiredAssets) {
+      const cached = await staticCache.match(asset);
+      if (!cached) {
+        errors.push(`Required asset ${asset} not found in static cache`);
+      }
+    }
+
+    // Check components cache for critical endpoints
+    const componentsCache = await caches.open(COMPONENTS_CACHE_NAME);
+    for (const endpoint of CACHE_VALIDATION.criticalEndpoints) {
+      const cached = await componentsCache.match(endpoint);
+      if (!cached) {
+        console.warn(`Critical endpoint ${endpoint} not found in components cache`);
+        // Warning only, not fatal
+      }
+    }
+
+    // Verify cache accessibility
+    const cacheNames = await caches.keys();
+    const expectedCaches = [
+      STATIC_CACHE_NAME,
+      COMPONENTS_CACHE_NAME,
+      OFFLINE_REQUESTS_CACHE
+    ];
+
+    for (const expectedCache of expectedCaches) {
+      if (!cacheNames.includes(expectedCache)) {
+        errors.push(`Expected cache ${expectedCache} not found`);
+      }
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors,
+      warnings: errors.length
+    };
+
+  } catch (error) {
+    errors.push(`Cache validation error: ${error.message}`);
+    return {
+      isValid: false,
+      errors,
+      warnings: 0
+    };
+  }
+}
+
+// Enhanced activate event with safe cache cleanup
 self.addEventListener('activate', (event) => {
   console.log('Enhanced SW: Activating...');
   
   event.waitUntil(
-    Promise.all([
-      caches.keys().then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(cacheName => {
-            if (cacheName.includes('cranksmith') && 
-                !cacheName.includes(CACHE_VERSION)) {
-              console.log('Enhanced SW: Deleting old cache', cacheName);
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      }),
-      self.clients.claim()
-    ])
+    safeActivateAndCleanup()
+      .then(() => {
+        console.log('Enhanced SW: Activation completed successfully');
+      })
+      .catch(error => {
+        console.error('Enhanced SW: Activation failed:', error);
+        // Continue anyway to avoid breaking the service worker
+      })
   );
 });
 
-// Enhanced fetch event - handles both GET and POST requests
+// Safe activation with comprehensive cache validation and cleanup
+async function safeActivateAndCleanup() {
+  try {
+    // Step 1: Validate current caches before any cleanup
+    console.log('Enhanced SW: Validating current caches...');
+    const validation = await validateCurrentCaches();
+    
+    if (!validation.hasMinimalOfflineSupport) {
+      console.warn('Enhanced SW: Minimal offline support not available, preserving old caches');
+      await self.clients.claim();
+      return;
+    }
+
+    // Step 2: Get all cache names and identify old caches
+    const allCacheNames = await caches.keys();
+    const oldCaches = allCacheNames.filter(cacheName => 
+      cacheName.includes('cranksmith') && 
+      !cacheName.includes(CACHE_VERSION)
+    );
+
+    // Step 3: Verify new caches are fully functional before cleanup
+    const newCacheValidation = await validateNewCaches();
+    if (!newCacheValidation.isValid) {
+      console.warn('Enhanced SW: New caches not fully valid, attempting repair...');
+      
+      try {
+        await repairCaches();
+        const retryValidation = await validateNewCaches();
+        if (!retryValidation.isValid) {
+          throw new Error('Cache repair failed: ' + retryValidation.errors.join(', '));
+        }
+      } catch (repairError) {
+        console.error('Enhanced SW: Cache repair failed, preserving old caches:', repairError);
+        await self.clients.claim();
+        return;
+      }
+    }
+
+    // Step 4: Perform safe cache cleanup only after validation
+    if (oldCaches.length > 0) {
+      console.log(`Enhanced SW: Safely cleaning up ${oldCaches.length} old caches`);
+      
+      const cleanupResults = await Promise.allSettled(
+        oldCaches.map(async (cacheName) => {
+          try {
+            await caches.delete(cacheName);
+            console.log(`Enhanced SW: Deleted old cache: ${cacheName}`);
+          } catch (error) {
+            console.warn(`Enhanced SW: Failed to delete cache ${cacheName}:`, error);
+            throw error;
+          }
+        })
+      );
+
+      const failedCleanups = cleanupResults.filter(result => result.status === 'rejected');
+      if (failedCleanups.length > 0) {
+        console.warn(`Enhanced SW: ${failedCleanups.length} cache cleanups failed`);
+      }
+    }
+
+    // Step 5: Final validation and client notification
+    await self.clients.claim();
+    
+    const finalValidation = await validateCurrentCaches();
+    await notifyClients({
+      type: 'CACHE_UPDATE_COMPLETE',
+      payload: {
+        version: CACHE_VERSION,
+        hasOfflineSupport: finalValidation.hasMinimalOfflineSupport,
+        cleanedCaches: oldCaches.length,
+        validation: finalValidation
+      }
+    });
+
+    console.log('Enhanced SW: Cache cleanup and activation completed successfully');
+
+  } catch (error) {
+    console.error('Enhanced SW: Safe activation failed:', error);
+    
+    // Attempt emergency fallback
+    await emergencyFallbackActivation();
+    throw error;
+  }
+}
+
+// Validate current caches for minimal offline functionality
+async function validateCurrentCaches() {
+  try {
+    const validation = {
+      hasMinimalOfflineSupport: false,
+      hasOfflinePage: false,
+      hasStaticAssets: false,
+      hasComponentData: false,
+      cacheCount: 0,
+      errors: []
+    };
+
+    const cacheNames = await caches.keys();
+    validation.cacheCount = cacheNames.length;
+
+    // Check for offline page (critical)
+    const staticCache = await caches.open(STATIC_CACHE_NAME);
+    const offlinePage = await staticCache.match('/offline.html');
+    validation.hasOfflinePage = !!offlinePage;
+
+    // Check for basic navigation pages
+    const navigationPages = await Promise.all([
+      staticCache.match('/'),
+      staticCache.match('/calculator'),
+      staticCache.match('/mobile')
+    ]);
+    validation.hasStaticAssets = navigationPages.some(page => !!page);
+
+    // Check for component data
+    const componentsCache = await caches.open(COMPONENTS_CACHE_NAME);
+    const componentData = await componentsCache.match('/lib/components.js');
+    validation.hasComponentData = !!componentData;
+
+    // Minimal offline support = offline page + at least one navigation page
+    validation.hasMinimalOfflineSupport = validation.hasOfflinePage && validation.hasStaticAssets;
+
+    if (!validation.hasMinimalOfflineSupport) {
+      validation.errors.push('Missing minimal offline support (offline page and/or navigation pages)');
+    }
+
+    return validation;
+
+  } catch (error) {
+    console.error('Enhanced SW: Cache validation error:', error);
+    return {
+      hasMinimalOfflineSupport: false,
+      hasOfflinePage: false,
+      hasStaticAssets: false,
+      hasComponentData: false,
+      cacheCount: 0,
+      errors: [`Validation error: ${error.message}`]
+    };
+  }
+}
+
+// Repair caches by re-caching critical assets
+async function repairCaches() {
+  console.log('Enhanced SW: Attempting cache repair...');
+  
+  try {
+    // Repair static cache with critical assets
+    const staticCache = await caches.open(STATIC_CACHE_NAME);
+    const criticalAssets = ['/offline.html', '/', '/calculator'];
+    
+    for (const asset of criticalAssets) {
+      try {
+        const cached = await staticCache.match(asset);
+        if (!cached) {
+          console.log(`Enhanced SW: Re-caching critical asset: ${asset}`);
+          await staticCache.add(asset);
+        }
+      } catch (error) {
+        console.warn(`Enhanced SW: Failed to repair cache for ${asset}:`, error);
+        // Continue with other assets
+      }
+    }
+
+    // Attempt to repair component cache
+    const componentsCache = await caches.open(COMPONENTS_CACHE_NAME);
+    try {
+      const componentData = await componentsCache.match('/lib/components.js');
+      if (!componentData) {
+        console.log('Enhanced SW: Re-caching component data');
+        await componentsCache.add('/lib/components.js');
+      }
+    } catch (error) {
+      console.warn('Enhanced SW: Failed to repair component cache:', error);
+      // Non-critical, continue
+    }
+
+    console.log('Enhanced SW: Cache repair completed');
+
+  } catch (error) {
+    console.error('Enhanced SW: Cache repair failed:', error);
+    throw error;
+  }
+}
+
+// Emergency fallback activation when normal activation fails
+async function emergencyFallbackActivation() {
+  console.warn('Enhanced SW: Performing emergency fallback activation');
+  
+  try {
+    // Claim clients immediately
+    await self.clients.claim();
+    
+    // Try to ensure offline.html is available
+    const staticCache = await caches.open(STATIC_CACHE_NAME);
+    try {
+      const offlinePage = await staticCache.match('/offline.html');
+      if (!offlinePage) {
+        await staticCache.add('/offline.html');
+      }
+    } catch (error) {
+      console.error('Enhanced SW: Emergency offline page caching failed:', error);
+    }
+
+    // Notify clients of emergency state
+    await notifyClients({
+      type: 'EMERGENCY_ACTIVATION',
+      payload: {
+        message: 'Service worker activated in emergency mode',
+        limitedOfflineSupport: true
+      }
+    });
+
+  } catch (error) {
+    console.error('Enhanced SW: Emergency fallback activation failed:', error);
+  }
+}
+
+// Enhanced fetch event - handles both GET and POST requests with better fallbacks
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -111,8 +477,8 @@ self.addEventListener('fetch', (event) => {
       // Next.js assets - cache first with long TTL
       event.respondWith(cacheFirstStrategy(request, DYNAMIC_CACHE_NAME));
     } else {
-      // Other requests - network first with fallback
-      event.respondWith(networkFirstWithFallback(request));
+      // Other requests - network first with robust fallback
+      event.respondWith(networkFirstWithRobustFallback(request));
     }
   } 
   // Handle POST requests with offline support
@@ -121,7 +487,7 @@ self.addEventListener('fetch', (event) => {
   }
   // Handle other HTTP methods
   else {
-    event.respondWith(networkFirstWithFallback(request));
+    event.respondWith(networkFirstWithRobustFallback(request));
   }
 });
 
@@ -215,7 +581,7 @@ function generateRequestId() {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// Cache-first strategy for static assets
+// Cache-first strategy for static assets with fallback
 async function cacheFirstStrategy(request, cacheName) {
   try {
     const cache = await caches.open(cacheName);
@@ -223,25 +589,29 @@ async function cacheFirstStrategy(request, cacheName) {
     
     if (cached) {
       // Return cached version and update in background
-      fetchAndCache(request, cacheName);
+      fetchAndCache(request, cacheName).catch(error => {
+        console.warn('Background cache update failed:', error);
+      });
       return cached;
     }
     
     return await fetchAndCache(request, cacheName);
   } catch (error) {
     console.error('Cache-first strategy failed:', error);
-    return new Response('Offline', { status: 503 });
+    return await createOfflineResponse(request);
   }
 }
 
-// Network-first strategy for dynamic content
+// Network-first strategy for dynamic content with better fallback
 async function networkFirstStrategy(request, cacheName) {
   try {
     const response = await fetch(request);
     
     if (response.ok) {
       const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
+      cache.put(request, response.clone()).catch(error => {
+        console.warn('Failed to cache response:', error);
+      });
     }
     
     return response;
@@ -254,11 +624,12 @@ async function networkFirstStrategy(request, cacheName) {
       return cached;
     }
     
-    // Return offline response for failed API calls
+    // Return appropriate offline response for failed API calls
     return new Response(JSON.stringify({
       success: false,
       error: 'This feature requires an internet connection',
-      offline: true
+      offline: true,
+      cached: false
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -266,36 +637,71 @@ async function networkFirstStrategy(request, cacheName) {
   }
 }
 
-// Network-first with offline page fallback
-async function networkFirstWithFallback(request) {
+// Enhanced network-first with robust offline fallback
+async function networkFirstWithRobustFallback(request) {
   try {
     return await fetch(request);
   } catch (error) {
     console.log('Network failed for:', request.url);
-    
-    // For navigation requests, return offline page
-    if (request.mode === 'navigate') {
-      const cache = await caches.open(STATIC_CACHE_NAME);
-      const offlinePage = await cache.match('/offline.html');
-      return offlinePage || new Response('Offline', { status: 503 });
-    }
-    
-    return new Response('Offline', { status: 503 });
+    return await createOfflineResponse(request);
   }
 }
 
-// Fetch and cache helper
+// Create appropriate offline response based on request type
+async function createOfflineResponse(request) {
+  // For navigation requests, return offline page
+  if (request.mode === 'navigate') {
+    try {
+      const cache = await caches.open(STATIC_CACHE_NAME);
+      const offlinePage = await cache.match('/offline.html');
+      
+      if (offlinePage) {
+        return offlinePage;
+      } else {
+        // Fallback: create basic offline page
+        return new Response(`
+          <!DOCTYPE html>
+          <html><head><title>Offline - CrankSmith</title></head>
+          <body>
+            <h1>You're offline</h1>
+            <p>Please check your internet connection and try again.</p>
+            <button onclick="window.location.reload()">Retry</button>
+          </body></html>
+        `, {
+          status: 200,
+          headers: { 'Content-Type': 'text/html' }
+        });
+      }
+    } catch (cacheError) {
+      console.error('Failed to access offline cache:', cacheError);
+      return new Response('Offline - Service Unavailable', { status: 503 });
+    }
+  }
+  
+  // For other requests, return JSON error
+  return new Response(JSON.stringify({
+    success: false,
+    error: 'Network unavailable',
+    offline: true
+  }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+// Fetch and cache helper with error handling
 async function fetchAndCache(request, cacheName) {
   try {
     const response = await fetch(request);
     
     if (response.ok) {
       const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
+      await cache.put(request, response.clone());
     }
     
     return response;
   } catch (error) {
+    console.error('Fetch and cache failed:', error);
     throw error;
   }
 }
@@ -308,7 +714,9 @@ async function rileyAPIStrategy(request) {
     if (response.ok) {
       // Cache successful Riley responses for offline fallback
       const cache = await caches.open(COMPONENTS_CACHE_NAME);
-      cache.put(request, response.clone());
+      cache.put(request, response.clone()).catch(error => {
+        console.warn('Failed to cache Riley response:', error);
+      });
     }
     
     return response;
@@ -317,7 +725,8 @@ async function rileyAPIStrategy(request) {
     return new Response(JSON.stringify({
       success: false,
       message: "Riley is currently offline. Please check your internet connection and try again.",
-      offline: true
+      offline: true,
+      canRetry: true
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -559,8 +968,65 @@ self.addEventListener('message', (event) => {
     case 'CLEAR_OFFLINE_QUEUE':
       clearOfflineQueue();
       break;
+    case 'VALIDATE_CACHES':
+      validateAndReportCaches(event.source);
+      break;
+    case 'REPAIR_CACHES':
+      repairCachesManually(event.source);
+      break;
   }
 });
+
+// Validate caches and report status
+async function validateAndReportCaches(client) {
+  try {
+    const validation = await validateCurrentCaches();
+    const newCacheValidation = await validateNewCaches();
+    
+    client.postMessage({
+      type: 'CACHE_VALIDATION_RESULT',
+      payload: {
+        current: validation,
+        new: newCacheValidation,
+        timestamp: Date.now()
+      }
+    });
+  } catch (error) {
+    client.postMessage({
+      type: 'CACHE_VALIDATION_ERROR',
+      payload: {
+        error: error.message,
+        timestamp: Date.now()
+      }
+    });
+  }
+}
+
+// Manual cache repair triggered by client
+async function repairCachesManually(client) {
+  try {
+    await repairCaches();
+    const validation = await validateCurrentCaches();
+    
+    client.postMessage({
+      type: 'CACHE_REPAIR_COMPLETE',
+      payload: {
+        success: true,
+        validation,
+        timestamp: Date.now()
+      }
+    });
+  } catch (error) {
+    client.postMessage({
+      type: 'CACHE_REPAIR_ERROR',
+      payload: {
+        success: false,
+        error: error.message,
+        timestamp: Date.now()
+      }
+    });
+  }
+}
 
 // Force sync for manual retry
 async function forceSyncOfflineRequests() {
@@ -632,16 +1098,23 @@ async function saveOfflineConfiguration(config) {
   }
 }
 
-// Enhanced cache status with offline request queue info
+// Enhanced cache status with offline request queue info and validation
 async function sendCacheStatus(client) {
   try {
     const cacheNames = await caches.keys();
+    const currentValidation = await validateCurrentCaches();
+    const newValidation = await validateNewCaches();
+    
     const status = {
       hasOfflineData: cacheNames.some(name => name.includes('components')),
       hasPendingSync: false,
       cacheSize: cacheNames.length,
       offlineRequestCount: 0,
-      pendingConfigCount: 0
+      pendingConfigCount: 0,
+      version: CACHE_VERSION,
+      validation: currentValidation,
+      newCacheValidation: newValidation,
+      hasMinimalOfflineSupport: currentValidation.hasMinimalOfflineSupport
     };
     
     // Check for pending sync data
@@ -669,5 +1142,12 @@ async function sendCacheStatus(client) {
     });
   } catch (error) {
     console.error('Failed to get cache status:', error);
+    client.postMessage({
+      type: 'CACHE_STATUS_ERROR',
+      payload: {
+        error: error.message,
+        timestamp: Date.now()
+      }
+    });
   }
 }

@@ -147,6 +147,13 @@ export default function BikeFit(): JSX.Element {
     units: 'metric'
   });
 
+  // Temporary display values for inputs during typing
+  const [displayValues, setDisplayValues] = useState<{[key: string]: string}>({
+    inseam: '',
+    torso: '',
+    armLength: ''
+  });
+
   // Results state
   const [results, setResults] = useState<BikeFitResults | null>(null);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
@@ -223,6 +230,9 @@ export default function BikeFit(): JSX.Element {
   };
 
   const handleInputChange = (field: 'inseam' | 'torso' | 'armLength', value: string): void => {
+    // Update display value immediately so user sees what they're typing
+    setDisplayValues(prev => ({ ...prev, [field]: value }));
+
     // If input is empty, set to null
     if (!value || value.trim() === '') {
       handleMeasurementChange(field, null);
@@ -239,26 +249,21 @@ export default function BikeFit(): JSX.Element {
       return;
     }
 
-    // For very short input (like single digit "3"), don't validate yet but don't store either
-    // This prevents premature validation errors while typing
-    if (value.trim().length === 1 && numValue < 10) {
-      // Let user continue typing, don't validate or store yet
-      return;
-    }
-
-    // For longer input or reasonable values, validate and store
+    // Try to validate and store the value
     const validation = validateMeasurement(field, value, measurements.units);
     
     if (validation.isValid && validation.valueInMm !== null) {
       // Valid input - store the value in mm
       handleMeasurementChange(field, validation.valueInMm);
-    } else {
-      // Invalid input - don't store but don't show error yet (will show on blur)
-      // This allows continued typing
     }
+    // For invalid/incomplete input, don't show validation errors during typing
+    // The display value is already updated above, validation will happen on blur
   };
 
   const handleInputBlur = (field: 'inseam' | 'torso' | 'armLength', value: string): void => {
+    // Clear the display value since we're done typing
+    setDisplayValues(prev => ({ ...prev, [field]: '' }));
+
     // Only validate on blur if there's actually a value
     if (!value || value.trim() === '') {
       return;
@@ -463,7 +468,7 @@ export default function BikeFit(): JSX.Element {
                           </label>
                           <input
                             type="number"
-                            value={convertToDisplayUnits(measurements.inseam)}
+                            value={displayValues.inseam || convertToDisplayUnits(measurements.inseam)}
                             onChange={(e) => handleInputChange('inseam', e.target.value)}
                             onBlur={(e) => handleInputBlur('inseam', e.target.value)}
                             className="input-field w-full"
@@ -483,7 +488,7 @@ export default function BikeFit(): JSX.Element {
                           </label>
                           <input
                             type="number"
-                            value={convertToDisplayUnits(measurements.torso)}
+                            value={displayValues.torso || convertToDisplayUnits(measurements.torso)}
                             onChange={(e) => handleInputChange('torso', e.target.value)}
                             onBlur={(e) => handleInputBlur('torso', e.target.value)}
                             className="input-field w-full"
@@ -503,7 +508,7 @@ export default function BikeFit(): JSX.Element {
                           </label>
                           <input
                             type="number"
-                            value={convertToDisplayUnits(measurements.armLength)}
+                            value={displayValues.armLength || convertToDisplayUnits(measurements.armLength)}
                             onChange={(e) => handleInputChange('armLength', e.target.value)}
                             onBlur={(e) => handleInputBlur('armLength', e.target.value)}
                             className="input-field w-full"

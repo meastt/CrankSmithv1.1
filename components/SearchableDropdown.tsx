@@ -308,7 +308,7 @@ export default function SearchableDropdown({
 
 
   return (
-    <div className={`relative searchable-dropdown ${className}`}>
+    <div className={`searchable-dropdown ${isOpen ? 'is-open' : ''} ${className}`}>
       {/* Trigger Button */}
       <button
         ref={triggerRef}
@@ -328,17 +328,11 @@ export default function SearchableDropdown({
           // });
           setIsOpen(!isOpen);
         }}
-        className={`input-field flex items-center justify-between w-full ${
+        className={`input-field flex items-center justify-between w-full min-h-[48px] text-base ${
           options.length === 0 ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
         }`}
-        style={{ 
-          background: isOpen ? 'rgb(var(--bg-elevated))' : 'rgb(var(--bg-secondary))',
-          borderColor: isOpen ? 'rgb(var(--border-focus))' : 'rgb(var(--border-primary))',
-          color: 'rgb(var(--text-primary))',
-          minHeight: '48px'
-        }}
       >
-        <span className={displayValue ? '' : 'opacity-60'} style={{ fontSize: '16px' }}>
+        <span className={displayValue ? '' : 'opacity-60'}>
           {displayValue || placeholder}
         </span>
         <svg 
@@ -355,19 +349,10 @@ export default function SearchableDropdown({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute z-[9999] w-full mt-1"
-          style={{
-            background: 'rgb(var(--bg-elevated))',
-            boxShadow: 'var(--shadow-lg)',
-            borderRadius: '12px',
-            border: '1px solid rgb(var(--border-primary))',
-            maxHeight: '400px',
-            display: 'flex',
-            flexDirection: 'column'
-          }}
+          className="dropdown-options flex flex-col"
         >
           {/* Search Input */}
-          <div className="p-3 border-b" style={{ borderColor: 'rgb(var(--border-primary))' }}>
+          <div className="p-3 border-b border-neutral-200 dark:border-neutral-800">
             <input
               ref={inputRef}
               type="text"
@@ -375,10 +360,7 @@ export default function SearchableDropdown({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="input-premium"
-              style={{ 
-                fontSize: '16px'
-              }}
+              className="input-premium text-base"
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"

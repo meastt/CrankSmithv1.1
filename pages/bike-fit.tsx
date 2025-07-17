@@ -239,24 +239,22 @@ export default function BikeFit(): JSX.Element {
       return;
     }
 
-    // Allow incomplete input during typing - only validate complete values
-    // Don't validate single digits or very short input that might be incomplete
-    if (value.trim().length <= 1 || numValue < 1) {
-      // Store the raw value temporarily without validation
-      // We'll validate on blur or when input seems complete
+    // For very short input (like single digit "3"), don't validate yet but don't store either
+    // This prevents premature validation errors while typing
+    if (value.trim().length === 1 && numValue < 10) {
+      // Let user continue typing, don't validate or store yet
       return;
     }
 
-    // Validate the input for complete values
+    // For longer input or reasonable values, validate and store
     const validation = validateMeasurement(field, value, measurements.units);
     
     if (validation.isValid && validation.valueInMm !== null) {
       // Valid input - store the value in mm
       handleMeasurementChange(field, validation.valueInMm);
     } else {
-      // For invalid but potentially incomplete input, don't show error yet
-      // The validation will happen on blur
-      handleMeasurementChange(field, null);
+      // Invalid input - don't store but don't show error yet (will show on blur)
+      // This allows continued typing
     }
   };
 

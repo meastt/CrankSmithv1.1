@@ -23,6 +23,75 @@ export default function App({ Component, pageProps }) {
     handleMobileRouting(router);
   }, [router]);
 
+  // Force remove footer whitespace after page loads
+  useEffect(() => {
+    const removeFooterWhitespace = () => {
+      // Find the footer element
+      const footer = document.querySelector('footer');
+      if (footer) {
+        // Force all elements to have no bottom margin/padding
+        document.body.style.marginBottom = '0px';
+        document.body.style.paddingBottom = '0px';
+        document.documentElement.style.marginBottom = '0px';
+        document.documentElement.style.paddingBottom = '0px';
+        
+        // Force footer to have no bottom spacing
+        footer.style.marginBottom = '0px';
+        footer.style.paddingBottom = '0px';
+        
+        // Remove any empty elements after footer
+        let nextSibling = footer.nextSibling;
+        while (nextSibling) {
+          if (nextSibling.nodeType === Node.TEXT_NODE && nextSibling.textContent.trim() === '') {
+            const toRemove = nextSibling;
+            nextSibling = nextSibling.nextSibling;
+            toRemove.remove();
+          } else if (nextSibling.nodeType === Node.ELEMENT_NODE && nextSibling.innerHTML.trim() === '') {
+            const toRemove = nextSibling;
+            nextSibling = nextSibling.nextSibling;
+            toRemove.remove();
+          } else {
+            nextSibling = nextSibling.nextSibling;
+          }
+        }
+        
+        // Force the root elements to exact height
+        const root = document.getElementById('__next');
+        if (root) {
+          root.style.minHeight = '100vh';
+          root.style.maxHeight = '100vh';
+          root.style.overflow = 'auto';
+          root.style.display = 'flex';
+          root.style.flexDirection = 'column';
+        }
+        
+        // Force body height and prevent scrolling on body
+        document.body.style.height = '100vh';
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.height = '100vh';
+        document.documentElement.style.overflow = 'hidden';
+      }
+    };
+
+    // Run immediately and on DOM changes
+    removeFooterWhitespace();
+    
+    // Also run on window resize and any DOM mutations
+    window.addEventListener('resize', removeFooterWhitespace);
+    window.addEventListener('load', removeFooterWhitespace);
+    
+    // Set up a mutation observer to catch any dynamic changes
+    const observer = new MutationObserver(removeFooterWhitespace);
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', removeFooterWhitespace);
+      window.removeEventListener('load', removeFooterWhitespace);
+      observer.disconnect();
+    };
+  }, []);
+
   // Use different layout for mobile app
   const isMobileAppPage = isMobileApp(router.pathname);
   
@@ -65,8 +134,8 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  return (
-    <>
+      return (
+      <>
       <Head>
         <title>CrankSmith</title>
         <meta name="description" content="Optimize your bike's performance with CrankSmith's gear ratio calculator" />

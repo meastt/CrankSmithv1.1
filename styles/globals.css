@@ -52,9 +52,6 @@ body {
 
   /* Root container and layout management */
   #__next {
-    min-height: 100vh !important;
-    max-height: 100vh !important;
-    overflow-y: auto !important;
     display: flex !important;
     flex-direction: column !important;
     margin: 0 !important;
@@ -140,10 +137,20 @@ body {
     display: none !important;
   }
 
-  /* Force viewport constraints */
-  html, body {
-    max-height: 100vh !important;
-  }
+  /* Force viewport constraints - NUCLEAR OPTION */
+html, body {
+  max-height: 100vh !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* Make root scrollable instead of body */
+#__next {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
 
   /* Override Tailwind's min-h-screen on individual pages */
   .min-h-screen {

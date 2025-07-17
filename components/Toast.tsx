@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Toast, ToastType, ToastAPI } from '../types';
+import { Toast, ToastType, ToastAPI, ToastAction } from '../types';
 
 let toastId = 0;
 const toastStack: Toast[] = [];
@@ -20,9 +20,14 @@ export const toast: ToastAPI = {
   }
 };
 
-function showToast({ type, message, duration }: { type: ToastType; message: string; duration: number }): void {
+function showToast({ type, message, duration, actions }: { 
+  type: ToastType; 
+  message: string; 
+  duration: number; 
+  actions?: ToastAction[] 
+}): void {
   const id = ++toastId;
-  const newToast: Toast = { id, type, message, duration };
+  const newToast: Toast = { id, type, message, duration, actions };
   
   toastStack.push(newToast);
   
@@ -30,10 +35,17 @@ function showToast({ type, message, duration }: { type: ToastType; message: stri
     toastListener([...toastStack]);
   }
   
-  // Auto remove after duration
-  setTimeout(() => {
-    removeToast(id);
-  }, duration);
+  // Auto remove after duration (but not if there are actions)
+  if (!actions || actions.length === 0) {
+    setTimeout(() => {
+      removeToast(id);
+    }, duration);
+  } else {
+    // For toasts with actions, auto-remove after a longer duration
+    setTimeout(() => {
+      removeToast(id);
+    }, duration * 2);
+  }
 }
 
 function removeToast(id: number): void {
@@ -52,9 +64,18 @@ export function ToastContainer(): JSX.Element | null {
   useEffect(() => {
     toastListener = setToasts;
     setToasts([...toastStack]);
+
+    // Listen for custom mobile suggestion events
+    const handleMobileSuggestion = (event: CustomEvent) => {
+      const { message, type, duration, actions } = event.detail;
+      showToast({ type, message, duration, actions });
+    };
+
+    window.addEventListener('show-mobile-suggestion', handleMobileSuggestion as EventListener);
     
     return () => {
       toastListener = null;
+      window.removeEventListener('show-mobile-suggestion', handleMobileSuggestion as EventListener);
     };
   }, []);
 
@@ -133,6 +154,28 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
           <p className="text-sm text-[var(--text-primary)] break-words">
             {toast.message}
           </p>
+          {toast.actions && toast.actions.length > 0 && (
+            <div className="flex gap-2 mt-3">
+              {toast.actions.map((action, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    action.onClick();
+                    handleClose();
+                  }}
+                  className={`
+                    px-3 py-1.5 text-xs font-medium rounded-md transition-colors
+                    ${action.variant === 'primary' 
+                      ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                      : 'bg-neutral-200 dark:bg-neutral-700 text-[var(--text-primary)] hover:bg-neutral-300 dark:hover:bg-neutral-600'
+                    }
+                  `}
+                >
+                  {action.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         <button
           onClick={handleClose}

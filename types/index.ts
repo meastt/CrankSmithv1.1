@@ -114,11 +114,18 @@ export interface ToastState {
 // Enhanced Toast System Types
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
+export interface ToastAction {
+  label: string;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary';
+}
+
 export interface Toast {
   id: number;
   type: ToastType;
   message: string;
   duration: number;
+  actions?: ToastAction[];
 }
 
 export interface ToastAPI {

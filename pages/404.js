@@ -117,7 +117,7 @@ export default function Custom404() {
             Looks like you took a wrong turn!
           </h1>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            The page you're looking for doesn't exist, but don't worry - we'll help you find what you need.
+            The page you&apos;re looking for doesn&apos;t exist, but don&apos;t worry - we&apos;ll help you find what you need.
           </p>
 
           {/* Auto Redirect Notice */}

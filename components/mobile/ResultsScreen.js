@@ -15,12 +15,10 @@ export default function ResultsScreen({
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
-  if (!results) return null;
-
-  const { current, proposed, comparison, compatibility } = results;
-
-  // Radar Chart Effect
+  // Radar Chart Effect - must be before early return
   useEffect(() => {
+    if (!results) return;
+    const { current, proposed } = results;
     if (!current || !proposed || activeTab !== 'chart') return;
 
     if (chartInstance.current) {
@@ -188,6 +186,11 @@ export default function ResultsScreen({
       }
     };
   }, [current, proposed, speedUnit, activeTab]);
+
+  // Early return after hooks
+  if (!results) return null;
+
+  const { current, proposed, comparison, compatibility } = results;
 
   const metrics = [
     {

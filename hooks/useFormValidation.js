@@ -18,7 +18,7 @@ export const useFormValidation = (initialValues = {}) => {
   }, [errors]);
 
   // Mark a field as touched (for showing validation errors)
-  const setTouched = useCallback((field) => {
+  const markFieldAsTouched = useCallback((field) => {
     setTouched(prev => ({ ...prev, [field]: true }));
   }, []);
 
@@ -124,7 +124,7 @@ export const useFormValidation = (initialValues = {}) => {
     hasErrors,
     isValid,
     setValue,
-    setTouched,
+    setTouched: markFieldAsTouched,
     validateField,
     validateForm,
     handleBlur,

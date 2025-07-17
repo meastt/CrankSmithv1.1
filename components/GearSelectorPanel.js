@@ -13,52 +13,8 @@ const GearSelectorPanel = React.memo(({
   bikeType,
   icon: Icon 
 }) => {
-  // Early return if bikeType is not set - prevents empty options rendering
-  if (!bikeType || bikeType === '') {
-    return (
-      <div className="card group">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
-              {Icon}
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-[var(--text-primary)]">{title}</h3>
-              <p className="text-sm text-[var(--text-secondary)]">{subtitle}</p>
-            </div>
-          </div>
-          {badge && (
-            <div className={`px-3 py-1 rounded-full text-xs font-medium ${badgeColor || 'badge'}`}>
-              {badge}
-            </div>
-          )}
-        </div>
-        <div className="text-center py-8">
-          <div className="text-[var(--text-secondary)] text-sm">
-            Please select a bike type to view components
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Use the optimized hook for component loading
+  // ALL REACT HOOKS MUST BE AT THE TOP - before any early returns
   const { components, loading, error } = useComponentDatabase(bikeType);
-
-  // Enhanced debug logging with better context
-  // console.log(`🔍 GearSelectorPanel (${title}):`, {
-  //   bikeType,
-  //   components,
-  //   cranksets: components?.cranksets,
-  //   cassettes: components?.cassettes,
-  //   cranksetsLength: components?.cranksets?.length,
-  //   cassettesLength: components?.cassettes?.length,
-  //   setup,
-  //   config,
-  //   loading,
-  //   error,
-  //   context: `Rendering for bikeType: ${bikeType}`
-  // });
 
   // Transform components data for SearchableDropdown - memoized to prevent recalculation
   const cranksetOptions = useMemo(() => 
@@ -86,15 +42,6 @@ const GearSelectorPanel = React.memo(({
       bikeType: cassette.bikeType
     })) || [], [components?.cassettes]
   );
-
-  // console.log(`🔧 Transformed options for ${title}:`, {
-  //   cranksetOptions: cranksetOptions,
-  //   cassetteOptions: cassetteOptions,
-  //   cranksetOptionsLength: cranksetOptions?.length || 0,
-  //   cassetteOptionsLength: cassetteOptions?.length || 0,
-  //   firstCrankset: cranksetOptions[0],
-  //   firstCassette: cassetteOptions[0]
-  // });
 
   // Memoized event handlers to prevent unnecessary re-renders
   const handleCranksetChange = useCallback((selectedOption) => {
@@ -128,6 +75,59 @@ const GearSelectorPanel = React.memo(({
   const handleTireChange = useCallback((value) => {
     config.onTireChange(value);
   }, [config]);
+
+  // Early return if bikeType is not set - prevents empty options rendering
+  if (!bikeType || bikeType === '') {
+    return (
+      <div className="card group">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+              {Icon}
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-[var(--text-primary)]">{title}</h3>
+              <p className="text-sm text-[var(--text-secondary)]">{subtitle}</p>
+            </div>
+          </div>
+          {badge && (
+            <div className={`px-3 py-1 rounded-full text-xs font-medium ${badgeColor || 'badge'}`}>
+              {badge}
+            </div>
+          )}
+        </div>
+        <div className="text-center py-8">
+          <div className="text-[var(--text-secondary)] text-sm">
+            Please select a bike type to view components
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Enhanced debug logging with better context
+  // console.log(`🔍 GearSelectorPanel (${title}):`, {
+  //   bikeType,
+  //   components,
+  //   cranksets: components?.cranksets,
+  //   cassettes: components?.cassettes,
+  //   cranksetsLength: components?.cranksets?.length,
+  //   cassettesLength: components?.cassettes?.length,
+  //   setup,
+  //   config,
+  //   loading,
+  //   error,
+  //   context: `Rendering for bikeType: ${bikeType}`
+  // });
+
+  // console.log(`🔧 Transformed options for ${title}:`, {
+  //   cranksetOptions: cranksetOptions,
+  //   cassetteOptions: cassetteOptions,
+  //   cranksetOptionsLength: cranksetOptions?.length || 0,
+  //   cassetteOptionsLength: cassetteOptions?.length || 0,
+  //   firstCrankset: cranksetOptions[0],
+  //   firstCassette: cassetteOptions[0]
+  // });
 
   // Show loading state if components are still loading
   if (loading) {

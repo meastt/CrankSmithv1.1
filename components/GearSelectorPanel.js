@@ -153,7 +153,7 @@ const GearSelectorPanel = React.memo(({
   }
 
   return (
-    <div className="card group">
+    <div className="card dropdown-container group">
       {/* Card Header */}
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-center space-x-3">

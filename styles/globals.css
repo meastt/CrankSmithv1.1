@@ -378,6 +378,280 @@
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
+  
+  /* ===================================================================
+     ENHANCED FORM COMPONENTS WITH PROPER SPECIFICITY
+     ===================================================================
+  */
+  
+  /* --- Base Input Field Styles --- */
+  .input-field {
+    @apply w-full px-4 py-3 text-base rounded-xl;
+    background: rgb(var(--bg-elevated));
+    border: 1px solid rgb(var(--border-primary));
+    color: rgb(var(--text-primary));
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+  
+  /* Input field variants with higher specificity */
+  input.input-field,
+  select.input-field,
+  textarea.input-field,
+  input[type="text"].input-field,
+  input[type="email"].input-field,
+  input[type="password"].input-field,
+  input[type="number"].input-field {
+    background: rgb(var(--bg-elevated));
+    border: 1px solid rgb(var(--border-primary));
+    color: rgb(var(--text-primary));
+  }
+  
+  /* Placeholder styles with higher specificity */
+  .input-field::placeholder,
+  input.input-field::placeholder,
+  textarea.input-field::placeholder {
+    color: rgb(var(--text-placeholder));
+    opacity: 1;
+  }
+  
+  /* Hover states */
+  .input-field:hover,
+  input.input-field:hover,
+  select.input-field:hover,
+  textarea.input-field:hover {
+    border-color: rgb(var(--border-secondary));
+    background: rgb(var(--bg-secondary));
+  }
+  
+  /* Focus states with enhanced specificity */
+  .input-field:focus,
+  input.input-field:focus,
+  select.input-field:focus,
+  textarea.input-field:focus {
+    outline: none;
+    border-color: rgb(var(--brand-blue));
+    background: rgb(var(--bg-elevated));
+    box-shadow: 0 0 0 3px rgb(var(--brand-blue) / 0.1);
+  }
+  
+  /* Disabled states */
+  .input-field:disabled,
+  input.input-field:disabled,
+  select.input-field:disabled,
+  textarea.input-field:disabled {
+    background: rgb(var(--bg-tertiary));
+    color: rgb(var(--text-disabled));
+    border-color: rgb(var(--border-primary));
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  /* ===================================================================
+     ENHANCED CARD COMPONENTS WITH DROPDOWN SUPPORT
+     ===================================================================
+  */
+  
+  /* Base card styles */
+  .card {
+    @apply relative rounded-2xl p-6;
+    background: rgb(var(--bg-elevated));
+    border: 1px solid rgb(var(--border-primary));
+    box-shadow: var(--shadow-sm);
+    transition: all var(--duration-base) var(--ease-out);
+    overflow: hidden;
+  }
+  
+  /* Card hover effects */
+  .card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    border-color: rgb(var(--border-secondary));
+  }
+  
+  /* Cards containing dropdowns need special overflow handling */
+  .card:has(.searchable-dropdown) {
+    overflow: visible;
+  }
+  
+  /* Alternative class for cards that need to show dropdowns */
+  .card.dropdown-container {
+    overflow: visible;
+  }
+  
+  /* Cards in mobile layouts */
+  .card.mobile-card {
+    @apply p-4 rounded-xl;
+  }
+  
+  /* ===================================================================
+     ENHANCED DROPDOWN COMPONENTS
+     ===================================================================
+  */
+  
+  /* Searchable dropdown container */
+  .searchable-dropdown {
+    position: relative;
+    z-index: 50;
+  }
+  
+  /* Dropdown trigger button with enhanced specificity */
+  .searchable-dropdown .input-field {
+    cursor: pointer;
+    background: rgb(var(--bg-elevated));
+    border: 1px solid rgb(var(--border-primary));
+    color: rgb(var(--text-primary));
+  }
+  
+  /* Dropdown when open */
+  .searchable-dropdown.is-open .input-field {
+    border-color: rgb(var(--brand-blue));
+    background: rgb(var(--bg-secondary));
+  }
+  
+  /* Dropdown options container */
+  .searchable-dropdown .dropdown-options {
+    position: absolute;
+    z-index: 9999;
+    width: 100%;
+    margin-top: 0.25rem;
+    background: rgb(var(--bg-elevated));
+    border: 1px solid rgb(var(--border-primary));
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    max-height: 400px;
+    overflow: hidden;
+  }
+  
+  /* Dropdown option items */
+  .searchable-dropdown .option-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out);
+    border-bottom: 1px solid rgb(var(--border-primary) / 0.5);
+  }
+  
+  .searchable-dropdown .option-item:hover {
+    background: rgb(var(--bg-secondary));
+  }
+  
+  .searchable-dropdown .option-item.selected {
+    background: rgb(var(--brand-blue));
+    color: white;
+  }
+  
+  .searchable-dropdown .option-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* ===================================================================
+     FORM LABELS AND TYPOGRAPHY
+     ===================================================================
+  */
+  
+  /* Form labels */
+  .form-label {
+    @apply block text-sm font-medium mb-2;
+    color: rgb(var(--text-secondary));
+  }
+  
+  /* Mobile labels */
+  .mobile-label {
+    @apply block text-sm font-medium mb-2;
+    color: rgb(var(--text-secondary));
+  }
+  
+  /* Enhanced label in cards */
+  .card .form-label,
+  .card .mobile-label {
+    color: rgb(var(--text-secondary));
+    margin-bottom: 0.5rem;
+  }
+  
+  /* ===================================================================
+     ENHANCED BUTTON COMPONENTS
+     ===================================================================
+  */
+  
+  /* Button disabled states with proper specificity */
+  button.btn-primary:disabled,
+  button.btn-secondary:disabled,
+  .btn-primary:disabled,
+  .btn-secondary:disabled {
+    background: rgb(var(--bg-tertiary));
+    color: rgb(var(--text-disabled));
+    border-color: rgb(var(--border-primary));
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.6;
+  }
+  
+  /* Button hover states override */
+  button.btn-primary:disabled:hover,
+  button.btn-secondary:disabled:hover,
+  .btn-primary:disabled:hover,
+  .btn-secondary:disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* ===================================================================
+     TEXT HIERARCHY AND INHERITANCE
+     ===================================================================
+  */
+  
+  /* Ensure proper text inheritance */
+  span, div, p {
+    color: inherit;
+  }
+  
+  /* Heading hierarchy with proper specificity */
+  h1, h2, h3, h4, h5, h6 {
+    color: rgb(var(--text-primary));
+    font-weight: inherit;
+  }
+  
+  .card h1,
+  .card h2,
+  .card h3,
+  .card h4,
+  .card h5,
+  .card h6 {
+    color: rgb(var(--text-primary));
+  }
+  
+  /* Enhanced placeholder support */
+  input::placeholder,
+  textarea::placeholder,
+  .input-field::placeholder {
+    color: rgb(var(--text-placeholder));
+    opacity: 1;
+  }
+  
+  /* ===================================================================
+     ENHANCED DROPDOWN OPTION STYLING
+     ===================================================================
+  */
+  
+  /* Generic dropdown option styling */
+  .cursor-pointer.selected {
+    background: rgb(var(--brand-blue));
+    color: white;
+  }
+  
+  .cursor-pointer:hover:not(.selected) {
+    background: rgb(var(--bg-secondary));
+  }
+  
+  /* Mobile dropdown options */
+  .mobile-dropdown .option-item.selected {
+    background: rgb(var(--brand-blue));
+    color: white;
+  }
+  
+  .mobile-dropdown .option-item:hover:not(.selected) {
+    background: rgb(var(--bg-secondary));
+  }
 }
 
 @layer utilities {
@@ -447,109 +721,27 @@
   .aspect-golden { aspect-ratio: 1.618 / 1; }
   .aspect-photo { aspect-ratio: 3 / 2; }
   .aspect-hero { aspect-ratio: 21 / 9; }
+  
+  /* --- Dropdown Utilities --- */
+  .dropdown-visible {
+    overflow: visible;
+  }
+  
+  .dropdown-container {
+    position: relative;
+    overflow: visible;
+  }
+  
+  /* --- Z-Index Utilities --- */
+  .z-dropdown { z-index: 9999; }
+  .z-modal { z-index: 10000; }
+  .z-tooltip { z-index: 10001; }
 }
 
-/* --- Legacy Support & Additional Form Styles --- */
-.input-field, select.input-field, input[type="text"], input[type="email"] {
-  @apply w-full px-4 py-3 text-base rounded-xl;
-  background: rgb(var(--bg-elevated)) !important;
-  border: 1px solid rgb(var(--border-primary)) !important;
-  color: rgb(var(--text-primary)) !important;
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.input-field::placeholder, input::placeholder {
-  color: rgb(var(--text-placeholder)) !important;
-}
-
-.input-field:hover {
-  border-color: rgb(var(--border-secondary)) !important;
-  background: rgb(var(--bg-secondary)) !important;
-}
-
-.input-field:focus {
-  outline: none !important;
-  border-color: rgb(var(--brand-blue)) !important;
-  background: rgb(var(--bg-elevated)) !important;
-  box-shadow: 0 0 0 3px rgb(var(--brand-blue) / 0.1) !important;
-}
-
-/* Form Labels */
-.form-label, .mobile-label {
-  @apply block text-sm font-medium mb-2;
-  color: rgb(var(--text-secondary)) !important;
-}
-
-/* Card Styles */
-.card {
-  @apply relative overflow-hidden rounded-2xl p-6;
-  background: rgb(var(--bg-elevated));
-  border: 1px solid rgb(var(--border-primary));
-  box-shadow: var(--shadow-sm);
-  transition: all var(--duration-base) var(--ease-out);
-}
-
-.card:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-  border-color: rgb(var(--border-secondary));
-}
-
-/* Override for cards containing dropdowns - allows dropdown content to be visible outside card */
-.card:has(.searchable-dropdown),
-.card.dropdown-container {
-  overflow: visible !important;
-}
-
-/* Ensure searchable dropdowns appear above all other content */
-.searchable-dropdown {
-  z-index: 9999 !important;
-  position: relative;
-}
-
-/* Button Enhancements */
-.btn-primary:disabled, .btn-secondary:disabled {
-  background: rgb(var(--bg-tertiary)) !important;
-  color: rgb(var(--text-disabled)) !important;
-  border-color: rgb(var(--border-primary)) !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* Mobile Label */
-.mobile-label {
-  @apply block text-sm font-medium mb-2;
-  color: rgb(var(--text-secondary)) !important;
-}
-
-/* Better contrast for spans and divs */
-span, div, p {
-  color: inherit;
-}
-
-/* Ensure proper text hierarchy */
-h1, h2, h3, h4, h5, h6 {
-  color: rgb(var(--text-primary)) !important;
-}
-
-/* Placeholder text for all inputs */
-input::placeholder, textarea::placeholder {
-  color: rgb(var(--text-placeholder)) !important;
-  opacity: 1;
-}
-
-/* Dropdown option items */
-.cursor-pointer.selected {
-  background: rgb(var(--brand-blue)) !important;
-  color: white !important;
-}
-
-.cursor-pointer:hover {
-  background: rgb(var(--bg-secondary)) !important;
-}
-
-/* --- Custom Scrollbar --- */
+/* ===================================================================
+   ENHANCED SCROLLBAR STYLING
+   ===================================================================
+*/
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
@@ -557,21 +749,33 @@ input::placeholder, textarea::placeholder {
 
 ::-webkit-scrollbar-track {
   background: rgb(var(--bg-secondary));
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb {
   background: rgb(var(--text-tertiary) / 0.3);
-  border-radius: 6px;
-  border: 3px solid rgb(var(--bg-secondary));
+  border-radius: var(--radius-sm);
+  border: 2px solid rgb(var(--bg-secondary));
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(var(--text-tertiary) / 0.5);
 }
 
-/* --- Print Styles --- */
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--text-tertiary) / 0.3) rgb(var(--bg-secondary));
+}
+
+/* ===================================================================
+   PRINT STYLES
+   ===================================================================
+*/
 @media print {
-  .no-print { display: none !important; }
+  .no-print { 
+    display: none !important; 
+  }
   
   body {
     font-size: 12pt;
@@ -580,29 +784,56 @@ input::placeholder, textarea::placeholder {
     background: white;
   }
   
-  .card-premium {
+  .card-premium,
+  .card {
     break-inside: avoid;
     page-break-inside: avoid;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+  
+  .searchable-dropdown .dropdown-options {
+    display: none;
   }
 }
 
-/* --- High Contrast Mode --- */
+/* ===================================================================
+   ACCESSIBILITY ENHANCEMENTS
+   ===================================================================
+*/
+
+/* High Contrast Mode */
 @media (prefers-contrast: high) {
   :root {
     --border-primary: var(--neutral-400);
     --border-secondary: var(--neutral-500);
   }
   
-  .btn-primary {
+  .btn-primary,
+  .btn-secondary {
     border: 2px solid currentColor;
+  }
+  
+  .input-field:focus {
+    border-width: 2px;
   }
 }
 
-/* --- Reduced Motion --- */
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *, 
+  *::before, 
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  .hover-lift:hover {
+    transform: none;
+  }
+  
+  .card:hover {
+    transform: none;
   }
 }

@@ -216,6 +216,7 @@ export default function Home() {
                     case 'Bike Gear Calculator': return '/calculator';
                     case 'Professional Bike Fit Calculator': return '/bike-fit';
                     case 'Cycling Tire Pressure Calculator': return '/tire-pressure';
+                    case 'Cycling Performance Analysis': return '/performance-analysis';
                     case 'AI Cycling Expert': return '/ask-riley';
                     default: return '/calculator';
                   }

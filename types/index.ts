@@ -1,4 +1,9 @@
-// types/index.ts - COMPLETE FILE
+// types/index.ts - Cleaned and Organized Type Definitions
+
+// ============================================================================
+// CORE BIKE CALCULATOR TYPES
+// ============================================================================
+
 export interface WheelSize {
   id: string;
   label: string;
@@ -66,12 +71,9 @@ export interface AnalysisResults {
   compatibility?: CompatibilitySummary;
 }
 
-export interface CompatibilityCheck {
-  derailleurCapacity: boolean;
-  chainLength: boolean;
-  speedCompatibility: boolean;
-  chainLine: boolean;
-}
+// ============================================================================
+// COMPATIBILITY SYSTEM TYPES
+// ============================================================================
 
 export interface CompatibilitySummary {
   status: 'compatible' | 'warning' | 'error' | 'incomplete';
@@ -82,36 +84,10 @@ export interface CompatibilitySummary {
   actionItems: string[];
 }
 
-export interface ValidationResult {
-  isComplete: boolean;
-  missing: string[];
-  completion: number;
-}
+// ============================================================================
+// TOAST NOTIFICATION SYSTEM
+// ============================================================================
 
-export interface SavedConfiguration {
-  id: string | number;
-  name: string;
-  bikeType: string;
-  currentSetup: BikeSetup;
-  proposedSetup: BikeSetup;
-  results: AnalysisResults;
-  compatibilityResults?: CompatibilitySummary;
-  created_at: string;
-}
-
-export interface RileyMessage {
-  type: 'user' | 'riley';
-  content: string;
-  timestamp: string;
-}
-
-export interface ToastState {
-  show: boolean;
-  message: string;
-  type?: 'success' | 'error' | 'warning';
-}
-
-// Enhanced Toast System Types
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
 export interface ToastAction {
@@ -135,7 +111,10 @@ export interface ToastAPI {
   info: (message: string, duration?: number) => void;
 }
 
-// Searchable Dropdown Types
+// ============================================================================
+// DROPDOWN COMPONENT TYPES
+// ============================================================================
+
 export interface DropdownOption {
   id: string;
   label: string;
@@ -153,7 +132,16 @@ export interface GroupedOptions {
   [groupName: string]: DropdownOption[];
 }
 
-// Enhanced Calculator State Types
+// ============================================================================
+// CALCULATOR STATE MANAGEMENT
+// ============================================================================
+
+export interface ValidationResult {
+  isComplete: boolean;
+  missing: string[];
+  completion: number;
+}
+
 export interface CalculatorState {
   bikeType: string;
   currentSetup: BikeSetup;
@@ -170,30 +158,10 @@ export interface CalculatorState {
   };
 }
 
-// PWA Types
-export interface PWAInstallPrompt {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-}
+// ============================================================================
+// BIKE FIT CALCULATOR TYPES
+// ============================================================================
 
-export interface ServiceWorkerMessage {
-  type: 'CACHE_UPDATED' | 'OFFLINE_READY' | 'UPDATE_AVAILABLE';
-  payload?: any;
-}
-
-// API Response Types
-export interface APIResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  timestamp: string;
-}
-
-export interface RileyAPIResponse extends APIResponse {
-  response?: string;
-}
-
-// Bike Fit Calculator Types
 export type FlexibilityLevel = 'low' | 'average' | 'high';
 export type RidingStyle = 'comfort' | 'endurance' | 'sport' | 'aggressive' | 'racing';
 export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced' | 'professional';
@@ -209,31 +177,27 @@ export interface BodyMeasurements {
   units: MeasurementUnits;
 }
 
-// Validation ranges for body measurements (in mm)
+// Validation ranges for body measurements (in cm)
 export interface MeasurementValidationRanges {
   inseam: { min: number; max: number };
   torso: { min: number; max: number };
   armLength: { min: number; max: number };
 }
 
-export interface SaddleHeightResults {
-  lemond: number;
-  holmes: number;
-  hamley: number;
-  competitive: number;
-}
-
-export interface HandlebarDropOptions {
-  comfort: number;
-  sport: number;
-  aggressive: number;
-}
-
 export interface BikeFitResults {
-  saddleHeight: SaddleHeightResults;
+  saddleHeight: {
+    lemond: number;
+    holmes: number;
+    hamley: number;
+    competitive: number;
+  };
   reach: number;
   stack: number;
-  handlebarDrop: HandlebarDropOptions;
+  handlebarDrop: {
+    comfort: number;
+    sport: number;
+    aggressive: number;
+  };
 }
 
 export interface BikeFitCalculations {
@@ -245,4 +209,99 @@ export interface BikeFitCalculations {
   };
   reach: (torso: number, armLength: number, flexibility: FlexibilityLevel, ridingStyle: RidingStyle) => number;
   stack: (torso: number, flexibility: FlexibilityLevel, ridingStyle: RidingStyle, experience: ExperienceLevel) => number;
+}
+
+// ============================================================================
+// PWA AND SERVICE WORKER TYPES
+// ============================================================================
+
+export interface ServiceWorkerMessage {
+  type: 'CACHE_UPDATED' | 'OFFLINE_READY' | 'UPDATE_AVAILABLE';
+  payload?: any;
+}
+
+// ============================================================================
+// DATA PERSISTENCE TYPES (FOR FUTURE USE)
+// ============================================================================
+
+/**
+ * Configuration data that can be saved/loaded by users
+ * Note: Currently used in localStorage, may be moved to database in future
+ */
+export interface SavedConfiguration {
+  id: string | number;
+  name: string;
+  bikeType: string;
+  currentSetup: BikeSetup;
+  proposedSetup: BikeSetup;
+  results: AnalysisResults;
+  compatibilityResults?: CompatibilitySummary;
+  created_at: string;
+}
+
+/**
+ * Riley AI message format
+ * Note: Used in Ask Riley chat interface
+ */
+export interface RileyMessage {
+  type: 'user' | 'riley';
+  content: string;
+  timestamp: string;
+}
+
+// ============================================================================
+// API RESPONSE TYPES (FOR FUTURE API ENDPOINTS)
+// ============================================================================
+
+/**
+ * Standard API response wrapper
+ * Note: Prepared for future backend API integration
+ */
+export interface APIResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  timestamp: string;
+}
+
+/**
+ * Riley AI API response format
+ * Note: Used by Riley AI chat endpoint
+ */
+export interface RileyAPIResponse extends APIResponse {
+  response?: string;
+}
+
+// ============================================================================
+// DEPRECATED/LEGACY TYPES (KEPT FOR BACKWARD COMPATIBILITY)
+// ============================================================================
+
+/**
+ * @deprecated Use the Toast interface instead
+ * Legacy toast state - kept for backward compatibility
+ */
+export interface ToastState {
+  show: boolean;
+  message: string;
+  type?: 'success' | 'error' | 'warning';
+}
+
+/**
+ * @deprecated Use PWA detection functions instead
+ * Legacy PWA install prompt interface
+ */
+export interface PWAInstallPrompt {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
+/**
+ * @deprecated Compatibility checks are now handled internally
+ * Legacy compatibility check interface
+ */
+export interface CompatibilityCheck {
+  derailleurCapacity: boolean;
+  chainLength: boolean;
+  speedCompatibility: boolean;
+  chainLine: boolean;
 }

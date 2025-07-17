@@ -10,11 +10,122 @@ import FloatingAskRileyButton from './FloatingAskRileyButton';
 import ErrorBoundary from './ErrorBoundary';
 import ThemeToggle from './ThemeToggle';
 
+// Theme management utilities
+const THEME_STORAGE_KEY = 'cranksmith-theme';
+const THEMES = {
+  LIGHT: 'light',
+  DARK: 'dark'
+};
+
+// Safe localStorage access with fallback
+const safeLocalStorage = {
+  getItem: (key) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return localStorage.getItem(key);
+      }
+    } catch (error) {
+      console.warn('localStorage access failed:', error);
+    }
+    return null;
+  },
+  
+  setItem: (key, value) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(key, value);
+        return true;
+      }
+    } catch (error) {
+      console.warn('localStorage write failed:', error);
+    }
+    return false;
+  },
+  
+  removeItem: (key) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem(key);
+        return true;
+      }
+    } catch (error) {
+      console.warn('localStorage remove failed:', error);
+    }
+    return false;
+  }
+};
+
+// Detect system theme preference
+const getSystemTheme = () => {
+  if (typeof window === 'undefined') return THEMES.LIGHT;
+  
+  try {
+    // Check if prefers-color-scheme is supported
+    if (window.matchMedia) {
+      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      return darkModeQuery.matches ? THEMES.DARK : THEMES.LIGHT;
+    }
+  } catch (error) {
+    console.warn('Media query access failed:', error);
+  }
+  
+  return THEMES.LIGHT; // Default fallback
+};
+
+// Get initial theme with multiple fallback layers
+const getInitialTheme = () => {
+  // Layer 1: Try to get saved theme from localStorage
+  const savedTheme = safeLocalStorage.getItem(THEME_STORAGE_KEY);
+  if (savedTheme === THEMES.LIGHT || savedTheme === THEMES.DARK) {
+    return savedTheme;
+  }
+  
+  // Layer 2: Fall back to system preference
+  const systemTheme = getSystemTheme();
+  
+  // Layer 3: Ultimate fallback to light theme
+  return systemTheme || THEMES.LIGHT;
+};
+
+// Apply theme to document with validation
+const applyTheme = (theme) => {
+  if (typeof document === 'undefined') return;
+  
+  try {
+    // Validate theme value
+    const validTheme = theme === THEMES.DARK ? THEMES.DARK : THEMES.LIGHT;
+    
+    // Apply theme to document element
+    document.documentElement.setAttribute('data-theme', validTheme);
+    
+    // Apply CSS class for better compatibility
+    if (validTheme === THEMES.DARK) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
+    
+    // Update meta theme-color for mobile browsers
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', validTheme === THEMES.DARK ? '#0f0f23' : '#ffffff');
+    }
+    
+  } catch (error) {
+    console.warn('Theme application failed:', error);
+  }
+};
+
 export default function Layout({ children }) {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(THEMES.LIGHT);
+  const [isThemeLoaded, setIsThemeLoaded] = useState(false);
+
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -24,19 +135,124 @@ export default function Layout({ children }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Enhanced theme initialization with system theme detection
   useEffect(() => {
-    // Load theme preference
-    const savedTheme = localStorage.getItem('cranksmith-theme') || 'light';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const initializeTheme = () => {
+      try {
+        // Get initial theme with fallbacks
+        const initialTheme = getInitialTheme();
+        
+        // Update state
+        setTheme(initialTheme);
+        setIsThemeLoaded(true);
+        
+        // Apply theme to document
+        applyTheme(initialTheme);
+        
+        // Save to localStorage if possible and not already saved
+        const savedTheme = safeLocalStorage.getItem(THEME_STORAGE_KEY);
+        if (!savedTheme && safeLocalStorage.setItem(THEME_STORAGE_KEY, initialTheme)) {
+          console.log(`Theme initialized and saved: ${initialTheme}`);
+        }
+        
+      } catch (error) {
+        console.warn('Theme initialization failed:', error);
+        // Emergency fallback
+        setTheme(THEMES.LIGHT);
+        setIsThemeLoaded(true);
+        applyTheme(THEMES.LIGHT);
+      }
+    };
+
+    initializeTheme();
   }, []);
 
+  // Listen for system theme changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      // Only listen to system changes if user hasn't set a preference
+      const savedTheme = safeLocalStorage.getItem(THEME_STORAGE_KEY);
+      if (savedTheme) return; // User has explicit preference, don't auto-change
+      
+      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      const handleSystemThemeChange = (e) => {
+        const newSystemTheme = e.matches ? THEMES.DARK : THEMES.LIGHT;
+        setTheme(newSystemTheme);
+        applyTheme(newSystemTheme);
+      };
+      
+      // Modern browsers
+      if (darkModeQuery.addEventListener) {
+        darkModeQuery.addEventListener('change', handleSystemThemeChange);
+        return () => darkModeQuery.removeEventListener('change', handleSystemThemeChange);
+      }
+      // Legacy browsers
+      else if (darkModeQuery.addListener) {
+        darkModeQuery.addListener(handleSystemThemeChange);
+        return () => darkModeQuery.removeListener(handleSystemThemeChange);
+      }
+      
+    } catch (error) {
+      console.warn('System theme listener setup failed:', error);
+    }
+  }, []);
+
+  // Enhanced theme toggle with comprehensive error handling
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('cranksmith-theme', newTheme);
+    try {
+      const newTheme = theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT;
+      
+      // Update state
+      setTheme(newTheme);
+      
+      // Apply theme to document
+      applyTheme(newTheme);
+      
+      // Try to save to localStorage
+      const saveSuccess = safeLocalStorage.setItem(THEME_STORAGE_KEY, newTheme);
+      
+      if (!saveSuccess) {
+        // If localStorage fails, show user feedback
+        console.warn('Theme preference could not be saved. Theme will reset on page reload.');
+        
+        // Optional: Show toast notification to user
+        if (typeof window !== 'undefined' && window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('theme-save-failed', {
+            detail: { 
+              message: 'Theme preference could not be saved due to browser restrictions.',
+              theme: newTheme
+            }
+          }));
+        }
+      }
+      
+    } catch (error) {
+      console.error('Theme toggle failed:', error);
+      // Revert to previous theme on error
+      applyTheme(theme);
+    }
   };
+
+  // Get theme status for debugging/user info
+  const getThemeStatus = () => {
+    return {
+      current: theme,
+      isLoaded: isThemeLoaded,
+      storageAvailable: safeLocalStorage.getItem('test') !== null,
+      systemTheme: getSystemTheme(),
+      savedTheme: safeLocalStorage.getItem(THEME_STORAGE_KEY)
+    };
+  };
+
+  // Expose theme status for debugging (development only)
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+      window.cranksmithThemeStatus = getThemeStatus;
+    }
+  }, [theme, isThemeLoaded]);
 
   const navLinks = [
     { href: '/calculator', label: 'Gear Calculator', icon: '⚙️' },
@@ -52,7 +268,11 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="min-h-screen transition-colors duration-300 bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white" suppressHydrationWarning>
+    <div 
+      className="min-h-screen transition-colors duration-300 bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white" 
+      suppressHydrationWarning
+      data-theme-loaded={isThemeLoaded}
+    >
       <ErrorBoundary context="component">
         <InstallBanner />
       </ErrorBoundary>
@@ -117,7 +337,12 @@ export default function Layout({ children }) {
 
             {/* Right Actions */}
             <div className="hidden md:flex items-center gap-4">
-              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+              <ThemeToggle 
+                theme={theme} 
+                toggleTheme={toggleTheme}
+                isLoaded={isThemeLoaded}
+                aria-label={`Switch to ${theme === THEMES.LIGHT ? 'dark' : 'light'} mode`}
+              />
               
               <Link 
                 href="https://instagram.com/cranksmithapp" 
@@ -174,7 +399,11 @@ export default function Layout({ children }) {
             
             <div className="flex items-center justify-between mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center gap-4">
-                <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+                <ThemeToggle 
+                  theme={theme} 
+                  toggleTheme={toggleTheme}
+                  isLoaded={isThemeLoaded}
+                />
                 <Link 
                   href="https://instagram.com/cranksmithapp" 
                   target="_blank" 
@@ -182,7 +411,7 @@ export default function Layout({ children }) {
                   className="p-2 rounded-xl hover:text-brand-blue transition-colors text-neutral-600 dark:text-neutral-300"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.40z"/>
                   </svg>
                 </Link>
               </div>

@@ -120,6 +120,7 @@ export default function SEOHead({
       
       {/* Search Engine Verification Tags */}
       <meta name="google-site-verification" content="_OejAgyGekugOzvl7MqpGFmUY6cqxE1tF3frnHRb2vk" />
+      <meta name='impact-site-verification' value='8d751d83-117e-4b87-b7c0-253d7bb08754' />
       {/* <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" /> */}
       {/* <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE" /> */}
     </Head>

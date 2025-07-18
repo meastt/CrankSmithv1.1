@@ -49,12 +49,12 @@ export default function FloatingInstallButton() {
   if (!showButton) return null;
 
   return (
-    <div className="floating-install-button fixed bottom-5 right-5 z-50">
+    <div className="floating-install-button fixed bottom-5 right-5 z-50 floating-element">
       <button
         onClick={handleInstall}
         disabled={isInstalling}
         className={`bg-gradient-blue text-white border-none rounded-full px-5 py-3 text-sm font-semibold transition-all duration-200 shadow-glow-md flex items-center gap-2 min-w-35 justify-center ${
-          isInstalling ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:-translate-y-0.5 hover:shadow-glow-lg'
+          isInstalling ? 'btn-disabled' : 'cursor-pointer hover:-translate-y-0.5 hover:shadow-glow-lg'
         }`}
       >
         {isInstalling ? (

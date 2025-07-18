@@ -277,7 +277,7 @@ export default function BuildSummaryCard({
           disabled={isExporting}
           className={`text-white font-medium py-3 px-6 rounded-xl transition-all text-lg ${
             (!proposedSetup.crankset || !proposedSetup.cassette) 
-              ? 'bg-[var(--bg-tertiary)] text-[var(--text-disabled)]' 
+              ? 'btn-disabled' 
               : 'bg-[var(--brand-green)] hover:bg-green-600'
           }`}
         >

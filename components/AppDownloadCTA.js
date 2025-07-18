@@ -55,7 +55,7 @@ export default function AppDownloadCTA() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12 items-center">
           {/* App Features */}
           <div className="space-y-6">
             <div className="card">
@@ -118,7 +118,7 @@ export default function AppDownloadCTA() {
                   onClick={handleInstall}
                   disabled={isInstalling}
                   className={`bg-white/20 text-white border-2 border-white/30 rounded-2xl px-8 py-4 text-lg font-semibold transition-all duration-200 w-full max-w-70 ${
-                    isInstalling ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:bg-white/30'
+                    isInstalling ? 'btn-disabled' : 'cursor-pointer hover:bg-white/30'
                   }`}
                 >
                   {isInstalling ? 'Installing...' : 'Install App'}
@@ -151,7 +151,7 @@ export default function AppDownloadCTA() {
         {/* Testimonials */}
         <div className="mt-16 text-center">
           <h3 className="text-2xl font-semibold mb-8 text-white">What Cyclists Say</h3>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="card">
               <div className="text-2xl mb-2">⭐⭐⭐⭐⭐</div>
               <p className="text-[var(--text-secondary)] mb-4">"Finally, a gear calculator that actually works offline!"</p>

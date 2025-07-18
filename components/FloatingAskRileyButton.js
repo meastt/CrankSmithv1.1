@@ -31,7 +31,7 @@ export default function FloatingAskRileyButton() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50 floating-element">
       <Link
         href="/ask-riley"
         className={`group flex items-center gap-3 bg-gradient-to-r from-brand-blue to-brand-purple text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${

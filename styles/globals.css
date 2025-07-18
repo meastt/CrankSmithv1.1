@@ -508,24 +508,7 @@ label.form-label {
 }
 
 /* Override for cards containing dropdowns - allows dropdown content to be visible outside card */
-.card:has(.searchable-dropdown),
 .card.dropdown-container {
-  overflow: visible !important;
-}
-
-/* Ensure all parent containers allow overflow for dropdowns */
-.card.dropdown-container * {
-  overflow: visible !important;
-}
-
-/* Force cards with dropdowns to allow overflow */
-.card.dropdown-container {
-  overflow: visible !important;
-  position: relative;
-}
-
-/* Ensure the card content doesn't clip dropdowns */
-.card.dropdown-container > * {
   overflow: visible !important;
 }
 

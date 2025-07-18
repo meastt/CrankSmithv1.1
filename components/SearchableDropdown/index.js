@@ -52,14 +52,7 @@ const SearchableDropdown = ({
       
       {isOpen && (
         <div 
-          className="absolute bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto" 
-          style={{ 
-            position: 'absolute',
-            top: '100%',
-            left: '0',
-            right: '0',
-            zIndex: 999999
-          }}
+          className="absolute z-[999999] w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
         >
           <input
             type="text"

@@ -45,21 +45,21 @@ const SearchableDropdown = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2 text-left border border-[var(--border-primary)] rounded-md shadow-sm bg-[var(--surface-primary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className="w-full px-3 py-2 text-left border border-[var(--border-primary)] rounded-md shadow-sm bg-[var(--bg-elevated)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
         {selectedOption ? `${selectedOption.model} ${selectedOption.variant}` : placeholder}
       </button>
       
       {isOpen && (
         <div 
-          className="absolute z-[999999] w-full mt-1 bg-[var(--surface-primary)] border border-[var(--border-primary)] rounded-md shadow-lg max-h-60 overflow-auto"
+          className="absolute z-[999999] w-full mt-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-md shadow-lg max-h-60 overflow-auto"
         >
           <input
             type="text"
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 border-b border-[var(--border-subtle)] bg-[var(--surface-primary)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border-b border-[var(--border-primary)] bg-[var(--bg-elevated)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
             autoFocus
           />
           <div className="py-1">
@@ -68,7 +68,7 @@ const SearchableDropdown = ({
                 key={option.id}
                 type="button"
                 onClick={() => handleSelect(option)}
-                className="w-full px-3 py-2 text-left hover:bg-[var(--surface-elevated)] focus:outline-none focus:bg-[var(--surface-elevated)] text-[var(--text-primary)]"
+                className="w-full px-3 py-2 text-left hover:bg-[var(--bg-secondary)] focus:outline-none focus:bg-[var(--bg-secondary)] text-[var(--text-primary)]"
               >
                 <div className="font-medium">{option.model}</div>
                 <div className="text-sm text-[var(--text-secondary)]">{option.variant}</div>

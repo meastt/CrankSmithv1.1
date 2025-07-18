@@ -35,6 +35,10 @@
     --brand-purple: 88 86 214;   /* #5856D6 - Premium */
     --brand-green: 52 199 89;    /* #34C759 - Success */
     --brand-red: 255 59 48;      /* #FF3B30 - Error */
+    
+    /* --- Accent Colors (aliases for semantic usage) --- */
+    --accent-blue: var(--brand-blue);
+    --accent-blue-hover: 0 96 204;  /* Darker blue for hover states */
 
     /* --- Semantic Colors (Light Mode) --- */
     --bg-primary: var(--white);
@@ -52,7 +56,15 @@
     
     --border-primary: var(--neutral-200);
     --border-secondary: var(--neutral-300);
+    --border-subtle: var(--neutral-200);
     --border-focus: var(--brand-blue);
+    
+    /* --- Surface Colors --- */
+    --surface-elevated: var(--white);
+    
+    /* --- Additional semantic colors --- */
+    --warning-orange: var(--brand-orange);
+    --success-green: var(--brand-green);
     
     /* --- Gradients --- */
     --gradient-performance: linear-gradient(135deg, rgb(var(--brand-orange)) 0%, rgb(var(--brand-yellow)) 100%);
@@ -120,6 +132,10 @@
     
     --border-primary: var(--neutral-800);
     --border-secondary: var(--neutral-700);
+    --border-subtle: var(--neutral-700);
+    
+    /* --- Surface Colors --- */
+    --surface-elevated: var(--neutral-800);
     
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.2);
     --shadow-sm: 0 2px 4px rgb(0 0 0 / 0.3);
@@ -525,6 +541,12 @@ button.btn-secondary:disabled,
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+/* Mobile Touch Support */
+button, .cursor-pointer {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Mobile Label */

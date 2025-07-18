@@ -374,25 +374,50 @@ export default function Calculator() {
 
         {/* Bike Type Selection */}
         <div className="max-w-4xl mx-auto mb-8">
-          <h2 className="text-2xl font-bold mb-6 text-center text-[var(--text-primary)]">Select Your Bike Type</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">Select Your Bike Type</h2>
+          {/* Debug info */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="text-center mb-4 p-2 bg-yellow-100 dark:bg-yellow-900 rounded">
+              <p className="text-sm">Debug: Current bike type: {bikeType || 'none'}</p>
+              <p className="text-sm">Available types: {Object.keys(bikeConfig).join(', ')}</p>
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {Object.entries(bikeConfig).map(([type, config]) => (
               <button
                 key={type}
-                onClick={() => setBikeType(type)}
-                className={`p-6 rounded-xl border-2 transition-all duration-200 ${
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Bike type selected:', type);
+                  setBikeType(type);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  console.log('Touch ended on bike type:', type);
+                  setBikeType(type);
+                }}
+                onTouchStart={(e) => {
+                  console.log('Touch started on bike type:', type);
+                }}
+                className={`p-6 rounded-xl border-2 transition-all duration-200 cursor-pointer touch-manipulation ${
                   bikeType === type
-                    ? 'border-[var(--accent-blue)] bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-[var(--border-subtle)] bg-[var(--surface-elevated)] hover:border-[var(--accent-blue)]/50'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-blue-500/50'
                 }`}
+                style={{ 
+                  WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+                  userSelect: 'none',
+                  WebkitUserSelect: 'none'
+                }}
               >
-                <div className="w-16 h-16 mx-auto mb-4 text-[var(--accent-blue)]">
+                <div className="w-16 h-16 mx-auto mb-4 text-blue-500">
                   {BikeIcons[type]}
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-[var(--text-primary)]">
+                <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
                   {config.name}
                 </h3>
-                <p className="text-sm text-[var(--text-secondary)]">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   {config.description}
                 </p>
               </button>

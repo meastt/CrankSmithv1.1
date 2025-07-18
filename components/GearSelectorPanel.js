@@ -65,7 +65,7 @@ const GearSelectorPanel = React.memo(({
   // Early return if bikeType is not set - prevents empty options rendering
   if (!bikeType || bikeType === '') {
     return (
-      <div className="card group">
+      <div className="card group dropdown-container">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
@@ -119,7 +119,7 @@ const GearSelectorPanel = React.memo(({
   // Show loading state if components are still loading
   if (loading) {
     return (
-      <div className="card group">
+      <div className="card group dropdown-container">
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: 'var(--accent-blue)' }}></div>
           <span className="ml-3" style={{ color: 'var(--text-secondary)' }}>Loading components...</span>
@@ -131,7 +131,7 @@ const GearSelectorPanel = React.memo(({
   // Show error state if there was an error loading components
   if (error) {
     return (
-      <div className="card group">
+      <div className="card group dropdown-container">
         <div className="flex items-center justify-center py-8">
           <span className="text-red-500">Error loading components: {error}</span>
         </div>
@@ -140,7 +140,7 @@ const GearSelectorPanel = React.memo(({
   }
 
   return (
-    <div className="card group">
+    <div className="card group dropdown-container">
       {/* Card Header */}
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-center space-x-3">

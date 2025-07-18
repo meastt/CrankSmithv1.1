@@ -144,7 +144,7 @@ export default function BikeFit(): JSX.Element {
     flexibility: 'average',
     ridingStyle: 'endurance',
     experience: 'intermediate',
-    units: 'metric'
+    units: 'imperial'
   });
 
   // Temporary display values for inputs during typing
@@ -295,7 +295,7 @@ export default function BikeFit(): JSX.Element {
       flexibility: 'average',
       ridingStyle: 'endurance',
       experience: 'intermediate',
-      units: 'metric'
+      units: 'imperial'
     });
     setResults(null);
     toast.info('Calculator reset successfully');

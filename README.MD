@@ -9,8 +9,10 @@ CrankSmith is a comprehensive bike optimization tool that helps cyclists calcula
 - **Gear Ratio Calculator**: Calculate and compare gear ratios for different drivetrain setups
 - **Component Compatibility**: Check if your components work together before you buy
 - **Performance Analysis**: Visualize speed ranges, gear progression, and optimal cadence
-- **Riley AI Assistant**: Get personalized advice from your AI bike expert
+- **Bike Fit Calculator**: Get personalized bike fit recommendations based on your measurements
 - **Tire Pressure Calculator**: Find the perfect tire pressure for your weight and terrain
+- **Riley AI Assistant**: Get personalized advice from your AI bike expert
+- **Mobile Optimized**: Full PWA support with offline capabilities
 - **Free Access**: No email required, no subscriptions, just the best bike tools
 
 ## How to Use
@@ -19,11 +21,44 @@ CrankSmith is a comprehensive bike optimization tool that helps cyclists calcula
 2. Start using the gear calculator immediately
 3. Compare your current setup with potential upgrades
 4. Get instant compatibility feedback
-5. Optimize your bike setup with confidence
+5. Use the bike fit calculator for personalized recommendations
+6. Optimize your bike setup with confidence
 
 ## Technology
 
-Built with Next.js, React, and modern web technologies for the best user experience across all devices.
+Built with Next.js, React, TypeScript, and modern web technologies for the best user experience across all devices. Features include:
+
+- **Progressive Web App (PWA)**: Install on mobile devices for app-like experience
+- **Offline Support**: Core features work without internet connection
+- **Responsive Design**: Optimized for desktop, tablet, and mobile
+- **Real-time Calculations**: Instant gear ratio and compatibility feedback
+- **AI Integration**: Riley AI assistant for personalized advice
+
+## Development
+
+### Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Run tests
+npm test
+
+# Build for production
+npm run build
+```
+
+### Key Technologies
+
+- **Frontend**: Next.js, React, TypeScript
+- **Styling**: Tailwind CSS
+- **Charts**: Recharts for data visualization
+- **AI**: Custom Riley AI integration
+- **PWA**: Service worker for offline functionality
 
 ## About
 

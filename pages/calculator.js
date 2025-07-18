@@ -2,7 +2,7 @@
 // CORRECTED: Replaced all inline styles with Tailwind classes, converted JS hover effects to CSS, and implemented a React-based toast notification system.
 // UPDATED: Removed email verification requirements - free access for all users
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import GearSelectorPanel from '../components/GearSelectorPanel';
 import SimulationResults from '../components/SimulationResults';
 import PerformanceChart from '../components/PerformanceChart';
@@ -206,6 +206,29 @@ export default function Calculator() {
     updateProposedSetup, setResults, setCompatibilityResults,
     resetCalculator, calculateResults
   } = useCalculatorState();
+  
+  // Local state to force re-renders and debug
+  const [localBikeType, setLocalBikeType] = useState(bikeType);
+  const [debugInfo, setDebugInfo] = useState('No selection yet');
+  
+  // Sync with hook state
+  useEffect(() => {
+    setLocalBikeType(bikeType);
+    setDebugInfo(`Hook state: ${bikeType}, Local state: ${localBikeType}`);
+  }, [bikeType, localBikeType]);
+  
+  // Alternative bike type setter
+  const handleBikeTypeSelection = useCallback((type) => {
+    console.log('🔥 HANDLE BIKE TYPE:', type);
+    setLocalBikeType(type);
+    setBikeType(type);
+    setDebugInfo(`Selected: ${type} at ${new Date().toLocaleTimeString()}`);
+    
+    // Force re-render
+    setTimeout(() => {
+      setDebugInfo(`Confirmed: ${type} - State should be updated`);
+    }, 100);
+  }, [setBikeType]);
 
   const [savedConfigs, setSavedConfigs] = useState([]);
   const [showSaved, setShowSaved] = useState(false);
@@ -382,24 +405,49 @@ export default function Calculator() {
               <p className="text-sm">Available types: {Object.keys(bikeConfig).join(', ')}</p>
             </div>
           )}
+          
+          {/* Emergency test button */}
+          <div className="text-center mb-4">
+            <button 
+              onClick={() => {
+                alert('TEST BUTTON WORKS!');
+                setBikeType('road');
+              }}
+              style={{
+                background: 'red',
+                color: 'white',
+                padding: '20px',
+                border: 'none',
+                borderRadius: '10px',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                zIndex: 99999,
+                position: 'relative'
+              }}
+            >
+              🚨 EMERGENCY TEST - Click me!
+            </button>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {Object.entries(bikeConfig).map(([type, config]) => (
-              <button
-                key={type}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Bike type selected:', type);
-                  setBikeType(type);
-                }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  console.log('Touch ended on bike type:', type);
-                  setBikeType(type);
-                }}
-                onTouchStart={(e) => {
-                  console.log('Touch started on bike type:', type);
-                }}
+            {Object.entries(bikeConfig).map(([type, config]) => {
+              // Create handler function outside of render
+                             const handleBikeTypeSelect = () => {
+                 console.log('🚀 SELECTING: Bike type:', type, 'Current state:', bikeType);
+                 handleBikeTypeSelection(type);
+                 
+                 // Mobile debug
+                 if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+                   alert(`Selected: ${type} - Check if UI updates`);
+                 }
+               };
+              
+              return (
+                <button
+                  key={type}
+                  onClick={handleBikeTypeSelect}
+                  onTouchEnd={handleBikeTypeSelect}
+                  onPointerDown={() => console.log('🖱️ POINTER:', type)}
+                  onMouseDown={() => console.log('🖱️ MOUSE:', type)}
                 className={`p-6 rounded-xl border-2 transition-all duration-200 cursor-pointer touch-manipulation ${
                   bikeType === type
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
@@ -420,12 +468,13 @@ export default function Calculator() {
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   {config.description}
                 </p>
-              </button>
-            ))}
+                              </button>
+              );
+            })}
           </div>
         </div>
 
-        {bikeType && (
+        {(bikeType || localBikeType) && (
           <div className="space-y-8">
             {/* Gear Selection */}
             <div className="max-w-6xl mx-auto">

@@ -14,11 +14,11 @@ const GearSelectorPanel = React.memo(({
   icon: Icon 
 }) => {
   // Use the optimized hook for component loading (must be called before any conditional returns)
-  const { components, loading, error } = useComponentDatabase(bikeType);
+  const { cranksets, cassettes, loading, error } = useComponentDatabase(bikeType);
 
   // Transform components data for SearchableDropdown - memoized to prevent recalculation
   const cranksetOptions = useMemo(() => 
-    components?.cranksets?.map(crankset => ({
+    cranksets?.map(crankset => ({
       id: crankset.id,
       label: `${crankset.model} ${crankset.variant}`,
       model: crankset.model,
@@ -27,11 +27,11 @@ const GearSelectorPanel = React.memo(({
       speeds: crankset.speeds,
       weight: crankset.weight,
       bikeType: crankset.bikeType
-    })) || [], [components?.cranksets]
+    })) || [], [cranksets]
   );
 
   const cassetteOptions = useMemo(() => 
-    components?.cassettes?.map(cassette => ({
+    cassettes?.map(cassette => ({
       id: cassette.id,
       label: `${cassette.model} ${cassette.variant}`,
       model: cassette.model,
@@ -40,7 +40,7 @@ const GearSelectorPanel = React.memo(({
       speeds: cassette.speeds,
       weight: cassette.weight,
       bikeType: cassette.bikeType
-    })) || [], [components?.cassettes]
+    })) || [], [cassettes]
   );
 
   // Memoized event handlers to prevent unnecessary re-renders
@@ -94,11 +94,10 @@ const GearSelectorPanel = React.memo(({
   // Enhanced debug logging with better context
   console.log(`🔍 GearSelectorPanel (${title}):`, {
     bikeType,
-    components,
-    cranksets: components?.cranksets,
-    cassettes: components?.cassettes,
-    cranksetsLength: components?.cranksets?.length,
-    cassettesLength: components?.cassettes?.length,
+    cranksets,
+    cassettes,
+    cranksetsLength: cranksets?.length,
+    cassettesLength: cassettes?.length,
     setup,
     config,
     loading,

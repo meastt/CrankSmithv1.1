@@ -45,21 +45,21 @@ const SearchableDropdown = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2 text-left border border-gray-300 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className="input-field w-full text-left"
       >
         {selectedOption ? `${selectedOption.model} ${selectedOption.variant}` : placeholder}
       </button>
       
       {isOpen && (
         <div 
-          className="absolute z-[999999] w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+          className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
         >
           <input
             type="text"
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 border-b border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-field searchable-dropdown-input w-full border-b border-gray-200"
             autoFocus
           />
           <div className="py-1">
@@ -68,7 +68,7 @@ const SearchableDropdown = ({
                 key={option.id}
                 type="button"
                 onClick={() => handleSelect(option)}
-                className="w-full px-3 py-2 text-left hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                className="w-full px-3 py-2 text-left cursor-pointer hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
               >
                 <div className="font-medium">{option.model}</div>
                 <div className="text-sm text-gray-500">{option.variant}</div>

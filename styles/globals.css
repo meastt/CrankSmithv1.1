@@ -226,28 +226,7 @@
     transform: translateY(-1px);
   }
   
-  /* --- Input Field --- */
-  .input-premium {
-    @apply w-full px-4 py-3 text-base rounded-xl;
-    background: rgb(var(--bg-elevated));
-    border: 1px solid rgb(var(--border-primary));
-    color: rgb(var(--text-primary));
-    transition: all var(--duration-fast) var(--ease-out);
-  }
-  
-  .input-premium::placeholder {
-    color: rgb(var(--text-placeholder));
-  }
-  
-  .input-premium:hover {
-    border-color: rgb(var(--border-secondary));
-    background: rgb(var(--bg-secondary));
-  }
-  
-  .input-premium:focus {
-    outline: none;
-    border-color: rgb(var(--brand-blue));
-    background: rgb(var(--bg-elevated));
+  /* --- Input Field (Consolidated) --- */
     box-shadow: 0 0 0 3px rgb(var(--brand-blue) / 0.1);
   }
   
@@ -454,7 +433,8 @@
 select.input-field, 
 input[type="text"].input-field, 
 input[type="email"].input-field,
-input[type="number"].input-field {
+input[type="number"].input-field,
+.searchable-dropdown-input {  /* New class for dropdown-specific inputs */
   @apply w-full px-4 py-3 text-base rounded-xl;
   background: rgb(var(--bg-elevated));
   border: 1px solid rgb(var(--border-primary));
@@ -463,16 +443,19 @@ input[type="number"].input-field {
 }
 
 .input-field::placeholder, 
-input.input-field::placeholder {
+input.input-field::placeholder,
+.searchable-dropdown-input::placeholder {
   color: rgb(var(--text-placeholder));
 }
 
-.input-field:hover:not(:focus) {
+.input-field:hover:not(:focus),
+.searchable-dropdown-input:hover:not(:focus) {
   border-color: rgb(var(--border-secondary));
   background: rgb(var(--bg-secondary));
 }
 
-.input-field:focus {
+.input-field:focus,
+.searchable-dropdown-input:focus {
   outline: none;
   border-color: rgb(var(--brand-blue));
   background: rgb(var(--bg-elevated));
@@ -496,9 +479,10 @@ label.form-label {
   transition: all var(--duration-base) var(--ease-out);
 }
 
-/* Override overflow for cards with dropdowns */
+/* Card overrides - Strengthen positioning */
 .card.dropdown-container {
   overflow: visible !important;
+  position: relative;  /* Ensure it establishes a positioning context */
 }
 
 .card:hover {
@@ -507,25 +491,19 @@ label.form-label {
   border-color: rgb(var(--border-secondary));
 }
 
-/* Disable hover transform for cards with dropdowns to prevent stacking context issues */
 .card.dropdown-container:hover {
   transform: none !important;
 }
 
-/* Override for cards containing dropdowns - allows dropdown content to be visible outside card */
-.card.dropdown-container {
-  overflow: visible !important;
-}
-
-/* Ensure searchable dropdowns appear above all other content */
+/* Dropdown enhancements - Lower z-index, remove !important where possible */
 .searchable-dropdown {
-  z-index: 999999 !important;
+  z-index: 50;  /* Reasonable value; adjust if needed */
   position: relative;
 }
 
-/* Ensure dropdown content appears above everything */
 .searchable-dropdown .absolute {
-  z-index: 999999 !important;
+  z-index: 50;  /* Match parent */
+  overflow: visible !important;  /* Ensure menu isn't clipped */
 }
 
 /* Button Enhancements */
@@ -563,7 +541,7 @@ input::placeholder, textarea::placeholder {
   opacity: 1;
 }
 
-/* Dropdown option items */
+/* Dropdown option items - Ensure consistent hover/selected states */
 .cursor-pointer.selected {
   background: rgb(var(--brand-blue)) !important;
   color: white !important;

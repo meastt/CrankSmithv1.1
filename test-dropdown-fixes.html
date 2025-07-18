@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Fixes Test</title>
+    <link href="styles/globals.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .test-dropdown {
+            position: relative;
+            z-index: 50;
+        }
+        .test-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+        }
+        .test-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .test-option:hover {
+            background: #f9fafb;
+        }
+        .test-option:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Dropdown Styling Fixes Test</h1>
+        
+        <div class="card dropdown-container">
+            <h2>Test Card with Dropdown</h2>
+            <p>This card should have proper overflow handling for dropdowns.</p>
+            
+            <div class="test-dropdown">
+                <button class="input-field w-full text-left">
+                    Select an option...
+                </button>
+                
+                <div class="test-dropdown-menu">
+                    <div class="test-option cursor-pointer">Option 1</div>
+                    <div class="test-option cursor-pointer">Option 2</div>
+                    <div class="test-option cursor-pointer">Option 3</div>
+                    <div class="test-option cursor-pointer">Option 4</div>
+                    <div class="test-option cursor-pointer">Option 5</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card dropdown-container" style="margin-top: 2rem;">
+            <h2>Test Card with Searchable Input</h2>
+            <p>This tests the new searchable-dropdown-input class.</p>
+            
+            <input 
+                type="text" 
+                class="input-field searchable-dropdown-input" 
+                placeholder="Search components..."
+            />
+        </div>
+        
+        <div class="card" style="margin-top: 2rem;">
+            <h2>Regular Card (No Dropdown)</h2>
+            <p>This card should have normal hover effects.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Simple test to verify z-index and positioning
+        console.log('Testing dropdown fixes...');
+        
+        const dropdowns = document.querySelectorAll('.test-dropdown');
+        dropdowns.forEach((dropdown, index) => {
+            const computedStyle = window.getComputedStyle(dropdown);
+            console.log(`Dropdown ${index + 1} z-index:`, computedStyle.zIndex);
+            console.log(`Dropdown ${index + 1} position:`, computedStyle.position);
+        });
+        
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            const computedStyle = window.getComputedStyle(card);
+            console.log(`Card ${index + 1} overflow:`, computedStyle.overflow);
+            console.log(`Card ${index + 1} position:`, computedStyle.position);
+        });
+    </script>
+</body>
+</html>

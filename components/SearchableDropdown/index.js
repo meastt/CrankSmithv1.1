@@ -45,21 +45,35 @@ const SearchableDropdown = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2 text-left border border-[var(--border-primary)] rounded-md shadow-sm bg-[var(--bg-elevated)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className="w-full px-3 py-2 text-left border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        style={{
+          background: 'rgb(var(--bg-elevated))',
+          borderColor: 'rgb(var(--border-primary))',
+          color: 'rgb(var(--text-primary))'
+        }}
       >
         {selectedOption ? `${selectedOption.model} ${selectedOption.variant}` : placeholder}
       </button>
       
       {isOpen && (
         <div 
-          className="absolute z-[999999] w-full mt-1 bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-md shadow-lg max-h-60 overflow-auto"
+          className="absolute z-[999999] w-full mt-1 border rounded-md shadow-lg max-h-60 overflow-auto"
+          style={{
+            background: 'rgb(var(--bg-elevated))',
+            borderColor: 'rgb(var(--border-primary))'
+          }}
         >
           <input
             type="text"
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 border-b border-[var(--border-primary)] bg-[var(--bg-elevated)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border-b focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{
+              background: 'rgb(var(--bg-elevated))',
+              borderColor: 'rgb(var(--border-primary))',
+              color: 'rgb(var(--text-primary))'
+            }}
             autoFocus
           />
           <div className="py-1">
@@ -68,14 +82,23 @@ const SearchableDropdown = ({
                 key={option.id}
                 type="button"
                 onClick={() => handleSelect(option)}
-                className="w-full px-3 py-2 text-left hover:bg-[var(--bg-secondary)] focus:outline-none focus:bg-[var(--bg-secondary)] text-[var(--text-primary)]"
+                className="w-full px-3 py-2 text-left focus:outline-none"
+                style={{
+                  color: 'rgb(var(--text-primary))'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgb(var(--bg-secondary))';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent';
+                }}
               >
                 <div className="font-medium">{option.model}</div>
-                <div className="text-sm text-[var(--text-secondary)]">{option.variant}</div>
+                <div className="text-sm" style={{ color: 'rgb(var(--text-secondary))' }}>{option.variant}</div>
               </button>
             ))}
             {filteredOptions.length === 0 && (
-              <div className="px-3 py-2 text-[var(--text-secondary)]">No options found</div>
+              <div className="px-3 py-2" style={{ color: 'rgb(var(--text-secondary))' }}>No options found</div>
             )}
           </div>
                   </div>

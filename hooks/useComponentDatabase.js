@@ -70,5 +70,13 @@ export const useComponentDatabase = (bikeType) => {
     error: memoizedComponents.error
   });
 
+  // Add a very obvious log to confirm the fix is deployed
+  console.log('🚀 FIX DEPLOYED - Components should now work!', {
+    hasCranksets: !!memoizedComponents.cranksets?.length,
+    hasCassettes: !!memoizedComponents.cassettes?.length,
+    cranksetsCount: memoizedComponents.cranksets?.length || 0,
+    cassettesCount: memoizedComponents.cassettes?.length || 0
+  });
+
   return memoizedComponents;
 }; 

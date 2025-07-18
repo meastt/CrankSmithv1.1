@@ -507,6 +507,11 @@ label.form-label {
   border-color: rgb(var(--border-secondary));
 }
 
+/* Disable hover transform for cards with dropdowns to prevent stacking context issues */
+.card.dropdown-container:hover {
+  transform: none !important;
+}
+
 /* Override for cards containing dropdowns - allows dropdown content to be visible outside card */
 .card.dropdown-container {
   overflow: visible !important;

@@ -55,10 +55,20 @@ export const useComponentDatabase = (bikeType) => {
 
   // Memoize the final result to prevent unnecessary re-renders
   const memoizedComponents = useMemo(() => ({
-    ...components,
+    cranksets: components.cranksets,
+    cassettes: components.cassettes,
     loading,
     error
-  }), [components, loading, error]);
+  }), [components.cranksets, components.cassettes, loading, error]);
+
+  console.log('🔧 useComponentDatabase returning:', {
+    bikeType,
+    memoizedComponents,
+    cranksetsLength: memoizedComponents.cranksets?.length,
+    cassettesLength: memoizedComponents.cassettes?.length,
+    loading: memoizedComponents.loading,
+    error: memoizedComponents.error
+  });
 
   return memoizedComponents;
 }; 

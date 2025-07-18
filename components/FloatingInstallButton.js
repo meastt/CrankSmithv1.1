@@ -49,52 +49,17 @@ export default function FloatingInstallButton() {
   if (!showButton) return null;
 
   return (
-    <div className="floating-install-button" style={{
-      position: 'fixed',
-      bottom: '20px',
-      right: '20px',
-      zIndex: 1000
-    }}>
+    <div className="floating-install-button fixed bottom-5 right-5 z-50">
       <button
         onClick={handleInstall}
         disabled={isInstalling}
-        style={{
-          background: 'linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '50px',
-          padding: '12px 20px',
-          fontSize: '14px',
-          fontWeight: '600',
-          cursor: isInstalling ? 'not-allowed' : 'pointer',
-          opacity: isInstalling ? 0.7 : 1,
-          transition: 'all 0.2s ease',
-          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          minWidth: '140px',
-          justifyContent: 'center'
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.transform = 'translateY(-2px)';
-          e.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.6)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.transform = 'translateY(0)';
-          e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.4)';
-        }}
+        className={`bg-gradient-blue text-white border-none rounded-full px-5 py-3 text-sm font-semibold transition-all duration-200 shadow-glow-md flex items-center gap-2 min-w-35 justify-center ${
+          isInstalling ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:-translate-y-0.5 hover:shadow-glow-lg'
+        }`}
       >
         {isInstalling ? (
           <>
-            <div className="loading-spinner" style={{
-              width: '16px',
-              height: '16px',
-              border: '2px solid rgba(255, 255, 255, 0.3)',
-              borderTop: '2px solid white',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite'
-            }}></div>
+            <div className="loading-spinner w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
             Installing...
           </>
         ) : (
@@ -107,13 +72,6 @@ export default function FloatingInstallButton() {
           </>
         )}
       </button>
-
-      <style jsx>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 } 

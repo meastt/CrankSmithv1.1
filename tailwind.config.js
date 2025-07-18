@@ -62,6 +62,10 @@ module.exports = {
         'gradient-performance': 'var(--gradient-performance)',
         'gradient-premium': 'var(--gradient-premium)',
         'gradient-success': 'var(--gradient-success)',
+        'gradient-green': 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+        'gradient-orange': 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+        'gradient-purple': 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+        'gradient-blue': 'linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%)',
       },
       transitionTimingFunction: {
         'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
@@ -88,6 +92,42 @@ module.exports = {
         },
         '.animation-delay-1000': {
           'animation-delay': '1000ms',
+        },
+        '.bg-compatibility-error': {
+          'background-color': 'rgba(239, 68, 68, 0.1)',
+        },
+        '.bg-compatibility-warning': {
+          'background-color': 'rgba(245, 158, 11, 0.1)',
+        },
+        '.bg-compatibility-success': {
+          'background-color': 'rgba(76, 175, 80, 0.1)',
+        },
+        '.border-compatibility-error': {
+          'border-color': '#dc3545',
+        },
+        '.border-compatibility-warning': {
+          'border-color': '#ffc107',
+        },
+        '.border-compatibility-success': {
+          'border-color': '#4CAF50',
+        },
+        '.text-compatibility-error': {
+          'color': '#dc3545',
+        },
+        '.text-compatibility-warning': {
+          'color': '#ffc107',
+        },
+        '.text-compatibility-success': {
+          'color': '#4CAF50',
+        },
+        '.bg-compatibility-error-dot': {
+          'background-color': '#dc3545',
+        },
+        '.bg-compatibility-warning-dot': {
+          'background-color': '#ffc107',
+        },
+        '.bg-compatibility-success-dot': {
+          'background-color': '#4CAF50',
         },
       }
       addUtilities(newUtilities)

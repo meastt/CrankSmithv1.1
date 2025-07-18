@@ -218,25 +218,22 @@ export default function BuildSummaryCard({
       </div>
 
       {/* Compatibility Status - FIXED */}
-      <div className="mb-6 p-4 rounded-lg border" style={{
-        backgroundColor: compatibility.status === 'error' ? 'rgba(239, 68, 68, 0.1)' : 
-                         compatibility.status === 'warning' ? 'rgba(245, 158, 11, 0.1)' : 
-                         'rgba(76, 175, 80, 0.1)',
-        borderColor: compatibility.status === 'error' ? '#dc3545' : 
-                     compatibility.status === 'warning' ? '#ffc107' : 
-                     '#4CAF50'
-      }}>
+      <div className={`mb-6 p-4 rounded-lg border ${
+        compatibility.status === 'error' ? 'bg-compatibility-error border-compatibility-error' : 
+        compatibility.status === 'warning' ? 'bg-compatibility-warning border-compatibility-warning' : 
+        'bg-compatibility-success border-compatibility-success'
+      }`}>
         <div className="flex items-center mb-2">
-          <div className="w-3 h-3 rounded-full mr-3" style={{
-            backgroundColor: compatibility.status === 'error' ? '#dc3545' : 
-                             compatibility.status === 'warning' ? '#ffc107' : 
-                             '#4CAF50'
-          }}></div>
-          <span className="text-base font-medium" style={{ 
-            color: compatibility.status === 'error' ? '#dc3545' : 
-                   compatibility.status === 'warning' ? '#ffc107' : 
-                   '#4CAF50'
-          }}>
+          <div className={`w-3 h-3 rounded-full mr-3 ${
+            compatibility.status === 'error' ? 'bg-compatibility-error-dot' : 
+            compatibility.status === 'warning' ? 'bg-compatibility-warning-dot' : 
+            'bg-compatibility-success-dot'
+          }`}></div>
+          <span className={`text-base font-medium ${
+            compatibility.status === 'error' ? 'text-compatibility-error' : 
+            compatibility.status === 'warning' ? 'text-compatibility-warning' : 
+            'text-compatibility-success'
+          }`}>
             {compatibility.status === 'error' ? '⚠️ Compatibility Issues' : 
              compatibility.status === 'warning' ? '⚠️ Compatibility Warnings' : 
              '✓ Components are compatible'}
@@ -278,21 +275,11 @@ export default function BuildSummaryCard({
         <button
           onClick={exportToPDF}
           disabled={isExporting}
-          className="text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
-          style={{ 
-            backgroundColor: (!proposedSetup.crankset || !proposedSetup.cassette) ? 'var(--bg-tertiary)' : 'var(--brand-green)',
-            color: (!proposedSetup.crankset || !proposedSetup.cassette) ? 'var(--text-disabled)' : 'white'
-          }}
-          onMouseEnter={(e) => {
-            if (!e.target.disabled) {
-              e.target.style.backgroundColor = 'rgba(var(--brand-green) / 0.8)';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.disabled) {
-              e.target.style.backgroundColor = 'var(--brand-green)';
-            }
-          }}
+          className={`text-white font-medium py-3 px-6 rounded-xl transition-all text-lg ${
+            (!proposedSetup.crankset || !proposedSetup.cassette) 
+              ? 'bg-[var(--bg-tertiary)] text-[var(--text-disabled)]' 
+              : 'bg-[var(--brand-green)] hover:bg-green-600'
+          }`}
         >
           <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
@@ -303,17 +290,7 @@ export default function BuildSummaryCard({
         
         <button
           onClick={() => window.print()}
-          className="text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
-          style={{ 
-            backgroundColor: 'var(--bg-tertiary)',
-            color: 'var(--text-primary)'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = 'var(--bg-secondary)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = 'var(--bg-tertiary)';
-          }}
+          className="bg-[var(--bg-tertiary)] text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] font-medium py-3 px-6 rounded-xl transition-all text-lg"
         >
           <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 

@@ -50,12 +50,12 @@ const SearchableDropdown = ({
       </button>
       
       {isOpen && (
-        <div className="absolute z-[9999] w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto" style={{ 
-          position: 'absolute',
-          top: '100%',
-          left: '0',
-          right: '0',
-          zIndex: 9999
+        <div className="fixed w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto" style={{ 
+          position: 'fixed',
+          top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 5 : 'auto',
+          left: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().left : 'auto',
+          width: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().width : 'auto',
+          zIndex: 99999
         }}>
           <input
             type="text"

@@ -255,14 +255,7 @@ export default function Calculator() {
     }
   };
 
-  const handleCurrentWheelChange = (v) => updateCurrentSetup({ wheel: v });
-  const handleCurrentTireChange = (v) => updateCurrentSetup({ tire: v });
-  const handleProposedWheelChange = (v) => updateProposedSetup({ wheel: v });
-  const handleProposedTireChange = (v) => updateProposedSetup({ tire: v });
-  const handleCurrentCranksetChange = (v) => updateCurrentSetup({ crankset: v });
-  const handleCurrentCassetteChange = (v) => updateCurrentSetup({ cassette: v });
-  const handleProposedCranksetChange = (v) => updateProposedSetup({ crankset: v });
-  const handleProposedCassetteChange = (v) => updateProposedSetup({ cassette: v });
+
 
   const handleCalculate = async () => {
     try {
@@ -406,19 +399,33 @@ export default function Calculator() {
             <div className="max-w-6xl mx-auto">
               <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-[var(--text-tertiary)]">Error loading gear selector</div>}>
                 <GearSelectorPanel
+                  title="Current Setup"
+                  subtitle="Your existing bike configuration"
+                  badge="Current"
+                  badgeColor="bg-[var(--accent-blue)]"
+                  setup={currentSetup}
+                  setSetup={updateCurrentSetup}
+                  config={bikeConfig[bikeType]}
                   bikeType={bikeType}
-                  currentSetup={currentSetup}
-                  proposedSetup={proposedSetup}
-                  onCurrentCranksetChange={handleCurrentCranksetChange}
-                  onCurrentCassetteChange={handleCurrentCassetteChange}
-                  onCurrentWheelChange={handleCurrentWheelChange}
-                  onCurrentTireChange={handleCurrentTireChange}
-                  onProposedCranksetChange={handleProposedCranksetChange}
-                  onProposedCassetteChange={handleProposedCassetteChange}
-                  onProposedWheelChange={handleProposedWheelChange}
-                  onProposedTireChange={handleProposedTireChange}
+                  icon="🚲"
                 />
               </ErrorBoundary>
+
+              <div className="mt-8">
+                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-[var(--text-tertiary)]">Error loading gear selector</div>}>
+                  <GearSelectorPanel
+                    title="Proposed Setup"
+                    subtitle="Your planned bike configuration"
+                    badge="Proposed"
+                    badgeColor="bg-[var(--success-green)]"
+                    setup={proposedSetup}
+                    setSetup={updateProposedSetup}
+                    config={bikeConfig[bikeType]}
+                    bikeType={bikeType}
+                    icon="⚡"
+                  />
+                </ErrorBoundary>
+              </div>
 
               {/* Analysis Controls */}
               <div className="bg-[var(--surface-elevated)] rounded-xl p-6 border border-[var(--border-subtle)] mt-8">

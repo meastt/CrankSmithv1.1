@@ -1,20 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import DropdownTrigger from './DropdownTrigger';
-import DropdownPortal from './DropdownPortal';
 
 const SearchableDropdown = ({
   options,
   value,
   onChange,
   placeholder,
-  groupBy,
   className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const triggerRef = useRef(null);
-  const inputRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   const selectedOption = options.find(opt => opt.id === value);
 
@@ -27,54 +22,15 @@ const SearchableDropdown = ({
     );
   });
 
-  const groupedOptions = filteredOptions.reduce((acc, option) => {
-    const group = groupBy ? option[groupBy] : 'All';
-    if (!acc[group]) {
-      acc[group] = [];
-    }
-    acc[group].push(option);
-    return acc;
-  }, {});
-
   const handleSelect = (option) => {
     onChange(option.id);
     setIsOpen(false);
     setSearchTerm('');
-    setHighlightedIndex(0);
-  };
-
-  const handleKeyDown = (e) => {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setHighlightedIndex(prev => 
-          prev < filteredOptions.length - 1 ? prev + 1 : prev
-        );
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setHighlightedIndex(prev => prev > 0 ? prev - 1 : prev);
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (filteredOptions[highlightedIndex]) {
-          handleSelect(filteredOptions[highlightedIndex]);
-        }
-        break;
-      case 'Escape':
-        e.preventDefault();
-        setIsOpen(false);
-        break;
-    }
   };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target) &&
-        !e.target.closest('.dropdown-portal')
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
@@ -84,30 +40,43 @@ const SearchableDropdown = ({
   }, []);
 
   return (
-    <div className={`relative ${className}`}>
-      <DropdownTrigger
-        isOpen={isOpen}
-        displayValue={selectedOption?.model}
-        placeholder={placeholder}
-        onClick={() => setIsOpen(true)}
-        triggerRef={triggerRef}
-      />
-      <DropdownPortal
-        isOpen={isOpen}
-        triggerRef={triggerRef}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        setHighlightedIndex={setHighlightedIndex}
-        handleKeyDown={handleKeyDown}
-        inputRef={inputRef}
-        groupedOptions={groupedOptions}
-        groupBy={groupBy}
-        filteredOptions={filteredOptions}
-        highlightedIndex={highlightedIndex}
-        selectedOption={selectedOption}
-        handleSelect={handleSelect}
-        onClose={() => setIsOpen(false)}
-      />
+    <div className={`relative ${className}`} ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-3 py-2 text-left border border-gray-300 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        {selectedOption ? `${selectedOption.model} ${selectedOption.variant}` : placeholder}
+      </button>
+      
+      {isOpen && (
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-3 py-2 border-b border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            autoFocus
+          />
+          <div className="py-1">
+            {filteredOptions.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => handleSelect(option)}
+                className="w-full px-3 py-2 text-left hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+              >
+                <div className="font-medium">{option.model}</div>
+                <div className="text-sm text-gray-500">{option.variant}</div>
+              </button>
+            ))}
+            {filteredOptions.length === 0 && (
+              <div className="px-3 py-2 text-gray-500">No options found</div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

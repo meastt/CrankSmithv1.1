@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import SearchableDropdown from './SearchableDropdown';
+import SearchableDropdown from './SearchableDropdown/index.js';
 import { useComponentDatabase } from '../hooks/useComponentDatabase';
 
 const GearSelectorPanel = React.memo(({ 
@@ -44,27 +44,23 @@ const GearSelectorPanel = React.memo(({
   );
 
   // Memoized event handlers to prevent unnecessary re-renders
-  const handleCranksetChange = useCallback((selectedOption) => {
+  const handleCranksetChange = useCallback((selectedOptionId) => {
+    const selectedOption = cranksetOptions.find(opt => opt.id === selectedOptionId);
     setSetup({ ...setup, crankset: selectedOption });
-    if (config?.onCranksetChange) {
-      config.onCranksetChange(selectedOption);
-    }
-  }, [setup, setSetup, config]);
+  }, [setup, setSetup, cranksetOptions]);
 
-  const handleCassetteChange = useCallback((selectedOption) => {
+  const handleCassetteChange = useCallback((selectedOptionId) => {
+    const selectedOption = cassetteOptions.find(opt => opt.id === selectedOptionId);
     setSetup({ ...setup, cassette: selectedOption });
-    if (config?.onCassetteChange) {
-      config.onCassetteChange(selectedOption);
-    }
-  }, [setup, setSetup, config]);
+  }, [setup, setSetup, cassetteOptions]);
 
   const handleWheelChange = useCallback((value) => {
-    config.onWheelChange(value);
-  }, [config]);
+    setSetup({ ...setup, wheel: value });
+  }, [setup, setSetup]);
 
   const handleTireChange = useCallback((value) => {
-    config.onTireChange(value);
-  }, [config]);
+    setSetup({ ...setup, tire: value });
+  }, [setup, setSetup]);
 
   // Early return if bikeType is not set - prevents empty options rendering
   if (!bikeType || bikeType === '') {
@@ -212,7 +208,7 @@ const GearSelectorPanel = React.memo(({
           <label className="form-label">Crankset</label>
           <SearchableDropdown
             options={cranksetOptions}
-            value={setup.crankset}
+            value={setup.crankset?.id || ''}
             onChange={handleCranksetChange}
             placeholder="Search cranksets..."
           />
@@ -223,7 +219,7 @@ const GearSelectorPanel = React.memo(({
           <label className="form-label">Cassette</label>
           <SearchableDropdown
             options={cassetteOptions}
-            value={setup.cassette}
+            value={setup.cassette?.id || ''}
             onChange={handleCassetteChange}
             placeholder="Search cassettes..."
           />

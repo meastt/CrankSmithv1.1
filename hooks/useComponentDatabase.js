@@ -21,6 +21,12 @@ export const useComponentDatabase = (bikeType) => {
         // Direct function call instead of dynamic import
         const loadedComponents = getComponentsForBikeType(bikeType);
         
+        console.log('🔧 useComponentDatabase loaded components:', {
+          bikeType,
+          loadedComponents,
+          cranksetsLength: loadedComponents.cranksets?.length,
+          cassettesLength: loadedComponents.cassettes?.length
+        });
         
         // Validate that we got components
         if (!loadedComponents.cranksets || !loadedComponents.cassettes) {
@@ -28,7 +34,7 @@ export const useComponentDatabase = (bikeType) => {
         }
         
         if (loadedComponents.cranksets.length === 0 && loadedComponents.cassettes.length === 0) {
-          
+          console.warn('⚠️ No components found for bikeType:', bikeType);
         }
         
         setComponents(loadedComponents);

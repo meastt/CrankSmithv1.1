@@ -1,4 +1,5 @@
-// components/BuildSummaryCard.js - FIXED VERSION
+// components/BuildSummaryCard.js - UPDATED VERSION
+// Improvements: Better styling consistency, full setup checks for disabling, error alerts, empty state handling
 // Critical Bug Fix: PDF export now has proper fallback handling
 // Quick Win: Added simplified export options
 
@@ -12,28 +13,37 @@ export default function BuildSummaryCard({
 }) {
   const [isExporting, setIsExporting] = useState(false);
 
+  if (!results) {
+    // ADDED: Simple empty state for no results
+    return (
+      <div className="bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl p-6 mb-8 text-center">
+        <p className="text-[var(--text-secondary)]">No results yet. Complete your setups and analyze!</p>
+      </div>
+    );
+  }
+
   const { current, proposed, comparison } = results;
 
   // Helper functions
   const formatSpecs = (setup) => ({
-    crankset: `${setup.crankset.name} (${setup.crankset.teeth.join('/')})`,
-    cassette: `${setup.cassette.name} (${setup.cassette.teeth.join('-')})`,
-    wheel: `${setup.wheel.name}`,
-    tire: `${setup.tire.name} (${setup.tire.width}mm)`
+    crankset: `${setup.crankset?.name || 'N/A'} (${setup.crankset?.teeth?.join('/') || 'N/A'})`,
+    cassette: `${setup.cassette?.name || 'N/A'} (${setup.cassette?.teeth?.join('-') || 'N/A'})`,
+    wheel: `${setup.wheel?.name || 'N/A'}`,
+    tire: `${setup.tire?.name || 'N/A'} (${setup.tire?.width || 'N/A'}mm)`
   });
 
-  // Fixed compatibility checking
+  // Fixed compatibility checking (ADDED: Potential for more checks, e.g., wheel/tire compatibility)
   const checkCompatibility = () => {
     const issues = [];
     const warnings = [];
     
     // Speed compatibility check
-    if (currentSetup.cassette.speeds !== proposedSetup.cassette.speeds) {
-      issues.push(`Speed mismatch: ${currentSetup.cassette.speeds}s vs ${proposedSetup.cassette.speeds}s`);
+    if (currentSetup.cassette?.speeds !== proposedSetup.cassette?.speeds) {
+      issues.push(`Speed mismatch: ${currentSetup.cassette?.speeds || 'N/A'}s vs ${proposedSetup.cassette?.speeds || 'N/A'}s`);
     }
     
     // Chain line and derailleur capacity warnings
-    if (proposedSetup.crankset.teeth && proposedSetup.cassette.teeth) {
+    if (proposedSetup.crankset?.teeth && proposedSetup.cassette?.teeth) {
       const crankRange = Math.max(...proposedSetup.crankset.teeth) - Math.min(...proposedSetup.crankset.teeth);
       const cassetteRange = Math.max(...proposedSetup.cassette.teeth) - Math.min(...proposedSetup.cassette.teeth);
       
@@ -42,6 +52,8 @@ export default function BuildSummaryCard({
       }
     }
     
+    // EXAMPLE: Add more checks here, e.g., if (currentSetup.wheel !== proposedSetup.wheel) warnings.push("Wheel size change may affect fit");
+
     return {
       status: issues.length > 0 ? 'error' : warnings.length > 0 ? 'warning' : 'compatible',
       issues,
@@ -53,11 +65,11 @@ export default function BuildSummaryCard({
   const currentSpecs = formatSpecs(currentSetup);
   const proposedSpecs = formatSpecs(proposedSetup);
 
-  // Smart recommendation generator
+  // Smart recommendation generator (FIXED: Handle NaN by defaulting to 0)
   const generateBottomLine = () => {
     const weightChange = comparison.weightChange || 0;
-    const speedChange = parseFloat(proposed.metrics.highSpeed) - parseFloat(current.metrics.highSpeed);
-    const rangeChange = parseInt(proposed.gearRange) - parseInt(current.gearRange);
+    const speedChange = parseFloat(proposed.metrics.highSpeed || 0) - parseFloat(current.metrics.highSpeed || 0);
+    const rangeChange = parseInt(proposed.gearRange || 0) - parseInt(current.gearRange || 0);
     
     let message = "Your proposed setup ";
     const benefits = [];
@@ -83,7 +95,7 @@ export default function BuildSummaryCard({
     return message;
   };
 
-  // FIXED: Robust export function with proper fallback
+  // FIXED: Robust export function with user alerts on errors
   const exportToPDF = async () => {
     setIsExporting(true);
     
@@ -93,6 +105,7 @@ export default function BuildSummaryCard({
       
       if (jsPDFModule) {
         await generatePDF(jsPDFModule.jsPDF);
+        alert('PDF exported successfully!'); // ADDED: User feedback
       } else {
         // Fallback to JSON export if PDF fails
         console.warn('PDF library not available, exporting as JSON');
@@ -100,6 +113,7 @@ export default function BuildSummaryCard({
       }
     } catch (error) {
       console.error('Export failed:', error);
+      alert('Export failed. Please try again or check your setup.'); // ADDED: User-friendly error
       // Always fallback to JSON export
       exportToJSON();
     } finally {
@@ -107,7 +121,7 @@ export default function BuildSummaryCard({
     }
   };
 
-  // PDF generation function
+  // PDF generation function (NOTE: For long content, consider adding doc.addPage() if yPosition > page height)
   const generatePDF = async (jsPDF) => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -203,10 +217,14 @@ export default function BuildSummaryCard({
     link.download = `cranksmith-analysis-${Date.now()}.json`;
     link.click();
     URL.revokeObjectURL(url);
+    alert('Exported as JSON successfully!'); // ADDED: User feedback
   };
 
+  // ADDED: Check if full setup is complete for disabling export
+  const isSetupIncomplete = !proposedSetup.crankset || !proposedSetup.cassette || !proposedSetup.wheel || !proposedSetup.tire;
+
   return (
-    <div className="bg-[var(--surface-elevated)] border border-[var(--border-subtle)] rounded-xl p-6 mb-8">
+    <div className="bg-[var(--bg-elevated)] border border-[var(--border-primary)] rounded-xl p-6 mb-8">
       {/* Header */}
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
@@ -217,7 +235,7 @@ export default function BuildSummaryCard({
         </p>
       </div>
 
-      {/* Compatibility Status - FIXED */}
+      {/* Compatibility Status */}
       <div className="mb-6 p-4 rounded-lg border" style={{
         backgroundColor: compatibility.status === 'error' ? 'rgba(239, 68, 68, 0.1)' : 
                          compatibility.status === 'warning' ? 'rgba(245, 158, 11, 0.1)' : 
@@ -262,7 +280,7 @@ export default function BuildSummaryCard({
         )}
       </div>
 
-      {/* Action Buttons - FIXED */}
+      {/* Action Buttons - UPDATED: Use Tailwind more, check full incompleteness */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <button
           onClick={onSave}
@@ -277,22 +295,8 @@ export default function BuildSummaryCard({
         
         <button
           onClick={exportToPDF}
-          disabled={isExporting}
-          className="text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
-          style={{ 
-            backgroundColor: (!proposedSetup.crankset || !proposedSetup.cassette) ? 'var(--bg-tertiary)' : 'var(--brand-green)',
-            color: (!proposedSetup.crankset || !proposedSetup.cassette) ? 'var(--text-disabled)' : 'var(--text-inverse)' // FIXED: Use var(--text-inverse) for better contrast on green bg
-          }}
-          onMouseEnter={(e) => {
-            if (!e.target.disabled) {
-              e.target.style.backgroundColor = 'rgba(var(--brand-green) / 0.8)';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!e.target.disabled) {
-              e.target.style.backgroundColor = 'var(--brand-green)';
-            }
-          }}
+          disabled={isExporting || isSetupIncomplete} // FIXED: Disable if any part missing
+          className={`font-medium py-3 px-6 rounded-xl transition-all text-lg ${isExporting || isSetupIncomplete ? 'bg-[var(--bg-tertiary)] text-[var(--text-disabled)] cursor-not-allowed' : 'bg-[var(--brand-green)] text-[var(--text-inverse)] hover:opacity-80'}`}
         >
           <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
@@ -303,17 +307,7 @@ export default function BuildSummaryCard({
         
         <button
           onClick={() => window.print()}
-          className="text-white font-medium py-3 px-6 rounded-xl transition-all text-lg"
-          style={{ 
-            backgroundColor: 'var(--bg-tertiary)',
-            color: 'var(--text-primary)' // FIXED: Ensure contrast on tertiary bg
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = 'var(--bg-secondary)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = 'var(--bg-tertiary)';
-          }}
+          className="bg-[var(--bg-tertiary)] hover:bg-[var(--bg-secondary)] text-[var(--text-primary)] font-medium py-3 px-6 rounded-xl transition-all text-lg"
         >
           <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 

@@ -510,8 +510,13 @@ label.form-label {
 
 /* Ensure searchable dropdowns appear above all other content */
 .searchable-dropdown {
-  z-index: 9999 !important;
+  z-index: 999999 !important;
   position: relative;
+}
+
+/* Ensure dropdown content appears above everything */
+.searchable-dropdown .absolute {
+  z-index: 999999 !important;
 }
 
 /* Button Enhancements */

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const SearchableDropdown = ({
   options,
@@ -50,13 +51,16 @@ const SearchableDropdown = ({
       </button>
       
       {isOpen && (
-        <div className="fixed w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto" style={{ 
-          position: 'fixed',
-          top: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().bottom + 5 : 'auto',
-          left: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().left : 'auto',
-          width: dropdownRef.current ? dropdownRef.current.getBoundingClientRect().width : 'auto',
-          zIndex: 99999
-        }}>
+        <div 
+          className="absolute bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto" 
+          style={{ 
+            position: 'absolute',
+            top: '100%',
+            left: '0',
+            right: '0',
+            zIndex: 999999
+          }}
+        >
           <input
             type="text"
             placeholder="Search..."
@@ -81,8 +85,8 @@ const SearchableDropdown = ({
               <div className="px-3 py-2 text-gray-500">No options found</div>
             )}
           </div>
-        </div>
-      )}
+                  </div>
+        )}
     </div>
   );
 };

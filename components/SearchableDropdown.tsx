@@ -276,6 +276,16 @@ export default function SearchableDropdown({
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '12px' }}>
           <div style={{ fontWeight: '500', fontSize: '16px' }}>
             {option.model}
+            {option.recommended && (
+              <span style={{
+                background: '#2563eb', color: 'white', fontSize: '11px', borderRadius: '6px', padding: '2px 6px', marginLeft: '8px', fontWeight: 600
+              }}>Recommended</span>
+            )}
+            {option.popular && !option.recommended && (
+              <span style={{
+                background: '#f59e42', color: 'white', fontSize: '11px', borderRadius: '6px', padding: '2px 6px', marginLeft: '8px', fontWeight: 600
+              }}>Popular</span>
+            )}
           </div>
           <div 
             style={{ 

@@ -26,7 +26,9 @@ const GearSelectorPanel = React.memo(({
       teeth: crankset.teeth,
       speeds: crankset.speeds,
       weight: crankset.weight,
-      bikeType: crankset.bikeType
+      bikeType: crankset.bikeType,
+      recommended: crankset.recommended,
+      popular: crankset.popular
     })) || [], [cranksets]
   );
 
@@ -39,7 +41,9 @@ const GearSelectorPanel = React.memo(({
       teeth: cassette.teeth,
       speeds: cassette.speeds,
       weight: cassette.weight,
-      bikeType: cassette.bikeType
+      bikeType: cassette.bikeType,
+      recommended: cassette.recommended,
+      popular: cassette.popular
     })) || [], [cassettes]
   );
 

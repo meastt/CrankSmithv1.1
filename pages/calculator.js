@@ -213,6 +213,7 @@ export default function Calculator() {
   const [compatibilityChecker] = useState(new CompatibilityChecker());
   const [toast, setToast] = useState({ show: false, message: '' });
   const [calculationError, setCalculationError] = useState(null);
+  const [shareUrl, setShareUrl] = useState('');
 
   useEffect(() => {
     const handler = () => { 
@@ -344,6 +345,27 @@ export default function Calculator() {
         console.error('Error deleting configuration:', error);
         showToast('Failed to delete configuration.');
       }
+    }
+  };
+
+  const handleShare = () => {
+    const params = new URLSearchParams({
+      bikeType,
+      crankset: currentSetup?.crankset?.id || '',
+      cassette: currentSetup?.cassette?.id || '',
+      wheel: currentSetup?.wheel || '',
+      tire: currentSetup?.tire || ''
+    });
+    const url = `${window.location.origin}/calculator?${params.toString()}`;
+    setShareUrl(url);
+    if (navigator.share) {
+      navigator.share({
+        title: 'Check out my bike setup on CrankSmith',
+        url
+      });
+    } else {
+      navigator.clipboard.writeText(url);
+      alert('Share link copied to clipboard!');
     }
   };
 
@@ -570,6 +592,10 @@ export default function Calculator() {
                   </button>
                 </div>
               </div>
+            )}
+            <button className="btn-secondary mt-2" onClick={handleShare}>Share</button>
+            {shareUrl && !navigator.share && (
+              <div className="text-xs mt-1 text-blue-600">Share link: <a href={shareUrl} target="_blank" rel="noopener noreferrer">{shareUrl}</a></div>
             )}
           </div>
         )}

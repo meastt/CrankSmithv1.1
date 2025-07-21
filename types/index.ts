@@ -126,6 +126,8 @@ export interface DropdownOption {
   bikeType?: string;
   subtitle?: string;
   value?: any;
+  recommended?: boolean;
+  popular?: boolean;
 }
 
 export interface GroupedOptions {

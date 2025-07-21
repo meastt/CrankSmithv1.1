@@ -73,3 +73,41 @@ Have questions or feedback?
 ---
 
 *Made with ❤️ by cyclists who got tired of bad calculators.*
+
+# App Store / Production Release
+
+This branch is dedicated to preparing the CrankSmith mobile app for app store submission. Follow these steps to ensure a clean, production-ready build:
+
+## 1. Environment Variables
+- Ensure all secrets and API keys are set in a `.env.production` file (never commit secrets to the repo).
+- Required variables (see codebase for usage):
+  - `ZOHO_EMAIL`, `ZOHO_PASSWORD`, `ADMIN_EMAIL`
+  - `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
+  - `ANTHROPIC_API_KEY`, `NEXT_PUBLIC_ANTHROPIC_API_KEY`
+  - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+## 2. Build for Production
+```bash
+npm install
+npm run build
+```
+- Use `npm run start` to test the production build locally.
+
+## 3. PWA & Mobile Checks
+- Confirm `public/manifest.json` is up to date (name, icons, screenshots, etc.).
+- Confirm service worker (`public/sw.js` or `public/sw-enhanced.js`) is registered and working for offline support.
+- Test installability on Android/iOS (PWA) and ensure all icons/screenshots are correct.
+
+## 4. Clean Up
+- Remove any debug/test code or dev-only dependencies.
+- Ensure `.gitignore` excludes all sensitive and dev files.
+
+## 5. Tag the Release
+```bash
+git tag v1.0.0-appstore
+```
+
+## 6. Submit to App Store
+- Follow platform-specific instructions for PWA or wrapper submission (see app store docs).
+
+---

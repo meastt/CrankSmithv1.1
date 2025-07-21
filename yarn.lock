@@ -2796,6 +2796,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-jsdom: ^29.7.0
     jspdf: ^3.0.1
+    lucide-react: ^0.525.0
     next: ^15.3.3
     nodemailer: ^7.0.3
     postcss: ^8.4.35
@@ -5686,6 +5687,15 @@ __metadata:
   dependencies:
     yallist: ^3.0.2
   checksum: c154ae1cbb0c2206d1501a0e94df349653c92c8cbb25236d7e85190bcaf4567a03ac6eb43166fabfa36fd35623694da7233e88d9601fbf411a9a481d85dbd2cb
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.525.0":
+  version: 0.525.0
+  resolution: "lucide-react@npm:0.525.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: eef781bfcfd211dac1ca93d0e7c5830aec1bacef72f4af3994807ac04d2a0fe327aca1a77234daf7f13e06ea47e5585766c927c8e1f2e7dcb982e4dc55aeda5e
   languageName: node
   linkType: hard
 

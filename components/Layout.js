@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ErrorBoundary from './ErrorBoundary';
+import EmailCollectionPopup from './EmailCollectionPopup';
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -103,6 +104,9 @@ export default function Layout({ children }) {
       <main className="pt-20">
         {children}
       </main>
+
+      {/* Email Collection Popup */}
+      <EmailCollectionPopup />
 
       {/* Premium Footer */}
       <footer className="border-t mt-20 py-12 border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactElement } from 'react';
 import { Toast, ToastType, ToastAPI, ToastAction } from '../types';
 
 let toastId = 0;
@@ -58,7 +58,7 @@ function removeToast(id: number): void {
   }
 }
 
-export function ToastContainer(): JSX.Element | null {
+export function ToastContainer(): ReactElement | null {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [mounted, setMounted] = useState(false);
 
@@ -103,7 +103,7 @@ interface ToastItemProps {
   onClose: () => void;
 }
 
-function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
+function ToastItem({ toast, onClose }: ToastItemProps): ReactElement {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 

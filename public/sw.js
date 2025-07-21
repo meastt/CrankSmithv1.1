@@ -81,6 +81,13 @@ self.addEventListener('activate', (event) => {
   
   // Take control of all pages immediately
   self.clients.claim();
+
+  // Set up periodic update check
+  if (self.registration && self.registration.update) {
+    setInterval(() => {
+      self.registration.update();
+    }, 1800000); // 30 minutes
+  }
 });
 
 // Fetch event - serve from cache when offline

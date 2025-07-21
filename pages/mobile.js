@@ -1,5 +1,5 @@
 // pages/mobile.js - Mobile-first PWA version of CrankSmith
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import MobileLayout from '../components/mobile/MobileLayout';
@@ -15,6 +15,13 @@ import { CompatibilityChecker } from '../lib/compatibilityChecker';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { toast } from '../components/Toast';
 import { useCalculatorState } from '../hooks/useCalculatorState';
+
+// Lazy load mobile screens
+const BikeTypeSelector = lazy(() => import('../components/mobile/BikeTypeSelector'));
+const ComponentSelector = lazy(() => import('../components/mobile/ComponentSelector'));
+const ResultsScreen = lazy(() => import('../components/mobile/ResultsScreen'));
+const GarageScreen = lazy(() => import('../components/mobile/GarageScreen'));
+const SettingsScreen = lazy(() => import('../components/mobile/SettingsScreen'));
 
 export default function MobileApp() {
   const router = useRouter();
@@ -138,75 +145,81 @@ export default function MobileApp() {
       case 'calculator':
         if (setupStep === 1 || !bikeType) {
           return (
-            <BikeTypeSelector
-              bikeType={bikeType}
-              setBikeType={setBikeType}
-              onNext={() => setSetupStep(2)}
-            />
+            <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+              <BikeTypeSelector
+                bikeType={bikeType}
+                setBikeType={setBikeType}
+                onNext={() => setSetupStep(2)}
+              />
+            </Suspense>
           );
         }
         return (
-          <ComponentSelector
-            bikeType={bikeType}
-            currentSetup={currentSetup}
-            setCurrentSetup={updateCurrentSetup}
-            proposedSetup={proposedSetup}
-            setProposedSetup={updateProposedSetup}
-            setupStep={setupStep}
-            setSetupStep={setSetupStep}
-            onCalculate={calculateResults}
-            loading={loading}
-            onReset={handleResetCalculator}
-          />
+          <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+            <ComponentSelector
+              bikeType={bikeType}
+              currentSetup={currentSetup}
+              setCurrentSetup={updateCurrentSetup}
+              proposedSetup={proposedSetup}
+              setProposedSetup={updateProposedSetup}
+              setupStep={setupStep}
+              setSetupStep={setSetupStep}
+              onCalculate={calculateResults}
+              loading={loading}
+              onReset={handleResetCalculator}
+            />
+          </Suspense>
         );
-      
       case 'results':
         return (
-          <ResultsScreen
-            results={results}
-            speedUnit={speedUnit}
-            bikeType={bikeType}
-            onSave={saveConfiguration}
-            onBack={() => setCurrentScreen('calculator')}
-            onNewCalculation={handleResetCalculator}
-          />
+          <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+            <ResultsScreen
+              results={results}
+              speedUnit={speedUnit}
+              bikeType={bikeType}
+              onSave={saveConfiguration}
+              onBack={() => setCurrentScreen('calculator')}
+              onNewCalculation={handleResetCalculator}
+            />
+          </Suspense>
         );
-      
       case 'garage':
         return (
-          <GarageScreen
-            savedConfigs={savedConfigs}
-            setSavedConfigs={setSavedConfigs}
-            onLoadConfig={(config) => {
-              setBikeType(config.bikeType);
-              updateCurrentSetup(config.currentSetup);
-              updateProposedSetup(config.proposedSetup);
-              setResults(config.results);
-              setCurrentScreen('results');
-            }}
-          />
+          <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+            <GarageScreen
+              savedConfigs={savedConfigs}
+              setSavedConfigs={setSavedConfigs}
+              onLoadConfig={(config) => {
+                setBikeType(config.bikeType);
+                updateCurrentSetup(config.currentSetup);
+                updateProposedSetup(config.proposedSetup);
+                setResults(config.results);
+                setCurrentScreen('results');
+              }}
+            />
+          </Suspense>
         );
-      
       case 'settings':
         return (
-          <SettingsScreen
-            speedUnit={speedUnit}
-            setSpeedUnit={setSpeedUnit}
-            isOnline={isOnline}
-            installPrompt={installPrompt}
-            onInstallApp={handleInstallApp}
-            onExportData={() => {
-              const dataStr = JSON.stringify(savedConfigs, null, 2);
-              const dataBlob = new Blob([dataStr], {type: 'application/json'});
-              const url = URL.createObjectURL(dataBlob);
-              const link = document.createElement('a');
-              link.href = url;
-              link.download = 'cranksmith-backup.json';
-              link.click();
-            }}
-          />
+          <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+            <SettingsScreen
+              speedUnit={speedUnit}
+              setSpeedUnit={setSpeedUnit}
+              isOnline={isOnline}
+              installPrompt={installPrompt}
+              onInstallApp={handleInstallApp}
+              onExportData={() => {
+                const dataStr = JSON.stringify(savedConfigs, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'cranksmith-backup.json';
+                link.click();
+              }}
+            />
+          </Suspense>
         );
-      
       default:
         return <div>Screen not found</div>;
     }

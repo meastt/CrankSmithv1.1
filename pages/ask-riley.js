@@ -32,7 +32,9 @@ export default function AskRiley() {
     "What's the difference between 11-speed and 12-speed?",
     "Can I upgrade from rim brakes to disc brakes?",
     "How do I choose the right gear ratio?",
-    "What tools do I need for basic bike maintenance?"
+    "What tools do I need for basic bike maintenance?",
+    "Best climbing gears?",
+    "Budget upgrade recommendations?"
   ];
 
   const handleSubmit = async (e) => {
@@ -97,6 +99,21 @@ export default function AskRiley() {
       />
 
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+        {/* Hero Section */}
+        <div className="max-w-2xl mx-auto px-4 pt-8">
+          <div className="mb-4 flex flex-wrap gap-2 justify-center">
+            {quickQuestions.map((q, i) => (
+              <button
+                key={i}
+                className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 rounded-full text-xs font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition"
+                onClick={() => handleQuickQuestion(q)}
+                type="button"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+        </div>
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-brand-blue to-brand-purple text-white py-16">
           <div className="container-responsive">

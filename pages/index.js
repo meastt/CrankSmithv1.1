@@ -7,10 +7,46 @@ import SEOHead from '../components/SEOHead';
 export default function Home() {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+  // Onboarding tour state
+  const [showTour, setShowTour] = useState(false);
+  const [tourStep, setTourStep] = useState(0);
 
   useEffect(() => {
     setIsVisible(true);
+    // Show onboarding tour only on first visit
+    if (typeof window !== 'undefined' && !localStorage.getItem('cranksmith_tour_complete')) {
+      setShowTour(true);
+      setTourStep(0);
+    }
   }, []);
+
+  const handleNextTour = () => {
+    if (tourStep < 2) {
+      setTourStep(tourStep + 1);
+    } else {
+      setShowTour(false);
+      localStorage.setItem('cranksmith_tour_complete', '1');
+    }
+  };
+  const handleSkipTour = () => {
+    setShowTour(false);
+    localStorage.setItem('cranksmith_tour_complete', '1');
+  };
+
+  const tourSteps = [
+    {
+      title: '1) Pick Components',
+      description: 'Start by selecting your bike type and components. Our calculators help you find compatible parts and optimal setups.'
+    },
+    {
+      title: '2) See Analysis',
+      description: 'Get instant analysis of your setup: gear ratios, compatibility, and performance insights tailored to your riding style.'
+    },
+    {
+      title: '3) Ask Riley',
+      description: 'Have questions? Ask Riley, your AI bike expert, for upgrade advice, troubleshooting, or personalized recommendations.'
+    }
+  ];
 
   const features = [
     {
@@ -64,6 +100,36 @@ export default function Home() {
 
   return (
     <>
+      {showTour && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center relative animate-fade-in">
+            <h2 className="text-2xl font-bold mb-2 text-brand-blue">{tourSteps[tourStep].title}</h2>
+            <p className="mb-6 text-neutral-700 dark:text-neutral-200">{tourSteps[tourStep].description}</p>
+            <div className="flex gap-2 justify-center">
+              <button
+                className="px-4 py-2 rounded-lg bg-brand-blue text-white font-semibold hover:bg-brand-blue-dark transition"
+                onClick={handleNextTour}
+              >
+                {tourStep < 2 ? 'Next' : 'Finish'}
+              </button>
+              <button
+                className="px-4 py-2 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 font-semibold hover:bg-neutral-300 dark:hover:bg-neutral-700 transition"
+                onClick={handleSkipTour}
+              >
+                Skip
+              </button>
+            </div>
+            <div className="mt-4 flex justify-center gap-1">
+              {tourSteps.map((_, i) => (
+                <span
+                  key={i}
+                  className={`inline-block w-2 h-2 rounded-full ${i === tourStep ? 'bg-brand-blue' : 'bg-neutral-300 dark:bg-neutral-700'}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       <SEOHead
         title="CrankSmith - Professional Bike Gear Calculator, Bike Fit & Cycling Tools"
         description="Free professional bike gear calculator, bike fit calculator, and cycling optimization tools. Calculate gear ratios, drivetrain compatibility, bike fitting, and optimize your road, mountain, gravel, or touring bike setup. Used by cyclists and bike shops worldwide."

@@ -10,8 +10,11 @@ export default function InstallBanner() {
   const [showBanner, setShowBanner] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalling, setIsInstalling] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
     const checkInstallability = async () => {
       // Don't show if already installed as PWA
       if (checkIfPWA()) return;
@@ -20,9 +23,14 @@ export default function InstallBanner() {
       if (globalBannerShown) return;
       
       // Don't show if user dismissed recently
-      const dismissedTime = localStorage.getItem('cranksmith_banner_dismissed');
-      if (dismissedTime && Date.now() - parseInt(dismissedTime) < 60 * 60 * 1000) { // 1 hour
-        return;
+      try {
+        const dismissedTime = localStorage.getItem('cranksmith_banner_dismissed');
+        if (dismissedTime && Date.now() - parseInt(dismissedTime) < 60 * 60 * 1000) { // 1 hour
+          return;
+        }
+      } catch (error) {
+        // localStorage might not be available
+        console.warn('localStorage not available');
       }
 
       // Check if app can be installed
@@ -65,9 +73,15 @@ export default function InstallBanner() {
     setShowBanner(false);
     globalBannerShown = false;
     // Remember dismissal for 1 hour
-    localStorage.setItem('cranksmith_banner_dismissed', Date.now().toString());
+    try {
+      localStorage.setItem('cranksmith_banner_dismissed', Date.now().toString());
+    } catch (error) {
+      console.warn('Could not save dismissal to localStorage');
+    }
   };
 
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) return null;
   if (!showBanner) return null;
 
   return (

@@ -6,8 +6,11 @@ export default function FloatingInstallButton() {
   const [showButton, setShowButton] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalling, setIsInstalling] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
     const checkInstallability = async () => {
       // Don't show if already installed as PWA
       if (checkIfPWA()) return;
@@ -46,6 +49,8 @@ export default function FloatingInstallButton() {
     }
   };
 
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) return null;
   if (!showButton) return null;
 
   return (

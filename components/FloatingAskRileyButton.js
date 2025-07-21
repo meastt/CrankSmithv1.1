@@ -5,9 +5,11 @@ import { useRouter } from 'next/router';
 export default function FloatingAskRileyButton() {
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setMounted(true);
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 3000); // Show after 3 seconds
@@ -28,6 +30,8 @@ export default function FloatingAskRileyButton() {
     setIsExpanded(false);
   };
 
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) return null;
   if (!isVisible) return null;
 
   return (

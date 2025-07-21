@@ -60,8 +60,10 @@ function removeToast(id: number): void {
 
 export function ToastContainer(): JSX.Element | null {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     toastListener = setToasts;
     setToasts([...toastStack]);
 
@@ -79,6 +81,8 @@ export function ToastContainer(): JSX.Element | null {
     };
   }, []);
 
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) return null;
   if (toasts.length === 0) return null;
 
   return (
@@ -101,8 +105,10 @@ interface ToastItemProps {
 
 function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Trigger animation after mount
     const timer = setTimeout(() => setIsVisible(true), 10);
     return () => clearTimeout(timer);
@@ -137,6 +143,9 @@ function ToastItem({ toast, onClose }: ToastItemProps): JSX.Element {
   };
 
   const style = typeStyles[toast.type] || typeStyles.info;
+
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) return null;
 
   return (
     <div

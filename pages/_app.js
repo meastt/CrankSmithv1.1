@@ -10,8 +10,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { registerServiceWorker, handleMobileRouting, isMobileApp } from '../lib/pwa-utils';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { ToastContainer } from '../components/Toast';
-import EmailCollectionPopup from '../components/EmailCollectionPopup';
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -53,9 +51,7 @@ export default function App({ Component, pageProps }) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-TR57T617HK', {
-              page_path: window.location.pathname,
-            });
+            gtag('config', 'G-TR57T617HK');
           `}
         </Script>
         
@@ -96,9 +92,7 @@ export default function App({ Component, pageProps }) {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-TR57T617HK', {
-            page_path: window.location.pathname,
-          });
+          gtag('config', 'G-TR57T617HK');
         `}
       </Script>
       
@@ -108,12 +102,6 @@ export default function App({ Component, pageProps }) {
           <Component {...pageProps} />
         </Layout>
       </ErrorBoundary>
-      
-      {/* Toast Notifications */}
-      <ToastContainer />
-      
-      {/* Email Collection Popup */}
-      <EmailCollectionPopup />
     </>
   );
 }

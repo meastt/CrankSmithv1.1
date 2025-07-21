@@ -1,5 +1,5 @@
 // components/SearchableDropdown.tsx - Enhanced with TypeScript and performance optimizations
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback, ReactElement } from 'react';
 import { FixedSizeList as List } from 'react-window';
 import { DropdownOption, GroupedOptions } from '../types';
 
@@ -23,7 +23,7 @@ export default function SearchableDropdown({
   className = '',
   searchable = true,
   debounceMs = 150
-}: SearchableDropdownProps): JSX.Element {
+}: SearchableDropdownProps): ReactElement {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -226,7 +226,7 @@ export default function SearchableDropdown({
     style: React.CSSProperties;
   }
 
-  const Row = ({ index, style }: RowProps): JSX.Element => {
+  const Row = ({ index, style }: RowProps): ReactElement => {
     const item = flattenedOptions[index];
     
     if (item.type === 'group') {

@@ -103,7 +103,7 @@ interface ToastItemProps {
   onClose: () => void;
 }
 
-function ToastItem({ toast, onClose }: ToastItemProps): ReactElement {
+function ToastItem({ toast, onClose }: ToastItemProps): ReactElement | null {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
@@ -145,7 +145,7 @@ function ToastItem({ toast, onClose }: ToastItemProps): ReactElement {
   const style = typeStyles[toast.type] || typeStyles.info;
 
   // Don't render until mounted to prevent hydration issues
-  if (!mounted) return null;
+  if (!mounted) return null as any;
 
   return (
     <div

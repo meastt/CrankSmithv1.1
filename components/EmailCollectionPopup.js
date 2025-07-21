@@ -65,16 +65,35 @@ export default function EmailCollectionPopup() {
         body: JSON.stringify({ email }),
       });
 
-      const result = await response.json();
-
+      // Check if response is ok before trying to parse JSON
       if (!response.ok) {
+        let errorMessage = 'Failed to subscribe';
+        
+        try {
+          const errorResult = await response.json();
+          errorMessage = errorResult.message || errorResult.error || errorMessage;
+        } catch (parseError) {
+          console.error('Failed to parse error response:', parseError);
+        }
+        
         if (response.status === 409) {
           // Email already subscribed
           localStorage.setItem('cranksmith-email-subscribed', 'true');
           setIsSubmitted(true);
           return;
         }
-        throw new Error(result.message || 'Failed to subscribe');
+        
+        throw new Error(errorMessage);
+      }
+
+      // Parse successful response
+      let result;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.error('Failed to parse success response:', parseError);
+        // If we can't parse the response but status is ok, assume success
+        result = { success: true, message: 'Successfully subscribed!' };
       }
       
       // Store that user has subscribed

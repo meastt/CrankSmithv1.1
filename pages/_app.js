@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { registerServiceWorker, handleMobileRouting, isMobileApp } from '../lib/pwa-utils';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { ToastContainer } from '../components/Toast';
+import EmailCollectionPopup from '../components/EmailCollectionPopup';
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -110,6 +111,9 @@ export default function App({ Component, pageProps }) {
       
       {/* Toast Notifications */}
       <ToastContainer />
+      
+      {/* Email Collection Popup */}
+      <EmailCollectionPopup />
     </>
   );
 }

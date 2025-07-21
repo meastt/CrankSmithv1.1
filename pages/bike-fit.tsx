@@ -1,5 +1,5 @@
 // pages/bike-fit.tsx - Comprehensive bike fit calculator with TypeScript
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactElement } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -135,7 +135,7 @@ const bikeFitCalculations: BikeFitCalculations = {
   }
 };
 
-export default function BikeFit(): JSX.Element {
+export default function BikeFit(): ReactElement {
   // Body measurements state
   const [measurements, setMeasurements] = useState<BodyMeasurements>({
     inseam: null,

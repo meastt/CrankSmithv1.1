@@ -82,8 +82,8 @@ export function ToastContainer(): ReactElement | null {
   }, []);
 
   // Don't render until mounted to prevent hydration issues
-  if (!mounted) return null;
-  if (toasts.length === 0) return null;
+  if (!mounted) return null as any;
+  if (toasts.length === 0) return null as any;
 
   return (
     <div className="fixed top-4 right-4 z-50 space-y-2 max-w-sm">

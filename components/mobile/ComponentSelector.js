@@ -290,7 +290,7 @@ export default function ComponentSelector({
             background: canCalculate && !loading ? 
               'linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%)' : 
               'rgba(255, 255, 255, 0.1)',
-            color: canCalculate && !loading ? 'white' : '#666',
+            color: canCalculate && !loading ? 'white' : (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: light)').matches ? '#1E40AF' : '#666'),
             border: 'none',
             borderRadius: '12px',
             padding: '16px 24px',

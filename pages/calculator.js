@@ -488,7 +488,9 @@ export default function Calculator() {
                       className="px-6 py-3 rounded-xl font-medium transition-all bg-[var(--accent-blue)] text-white disabled:opacity-50 disabled:cursor-not-allowed hover:enabled:opacity-90"
                       style={{
                         color: (!validation.canAnalyze || loading)
-                          ? (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: light)').matches ? '#1E40AF' : '#e5e7eb')
+                          ? (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+                              ? 'rgb(var(--text-secondary))'
+                              : 'rgb(var(--text-primary))')
                           : 'white'
                       }}
                     >

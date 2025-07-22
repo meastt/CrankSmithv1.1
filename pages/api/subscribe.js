@@ -1,5 +1,5 @@
 // Import the existing Supabase client
-import { supabase } from '../../lib/supabase.js';
+import { supabaseAdmin } from '../../lib/supabase.js';
 
 // For debugging - let's see what's happening
 console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       console.log('Attempting to save to Supabase users table...');
       
       // Check if email already exists in users table
-      const { data: existingUser, error: checkError } = await supabase
+      const { data: existingUser, error: checkError } = await supabaseAdmin
         .from('users')
         .select('id, email')
         .eq('email', email.toLowerCase())
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       }
 
       // Insert new user with email subscription
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('users')
         .insert([
           {
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
         if (error.code === '42P01') { // Table doesn't exist
           console.log('Users table not found, trying email_subscribers table...');
           
-          const { data: fallbackData, error: fallbackError } = await supabase
+          const { data: fallbackData, error: fallbackError } = await supabaseAdmin
             .from('email_subscribers')
             .insert([
               {

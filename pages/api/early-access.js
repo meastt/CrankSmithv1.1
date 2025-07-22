@@ -1,6 +1,6 @@
 // pages/api/early-access.js - Community signup with Zoho + Supabase
 import nodemailer from 'nodemailer';
-import { supabase } from '../../lib/supabase';
+import { supabaseAdmin } from '../../lib/supabase';
 import { validateRequestBody } from '../../lib/validation';
 
 // At the top of the file, add development check utility
@@ -35,13 +35,38 @@ export default async function handler(req, res) {
   devLog('Valid email received:', email);
 
   try {
-    devLog('Attempting to save to Supabase...');
-    const { data, error } = await supabase
-      .from('early_access')
+    devLog('Attempting to save to Supabase users table...');
+    
+    // Check if email already exists in users table
+    const { data: existingUser, error: checkError } = await supabaseAdmin
+      .from('users')
+      .select('id, email')
+      .eq('email', email.toLowerCase())
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116 is "not found" which is expected for new emails
+      console.error('Error checking existing user:', checkError);
+    }
+
+    if (existingUser) {
+      return res.status(200).json({ 
+        success: true, 
+        message: 'You\'re already on the list!' 
+      });
+    }
+
+    // Insert new user with email subscription
+    const { data, error } = await supabaseAdmin
+      .from('users')
       .insert([{ 
-        email, 
-        source,
-        created_at: new Date().toISOString()
+        email: email.toLowerCase(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        email_subscribed: true,
+        email_subscribed_at: new Date().toISOString(),
+        subscription_source: source,
+        status: 'active'
       }])
       .select()
       .single();

@@ -1,5 +1,5 @@
 // pages/api/verify-beta.js
-import { supabase } from '../../lib/supabase';
+import { supabaseAdmin } from '../../lib/supabase';
 
 export default async function handler(req, res) {
   console.log('Beta verification API called');
@@ -16,19 +16,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    // First, let's see ALL emails in the table for debugging
+    // First, let's see ALL emails in the users table for debugging
     console.log('Getting all emails for comparison...');
-    const { data: allEmails, error: allError } = await supabase
-      .from('early_access')
+    const { data: allEmails, error: allError } = await supabaseAdmin
+      .from('users')
       .select('email');
     
     console.log('All emails in database:', allEmails);
     
     // Now try the specific query
     console.log('Checking for specific email...');
-    const { data, error } = await supabase
-      .from('early_access')
-      .select('email, created_at')
+    const { data, error } = await supabaseAdmin
+      .from('users')
+      .select('email, created_at, email_subscribed')
       .ilike('email', email.trim());
 
     if (error) {

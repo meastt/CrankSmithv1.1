@@ -2790,6 +2790,7 @@ __metadata:
     "@upstash/redis": ^1.35.1
     autoprefixer: ^10.4.17
     chart.js: ^4.5.0
+    dotenv: ^17.2.0
     eslint: ^8.56.0
     eslint-config-next: ^14.1.0
     eslint-plugin-unused-imports: ^4.1.4
@@ -3228,6 +3229,13 @@ __metadata:
     "@types/trusted-types":
       optional: true
   checksum: 4d002997dbae13f6bdf0e6be014384129c83b1ee8cd3fca9d96f95b9142d1e96256924466a2fc25e7ffb6ede54290e5c4a7d1bd10f9b14cfa07928dd799c3b42
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^17.2.0":
+  version: 17.2.0
+  resolution: "dotenv@npm:17.2.0"
+  checksum: 389d25dac7afeb1890bcd113c84d8d8175e95967559e90b8a6c8dc19bfc81ad3ede0036873c459cd8de1f90055a88232ddf74c550bcd2ea7a94b8d570f116470
   languageName: node
   linkType: hard
 

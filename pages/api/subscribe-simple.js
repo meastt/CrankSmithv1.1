@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    console.log('Attempting to save email to existing users table structure...');
+    console.log('Attempting to save email to existing users table structure...', email);
     
     // Check if email already exists
     const { data: existingUser, error: checkError } = await supabaseAdmin
@@ -31,13 +31,14 @@ export default async function handler(req, res) {
 
     if (checkError && checkError.code !== 'PGRST116') {
       console.error('Error checking existing user:', checkError);
+      // Don't fail the request if we can't check for existing user
     }
 
     if (existingUser) {
       console.log('Email already exists:', email);
       return res.status(200).json({ 
         success: true,
-        message: 'Email already registered!'
+        message: 'Email already registered! Thanks for your interest.'
       });
     }
 
@@ -59,6 +60,16 @@ export default async function handler(req, res) {
 
     if (error) {
       console.error('Insert error:', error);
+      
+      // Handle duplicate email error gracefully
+      if (error.code === '23505') {
+        console.log('Duplicate email detected via database constraint:', email);
+        return res.status(200).json({
+          success: true,
+          message: 'Email already registered! Thanks for your interest.'
+        });
+      }
+      
       throw new Error(`Database error: ${error.message}`);
     }
 
@@ -76,6 +87,22 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Subscription error:', error);
+    
+    // More specific error responses
+    if (error.message.includes('Invalid email')) {
+      return res.status(400).json({
+        error: 'Invalid email format',
+        message: 'Please enter a valid email address.'
+      });
+    }
+    
+    if (error.message.includes('Database error')) {
+      return res.status(503).json({
+        error: 'Database temporarily unavailable',
+        message: 'Please try again in a moment.'
+      });
+    }
+    
     return res.status(500).json({
       error: 'Internal server error',
       message: 'There was an error processing your request. Please try again later.'

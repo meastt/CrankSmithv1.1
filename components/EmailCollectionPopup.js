@@ -57,7 +57,7 @@ export default function EmailCollectionPopup() {
       }
 
       // Send email to backend API
-      const response = await fetch('/api/subscribe-simple', {
+      const response = await fetch('/api/early-access', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

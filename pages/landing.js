@@ -102,7 +102,8 @@ export default function Landing() {
             <div className="mb-8">
               <Link 
                 href="/calculator"
-                className="inline-block px-12 py-4 rounded-xl font-medium transition-all text-lg text-white bg-[var(--accent-blue)] shadow-[0_4px_12px_rgba(0,115,230,0.2)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,115,230,0.3)] !text-white"
+                className="cta-button-white-text inline-block px-12 py-4 rounded-xl font-medium transition-all text-lg bg-[var(--accent-blue)] shadow-[0_4px_12px_rgba(0,115,230,0.2)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,115,230,0.3)]"
+                style={{ color: 'white' }}
               >
                 🚀 Start Using CrankSmith Now
               </Link>

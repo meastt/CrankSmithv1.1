@@ -224,12 +224,21 @@
     transition: all var(--duration-base) var(--ease-out);
   }
   
-  .btn-secondary:hover {
+    .btn-secondary:hover {
     background: rgb(var(--bg-tertiary));
     border-color: rgb(var(--border-secondary));
     transform: translateY(-1px);
   }
-  
+
+  /* --- CTA Button White Text Override --- */
+  .cta-button-white-text,
+  .cta-button-white-text:link,
+  .cta-button-white-text:visited,
+  .cta-button-white-text:hover,
+  .cta-button-white-text:active {
+    color: white !important;
+  }
+
   /* --- Input Field --- */
   .input-premium {
     @apply w-full px-4 py-3 text-base rounded-xl;

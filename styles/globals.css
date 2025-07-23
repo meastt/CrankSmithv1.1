@@ -235,7 +235,11 @@
   .cta-button-white-text:link,
   .cta-button-white-text:visited,
   .cta-button-white-text:hover,
-  .cta-button-white-text:active {
+  .cta-button-white-text:active,
+  button.cta-button-white-text,
+  button.cta-button-white-text:hover,
+  button.cta-button-white-text:focus,
+  button.cta-button-white-text:active {
     color: white !important;
   }
 

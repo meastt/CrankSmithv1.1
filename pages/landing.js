@@ -102,8 +102,21 @@ export default function Landing() {
             <div className="mb-8">
               <button 
                 onClick={() => window.location.href = '/calculator'}
-                className="cta-button-white-text inline-block px-12 py-4 rounded-xl font-medium transition-all text-lg bg-[var(--accent-blue)] shadow-[0_4px_12px_rgba(0,115,230,0.2)] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(0,115,230,0.3)] cursor-pointer border-0"
-                style={{ color: 'white !important' }}
+                className="cta-button-white-text inline-block px-12 py-4 rounded-xl font-medium transition-all text-lg cursor-pointer border-0"
+                style={{ 
+                  backgroundColor: '#007AFF',
+                  color: '#FFFFFF', 
+                  boxShadow: '0 4px 12px rgba(0,115,230,0.2)',
+                  fontSize: '18px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 6px 16px rgba(0,115,230,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0px)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(0,115,230,0.2)';
+                }}
               >
                 🚀 Start Using CrankSmith Now
               </button>

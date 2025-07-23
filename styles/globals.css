@@ -35,6 +35,10 @@
     --brand-purple: 88 86 214;   /* #5856D6 - Premium */
     --brand-green: 52 199 89;    /* #34C759 - Success */
     --brand-red: 255 59 48;      /* #FF3B30 - Error */
+    
+    /* --- Accent Colors --- */
+    --accent-blue: var(--brand-blue);  /* Primary accent blue */
+    --accent-blue-hover: 0 100 230;    /* Darker blue for hover state */
 
     /* --- Semantic Colors (Light Mode) --- */
     --bg-primary: var(--white);

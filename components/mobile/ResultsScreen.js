@@ -267,7 +267,43 @@ export default function ResultsScreen({
     return message;
   };
 
+  const generateShareUrl = () => {
+    // Create a shareable URL with the analysis parameters
+    const params = new URLSearchParams();
+    
+    // Add bike type and setup parameters
+    params.set('bikeType', bikeType || 'road');
+    
+    // Add current setup data if available
+    if (current?.setup?.crankset?.id) {
+      params.set('crankset', current.setup.crankset.id);
+    }
+    if (current?.setup?.cassette?.id) {
+      params.set('cassette', current.setup.cassette.id);
+    }
+    if (current?.setup?.wheel) {
+      params.set('wheel', current.setup.wheel);
+    }
+    if (current?.setup?.tire) {
+      params.set('tire', current.setup.tire);
+    }
+    
+    // Add proposed setup data if different
+    if (proposed?.setup?.crankset?.id && proposed.setup.crankset.id !== current?.setup?.crankset?.id) {
+      params.set('proposedCrankset', proposed.setup.crankset.id);
+    }
+    if (proposed?.setup?.cassette?.id && proposed.setup.cassette.id !== current?.setup?.cassette?.id) {
+      params.set('proposedCassette', proposed.setup.cassette.id);
+    }
+    
+    // Add a flag to indicate this is a shared analysis
+    params.set('shared', 'true');
+    
+    return `${window.location.origin}/calculator?${params.toString()}`;
+  };
+
   const handleShare = async () => {
+    const shareUrl = generateShareUrl();
     const shareText = `Check out my bike gear analysis on CrankSmith! ${generateBottomLine()}`;
     
     if (navigator.share) {
@@ -275,23 +311,57 @@ export default function ResultsScreen({
         await navigator.share({
           title: 'CrankSmith Gear Analysis',
           text: shareText,
-          url: window.location.href
+          url: shareUrl
         });
       } catch (error) {
-        // Fallback to clipboard
+        // Fallback to clipboard if native sharing fails or is cancelled
+        console.log('Native sharing failed or cancelled, falling back to clipboard');
         handleCopyLink();
       }
     } else {
+      // No native sharing available, copy to clipboard
       handleCopyLink();
     }
   };
 
   const handleCopyLink = async () => {
+    const shareUrl = generateShareUrl();
+    
     try {
-      await navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      await navigator.clipboard.writeText(shareUrl);
+      
+      // Show a more user-friendly notification
+      if (window.alert) {
+        alert('Share link copied to clipboard! Share it with others to show your gear analysis.');
+      }
     } catch (error) {
       console.error('Failed to copy link:', error);
+      
+      // Fallback for browsers that don't support clipboard API
+      try {
+        // Create a temporary text area to copy the URL
+        const textArea = document.createElement('textarea');
+        textArea.value = shareUrl;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (successful) {
+          alert('Share link copied to clipboard!');
+        } else {
+          // Last resort - show the URL in an alert
+          alert(`Copy this link to share your analysis:\n\n${shareUrl}`);
+        }
+      } catch (fallbackError) {
+        console.error('All copy methods failed:', fallbackError);
+        alert(`Copy this link to share your analysis:\n\n${shareUrl}`);
+      }
     }
   };
 
@@ -795,8 +865,8 @@ export default function ResultsScreen({
                 className="share-option"
                 style={{
                   width: '100%',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: 'none',
+                  background: 'rgba(59, 130, 246, 0.2)',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
                   borderRadius: '12px',
                   padding: '16px',
                   color: 'white',
@@ -809,15 +879,18 @@ export default function ResultsScreen({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                         d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
                 </svg>
-                Share Analysis
+                <div className="text-left">
+                  <div className="font-medium">Share Analysis</div>
+                  <div className="text-xs opacity-75">Share via apps or social media</div>
+                </div>
               </button>
               <button
                 onClick={handleCopyLink}
                 className="share-option"
                 style={{
                   width: '100%',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: 'none',
+                  background: 'rgba(16, 185, 129, 0.2)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
                   borderRadius: '12px',
                   padding: '16px',
                   color: 'white',
@@ -830,7 +903,10 @@ export default function ResultsScreen({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                         d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                 </svg>
-                Copy Link
+                <div className="text-left">
+                  <div className="font-medium">Copy Link</div>
+                  <div className="text-xs opacity-75">Copy shareable URL to clipboard</div>
+                </div>
               </button>
             </div>
           </div>

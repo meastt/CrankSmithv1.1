@@ -12,12 +12,12 @@ export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: '/calculator', label: 'Performance Lab', icon: '⚡' },
-    { href: '/bike-fit', label: 'Pro Fit Studio', icon: '🎯' },
-    { href: '/performance-analysis', label: 'Analytics', icon: '📈' },
-    { href: '/aerodynamics', label: 'Aero Lab', icon: '🔬' },
-    { href: '/blog', label: 'Pro Tips', icon: '📚' },
-    { href: '/about', label: 'Elite Team', icon: '🏆' },
+    { href: '/calculator', label: 'Gear Calculator', icon: '⚙️' },
+    { href: '/bike-fit', label: 'Bike Fit', icon: '🚴‍♂️' },
+    { href: '/tire-pressure', label: 'Tire Pressure', icon: '🔧' },
+    { href: '/ask-riley', label: 'Ask Riley', icon: '🤖' },
+    { href: '/blog', label: 'Learn', icon: '📚' },
+    { href: '/about', label: 'About', icon: '👥' },
   ];
 
   const isActiveLink = (href) => {
@@ -58,16 +58,16 @@ export default function Layout({ children }) {
                 <div className="absolute inset-0 bg-gradient-racing rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
                 <div className="relative w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg p-2 bg-gradient-to-br from-white to-neutral-50 dark:from-neutral-800 dark:to-neutral-900">
                   <div className="w-10 h-10 rounded-xl bg-gradient-racing flex items-center justify-center">
-                    <span className="text-white font-black text-lg">VF</span>
+                    <span className="text-white font-black text-lg">CS</span>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl font-black bg-gradient-racing bg-clip-text text-transparent">
-                  VeloForge
+                  CrankSmith
                 </span>
                 <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Elite Performance
+                  Precision Cycling Tools
                 </span>
               </div>
             </Link>
@@ -95,7 +95,7 @@ export default function Layout({ children }) {
             {/* Elite Social Actions */}
             <div className="hidden md:flex items-center gap-3">
               <Link
-                href="https://instagram.com/veloforgepro"
+                href="https://instagram.com/cranksmithapp"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 rounded-xl hover:bg-racing-red/10 transition-all duration-300 text-neutral-600 dark:text-neutral-400 hover:text-racing-red"
@@ -160,7 +160,7 @@ export default function Layout({ children }) {
 
                   {/* Elite Mobile Social Link */}
                   <Link
-                    href="https://instagram.com/veloforgepro"
+                    href="https://instagram.com/cranksmithapp"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={closeMobileMenu}
@@ -169,7 +169,7 @@ export default function Layout({ children }) {
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                     </svg>
-                    <span className="font-semibold">@veloforgepro</span>
+                    <span className="font-semibold">@cranksmithapp</span>
                   </Link>
                 </div>
               </nav>
@@ -198,15 +198,15 @@ export default function Layout({ children }) {
                 </div>
                 <div>
                   <span className="text-2xl font-black bg-gradient-racing bg-clip-text text-transparent">
-                    VeloForge
+                    CrankSmith
                   </span>
                   <div className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                    Elite Performance Platform
+                    Precision Cycling Tools
                   </div>
                 </div>
               </div>
               <p className="text-base leading-relaxed text-neutral-600 dark:text-neutral-300 max-w-md">
-                Elite cycling performance tools engineered for competitive athletes. Precision calculations, scientific accuracy, and professional-grade analysis trusted by world-class cyclists and racing teams.
+                Professional bike gear calculator and cycling optimization tools. Calculate gear ratios, optimize bike fit, check compatibility, and perfect your setup with precision tools trusted by cyclists worldwide.
               </p>
             </div>
 
@@ -228,24 +228,24 @@ export default function Layout({ children }) {
 
             {/* Elite Community */}
             <div>
-              <h3 className="font-bold mb-6 text-neutral-900 dark:text-white text-lg">Elite Network</h3>
+              <h3 className="font-bold mb-6 text-neutral-900 dark:text-white text-lg">Connect</h3>
               <div className="space-y-3">
                 <a
-                  href="mailto:team@veloforge.pro"
+                  href="mailto:mike@cranksmith.com"
                   className="block text-sm hover:text-racing-red transition-colors text-neutral-600 dark:text-neutral-400 font-medium"
                 >
-                  team@veloforge.pro
+                  mike@cranksmith.com
                 </a>
                 <a
-                  href="https://instagram.com/veloforgepro"
+                  href="https://instagram.com/cranksmithapp"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-sm hover:text-racing-red transition-colors text-neutral-600 dark:text-neutral-400 font-medium"
                 >
-                  @veloforgepro
+                  @cranksmithapp
                 </a>
                 <div className="pt-2">
-                  <span className="badge-racing-accent text-xs px-3 py-1">Pro Teams Welcome</span>
+                  <span className="badge-racing-accent text-xs px-3 py-1">Free • No Signup</span>
                 </div>
               </div>
             </div>
@@ -253,7 +253,7 @@ export default function Layout({ children }) {
 
           <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center border-neutral-200 dark:border-neutral-800">
             <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium">
-              © {new Date().getFullYear()} VeloForge Pro. Elite Performance Reserved.
+              © {new Date().getFullYear()} CrankSmith. All rights reserved.
             </p>
             <div className="flex items-center gap-6 mt-4 md:mt-0">
               <Link href="/blog" className="text-sm hover:text-racing-red transition-colors text-neutral-500 dark:text-neutral-400 font-medium">

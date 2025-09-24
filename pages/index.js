@@ -77,26 +77,26 @@ export default function Home() {
   ];
 
   const heroStats = [
-    { label: 'WATTS SAVED', value: heroMetric, unit: 'W', suffix: '+' },
-    { label: 'PRO CYCLISTS', value: '15,000', unit: '', suffix: '+' },
+    { label: 'GEAR RATIOS', value: heroMetric, unit: '', suffix: '+' },
+    { label: 'CYCLISTS', value: '50,000', unit: '', suffix: '+' },
     { label: 'ACCURACY', value: '99.7', unit: '%', suffix: '' }
   ];
 
   return (
     <>
       <SEOHead
-        title="VeloForge Pro - Elite Cycling Performance Platform"
-        description="Elite cycling performance tools for competitive cyclists. Professional gear calculators, bike fitting, aerodynamics analysis, and power optimization used by world-class athletes and teams."
-        url="https://veloforge.pro"
-        image="/og-performance.jpg"
-        keywords="professional cycling tools, elite bike calculator, competitive cycling, pro bike fit, aerodynamics lab, power analysis, racing gear calculator, professional cycling performance, elite cycling platform"
+        title="CrankSmith - Professional Bike Gear Calculator, Bike Fit & Cycling Tools"
+        description="Free professional bike gear calculator, bike fit calculator, and cycling optimization tools. Calculate gear ratios, drivetrain compatibility, bike fitting, and optimize your road, mountain, gravel, or touring bike setup. Used by cyclists and bike shops worldwide."
+        url="https://cranksmith.com"
+        image="/og-image.jpg"
+        keywords="bike gear calculator, bike fit calculator, gear ratio calculator, cycling gear calculator, bicycle gear ratios, drivetrain compatibility, bike fitting calculator, cycling tools, bike setup calculator, bicycle calculator, bike gearing, cycling optimization, bike mechanics tools, cycling gear optimization, bicycle fitting, bike shop tools"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
-          "name": "VeloForge Pro",
-          "alternateName": ["Elite Cycling Calculator", "Pro Bike Tools", "Racing Performance Platform"],
-          "description": "Elite cycling performance platform with professional gear calculators, bike fitting, and aerodynamics analysis for competitive cyclists",
-          "url": "https://veloforge.pro",
+          "name": "CrankSmith",
+          "alternateName": ["Bike Gear Calculator", "Cycling Calculator", "Bike Fit Calculator"],
+          "description": "Professional bike gear calculator, bike fit calculator, and cycling optimization tools for cyclists and bike shops",
+          "url": "https://cranksmith.com",
           "applicationCategory": "Sports & Recreation",
           "operatingSystem": "Web Browser",
           "offers": {
@@ -105,59 +105,59 @@ export default function Home() {
             "priceCurrency": "USD"
           },
           "featureList": [
-            "Elite Gear Ratio Calculator",
-            "Professional Bike Fit Studio",
-            "Aerodynamics Laboratory",
-            "Performance Analytics Engine",
-            "Competitive Racing Tools",
-            "Professional Team Integration"
+            "Bike Gear Ratio Calculator",
+            "Drivetrain Compatibility Checker",
+            "Professional Bike Fit Calculator",
+            "Tire Pressure Calculator",
+            "Cycling Performance Optimization",
+            "Multi-Bike Type Support (Road, Mountain, Gravel, Touring)"
           ],
           "audience": [
             {
               "@type": "Audience",
-              "audienceType": "Professional Cyclists"
+              "audienceType": "Cyclists"
             },
             {
               "@type": "Audience",
-              "audienceType": "Racing Teams"
+              "audienceType": "Bike Mechanics"
             },
             {
               "@type": "Audience",
-              "audienceType": "Competitive Athletes"
+              "audienceType": "Bike Shops"
             },
             {
               "@type": "Audience",
-              "audienceType": "Cycling Coaches"
+              "audienceType": "Cycling Enthusiasts"
             }
           ],
           "creator": {
             "@type": "Organization",
-            "name": "VeloForge Pro",
-            "url": "https://veloforge.pro",
-            "description": "Elite cycling performance platform for competitive athletes",
+            "name": "CrankSmith",
+            "url": "https://cranksmith.com",
+            "description": "Professional cycling tools and calculators",
             "sameAs": [
-              "https://instagram.com/veloforgepro"
+              "https://instagram.com/cranksmithapp"
             ]
           },
           "mainEntity": [
             {
               "@type": "SoftwareApplication",
-              "name": "Elite Gear Calculator",
-              "description": "Professional gear ratio analysis for competitive cycling",
-              "url": "https://veloforge.pro/calculator"
+              "name": "Bike Gear Calculator",
+              "description": "Calculate optimal gear ratios for any bike",
+              "url": "https://cranksmith.com/calculator"
             },
             {
               "@type": "SoftwareApplication",
-              "name": "Pro Bike Fit Studio",
-              "description": "Advanced biomechanical bike fitting for elite performance",
-              "url": "https://veloforge.pro/bike-fit"
+              "name": "Bike Fit Calculator",
+              "description": "Professional bike fitting based on body measurements",
+              "url": "https://cranksmith.com/bike-fit"
             }
           ],
-          "keywords": "elite cycling tools, pro bike calculator, competitive cycling, racing performance, aerodynamics analysis",
+          "keywords": "bike gear calculator, bike fit calculator, cycling tools, bicycle calculator, gear ratio calculator, bike fitting",
           "inLanguage": "en-US",
           "isAccessibleForFree": true,
-          "usageInfo": "Professional cycling tools for competitive athletes and teams",
-          "supportingData": "Elite performance calculations and professional racing data"
+          "usageInfo": "Free cycling tools for gear calculation and bike fitting",
+          "supportingData": "Professional bike fitting methods and gear ratio calculations"
         }}
       />
 
@@ -185,12 +185,12 @@ export default function Home() {
                 </div>
 
                 <h1 className="text-responsive-6xl font-black text-balance mb-6 text-neutral-900 dark:text-white leading-tight">
-                  <span className="text-gradient-racing">Elite</span> Cycling <br />
-                  <span className="text-gradient-carbon">Performance</span> Tools
+                  <span className="text-gradient-racing">Professional</span> Bike Gear <br />
+                  <span className="text-gradient-carbon">Calculator</span> & Tools
                 </h1>
 
                 <p className="text-responsive-xl text-neutral-600 dark:text-neutral-300 max-w-xl mb-10 text-balance leading-relaxed font-medium">
-                  Precision-engineered tools for competitive cyclists. Gain the edge with scientific accuracy, professional-grade calculations, and data-driven performance optimization.
+                  Calculate gear ratios, optimize bike fit, check compatibility, and perfect your setup with professional-grade tools trusted by cyclists worldwide.
                 </p>
 
                 {/* Hero Stats */}

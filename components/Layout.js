@@ -80,13 +80,13 @@ export default function Layout({ children }) {
                   href={link.href}
                   className={`relative px-5 py-3 text-sm font-semibold transition-all duration-300 rounded-xl ${
                     isActiveLink(link.href)
-                      ? 'text-white bg-gradient-racing shadow-lg'
+                      ? 'nav-active shadow-lg'
                       : 'text-neutral-700 dark:text-neutral-300 hover:text-racing-red hover:bg-neutral-100 dark:hover:bg-neutral-800'
                   }`}
                 >
                   <span className="relative flex items-center gap-2">
                     <span className="text-lg">{link.icon}</span>
-                    {link.label}
+                    <span className={isActiveLink(link.href) ? 'text-force-white font-bold' : ''}>{link.label}</span>
                   </span>
                 </Link>
               ))}
@@ -149,12 +149,12 @@ export default function Layout({ children }) {
                       onClick={closeMobileMenu}
                       className={`flex items-center gap-4 px-6 py-4 rounded-xl text-left transition-all duration-300 ${
                         isActiveLink(link.href)
-                          ? 'bg-gradient-racing text-white shadow-lg'
+                          ? 'nav-active shadow-lg'
                           : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-racing-red'
                       }`}
                     >
                       <span className="text-xl">{link.icon}</span>
-                      <span className="font-semibold text-lg">{link.label}</span>
+                      <span className={`font-semibold text-lg ${isActiveLink(link.href) ? 'text-force-white font-bold' : ''}`}>{link.label}</span>
                     </Link>
                   ))}
 

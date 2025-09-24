@@ -612,13 +612,40 @@
     color: white !important;
   }
 
-  /* --- Ensure All Text Has Good Contrast --- */
-  .card-racing *,
-  .card-carbon *,
-  .btn-racing *,
-  .btn-carbon * {
-    color: inherit;
-  }
+/* --- Ensure All Text Has Good Contrast --- */
+.card-racing *,
+.card-carbon *,
+.btn-racing *,
+.btn-carbon * {
+  color: inherit;
+}
+
+/* --- Fix Footer Duplication Issues --- */
+body {
+  overflow-x: hidden;
+}
+
+/* Ensure proper page height and no footer duplication */
+main {
+  min-height: calc(100vh - 80px); /* Account for header height */
+}
+
+footer {
+  margin-top: auto; /* Push footer to bottom */
+  position: relative;
+  z-index: 10;
+}
+
+/* Fix for bike-fit page specific issues */
+.bike-fit-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bike-fit-page main {
+  flex: 1;
+}
 
   .card-racing h1, .card-racing h2, .card-racing h3,
   .card-racing h4, .card-racing h5, .card-racing h6 {

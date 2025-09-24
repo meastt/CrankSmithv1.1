@@ -400,32 +400,41 @@ export default function BikeFit(): ReactElement {
       </Head>
 
       <Layout>
-        <div className="bg-[var(--bg-primary)]">
+        <div className="bg-[var(--bg-primary)] bike-fit-page">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-            <div className="container mx-auto px-4 py-16">
+          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-transparent"></div>
+            <div className="container mx-auto px-4 py-20 relative z-10">
               <div className="max-w-4xl mx-auto text-center">
-                <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                  Bike Fit Calculator
+                <div className="mb-6">
+                  <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-semibold border border-white/20">
+                    Professional Bike Fitting
+                  </span>
+                </div>
+                <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                  Bike Fit <span className="text-yellow-300">Calculator</span>
                 </h1>
-                <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-                  Calculate optimal saddle height, reach, and stack based on your body measurements. 
+                <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
+                  Calculate optimal saddle height, reach, and stack based on your body measurements.
                   Get professional bike fitting recommendations tailored to your riding style.
                 </p>
                 
                 {/* Quick stats */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                  <div className="bg-blue-500/30 rounded-lg p-4">
-                    <div className="text-2xl font-bold">4 Methods</div>
-                    <div className="text-blue-100">Saddle height calculations</div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                  <div className="bg-gradient-to-br from-blue-500/40 to-blue-600/60 backdrop-blur-sm rounded-xl p-6 border border-blue-400/30 shadow-lg">
+                    <div className="text-3xl font-black text-white mb-2">4</div>
+                    <div className="text-blue-100 font-semibold">Methods</div>
+                    <div className="text-blue-200 text-sm mt-1">Saddle height calculations</div>
                   </div>
-                  <div className="bg-blue-500/30 rounded-lg p-4">
-                    <div className="text-2xl font-bold">5 Styles</div>
-                    <div className="text-blue-100">Riding position options</div>
+                  <div className="bg-gradient-to-br from-green-500/40 to-green-600/60 backdrop-blur-sm rounded-xl p-6 border border-green-400/30 shadow-lg">
+                    <div className="text-3xl font-black text-white mb-2">5</div>
+                    <div className="text-green-100 font-semibold">Styles</div>
+                    <div className="text-green-200 text-sm mt-1">Riding position options</div>
                   </div>
-                  <div className="bg-blue-500/30 rounded-lg p-4">
-                    <div className="text-2xl font-bold">Instant</div>
-                    <div className="text-blue-100">Real-time calculations</div>
+                  <div className="bg-gradient-to-br from-purple-500/40 to-purple-600/60 backdrop-blur-sm rounded-xl p-6 border border-purple-400/30 shadow-lg">
+                    <div className="text-3xl font-black text-white mb-2">⚡</div>
+                    <div className="text-purple-100 font-semibold">Instant</div>
+                    <div className="text-purple-200 text-sm mt-1">Real-time calculations</div>
                   </div>
                 </div>
               </div>
@@ -435,7 +444,7 @@ export default function BikeFit(): ReactElement {
           <div className="container mx-auto px-4 py-8">
             <div className="max-w-6xl mx-auto">
               <ErrorBoundary context="bike-fit">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8" style={{minHeight: 'calc(100vh - 400px)'}}>
                   
                   {/* Input Panel */}
                   <div className="lg:col-span-1">
@@ -587,162 +596,207 @@ export default function BikeFit(): ReactElement {
                       <div className="space-y-6">
                         
                         {/* Saddle Height Results */}
-                        <div className="card">
-                          <h3 className="text-lg font-semibold mb-4 text-[var(--text-primary)] flex items-center gap-2">
-                            <span className="text-blue-500">📏</span>
-                            Saddle Height Recommendations
+                        <div className="card-racing border-l-4 border-l-blue-500">
+                          <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                            <span className="text-2xl">📏</span>
+                            <span>Saddle Height <span className="text-blue-600">Recommendations</span></span>
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
-                              <div className="text-sm text-[var(--text-secondary)] mb-1">LeMond Method (Recommended)</div>
-                              <div className="text-2xl font-bold text-[var(--text-primary)]">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30 rounded-xl p-6 border border-blue-200 dark:border-blue-700 shadow-sm">
+                              <div className="flex items-center justify-between mb-3">
+                                <div className="text-sm font-semibold text-blue-700 dark:text-blue-300">LeMond Method</div>
+                                <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded-full font-bold">RECOMMENDED</span>
+                              </div>
+                              <div className="text-3xl font-black text-blue-800 dark:text-blue-200 mb-2">
                                 {formatMeasurement(results.saddleHeight.lemond)}
                               </div>
-                              <div className="text-xs text-[var(--text-secondary)] mt-1">
-                                Most widely used formula
+                              <div className="text-xs text-blue-600 dark:text-blue-400">
+                                Most widely used formula worldwide
                               </div>
                             </div>
-                            <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
-                              <div className="text-sm text-[var(--text-secondary)] mb-1">Holmes Method</div>
-                              <div className="text-xl font-semibold text-[var(--text-primary)]">
+                            <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/30 rounded-xl p-6 border border-green-200 dark:border-green-700 shadow-sm">
+                              <div className="text-sm font-semibold text-green-700 dark:text-green-300 mb-1">Holmes Method</div>
+                              <div className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">
                                 {formatMeasurement(results.saddleHeight.holmes)}
                               </div>
-                              <div className="text-xs text-[var(--text-secondary)] mt-1">
-                                Alternative calculation
+                              <div className="text-xs text-green-600 dark:text-green-400">
+                                Alternative calculation method
                               </div>
                             </div>
                             {showAdvanced && (
                               <>
-                                <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
-                                  <div className="text-sm text-[var(--text-secondary)] mb-1">Hamley Method</div>
-                                  <div className="text-xl font-semibold text-[var(--text-primary)]">
+                                <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/30 rounded-xl p-6 border border-orange-200 dark:border-orange-700 shadow-sm">
+                                  <div className="text-sm font-semibold text-orange-700 dark:text-orange-300 mb-1">Hamley Method</div>
+                                  <div className="text-2xl font-bold text-orange-800 dark:text-orange-200 mb-2">
                                     {formatMeasurement(results.saddleHeight.hamley)}
                                   </div>
-                                  <div className="text-xs text-[var(--text-secondary)] mt-1">
-                                    109% of inseam
+                                  <div className="text-xs text-orange-600 dark:text-orange-400">
+                                    109% of inseam measurement
                                   </div>
                                 </div>
-                                <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
-                                  <div className="text-sm text-[var(--text-secondary)] mb-1">Competitive Method</div>
-                                  <div className="text-xl font-semibold text-[var(--text-primary)]">
+                                <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/30 rounded-xl p-6 border border-purple-200 dark:border-purple-700 shadow-sm">
+                                  <div className="text-sm font-semibold text-purple-700 dark:text-purple-300 mb-1">Competitive Method</div>
+                                  <div className="text-2xl font-bold text-purple-800 dark:text-purple-200 mb-2">
                                     {formatMeasurement(results.saddleHeight.competitive)}
                                   </div>
-                                  <div className="text-xs text-[var(--text-secondary)] mt-1">
-                                    For racing positions
+                                  <div className="text-xs text-purple-600 dark:text-purple-400">
+                                    Optimized for racing positions
                                   </div>
                                 </div>
                               </>
                             )}
                           </div>
-                          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                            <p className="text-sm text-blue-700 dark:text-blue-300">
-                              💡 <strong>Tip:</strong> Start with the LeMond method and adjust ±5-10mm based on comfort and pedaling efficiency.
-                            </p>
+                          <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-xl border border-blue-200 dark:border-blue-700">
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl">💡</span>
+                              <div>
+                                <div className="font-semibold text-blue-800 dark:text-blue-200 mb-1">Pro Tip</div>
+                                <p className="text-sm text-blue-700 dark:text-blue-300">
+                                  Start with the LeMond method and adjust ±5-10mm based on comfort and pedaling efficiency. Test over multiple rides for optimal results.
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
                         {/* Reach and Stack Results */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="card">
-                            <h3 className="text-lg font-semibold mb-4 text-[var(--text-primary)] flex items-center gap-2">
-                              <span className="text-green-500">↔️</span>
-                              Reach
+                          <div className="card-racing border-l-4 border-l-green-500">
+                            <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                              <span className="text-2xl">↔️</span>
+                              <span>Reach <span className="text-green-600">Calculation</span></span>
                             </h3>
-                            <div className="text-center">
-                              <div className="text-3xl font-bold text-[var(--text-primary)] mb-2">
+                            <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-700">
+                              <div className="text-4xl font-black text-green-700 dark:text-green-300 mb-3">
                                 {formatMeasurement(results.reach)}
                               </div>
-                              <div className="text-sm text-[var(--text-secondary)]">
+                              <div className="text-sm font-medium text-green-600 dark:text-green-400">
                                 Horizontal distance from saddle to handlebars
                               </div>
                             </div>
-                            <div className="mt-4 space-y-2 text-sm">
-                              <div className="flex justify-between">
-                                <span>Riding Style:</span>
-                                <span className="capitalize font-medium">{measurements.ridingStyle}</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span>Flexibility:</span>
-                                <span className="capitalize font-medium">{measurements.flexibility}</span>
+                            <div className="mt-6 p-4 bg-green-50/50 dark:bg-green-900/10 rounded-lg border border-green-200/50 dark:border-green-700/30">
+                              <div className="space-y-3 text-sm">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-green-700 dark:text-green-300 font-medium">Riding Style:</span>
+                                  <span className="capitalize font-bold text-green-800 dark:text-green-200 bg-green-100 dark:bg-green-800/50 px-2 py-1 rounded">{measurements.ridingStyle}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-green-700 dark:text-green-300 font-medium">Flexibility:</span>
+                                  <span className="capitalize font-bold text-green-800 dark:text-green-200 bg-green-100 dark:bg-green-800/50 px-2 py-1 rounded">{measurements.flexibility}</span>
+                                </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className="card">
-                            <h3 className="text-lg font-semibold mb-4 text-[var(--text-primary)] flex items-center gap-2">
-                              <span className="text-purple-500">↕️</span>
-                              Stack
+                          <div className="card-racing border-l-4 border-l-purple-500">
+                            <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                              <span className="text-2xl">↕️</span>
+                              <span>Stack <span className="text-purple-600">Calculation</span></span>
                             </h3>
-                            <div className="text-center">
-                              <div className="text-3xl font-bold text-[var(--text-primary)] mb-2">
+                            <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-xl border border-purple-200 dark:border-purple-700">
+                              <div className="text-4xl font-black text-purple-700 dark:text-purple-300 mb-3">
                                 {formatMeasurement(results.stack)}
                               </div>
-                              <div className="text-sm text-[var(--text-secondary)]">
+                              <div className="text-sm font-medium text-purple-600 dark:text-purple-400">
                                 Vertical distance from bottom bracket to handlebars
                               </div>
                             </div>
-                            <div className="mt-4 space-y-2 text-sm">
-                              <div className="flex justify-between">
-                                <span>Experience:</span>
-                                <span className="capitalize font-medium">{measurements.experience}</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span>Style Factor:</span>
-                                <span className="capitalize font-medium">{measurements.ridingStyle}</span>
+                            <div className="mt-6 p-4 bg-purple-50/50 dark:bg-purple-900/10 rounded-lg border border-purple-200/50 dark:border-purple-700/30">
+                              <div className="space-y-3 text-sm">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-purple-700 dark:text-purple-300 font-medium">Experience:</span>
+                                  <span className="capitalize font-bold text-purple-800 dark:text-purple-200 bg-purple-100 dark:bg-purple-800/50 px-2 py-1 rounded">{measurements.experience}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-purple-700 dark:text-purple-300 font-medium">Style Factor:</span>
+                                  <span className="capitalize font-bold text-purple-800 dark:text-purple-200 bg-purple-100 dark:bg-purple-800/50 px-2 py-1 rounded">{measurements.ridingStyle}</span>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
 
                         {/* Additional Recommendations */}
-                        <div className="card">
-                          <h3 className="text-lg font-semibold mb-4 text-[var(--text-primary)] flex items-center gap-2">
-                            <span className="text-orange-500">🎯</span>
-                            Additional Recommendations
+                        <div className="card-racing border-l-4 border-l-orange-500">
+                          <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                            <span className="text-2xl">🎯</span>
+                            <span>Additional <span className="text-orange-600">Recommendations</span></span>
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="text-center p-4 bg-[var(--bg-secondary)] rounded-lg">
-                              <div className="text-sm text-[var(--text-secondary)] mb-1">Handlebar Drop (Comfort)</div>
-                              <div className="text-lg font-semibold text-[var(--text-primary)]">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="text-center p-6 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-700">
+                              <div className="text-sm font-semibold text-orange-700 dark:text-orange-300 mb-2">Handlebar Drop</div>
+                              <div className="text-sm text-orange-600 dark:text-orange-400 mb-1">Comfort Position</div>
+                              <div className="text-2xl font-black text-orange-800 dark:text-orange-200">
                                 {formatMeasurement(results.handlebarDrop.comfort)}
                               </div>
                             </div>
-                            <div className="text-center p-4 bg-[var(--bg-secondary)] rounded-lg">
-                              <div className="text-sm text-[var(--text-secondary)] mb-1">Handlebar Drop (Sport)</div>
-                              <div className="text-lg font-semibold text-[var(--text-primary)]">
+                            <div className="text-center p-6 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl border border-yellow-200 dark:border-yellow-700">
+                              <div className="text-sm font-semibold text-yellow-700 dark:text-yellow-300 mb-2">Handlebar Drop</div>
+                              <div className="text-sm text-yellow-600 dark:text-yellow-400 mb-1">Sport Position</div>
+                              <div className="text-2xl font-black text-yellow-800 dark:text-yellow-200">
                                 {formatMeasurement(results.handlebarDrop.sport)}
                               </div>
                             </div>
-                            <div className="text-center p-4 bg-[var(--bg-secondary)] rounded-lg">
-                              <div className="text-sm text-[var(--text-secondary)] mb-1">Handlebar Drop (Aggressive)</div>
-                              <div className="text-lg font-semibold text-[var(--text-primary)]">
+                            <div className="text-center p-6 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border border-red-200 dark:border-red-700">
+                              <div className="text-sm font-semibold text-red-700 dark:text-red-300 mb-2">Handlebar Drop</div>
+                              <div className="text-sm text-red-600 dark:text-red-400 mb-1">Aggressive Position</div>
+                              <div className="text-2xl font-black text-red-800 dark:text-red-200">
                                 {formatMeasurement(results.handlebarDrop.aggressive)}
                               </div>
                             </div>
                           </div>
                           
-                          <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                            <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Important Notes:</h4>
-                            <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
-                              <li>• These are starting point recommendations - fine-tuning is essential</li>
-                              <li>• Consider professional bike fitting for optimal results</li>
-                              <li>• Make small adjustments (2-3mm) and test over multiple rides</li>
-                              <li>• Account for saddle tilt, cleat position, and handlebar width</li>
-                            </ul>
+                          <div className="mt-8 p-6 bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 rounded-xl border border-yellow-200 dark:border-yellow-700">
+                            <div className="flex items-start gap-4">
+                              <span className="text-3xl">⚠️</span>
+                              <div className="flex-1">
+                                <h4 className="font-bold text-yellow-800 dark:text-yellow-200 mb-3 text-lg">Important Professional Notes:</h4>
+                                <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-2">
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">•</span>
+                                    <span>These are <strong>starting point recommendations</strong> - fine-tuning is essential</span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">•</span>
+                                    <span>Consider <strong>professional bike fitting</strong> for optimal results</span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">•</span>
+                                    <span>Make <strong>small adjustments (2-3mm)</strong> and test over multiple rides</span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <span className="text-yellow-600 dark:text-yellow-400 mt-0.5">•</span>
+                                    <span>Account for <strong>saddle tilt, cleat position, and handlebar width</strong></span>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
                       </div>
                     ) : (
-                      <div className="card">
-                        <div className="text-center py-16">
-                          <div className="text-6xl mb-4">🚴‍♂️</div>
-                          <h3 className="text-xl font-semibold mb-2 text-[var(--text-primary)]">
-                            Enter Your Measurements
+                      <div className="card-racing border-l-4 border-l-indigo-500">
+                        <div className="text-center py-20">
+                          <div className="mb-8">
+                            <div className="text-8xl mb-4 animate-pulse">🚴‍♂️</div>
+                            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                              <span className="text-4xl">📏</span>
+                            </div>
+                          </div>
+                          <h3 className="text-2xl font-bold mb-4 text-[var(--text-primary)]">
+                            Ready to Calculate Your <span className="text-indigo-600">Perfect Fit</span>?
                           </h3>
-                          <p className="text-[var(--text-secondary)] max-w-md mx-auto">
-                            Fill in your body measurements on the left to get personalized bike fit recommendations.
+                          <p className="text-lg text-[var(--text-secondary)] max-w-lg mx-auto leading-relaxed">
+                            Fill in your body measurements on the left to get personalized bike fit recommendations tailored to your riding style and experience level.
                           </p>
+                          <div className="mt-8 flex justify-center">
+                            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-6 py-3 rounded-full border border-indigo-200 dark:border-indigo-700">
+                              <span className="text-indigo-700 dark:text-indigo-300 font-medium">
+                                💡 Start by entering your inseam measurement
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     )}

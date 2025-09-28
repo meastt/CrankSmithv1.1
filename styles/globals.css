@@ -37,6 +37,14 @@
     --racing-green: 34 197 94;   /* #22C55E - Racing Green */
     --warning-yellow: 234 179 8; /* #EAB308 - Caution Yellow */
 
+    /* --- Brand Color Aliases for Tailwind Compatibility --- */
+    --brand-red: var(--racing-red);
+    --brand-orange: var(--racing-orange);
+    --brand-blue: var(--steel-blue);
+    --brand-green: var(--racing-green);
+    --brand-yellow: var(--warning-yellow);
+    --brand-purple: 139 92 246;  /* #8B5CF6 - Purple accent */
+
     /* --- Elite Performance Colors --- */
     --primary-racing: var(--racing-red);
     --secondary-carbon: var(--carbon-black);
@@ -240,6 +248,7 @@
     border: 1px solid rgb(var(--border-primary));
     box-shadow: var(--shadow-md);
     position: relative;
+    color: rgb(var(--text-primary));
   }
 
   .card-carbon::after {
@@ -337,7 +346,7 @@
   button.cta-button-white-text:hover,
   button.cta-button-white-text:focus,
   button.cta-button-white-text:active {
-    color: white !important;
+    color: white;
   }
 
   /* --- Professional Input Field --- */
@@ -603,13 +612,13 @@
 
   /* --- Improved Navigation States --- */
   .nav-active {
-    background: var(--gradient-racing) !important;
-    color: white !important;
+    background: var(--gradient-racing);
+    color: white;
     box-shadow: 0 4px 12px rgb(220 38 38 / 0.3);
   }
 
   .nav-active span {
-    color: white !important;
+    color: white;
   }
 
 /* --- Ensure All Text Has Good Contrast --- */
@@ -618,6 +627,46 @@
 .btn-racing *,
 .btn-carbon * {
   color: inherit;
+}
+
+/* Ensure all text in cards uses proper contrast */
+.card-racing,
+.card-carbon {
+  color: rgb(var(--text-primary));
+}
+
+.card-racing p,
+.card-racing span,
+.card-racing div,
+.card-carbon p,
+.card-carbon span,
+.card-carbon div {
+  color: rgb(var(--text-primary));
+}
+
+/* Force proper contrast for card text - fallback for theme issues */
+.card-racing h1, .card-racing h2, .card-racing h3,
+.card-racing h4, .card-racing h5, .card-racing h6,
+.card-racing p, .card-racing span, .card-racing div {
+  color: rgb(var(--text-primary));
+}
+
+.dark .card-racing h1, .dark .card-racing h2, .dark .card-racing h3,
+.dark .card-racing h4, .dark .card-racing h5, .dark .card-racing h6,
+.dark .card-racing p, .dark .card-racing span, .dark .card-racing div {
+  color: rgb(var(--text-primary));
+}
+
+.card-carbon h1, .card-carbon h2, .card-carbon h3,
+.card-carbon h4, .card-carbon h5, .card-carbon h6,
+.card-carbon p, .card-carbon span, .card-carbon div {
+  color: rgb(var(--text-primary));
+}
+
+.dark .card-carbon h1, .dark .card-carbon h2, .dark .card-carbon h3,
+.dark .card-carbon h4, .dark .card-carbon h5, .dark .card-carbon h6,
+.dark .card-carbon p, .dark .card-carbon span, .dark .card-carbon div {
+  color: rgb(var(--text-primary));
 }
 
 /* --- Fix Footer Duplication Issues --- */
@@ -647,29 +696,20 @@ footer {
   flex: 1;
 }
 
-  .card-racing h1, .card-racing h2, .card-racing h3,
-  .card-racing h4, .card-racing h5, .card-racing h6 {
-    color: rgb(var(--text-primary)) !important;
-  }
-
-  .card-carbon h1, .card-carbon h2, .card-carbon h3,
-  .card-carbon h4, .card-carbon h5, .card-carbon h6 {
-    color: rgb(var(--white)) !important;
-  }
 
   /* --- Force High Contrast Utility --- */
   .text-force-white {
-    color: white !important;
+    color: white;
     text-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
   }
 
   .text-force-black {
-    color: black !important;
+    color: black;
     text-shadow: 0 1px 2px rgb(255 255 255 / 0.2);
   }
 
   .bg-force-dark {
-    background: rgb(var(--neutral-900)) !important;
+    background: rgb(var(--neutral-900));
   }
   
   /* --- Professional Backdrop Filters --- */
@@ -800,7 +840,7 @@ label.form-label {
 
 /* Override overflow for cards with dropdowns */
 .card.dropdown-container {
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .card:hover {
@@ -811,23 +851,23 @@ label.form-label {
 
 /* Disable hover transform for cards with dropdowns to prevent stacking context issues */
 .card.dropdown-container:hover {
-  transform: none !important;
+  transform: none;
 }
 
 /* Override for cards containing dropdowns - allows dropdown content to be visible outside card */
 .card.dropdown-container {
-  overflow: visible !important;
+  overflow: visible;
 }
 
 /* Ensure searchable dropdowns appear above all other content */
 .searchable-dropdown {
-  z-index: 999999 !important;
+  z-index: 999999;
   position: relative;
 }
 
 /* Ensure dropdown content appears above everything */
 .searchable-dropdown .absolute {
-  z-index: 999999 !important;
+  z-index: 999999;
 }
 
 /* Button Enhancements */
@@ -856,23 +896,23 @@ span, div, p {
 
 /* Ensure proper text hierarchy */
 h1, h2, h3, h4, h5, h6 {
-  color: rgb(var(--text-primary)) !important;
+  color: rgb(var(--text-primary));
 }
 
 /* Placeholder text for all inputs */
 input::placeholder, textarea::placeholder {
-  color: rgb(var(--text-placeholder)) !important;
+  color: rgb(var(--text-placeholder));
   opacity: 1;
 }
 
 /* Dropdown option items */
 .cursor-pointer.selected {
-  background: rgb(var(--brand-blue)) !important;
-  color: white !important;
+  background: rgb(var(--brand-blue));
+  color: white;
 }
 
 .cursor-pointer:hover {
-  background: rgb(var(--bg-secondary)) !important;
+  background: rgb(var(--bg-secondary));
 }
 
 /* --- Custom Scrollbar --- */

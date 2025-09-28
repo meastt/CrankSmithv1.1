@@ -17,6 +17,11 @@ module.exports = {
           green: 'rgb(var(--brand-green) / <alpha-value>)',
           red: 'rgb(var(--brand-red) / <alpha-value>)',
         },
+        'carbon-black': 'rgb(var(--carbon-black) / <alpha-value>)',
+        'racing-red': 'rgb(var(--racing-red) / <alpha-value>)',
+        'steel-blue': 'rgb(var(--steel-blue) / <alpha-value>)',
+        'racing-green': 'rgb(var(--racing-green) / <alpha-value>)',
+        'warning-yellow': 'rgb(var(--warning-yellow) / <alpha-value>)',
         neutral: {
           50: 'rgb(var(--neutral-50) / <alpha-value>)',
           100: 'rgb(var(--neutral-100) / <alpha-value>)',

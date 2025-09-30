@@ -685,16 +685,7 @@ footer {
   z-index: 10;
 }
 
-/* Fix for bike-fit page specific issues */
-.bike-fit-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.bike-fit-page main {
-  flex: 1;
-}
+/* Fix for bike-fit page specific issues - removed as not needed */
 
 
   /* --- Force High Contrast Utility --- */

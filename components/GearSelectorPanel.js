@@ -69,25 +69,25 @@ const GearSelectorPanel = React.memo(({
   // Early return if bikeType is not set - prevents empty options rendering
   if (!bikeType || bikeType === '') {
     return (
-      <div className="card group dropdown-container">
+      <div className="card-racing group dropdown-container">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-steel-blue/10 flex items-center justify-center text-steel-blue text-xl">
               {Icon}
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-[var(--text-primary)]">{title}</h3>
-              <p className="text-sm text-[var(--text-secondary)]">{subtitle}</p>
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">{title}</h3>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">{subtitle}</p>
             </div>
           </div>
           {badge && (
-            <div className={`px-3 py-1 rounded-full text-xs font-medium ${badgeColor || 'badge'}`}>
+            <div className={`px-3 py-1 rounded-full text-xs font-bold text-white ${badgeColor || 'bg-steel-blue'}`}>
               {badge}
             </div>
           )}
         </div>
-        <div className="text-center py-8">
-          <div className="text-[var(--text-secondary)] text-sm">
+        <div className="text-center py-12">
+          <div className="text-neutral-600 dark:text-neutral-400 text-lg font-medium">
             Please select a bike type to view components
           </div>
         </div>
@@ -123,10 +123,10 @@ const GearSelectorPanel = React.memo(({
   // Show loading state if components are still loading
   if (loading) {
     return (
-      <div className="card group dropdown-container">
-        <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: 'var(--accent-blue)' }}></div>
-          <span className="ml-3" style={{ color: 'var(--text-secondary)' }}>Loading components...</span>
+      <div className="card-racing group dropdown-container">
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-steel-blue"></div>
+          <span className="ml-3 text-neutral-600 dark:text-neutral-400 font-medium">Loading components...</span>
         </div>
       </div>
     );
@@ -135,50 +135,56 @@ const GearSelectorPanel = React.memo(({
   // Show error state if there was an error loading components
   if (error) {
     return (
-      <div className="card group dropdown-container">
-        <div className="flex items-center justify-center py-8">
-          <span className="text-red-500">Error loading components: {error}</span>
+      <div className="card-racing group dropdown-container">
+        <div className="flex items-center justify-center py-12">
+          <span className="text-racing-red font-medium">Error loading components: {error}</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="card group dropdown-container">
+    <div className="card-racing group dropdown-container relative overflow-hidden">
+      {/* Racing circuit background */}
+      <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+        <svg className="w-full h-full" viewBox="0 0 300 300" fill="none">
+          <circle cx="150" cy="150" r="120" stroke="currentColor" strokeWidth="1" className="text-racing-red" />
+          <circle cx="150" cy="150" r="90" stroke="currentColor" strokeWidth="1" className="text-racing-red" />
+          <circle cx="150" cy="150" r="60" stroke="currentColor" strokeWidth="1" className="text-racing-red" />
+        </svg>
+      </div>
+
       {/* Card Header */}
-      <div className="flex items-start justify-between mb-6">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" 
-               style={{ 
-                 background: 'var(--surface-elevated)', 
-                 color: 'var(--accent-blue)' 
-               }}>
+      <div className="relative z-10 flex items-start justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-steel-blue/20 to-steel-blue/10 flex items-center justify-center text-steel-blue text-2xl group-hover:scale-110 transition-transform duration-300">
             {Icon}
           </div>
           <div>
-            <h3 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="text-2xl font-bold text-neutral-900 dark:text-white group-hover:text-racing-red transition-colors">
               {title}
             </h3>
-            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+            <p className="text-neutral-600 dark:text-neutral-400 font-medium">
               {subtitle}
             </p>
           </div>
         </div>
-        <span className="px-3 py-1 rounded-lg text-xs font-semibold text-white"
-              style={{ background: badgeColor }}>
+        <span className={`px-4 py-2 rounded-full text-sm font-bold text-white shadow-lg ${badgeColor || 'bg-steel-blue'}`}>
           {badge}
         </span>
       </div>
 
       {/* Form Fields */}
-      <div className="space-y-5">
+      <div className="relative z-10 space-y-8">
         {/* Wheel Size Selection */}
-        <div>
-          <label className="form-label">Wheel Size</label>
+        <div className="group/field">
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+            Wheel Size
+          </label>
           <select
             value={setup.wheel}
             onChange={(e) => handleWheelChange(e.target.value)}
-            className="input-field"
+            className="input-field group-hover/field:border-racing-red/50 transition-colors"
           >
             <option value="">Select wheel size</option>
             {config.wheelSizes.map((size) => (
@@ -190,12 +196,14 @@ const GearSelectorPanel = React.memo(({
         </div>
 
         {/* Tire Width */}
-        <div>
-          <label className="form-label">Tire Width</label>
+        <div className="group/field">
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+            Tire Width
+          </label>
           <select
             value={setup.tire}
             onChange={(e) => handleTireChange(e.target.value)}
-            className="input-field"
+            className="input-field group-hover/field:border-racing-red/50 transition-colors"
           >
             <option value="">Select tire width</option>
             {config.tireWidths.map((width) => (
@@ -207,27 +215,38 @@ const GearSelectorPanel = React.memo(({
         </div>
 
         {/* Crankset with Visual Icons */}
-        <div>
-          <label className="form-label">Crankset</label>
-          <SearchableDropdown
-            options={cranksetOptions}
-            value={setup.crankset?.id || ''}
-            onChange={handleCranksetChange}
-            placeholder="Search cranksets..."
-          />
+        <div className="group/field">
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+            Crankset
+          </label>
+          <div className="relative">
+            <SearchableDropdown
+              options={cranksetOptions}
+              value={setup.crankset?.id || ''}
+              onChange={handleCranksetChange}
+              placeholder="Search cranksets..."
+            />
+          </div>
         </div>
 
         {/* Cassette with Visual Icons */}
-        <div>
-          <label className="form-label">Cassette</label>
-          <SearchableDropdown
-            options={cassetteOptions}
-            value={setup.cassette?.id || ''}
-            onChange={handleCassetteChange}
-            placeholder="Search cassettes..."
-          />
+        <div className="group/field">
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+            Cassette
+          </label>
+          <div className="relative">
+            <SearchableDropdown
+              options={cassetteOptions}
+              value={setup.cassette?.id || ''}
+              onChange={handleCassetteChange}
+              placeholder="Search cassettes..."
+            />
+          </div>
         </div>
       </div>
+
+      {/* Hover effect overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-racing-red/0 via-racing-red/0 to-racing-red/0 group-hover:from-racing-red/5 group-hover:via-racing-red/10 group-hover:to-racing-red/5 transition-all duration-500 rounded-xl" />
     </div>
   );
 });

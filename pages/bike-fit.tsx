@@ -1,7 +1,6 @@
 // pages/bike-fit.tsx - Comprehensive bike fit calculator with TypeScript
 import React, { useState, useEffect, ReactElement } from 'react';
 import Head from 'next/head';
-import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { toast } from '../components/Toast';
 import { 
@@ -399,70 +398,69 @@ export default function BikeFit(): ReactElement {
         <link rel="canonical" href="https://cranksmith.com/bike-fit" />
       </Head>
 
-      <Layout>
-        <div className="bg-[var(--bg-primary)] bike-fit-page">
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 dark:from-carbon-black dark:via-neutral-900 dark:to-neutral-800">
           {/* Header */}
-          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-transparent"></div>
-            <div className="container mx-auto px-4 py-20 relative z-10">
+          <div className="bg-gradient-to-br from-racing-red via-racing-orange to-steel-blue text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-racing-red/20 to-transparent"></div>
+            <div className="container-responsive py-20 lg:py-32 relative z-10">
               <div className="max-w-4xl mx-auto text-center">
                 <div className="mb-6">
-                  <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-semibold border border-white/20">
+                  <span className="badge-racing-accent text-sm font-bold px-4 py-2 uppercase tracking-wider">
                     Professional Bike Fitting
                   </span>
                 </div>
-                <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-                  Bike Fit <span className="text-yellow-300">Calculator</span>
+                <h1 className="text-responsive-6xl font-black mb-6 leading-tight">
+                  Bike Fit <span className="text-gradient-racing">Calculator</span>
                 </h1>
-                <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
+                <p className="text-responsive-xl text-white/90 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
                   Calculate optimal saddle height, reach, and stack based on your body measurements.
                   Get professional bike fitting recommendations tailored to your riding style.
                 </p>
                 
                 {/* Quick stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                  <div className="bg-gradient-to-br from-blue-500/40 to-blue-600/60 backdrop-blur-sm rounded-xl p-6 border border-blue-400/30 shadow-lg">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg">
                     <div className="text-3xl font-black text-white mb-2">4</div>
-                    <div className="text-blue-100 font-semibold">Methods</div>
-                    <div className="text-blue-200 text-sm mt-1">Saddle height calculations</div>
+                    <div className="text-white/90 font-semibold">Methods</div>
+                    <div className="text-white/70 text-sm mt-1">Saddle height calculations</div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-500/40 to-green-600/60 backdrop-blur-sm rounded-xl p-6 border border-green-400/30 shadow-lg">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg">
                     <div className="text-3xl font-black text-white mb-2">5</div>
-                    <div className="text-green-100 font-semibold">Styles</div>
-                    <div className="text-green-200 text-sm mt-1">Riding position options</div>
+                    <div className="text-white/90 font-semibold">Styles</div>
+                    <div className="text-white/70 text-sm mt-1">Riding position options</div>
                   </div>
-                  <div className="bg-gradient-to-br from-purple-500/40 to-purple-600/60 backdrop-blur-sm rounded-xl p-6 border border-purple-400/30 shadow-lg">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 shadow-lg">
                     <div className="text-3xl font-black text-white mb-2">⚡</div>
-                    <div className="text-purple-100 font-semibold">Instant</div>
-                    <div className="text-purple-200 text-sm mt-1">Real-time calculations</div>
+                    <div className="text-white/90 font-semibold">Instant</div>
+                    <div className="text-white/70 text-sm mt-1">Real-time calculations</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="container mx-auto px-4 py-8">
+          <div className="container-responsive py-8">
             <div className="max-w-6xl mx-auto">
               <ErrorBoundary context="bike-fit">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8" style={{minHeight: 'calc(100vh - 400px)'}}>
                   
                   {/* Input Panel */}
                   <div className="lg:col-span-1">
-                    <div className="card sticky top-4">
+                    <div className="card-racing sticky top-4">
                       <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-xl font-semibold text-[var(--text-primary)]">
+                        <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
                           Body Measurements
                         </h2>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleMeasurementChange('units', measurements.units === 'metric' ? 'imperial' : 'metric')}
-                            className="px-3 py-1 text-sm rounded-md border border-[var(--border-primary)] hover:bg-[var(--bg-secondary)] transition-colors"
+                            className="px-3 py-1 text-sm rounded-md border border-neutral-300 dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
                           >
                             {measurements.units === 'metric' ? 'cm' : 'in'}
                           </button>
                           <button
                             onClick={resetCalculator}
-                            className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                            className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
                           >
                             Reset
                           </button>
@@ -472,7 +470,7 @@ export default function BikeFit(): ReactElement {
                       <div className="space-y-6">
                         {/* Basic Measurements */}
                         <div>
-                          <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
+                          <label className="block text-sm font-medium mb-2 text-neutral-900 dark:text-white">
                             Inseam Length ({getUnitLabel()})
                           </label>
                           <input
@@ -486,13 +484,13 @@ export default function BikeFit(): ReactElement {
                             min={measurements.units === 'metric' ? "25" : "9.8"}
                             max={measurements.units === 'metric' ? "120" : "47.2"}
                           />
-                          <p className="text-xs text-[var(--text-secondary)] mt-1">
+                          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                             Measure from floor to crotch while barefoot
                           </p>
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
+                          <label className="block text-sm font-medium mb-2 text-neutral-900 dark:text-white">
                             Torso Length ({getUnitLabel()})
                           </label>
                           <input
@@ -506,13 +504,13 @@ export default function BikeFit(): ReactElement {
                             min={measurements.units === 'metric' ? "20" : "7.9"}
                             max={measurements.units === 'metric' ? "85" : "33.5"}
                           />
-                          <p className="text-xs text-[var(--text-secondary)] mt-1">
+                          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                             From shoulder to hip bone
                           </p>
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
+                          <label className="block text-sm font-medium mb-2 text-neutral-900 dark:text-white">
                             Arm Length ({getUnitLabel()})
                           </label>
                           <input
@@ -526,14 +524,14 @@ export default function BikeFit(): ReactElement {
                             min={measurements.units === 'metric' ? "20" : "7.9"}
                             max={measurements.units === 'metric' ? "95" : "37.4"}
                           />
-                          <p className="text-xs text-[var(--text-secondary)] mt-1">
+                          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                             From shoulder to fingertip
                           </p>
                         </div>
 
                         {/* Riding Characteristics */}
                         <div>
-                          <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
+                          <label className="block text-sm font-medium mb-2 text-neutral-900 dark:text-white">
                             Flexibility Level
                           </label>
                           <select
@@ -548,7 +546,7 @@ export default function BikeFit(): ReactElement {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
+                          <label className="block text-sm font-medium mb-2 text-neutral-900 dark:text-white">
                             Riding Style
                           </label>
                           <select
@@ -565,7 +563,7 @@ export default function BikeFit(): ReactElement {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
+                          <label className="block text-sm font-medium mb-2 text-neutral-900 dark:text-white">
                             Experience Level
                           </label>
                           <select
@@ -596,10 +594,10 @@ export default function BikeFit(): ReactElement {
                       <div className="space-y-6">
                         
                         {/* Saddle Height Results */}
-                        <div className="card-racing border-l-4 border-l-blue-500">
-                          <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                        <div className="card-racing border-l-4 border-l-racing-red">
+                          <h3 className="text-xl font-bold mb-6 text-neutral-900 dark:text-white flex items-center gap-3">
                             <span className="text-2xl">📏</span>
-                            <span>Saddle Height <span className="text-blue-600">Recommendations</span></span>
+                            <span>Saddle Height <span className="text-racing-red">Recommendations</span></span>
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30 rounded-xl p-6 border border-blue-200 dark:border-blue-700 shadow-sm">
@@ -661,10 +659,10 @@ export default function BikeFit(): ReactElement {
 
                         {/* Reach and Stack Results */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="card-racing border-l-4 border-l-green-500">
-                            <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                          <div className="card-racing border-l-4 border-l-steel-blue">
+                            <h3 className="text-xl font-bold mb-6 text-neutral-900 dark:text-white flex items-center gap-3">
                               <span className="text-2xl">↔️</span>
-                              <span>Reach <span className="text-green-600">Calculation</span></span>
+                              <span>Reach <span className="text-steel-blue">Calculation</span></span>
                             </h3>
                             <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-700">
                               <div className="text-4xl font-black text-green-700 dark:text-green-300 mb-3">
@@ -688,10 +686,10 @@ export default function BikeFit(): ReactElement {
                             </div>
                           </div>
 
-                          <div className="card-racing border-l-4 border-l-purple-500">
-                            <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                          <div className="card-racing border-l-4 border-l-racing-orange">
+                            <h3 className="text-xl font-bold mb-6 text-neutral-900 dark:text-white flex items-center gap-3">
                               <span className="text-2xl">↕️</span>
-                              <span>Stack <span className="text-purple-600">Calculation</span></span>
+                              <span>Stack <span className="text-racing-orange">Calculation</span></span>
                             </h3>
                             <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-xl border border-purple-200 dark:border-purple-700">
                               <div className="text-4xl font-black text-purple-700 dark:text-purple-300 mb-3">
@@ -717,10 +715,10 @@ export default function BikeFit(): ReactElement {
                         </div>
 
                         {/* Additional Recommendations */}
-                        <div className="card-racing border-l-4 border-l-orange-500">
-                          <h3 className="text-xl font-bold mb-6 text-[var(--text-primary)] flex items-center gap-3">
+                        <div className="card-racing border-l-4 border-l-warning-yellow">
+                          <h3 className="text-xl font-bold mb-6 text-neutral-900 dark:text-white flex items-center gap-3">
                             <span className="text-2xl">🎯</span>
-                            <span>Additional <span className="text-orange-600">Recommendations</span></span>
+                            <span>Additional <span className="text-warning-yellow">Recommendations</span></span>
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="text-center p-6 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-700">
@@ -776,23 +774,23 @@ export default function BikeFit(): ReactElement {
 
                       </div>
                     ) : (
-                      <div className="card-racing border-l-4 border-l-indigo-500">
+                      <div className="card-racing border-l-4 border-l-steel-blue">
                         <div className="text-center py-20">
                           <div className="mb-8">
                             <div className="text-8xl mb-4 animate-pulse">🚴‍♂️</div>
-                            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                            <div className="w-24 h-24 mx-auto bg-gradient-racing rounded-full flex items-center justify-center mb-4 shadow-lg">
                               <span className="text-4xl">📏</span>
                             </div>
                           </div>
-                          <h3 className="text-2xl font-bold mb-4 text-[var(--text-primary)]">
-                            Ready to Calculate Your <span className="text-indigo-600">Perfect Fit</span>?
+                          <h3 className="text-2xl font-bold mb-4 text-neutral-900 dark:text-white">
+                            Ready to Calculate Your <span className="text-racing-red">Perfect Fit</span>?
                           </h3>
-                          <p className="text-lg text-[var(--text-secondary)] max-w-lg mx-auto leading-relaxed">
+                          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-lg mx-auto leading-relaxed">
                             Fill in your body measurements on the left to get personalized bike fit recommendations tailored to your riding style and experience level.
                           </p>
                           <div className="mt-8 flex justify-center">
-                            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-6 py-3 rounded-full border border-indigo-200 dark:border-indigo-700">
-                              <span className="text-indigo-700 dark:text-indigo-300 font-medium">
+                            <div className="bg-gradient-to-r from-racing-red/10 to-racing-orange/10 dark:from-racing-red/20 dark:to-racing-orange/20 px-6 py-3 rounded-full border border-racing-red/20 dark:border-racing-red/30">
+                              <span className="text-racing-red dark:text-racing-red font-medium">
                                 💡 Start by entering your inseam measurement
                               </span>
                             </div>
@@ -806,7 +804,6 @@ export default function BikeFit(): ReactElement {
             </div>
           </div>
         </div>
-      </Layout>
     </>
   );
 }

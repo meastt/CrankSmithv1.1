@@ -4,8 +4,8 @@
 
 /*
 ==========================================================================
-  VELOFORGE PRO - PROFESSIONAL CYCLING PLATFORM
-  Elite performance tools for serious cyclists
+  CRANKSMITH - BIKE GEAR CALCULATOR
+  Simple, accurate cycling tools for everyone
 ==========================================================================
 */
 
@@ -28,29 +28,28 @@
     --neutral-900: 15 23 42;
     --neutral-950: 2 6 23;
 
-    /* --- Professional Racing Brand Colors --- */
-    --racing-red: 220 38 38;     /* #DC2626 - Professional Racing Red */
-    --racing-orange: 234 88 12;  /* #EA580C - Professional Racing Orange */
-    --carbon-black: 0 0 0;       /* #000000 - Pure Carbon */
-    --graphite-gray: 55 65 81;   /* #374151 - Professional Gray */
-    --steel-blue: 2 132 199;     /* #0284C7 - Technical Blue */
-    --racing-green: 34 197 94;   /* #22C55E - Racing Green */
-    --warning-yellow: 234 179 8; /* #EAB308 - Caution Yellow */
+    /* --- Brand Colors --- */
+    --primary-red: 220 38 38;     /* #DC2626 - Primary Red */
+    --primary-orange: 234 88 12;  /* #EA580C - Orange accent */
+    --carbon-black: 0 0 0;        /* #000000 - Dark background */
+    --graphite-gray: 55 65 81;    /* #374151 - Gray */
+    --primary-blue: 2 132 199;    /* #0284C7 - Primary Blue */
+    --success-green: 34 197 94;   /* #22C55E - Success state */
+    --warning-yellow: 234 179 8;  /* #EAB308 - Warning state */
 
-    /* --- Brand Color Aliases for Tailwind Compatibility --- */
-    --brand-red: var(--racing-red);
-    --brand-orange: var(--racing-orange);
-    --brand-blue: var(--steel-blue);
-    --brand-green: var(--racing-green);
+    /* --- Brand Color Aliases --- */
+    --brand-red: var(--primary-red);
+    --brand-orange: var(--primary-orange);
+    --brand-blue: var(--primary-blue);
+    --brand-green: var(--success-green);
     --brand-yellow: var(--warning-yellow);
     --brand-purple: 139 92 246;  /* #8B5CF6 - Purple accent */
-
-    /* --- Elite Performance Colors --- */
-    --primary-racing: var(--racing-red);
-    --secondary-carbon: var(--carbon-black);
-    --accent-technical: var(--steel-blue);
-    --success-performance: var(--racing-green);
-    --warning-caution: var(--warning-yellow);
+    
+    /* Legacy aliases for backward compatibility */
+    --racing-red: var(--primary-red);
+    --racing-orange: var(--primary-orange);
+    --steel-blue: var(--primary-blue);
+    --racing-green: var(--success-green);
 
     /* --- Semantic Colors (Light Mode) --- */
     --bg-primary: var(--white);
@@ -66,27 +65,30 @@
     --text-placeholder: var(--neutral-400);
     --text-disabled: var(--neutral-400);
     --text-inverse: var(--white);
-    --text-racing: var(--racing-red);
+    --text-accent: var(--primary-red);
 
     --border-primary: rgb(226 232 240);
     --border-secondary: rgb(203 213 225);
-    --border-focus: var(--steel-blue);
-    --border-racing: var(--racing-red);
+    --border-focus: var(--primary-blue);
+    --border-accent: var(--primary-red);
 
-    /* --- Professional Racing Gradients --- */
-    --gradient-racing: linear-gradient(135deg, rgb(220 38 38) 0%, rgb(234 88 12) 100%);
-    --gradient-carbon: linear-gradient(135deg, rgb(var(--carbon-black)) 0%, rgb(var(--graphite-gray)) 100%);
-    --gradient-performance: linear-gradient(135deg, rgb(var(--steel-blue)) 0%, rgb(var(--racing-green)) 100%);
-    --gradient-caution: linear-gradient(135deg, rgb(var(--warning-yellow)) 0%, rgb(var(--racing-orange)) 100%);
+    /* --- Gradients --- */
+    --gradient-primary: linear-gradient(135deg, rgb(220 38 38) 0%, rgb(234 88 12) 100%);
+    --gradient-dark: linear-gradient(135deg, rgb(var(--carbon-black)) 0%, rgb(var(--graphite-gray)) 100%);
+    --gradient-success: linear-gradient(135deg, rgb(var(--primary-blue)) 0%, rgb(var(--success-green)) 100%);
+    --gradient-warning: linear-gradient(135deg, rgb(var(--warning-yellow)) 0%, rgb(var(--primary-orange)) 100%);
     
-    /* --- Professional Racing Shadows --- */
+    /* Legacy aliases */
+    --gradient-racing: var(--gradient-primary);
+    --gradient-carbon: var(--gradient-dark);
+    --gradient-performance: var(--gradient-success);
+    
+    /* --- Shadows --- */
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.05);
     --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.1), 0 1px 2px rgb(0 0 0 / 0.06);
     --shadow-md: 0 4px 6px rgb(0 0 0 / 0.07), 0 2px 4px rgb(0 0 0 / 0.06);
     --shadow-lg: 0 10px 15px rgb(0 0 0 / 0.1), 0 4px 6px rgb(0 0 0 / 0.05);
     --shadow-xl: 0 20px 25px rgb(0 0 0 / 0.1), 0 10px 10px rgb(0 0 0 / 0.04);
-    --shadow-racing: 0 0 20px rgb(var(--racing-red) / 0.3);
-    --shadow-carbon: 0 0 30px rgb(var(--carbon-black) / 0.5);
     
     /* --- Spacing Scale --- */
     --space-xs: 0.5rem;   /* 8px */
@@ -125,7 +127,7 @@
     --radius-full: 9999px;
   }
 
-  /* Dark Mode - Professional Racing Theme */
+  /* Dark Mode */
   [data-theme="dark"] {
     --bg-primary: var(--carbon-black);
     --bg-secondary: var(--neutral-900);
@@ -140,12 +142,12 @@
     --text-placeholder: rgb(100 116 139);
     --text-disabled: rgb(100 116 139);
     --text-inverse: var(--carbon-black);
-    --text-racing: var(--racing-red);
+    --text-accent: var(--primary-red);
 
     --border-primary: var(--neutral-800);
     --border-secondary: var(--neutral-700);
-    --border-focus: var(--steel-blue);
-    --border-racing: var(--racing-red);
+    --border-focus: var(--primary-blue);
+    --border-accent: var(--primary-red);
 
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.3);
     --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 1px 2px rgb(0 0 0 / 0.3);
@@ -212,7 +214,8 @@
 }
 
 @layer components {
-  /* --- Professional Racing Card Component --- */
+  /* --- Card Components --- */
+  .card,
   .card-racing {
     @apply relative overflow-hidden rounded-xl;
     background: rgb(var(--bg-elevated));
@@ -221,119 +224,102 @@
     transition: all var(--duration-base) cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     color: rgb(var(--text-primary));
+    padding: 1.5rem;
   }
 
-  .card-racing::before {
-    @apply absolute top-0 left-0 w-full h-1;
-    content: '';
-    background: var(--gradient-racing);
-    opacity: 0;
-    transition: opacity var(--duration-base) var(--ease-out);
-  }
-
+  .card:hover,
   .card-racing:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
     border-color: rgb(var(--border-secondary));
   }
 
-  .card-racing:hover::before {
-    opacity: 1;
-  }
-
-  /* --- Carbon Fiber Card Component --- */
+  /* --- Dark Card Component --- */
+  .card-dark,
   .card-carbon {
     @apply relative overflow-hidden rounded-xl;
-    background: linear-gradient(135deg, rgb(var(--bg-elevated)) 0%, rgb(var(--bg-secondary)) 100%);
+    background: rgb(var(--bg-secondary));
     border: 1px solid rgb(var(--border-primary));
     box-shadow: var(--shadow-md);
     position: relative;
     color: rgb(var(--text-primary));
+    padding: 1.5rem;
   }
 
-  .card-carbon::after {
-    @apply absolute inset-0 opacity-5;
-    content: '';
-    background-image:
-      linear-gradient(45deg, transparent 40%, rgba(0,0,0,0.1) 50%, transparent 60%),
-      linear-gradient(-45deg, transparent 40%, rgba(0,0,0,0.1) 50%, transparent 60%);
-    background-size: 20px 20px;
-  }
-
+  .card-dark:hover,
   .card-carbon:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
   }
   
-  /* --- Racing Primary Button --- */
+  /* --- Button Components --- */
+  .btn-primary,
   .btn-racing {
-    @apply relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl;
-    background: var(--gradient-racing);
-    color: rgb(var(--white));
-    box-shadow: 0 4px 16px rgb(var(--racing-red) / 0.25);
-    transition: all var(--duration-base) cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg;
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 600;
-    letter-spacing: 0.025em;
+    border: none;
   }
 
-  .btn-racing::before {
-    @apply absolute inset-0 rounded-xl;
-    content: '';
-    background: linear-gradient(to bottom, rgba(255,255,255,0.15), transparent);
-    opacity: 0;
-    transition: opacity var(--duration-base) var(--ease-out);
-  }
-
+  .btn-primary:hover,
   .btn-racing:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 32px rgb(var(--racing-red) / 0.35);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
   }
 
-  .btn-racing:hover::before {
-    opacity: 1;
-  }
-
+  .btn-primary:active,
   .btn-racing:active {
-    transform: translateY(-1px) scale(1.01);
+    transform: translateY(0);
   }
 
-  /* --- Carbon Secondary Button --- */
+  /* --- Secondary Button --- */
+  .btn-secondary,
   .btn-carbon {
-    @apply relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl;
-    background: var(--gradient-carbon);
-    color: rgb(var(--white));
-    border: 1px solid rgb(var(--neutral-700));
-    transition: all var(--duration-base) cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 500;
-    letter-spacing: 0.025em;
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg;
+    background: rgb(var(--bg-secondary));
+    color: rgb(var(--text-primary));
+    border: 1px solid rgb(var(--border-primary));
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
   }
 
+  .btn-secondary:hover,
   .btn-carbon:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-carbon);
-    border-color: rgb(var(--neutral-600));
+    background: rgb(var(--bg-tertiary));
+    border-color: rgb(var(--border-secondary));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
 
+  .btn-secondary:active,
   .btn-carbon:active {
     transform: translateY(0);
   }
 
-  /* --- Technical Secondary Button --- */
+  /* --- Outline Button --- */
+  .btn-outline,
   .btn-technical {
-    @apply relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl;
-    background: rgb(var(--bg-elevated));
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg;
+    background: transparent;
     color: rgb(var(--text-primary));
-    border: 1px solid rgb(var(--border-primary));
-    transition: all var(--duration-base) cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 500;
+    border: 2px solid rgb(var(--border-primary));
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
   }
 
+  .btn-outline:hover,
   .btn-technical:hover {
     background: rgb(var(--bg-secondary));
-    border-color: rgb(var(--border-secondary));
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    border-color: rgb(var(--brand-blue));
+    transform: translateY(-1px);
+  }
+
+  .btn-outline:active,
+  .btn-technical:active {
+    transform: translateY(0);
   }
 
   /* --- CTA Button White Text Override --- */
@@ -387,20 +373,27 @@
     transform: none;
   }
   
-  /* --- Professional Badge --- */
+  /* --- Badge Components --- */
+  .badge,
   .badge-racing {
-    @apply inline-flex items-center px-4 py-2 text-xs font-semibold rounded-full;
+    @apply inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full;
     background: rgb(var(--bg-tertiary));
     color: rgb(var(--text-primary));
     border: 1px solid rgb(var(--border-primary));
     font-weight: 600;
-    letter-spacing: 0.05em;
+  }
+
+  .badge-primary,
+  .badge-racing-accent {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
   }
 
   .badge-success {
-    background: rgb(var(--racing-green) / 0.1);
-    color: rgb(var(--racing-green));
-    border-color: rgb(var(--racing-green) / 0.2);
+    background: rgb(var(--success-green) / 0.1);
+    color: rgb(var(--success-green));
+    border-color: rgb(var(--success-green) / 0.2);
   }
 
   .badge-warning {
@@ -410,15 +403,9 @@
   }
 
   .badge-error {
-    background: rgb(var(--racing-red) / 0.1);
-    color: rgb(var(--racing-red));
-    border-color: rgb(var(--racing-red) / 0.2);
-  }
-
-  .badge-racing-accent {
-    background: var(--gradient-racing);
-    color: white;
-    border-color: transparent;
+    background: rgb(var(--primary-red) / 0.1);
+    color: rgb(var(--primary-red));
+    border-color: rgb(var(--primary-red) / 0.2);
   }
   
   /* --- Professional Metric Display --- */

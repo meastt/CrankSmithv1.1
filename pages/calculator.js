@@ -1,7 +1,4 @@
-// pages/calculator.js - Enhanced calculator with Riley AI integration and compatibility checking
-// CORRECTED: Replaced all inline styles with Tailwind classes, converted JS hover effects to CSS, and implemented a React-based toast notification system.
-// UPDATED: Removed email verification requirements - free access for all users
-
+// pages/calculator.js - Redesigned calculator page - tool first, no marketing fluff
 import { useState, useEffect } from 'react';
 import GearSelectorPanel from '../components/GearSelectorPanel';
 import SimulationResults from '../components/SimulationResults';
@@ -14,7 +11,7 @@ import SEOHead from '../components/SEOHead';
 import { useCalculatorState } from '../hooks/useCalculatorState';
 import ErrorBoundary from '../components/ErrorBoundary';
 
-// Enhanced compatibility display component
+// Compatibility display component
 const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
   if (!compatibilityResults) return null;
 
@@ -41,13 +38,7 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
     }
   };
 
-  const styles = statusStyles[status] || {
-    bg: 'bg-[var(--surface-elevated)]',
-    border: 'border-[var(--border-subtle)]',
-    iconBg: 'bg-neutral-400',
-    titleColor: 'text-[var(--text-primary)]'
-  };
-
+  const styles = statusStyles[status] || {};
   const getStatusIcon = () => {
     switch (status) {
       case 'compatible': return '✓';
@@ -65,12 +56,12 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
         </div>
         <div className="flex-1 min-w-0">
           <h4 className={`font-medium ${styles.titleColor} mb-1`}>{title}</h4>
-          <p className="text-sm text-[var(--text-secondary)] mb-3">{message}</p>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">{message}</p>
           
           {criticalIssues && criticalIssues.length > 0 && (
             <div className="mb-3">
-              <p className="text-xs font-medium text-red-600 dark:text-red-400 mb-1">Critical Issues:</p>
-              <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+              <p className="text-xs font-medium text-red-600 dark:text-red-400 mb-1">Issues:</p>
+              <ul className="text-xs text-neutral-600 dark:text-neutral-400 space-y-1">
                 {criticalIssues.map((issue, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="text-red-500 mt-0.5">•</span>
@@ -84,7 +75,7 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
           {minorWarnings && minorWarnings.length > 0 && (
             <div className="mb-3">
               <p className="text-xs font-medium text-yellow-600 dark:text-yellow-400 mb-1">Considerations:</p>
-              <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+              <ul className="text-xs text-neutral-600 dark:text-neutral-400 space-y-1">
                 {minorWarnings.map((warning, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="text-yellow-500 mt-0.5">•</span>
@@ -97,8 +88,8 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
 
           {actionItems && actionItems.length > 0 && (
             <div>
-              <p className="text-xs font-medium text-[var(--text-primary)] mb-1">Recommendations:</p>
-              <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+              <p className="text-xs font-medium text-neutral-900 dark:text-white mb-1">Recommendations:</p>
+              <ul className="text-xs text-neutral-600 dark:text-neutral-400 space-y-1">
                 {actionItems.map((item, index) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
@@ -114,7 +105,7 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
   );
 };
 
-// Simple localStorage functions
+// localStorage functions
 const localStorageDB = {
   getConfigs: () => {
     try {
@@ -181,7 +172,7 @@ const BikeIcons = {
   )
 };
 
-// Toast Notification Component
+// Toast Notification
 const Toast = ({ message, show, onDismiss }) => {
   useEffect(() => {
     if (show) {
@@ -213,7 +204,6 @@ export default function Calculator() {
   const [compatibilityChecker] = useState(new CompatibilityChecker());
   const [toast, setToast] = useState({ show: false, message: '' });
   const [calculationError, setCalculationError] = useState(null);
-  const [shareUrl, setShareUrl] = useState('');
 
   useEffect(() => {
     const handler = () => { 
@@ -232,7 +222,6 @@ export default function Calculator() {
         if (data) setSavedConfigs(data);
       } catch (error) {
         console.error('Error loading saved configurations:', error);
-        showToast('Error loading saved configurations');
       }
     };
     loadSavedConfigs();
@@ -247,26 +236,15 @@ export default function Calculator() {
       }
     } catch (error) {
       console.error('Compatibility check failed:', error);
-      setCompatibilityResults({
-        status: 'error',
-        title: 'Compatibility Check Failed',
-        message: 'Unable to analyze compatibility. Please check your component selections.',
-        actionItems: ['Verify component selections', 'Try refreshing the page']
-      });
     }
   };
-
-
 
   const handleCalculate = async () => {
     try {
       setCalculationError(null);
       await calculateResults();
-      
-      // Run compatibility check after successful calculation
       checkCompatibility();
       
-      // Show Riley AI after a brief delay if calculation was successful
       setTimeout(() => {
         if (results && !calculationError) {
           setShowRiley(true);
@@ -306,7 +284,7 @@ export default function Calculator() {
       } else {
         const { data } = await localStorageDB.getConfigs();
         setSavedConfigs(data || []);
-        showToast('Configuration saved to garage!');
+        showToast('Configuration saved!');
       }
     } catch (error) {
       console.error('Error saving configuration:', error);
@@ -322,7 +300,7 @@ export default function Calculator() {
       setBikeType(config.bikeType);
       setCompatibilityResults(config.compatibilityResults);
       setCalculationError(null);
-      showToast(`Loaded "${config.name}" successfully!`);
+      showToast(`Loaded "${config.name}"!`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error('Error loading configuration:', error);
@@ -331,7 +309,7 @@ export default function Calculator() {
   };
 
   const handleDeleteConfig = async (id) => {
-    if (window.confirm(`Are you sure you want to delete this configuration?`)) {
+    if (window.confirm(`Delete this configuration?`)) {
       try {
         const { error } = await localStorageDB.deleteConfig(id);
         if (error) { 
@@ -348,478 +326,150 @@ export default function Calculator() {
     }
   };
 
-  const handleShare = () => {
-    const params = new URLSearchParams({
-      bikeType,
-      crankset: currentSetup?.crankset?.id || '',
-      cassette: currentSetup?.cassette?.id || '',
-      wheel: currentSetup?.wheel || '',
-      tire: currentSetup?.tire || ''
-    });
-    const url = `${window.location.origin}/calculator?${params.toString()}`;
-    setShareUrl(url);
-    if (navigator.share) {
-      navigator.share({
-        title: 'Check out my bike setup on CrankSmith',
-        url
-      });
-    } else {
-      navigator.clipboard.writeText(url);
-      alert('Share link copied to clipboard!');
-    }
-  };
-
   return (
     <>
       <SEOHead
-        title="CrankSmith - Bike Gear Calculator & Compatibility Checker"
-        description="Calculate gear ratios, check drivetrain compatibility, and optimize your bike setup. Perfect for cyclists and bike shops."
+        title="Bike Gear Calculator - CrankSmith"
+        description="Calculate gear ratios, check drivetrain compatibility, and optimize your bike setup. Free gear calculator for road, gravel, and mountain bikes."
         url="https://cranksmith.com/calculator"
         image="/og-image.jpg"
       />
       <Toast message={toast.message} show={toast.show} onDismiss={() => setToast({ show: false, message: '' })} />
 
       <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 dark:from-carbon-black dark:via-neutral-900 dark:to-neutral-800">
-        {/* Elite Racing Header */}
-        <section className="relative overflow-hidden min-h-screen flex items-center">
-          {/* Racing Circuit Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0 bg-gradient-to-br from-racing-red via-racing-orange to-steel-blue" />
-            <div className="absolute top-20 left-10 w-96 h-96 bg-racing-red/20 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-steel-blue/20 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-racing-orange/10 rounded-full blur-3xl animate-pulse" />
-          </div>
-
-          {/* Racing Circuit Lines */}
-          <div className="absolute inset-0 opacity-5">
-            <svg className="w-full h-full" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0,200 Q360,100 720,200 T1440,200" stroke="currentColor" strokeWidth="2" className="text-white" />
-              <path d="M0,400 Q360,300 720,400 T1440,400" stroke="currentColor" strokeWidth="2" className="text-white" />
-              <path d="M0,600 Q360,500 720,600 T1440,600" stroke="currentColor" strokeWidth="2" className="text-white" />
-            </svg>
-          </div>
-
-          <div className="container-responsive py-20 lg:py-32 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              {/* Hero Content */}
-              <div className="text-white">
-                {/* Elite Badge */}
-                <div className="mb-8 animate-fade-in">
-                  <span className="badge-racing-accent text-sm font-bold px-6 py-3 uppercase tracking-wider shadow-glow-racing">
-                    ⚡ Elite Performance Lab
-                  </span>
-                </div>
-
-                <h1 className="text-responsive-6xl font-black text-balance mb-6 leading-tight drop-shadow-lg">
-                  <span className="text-gradient-racing">Professional</span> Gear <br />
-                  <span className="text-gradient-carbon">Calculator</span>
-                </h1>
-
-                <p className="text-responsive-xl text-white/90 max-w-xl mb-10 text-balance leading-relaxed font-medium drop-shadow-md">
-                  Precision gear ratio analysis for competitive cyclists. Calculate optimal drivetrain configurations for racing, climbing, and sprinting.
-                </p>
-
-                {/* Hero Stats */}
-                <div className="grid grid-cols-3 gap-6 mb-10">
-                  <div className="text-center bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                    <div className="text-3xl font-black text-racing-red mb-1 drop-shadow-lg">50K+</div>
-                    <div className="text-xs font-semibold text-white/70 uppercase tracking-wider">
-                      Cyclists
-                    </div>
-                  </div>
-                  <div className="text-center bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                    <div className="text-3xl font-black text-steel-blue mb-1 drop-shadow-lg">99.7%</div>
-                    <div className="text-xs font-semibold text-white/70 uppercase tracking-wider">
-                      Accuracy
-                    </div>
-                  </div>
-                  <div className="text-center bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                    <div className="text-3xl font-black text-racing-green mb-1 drop-shadow-lg">⚡</div>
-                    <div className="text-xs font-semibold text-white/70 uppercase tracking-wider">
-                      Real-time
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-white font-semibold">
-                    <span className="text-racing-green mr-2">✓</span>
-                    No signup required
-                  </div>
-                  <div className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-white font-semibold">
-                    <span className="text-racing-red mr-2">⚡</span>
-                    Elite precision
-                  </div>
-                </div>
-              </div>
-
-              {/* Hero Visual - Performance Dashboard */}
-              <div className="transition-all duration-1000 delay-300">
-                <div className="card-carbon p-8 shadow-2xl relative overflow-hidden">
-                  {/* Animated background pattern */}
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0 bg-gradient-to-br from-racing-red to-steel-blue" />
-                    <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
-                  </div>
-                  
-                  <div className="relative z-10 space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-bold text-white">Performance Dashboard</h3>
-                      <div className="badge-racing-accent text-xs px-3 py-1 animate-pulse">LIVE</div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                        <div className="text-2xl font-bold text-racing-red">342W</div>
-                        <div className="text-sm text-white/70">Max Power</div>
-                      </div>
-                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                        <div className="text-2xl font-bold text-steel-blue">94 RPM</div>
-                        <div className="text-sm text-white/70">Optimal Cadence</div>
-                      </div>
-                    </div>
-
-                    <div className="bg-gradient-racing rounded-xl p-4 border border-white/20">
-                      <div className="text-lg font-bold text-white">Gear Optimization</div>
-                      <div className="text-sm text-white/90">53×11 • 47.3W Saved</div>
-                    </div>
-
-                    {/* Racing Circuit Animation */}
-                    <div className="relative h-16 bg-white/5 rounded-xl overflow-hidden">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full h-1 bg-gradient-to-r from-transparent via-racing-red to-transparent animate-pulse"></div>
-                      </div>
-                      <div className="absolute top-1/2 left-0 w-4 h-4 bg-racing-red rounded-full transform -translate-y-1/2 animate-bounce"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <main className="container-responsive py-8">
+          {/* Simple Header */}
+          <div className="max-w-4xl mx-auto text-center mb-12">
+            <h1 className="text-4xl font-black mb-4 text-neutral-900 dark:text-white">
+              Gear Calculator
+            </h1>
+            <p className="text-lg text-neutral-600 dark:text-neutral-300">
+              Calculate gear ratios and check compatibility for your bike setup
+            </p>
+          </div>
 
-          {/* Elite Bike Type Selection */}
-          <section className="py-24 bg-white dark:bg-neutral-900 relative overflow-hidden">
-            {/* Subtle background pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0 bg-gradient-to-br from-steel-blue to-racing-green" />
-            </div>
-
-            <div className="container-responsive relative z-10">
-              <div className="text-center mb-20">
-                <div className="mb-6">
-                  <span className="badge-racing-accent text-sm font-bold px-4 py-2 uppercase tracking-wider">
-                    Elite Bike Selection
-                  </span>
-                </div>
-                <h2 className="text-responsive-4xl font-black mb-6 text-neutral-900 dark:text-white">
-                  Choose Your <span className="text-gradient-racing">Racing Platform</span>
-                </h2>
-                <p className="text-responsive-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed">
-                  Select your bike type to unlock precision component recommendations and advanced compatibility analysis.
-                </p>
-              </div>
-
-              <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                {Object.entries(bikeConfig).map(([type, config], index) => {
-                  const gradients = {
-                    road: 'from-racing-red via-racing-orange to-warning-yellow',
-                    gravel: 'from-steel-blue via-racing-green to-steel-blue',
-                    mtb: 'from-racing-orange via-racing-red to-carbon-black'
-                  };
-
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setBikeType(type)}
-                      className={`group relative overflow-hidden transition-all duration-500 ${
-                        bikeType === type
-                          ? 'scale-105'
-                          : 'hover:scale-102'
-                      }`}
-                      style={{
-                        animationDelay: `${index * 100}ms`
-                      }}
-                    >
-                      {/* Card background */}
-                      <div className={`card-carbon p-8 h-full ${
-                        bikeType === type ? 'ring-4 ring-racing-red/30 shadow-glow-racing' : ''
-                      }`}>
-                        {/* Gradient border overlay */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${gradients[type]} opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none rounded-xl`} />
-
-                        {/* Racing circuit background */}
-                        <div className="absolute inset-0 opacity-5">
-                          <svg className="w-full h-full" viewBox="0 0 200 200" fill="none">
-                            <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="1" className="text-white" />
-                            <circle cx="100" cy="100" r="60" stroke="currentColor" strokeWidth="1" className="text-white" />
-                          </svg>
-                        </div>
-
-                        <div className="relative z-10">
-                          {/* Icon container with gradient */}
-                          <div className="w-32 h-32 mx-auto mb-8 relative">
-                            <div className={`absolute inset-0 bg-gradient-to-br ${gradients[type]} rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-500`} />
-                            <div className={`relative w-full h-full bg-gradient-to-br ${gradients[type]} rounded-2xl p-6 shadow-xl group-hover:scale-110 transition-transform duration-500`}>
-                              <div className="text-white">
-                                {BikeIcons[type]}
-                              </div>
-                            </div>
-                          </div>
-
-                          <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-racing-red transition-colors">
-                            {config.name}
-                          </h3>
-
-                          <p className="text-neutral-300 leading-relaxed mb-6">
-                            {config.description}
-                          </p>
-
-                          {/* Performance indicators */}
-                          <div className="space-y-3 mb-6">
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-neutral-400">Performance:</span>
-                              <div className="flex gap-1">
-                                {[1,2,3,4,5].map((star) => (
-                                  <div key={star} className={`w-3 h-3 rounded-full transition-all ${
-                                    star <= (type === 'road' ? 5 : type === 'gravel' ? 4 : 3)
-                                      ? 'bg-racing-red shadow-lg shadow-racing-red/50'
-                                      : 'bg-neutral-700'
-                                  }`} />
-                                ))}
-                              </div>
-                            </div>
-
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-neutral-400">Versatility:</span>
-                              <div className="flex gap-1">
-                                {[1,2,3,4,5].map((star) => (
-                                  <div key={star} className={`w-3 h-3 rounded-full transition-all ${
-                                    star <= (type === 'gravel' ? 5 : type === 'road' ? 3 : 4)
-                                      ? 'bg-steel-blue shadow-lg shadow-steel-blue/50'
-                                      : 'bg-neutral-700'
-                                  }`} />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-
-                          {bikeType === type && (
-                            <div className="flex items-center justify-center">
-                              <span className="badge-racing-accent text-sm px-6 py-2 animate-pulse shadow-lg">
-                                ✓ Selected
-                              </span>
-                            </div>
-                          )}
-                        </div>
+          {/* Bike Type Selection */}
+          <section className="mb-12">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-bold mb-6 text-neutral-900 dark:text-white">
+                1. Select Bike Type
+              </h2>
+              <div className="grid md:grid-cols-3 gap-4">
+                {Object.entries(bikeConfig).map(([type, config]) => (
+                  <button
+                    key={type}
+                    onClick={() => setBikeType(type)}
+                    className={`card cursor-pointer text-left ${
+                      bikeType === type ? 'ring-2 ring-brand-red' : ''
+                    }`}
+                  >
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-20 h-20 mb-4 text-neutral-600 dark:text-neutral-300">
+                        {BikeIcons[type]}
                       </div>
-                    </button>
-                  );
-                })}
+                      <h3 className="text-lg font-bold mb-2 text-neutral-900 dark:text-white">
+                        {config.name}
+                      </h3>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                        {config.description}
+                      </p>
+                      {bikeType === type && (
+                        <div className="mt-4">
+                          <span className="badge-primary text-xs px-3 py-1">
+                            Selected
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
           </section>
 
-        {bikeType && (
-          <section className="py-24 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-800 dark:to-neutral-900 relative overflow-hidden">
-            {/* Racing circuit pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0 bg-gradient-to-br from-racing-red to-carbon-black" />
-            </div>
-
-            <div className="container-responsive relative z-10">
-              <div className="text-center mb-20">
-                <div className="mb-6">
-                  <span className="badge-racing-accent text-sm font-bold px-4 py-2 uppercase tracking-wider">
-                    Elite Component Selection
-                  </span>
-                </div>
-                <h2 className="text-responsive-4xl font-black mb-6 text-neutral-900 dark:text-white">
-                  Configure Your <span className="text-gradient-racing">Racing Setup</span>
+          {/* Component Selection */}
+          {bikeType && (
+            <section className="mb-12">
+              <div className="max-w-6xl mx-auto">
+                <h2 className="text-2xl font-bold mb-6 text-neutral-900 dark:text-white">
+                  2. Configure Components
                 </h2>
-                <p className="text-responsive-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed">
-                  Precision component selection with real-time compatibility analysis and performance optimization.
-                </p>
-              </div>
-
-              <div className="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
-                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-neutral-600 dark:text-neutral-400">Error loading gear selector</div>}>
-                  <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-steel-blue to-steel-blue/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                <div className="grid lg:grid-cols-2 gap-8">
+                  <ErrorBoundary context="component">
                     <GearSelectorPanel
                       title="Current Setup"
-                      subtitle="Your existing bike configuration"
+                      subtitle="Your existing configuration"
                       badge="Current"
-                      badgeColor="bg-steel-blue"
+                      badgeColor="bg-blue-500"
                       setup={currentSetup}
                       setSetup={updateCurrentSetup}
                       config={bikeConfig[bikeType]}
                       bikeType={bikeType}
                       icon="🚲"
                     />
-                  </div>
-                </ErrorBoundary>
+                  </ErrorBoundary>
 
-                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-neutral-600 dark:text-neutral-400">Error loading gear selector</div>}>
-                  <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-racing-green to-racing-green/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                  <ErrorBoundary context="component">
                     <GearSelectorPanel
                       title="Proposed Setup"
-                      subtitle="Your planned bike configuration"
+                      subtitle="Your planned configuration"
                       badge="Proposed"
-                      badgeColor="bg-racing-green"
+                      badgeColor="bg-green-500"
                       setup={proposedSetup}
                       setSetup={updateProposedSetup}
                       config={bikeConfig[bikeType]}
                       bikeType={bikeType}
                       icon="⚡"
                     />
-                  </div>
-                </ErrorBoundary>
-              </div>
+                  </ErrorBoundary>
+                </div>
 
-              {/* Elite Analysis Dashboard */}
-              <div className="mt-16">
-                <div className="card-carbon p-8 relative overflow-hidden shadow-2xl hover:shadow-glow-racing transition-shadow duration-500">
-                  {/* Racing circuit background */}
-                  <div className="absolute inset-0 opacity-5">
-                    <svg className="w-full h-full" viewBox="0 0 400 200" fill="none">
-                      <path d="M0,100 Q100,50 200,100 T400,100" stroke="currentColor" strokeWidth="2" className="text-racing-red" />
-                      <path d="M0,100 Q100,150 200,100 T400,100" stroke="currentColor" strokeWidth="2" className="text-steel-blue" />
-                    </svg>
-                  </div>
-
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-racing flex items-center justify-center">
-                          <span className="text-white text-xl">⚡</span>
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold text-neutral-900 dark:text-white">Elite Analysis Dashboard</h3>
-                          <p className="text-neutral-600 dark:text-neutral-400">Real-time performance metrics and compatibility analysis</p>
-                        </div>
-                      </div>
-                      <div className="badge-racing-accent text-xs px-3 py-1">LIVE</div>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8 mb-8">
-                      {/* Current Setup Status */}
-                      <div className="text-center">
-                        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-steel-blue/10 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-steel-blue flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">{isNaN(validation.current.completion) ? '0' : Math.round(validation.current.completion)}%</span>
-                          </div>
-                        </div>
-                        <h4 className="font-bold text-neutral-900 dark:text-white mb-2">Current Setup</h4>
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">Configuration completion</p>
-                        <div className="mt-3 w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2">
-                          <div 
-                            className="bg-steel-blue h-2 rounded-full transition-all duration-500"
-                            style={{ width: `${isNaN(validation.current.completion) ? '0' : validation.current.completion}%` }}
-                          ></div>
-                        </div>
-                      </div>
-
-                      {/* Proposed Setup Status */}
-                      <div className="text-center">
-                        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-racing-green/10 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-racing-green flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">{isNaN(validation.proposed.completion) ? '0' : Math.round(validation.proposed.completion)}%</span>
-                          </div>
-                        </div>
-                        <h4 className="font-bold text-neutral-900 dark:text-white mb-2">Proposed Setup</h4>
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">Configuration completion</p>
-                        <div className="mt-3 w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2">
-                          <div 
-                            className="bg-racing-green h-2 rounded-full transition-all duration-500"
-                            style={{ width: `${isNaN(validation.proposed.completion) ? '0' : validation.proposed.completion}%` }}
-                          ></div>
-                        </div>
-                      </div>
-
-                      {/* Compatibility Status */}
-                      <div className="text-center">
-                        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-racing-red/10 to-warning-yellow/10 flex items-center justify-center">
-                          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                            compatibilityResults?.status === 'compatible' ? 'bg-racing-green' : 
-                            compatibilityResults?.status === 'warning' ? 'bg-warning-yellow' : 'bg-racing-red'
-                          }`}>
-                            <span className="text-white text-lg">
-                              {compatibilityResults?.status === 'compatible' ? '✓' : 
-                               compatibilityResults?.status === 'warning' ? '⚠' : '✗'}
-                            </span>
-                          </div>
-                        </div>
-                        <h4 className="font-bold text-neutral-900 dark:text-white mb-2">Compatibility</h4>
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                          {compatibilityResults?.status === 'compatible' ? 'Optimal' : 
-                           compatibilityResults?.status === 'warning' ? 'Review needed' : 'Issues found'}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      {(proposedSetup.crankset || proposedSetup.cassette) && (
-                        <button
-                          onClick={() => setShowRiley(!showRiley)}
-                          className={`btn-technical ${showRiley ? 'bg-racing-orange text-white border-racing-orange' : ''}`}
-                        >
-                          <span className="mr-2">🤖</span>
-                          {showRiley ? 'Hide Riley AI' : 'Ask Riley AI'}
-                        </button>
-                      )}
-
-                      <button
-                        onClick={handleCalculate}
-                        disabled={!validation.canAnalyze || loading}
-                        className="btn-racing disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
-                      >
-                        {loading && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
-                        )}
-                        {loading ? (
-                          <span className="flex items-center gap-2 relative z-10">
-                            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                            </svg>
-                            Analyzing Performance...
-                          </span>
-                        ) : (
-                          <span className="flex items-center gap-2 relative z-10">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                            Analyze Performance
-                          </span>
-                        )}
-                      </button>
-                    </div>
-                  </div>
+                {/* Calculate Button */}
+                <div className="mt-8 flex flex-col items-center gap-4">
+                  <button
+                    onClick={handleCalculate}
+                    disabled={!validation.canAnalyze || loading}
+                    className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-lg px-12 py-4"
+                  >
+                    {loading ? (
+                      <span className="flex items-center gap-2">
+                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Calculating...
+                      </span>
+                    ) : (
+                      'Calculate Results'
+                    )}
+                  </button>
+                  
+                  {(proposedSetup.crankset || proposedSetup.cassette) && (
+                    <button
+                      onClick={() => setShowRiley(!showRiley)}
+                      className="btn-outline"
+                    >
+                      <span className="mr-2">🤖</span>
+                      {showRiley ? 'Hide' : 'Ask'} Riley AI
+                    </button>
+                  )}
                 </div>
               </div>
-            </div>
-          </section>
-        )}
+            </section>
+          )}
 
-        {/* Error Display */}
-        {calculationError && (
-            <section className="py-12">
-              <div className="container-responsive">
-                <div className="max-w-4xl mx-auto">
-                  <div className="card-racing border-l-4 border-l-racing-red">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-racing-red flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
-                        !
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-red-800 dark:text-red-200 mb-2 text-xl">Calculation Error</h4>
-                        <p className="text-red-700 dark:text-red-300 text-lg">{calculationError}</p>
-                      </div>
+          {/* Error Display */}
+          {calculationError && (
+            <section className="mb-12">
+              <div className="max-w-4xl mx-auto">
+                <div className="card border-l-4 border-l-red-500">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+                      !
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-red-800 dark:text-red-200 mb-2 text-xl">Error</h4>
+                      <p className="text-red-700 dark:text-red-300">{calculationError}</p>
                     </div>
                   </div>
                 </div>
@@ -829,34 +479,22 @@ export default function Calculator() {
 
           {/* Compatibility Results */}
           {compatibilityResults && (
-            <section className="py-12">
-              <div className="container-responsive">
-                <div className="max-w-4xl mx-auto">
-                  <CompatibilityDisplay compatibilityResults={compatibilityResults} />
-                </div>
+            <section className="mb-12">
+              <div className="max-w-4xl mx-auto">
+                <CompatibilityDisplay compatibilityResults={compatibilityResults} />
               </div>
             </section>
           )}
 
           {/* Riley AI Chat */}
           {showRiley && (
-            <section className="py-24 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-800 dark:to-neutral-900">
+            <section className="mb-12 bg-neutral-100 dark:bg-neutral-900 py-12">
               <div className="container-responsive">
                 <div className="max-w-4xl mx-auto">
-                  <div className="text-center mb-12">
-                    <div className="mb-6">
-                      <span className="badge-racing-accent text-sm font-bold px-4 py-2 uppercase tracking-wider">
-                        AI-Powered Insights
-                      </span>
-                    </div>
-                    <h2 className="text-responsive-4xl font-black mb-6 text-neutral-900 dark:text-white">
-                      Ask <span className="text-gradient-racing">Riley AI</span>
-                    </h2>
-                    <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-                      Get personalized recommendations and insights from our AI cycling expert
-                    </p>
-                  </div>
-                  <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-neutral-600 dark:text-neutral-400">Error loading Riley AI chat. Please try refreshing the page.</div>}>
+                  <h2 className="text-2xl font-bold mb-6 text-neutral-900 dark:text-white text-center">
+                    Ask Riley AI
+                  </h2>
+                  <ErrorBoundary context="component">
                     <RileyChat 
                       userSetup={proposedSetup}
                       analysisResults={results}
@@ -870,353 +508,92 @@ export default function Calculator() {
             </section>
           )}
 
-        {/* Elite Results Section */}
-        {results && (
-          <section className="py-24 bg-gradient-to-br from-carbon-black via-neutral-900 to-neutral-800 text-white relative overflow-hidden">
-            {/* Racing circuit pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0 bg-gradient-to-br from-racing-red to-steel-blue" />
-            </div>
-
-            <div className="container-responsive relative z-10">
-              <div className="text-center mb-20">
-                <div className="mb-6">
-                  <span className="badge-racing-accent text-sm font-bold px-4 py-2 uppercase tracking-wider">
-                    Elite Performance Analysis
-                  </span>
-                </div>
-                <h2 className="text-responsive-4xl font-black mb-6 text-white">
-                  <span className="text-gradient-racing">Performance</span> Analysis
+          {/* Results */}
+          {results && (
+            <section className="mb-12">
+              <div className="max-w-6xl mx-auto">
+                <h2 className="text-2xl font-bold mb-6 text-neutral-900 dark:text-white">
+                  Results
                 </h2>
-                <p className="text-responsive-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-                  Detailed comparison of your current vs proposed setup with AI-powered insights and professional-grade metrics.
-                </p>
+                <div className="space-y-8">
+                  <ErrorBoundary context="component">
+                    <SimulationResults 
+                      results={results}
+                      speedUnit={speedUnit}
+                      bikeType={bikeType}
+                    />
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary context="component">
+                    <PerformanceChart 
+                      current={results.current}
+                      proposed={results.proposed}
+                      speedUnit={speedUnit}
+                    />
+                  </ErrorBoundary>
+                  
+                  <ErrorBoundary context="component">
+                    <BuildSummaryCard 
+                      currentSetup={currentSetup}
+                      proposedSetup={proposedSetup}
+                      results={results}
+                      onSave={handleSaveConfig}
+                    />
+                  </ErrorBoundary>
+                </div>
               </div>
+            </section>
+          )}
 
-              <div className="max-w-7xl mx-auto space-y-16">
-                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-neutral-400">Error loading simulation results</div>}>
-                  <SimulationResults 
-                    results={results}
-                    speedUnit={speedUnit}
-                    bikeType={bikeType}
-                  />
-                </ErrorBoundary>
-                
-                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-neutral-400">Error loading performance chart</div>}>
-                  <PerformanceChart 
-                    current={results.current}
-                    proposed={results.proposed}
-                    speedUnit={speedUnit}
-                  />
-                </ErrorBoundary>
-                
-                <ErrorBoundary context="component" fallback={<div className="p-8 text-center text-neutral-400">Error loading build summary</div>}>
-                  <BuildSummaryCard 
-                    currentSetup={currentSetup}
-                    proposedSetup={proposedSetup}
-                    results={results}
-                    onSave={handleSaveConfig}
-                  />
-                </ErrorBoundary>
-
-                {/* Elite Riley AI Prompt */}
-                {!showRiley && (
-                  <div className="card-carbon border-l-4 border-l-racing-orange relative overflow-hidden">
-                    {/* Racing circuit background */}
-                    <div className="absolute inset-0 opacity-5">
-                      <svg className="w-full h-full" viewBox="0 0 400 200" fill="none">
-                        <path d="M0,100 Q100,50 200,100 T400,100" stroke="currentColor" strokeWidth="2" className="text-racing-orange" />
-                      </svg>
-                    </div>
-                    
-                    <div className="relative z-10 flex items-center justify-between">
-                      <div className="flex items-center gap-6">
-                        <div className="w-16 h-16 rounded-full flex items-center justify-center bg-racing-orange text-white text-2xl">🤖</div>
-                        <div>
-                          <h3 className="font-bold text-white text-xl mb-2">Questions about your analysis?</h3>
-                          <p className="text-white/80">Riley can explain your results and suggest optimizations.</p>
-                        </div>
-                      </div>
-                      <button onClick={() => setShowRiley(true)} className="btn-racing">
-                        Ask Riley AI
-                      </button>
-                    </div>
-                  </div>
-                )}
-                
-                <div className="flex gap-6 justify-center">
-                  <button className="btn-carbon" onClick={handleShare}>
-                    <span className="mr-2">📤</span>
-                    Share Results
+          {/* Saved Configurations */}
+          {savedConfigs.length > 0 && (
+            <section className="mb-12">
+              <div className="max-w-6xl mx-auto">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">
+                    Saved Configurations
+                  </h2>
+                  <button
+                    onClick={() => setShowSaved(!showSaved)}
+                    className="btn-outline"
+                  >
+                    {showSaved ? 'Hide' : 'Show'} ({savedConfigs.length})
                   </button>
                 </div>
-                {shareUrl && !navigator.share && (
-                  <div className="text-sm mt-4 text-center text-white/60">
-                    Share link: <a href={shareUrl} target="_blank" rel="noopener noreferrer" className="underline text-racing-red hover:text-racing-orange">{shareUrl}</a>
+
+                {showSaved && (
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {savedConfigs.map((config) => (
+                      <div key={config.id} className="card">
+                        <h3 className="font-bold mb-2 text-neutral-900 dark:text-white">{config.name}</h3>
+                        <div className="text-sm text-neutral-600 dark:text-neutral-400 space-y-1 mb-4">
+                          <p>Type: {config.bikeType}</p>
+                          <p>Crankset: {config.proposedSetup?.crankset?.model || 'N/A'}</p>
+                          <p>Cassette: {config.proposedSetup?.cassette?.model || 'N/A'}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleLoadConfig(config)}
+                            className="btn-primary flex-1"
+                          >
+                            Load
+                          </button>
+                          <button
+                            onClick={() => handleDeleteConfig(config.id)}
+                            className="btn-outline"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
-            </div>
-          </section>
-        )}
-
-        {/* Elite Garage Section */}
-        <section id="garage-section" className="py-24 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-800 dark:to-neutral-900 relative overflow-hidden">
-          {/* Racing circuit pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute inset-0 bg-gradient-to-br from-steel-blue to-racing-green" />
-          </div>
-
-          <div className="container-responsive relative z-10">
-            <div className="text-center mb-20">
-              <div className="flex items-center justify-center gap-6 mb-8">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-racing flex items-center justify-center shadow-glow-racing">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
-                  </svg>
-                </div>
-                <h2 className="text-responsive-4xl font-black text-neutral-900 dark:text-white">
-                  Elite <span className="text-gradient-racing">Garage</span>
-                </h2>
-              </div>
-              
-              <div className="mb-6">
-                <span className="badge-racing-accent text-sm font-bold px-4 py-2 uppercase tracking-wider">
-                  Configuration Vault
-                </span>
-              </div>
-              
-              <p className="max-w-3xl mx-auto mb-10 text-responsive-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                Your premium bike configurations with advanced compatibility analysis, performance metrics, and AI-powered insights.
-              </p>
-              
-              {savedConfigs.length > 0 && (
-                <button
-                  onClick={() => setShowSaved(!showSaved)}
-                  className="btn-technical"
-                >
-                  <span className="mr-2">{showSaved ? '🔒' : '🔓'}</span>
-                  {showSaved ? 'Hide Garage' : 'Show Garage'} ({savedConfigs.length} configurations)
-                </button>
-              )}
-            </div>
-
-            {savedConfigs.length > 0 && showSaved && (
-              <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {savedConfigs.map((config, index) => (
-                    <div
-                      key={config.id}
-                      className="group"
-                      style={{
-                        animationDelay: `${index * 100}ms`
-                      }}
-                    >
-                      <GarageCard
-                        config={config}
-                        onLoad={handleLoadConfig}
-                        onDelete={handleDeleteConfig}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {savedConfigs.length === 0 && (
-              <div className="flex justify-center">
-                <div className="max-w-2xl w-full relative group">
-                  {/* Glow effect */}
-                  <div className="absolute -inset-1 bg-gradient-to-br from-steel-blue via-racing-green to-steel-blue rounded-2xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
-
-                  <div className="relative card-carbon shadow-2xl overflow-hidden">
-                    {/* Racing circuit background */}
-                    <div className="absolute inset-0 opacity-5">
-                      <svg className="w-full h-full" viewBox="0 0 200 200" fill="none">
-                        <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="1" className="text-white" />
-                        <circle cx="100" cy="100" r="60" stroke="currentColor" strokeWidth="1" className="text-white" />
-                        <circle cx="100" cy="100" r="40" stroke="currentColor" strokeWidth="1" className="text-white" />
-                      </svg>
-                    </div>
-
-                    <div className="text-center relative z-10">
-                      {/* Icon with gradient */}
-                      <div className="w-32 h-32 mx-auto mb-8 relative">
-                        <div className="absolute inset-0 bg-gradient-to-br from-steel-blue via-racing-green to-steel-blue rounded-2xl blur-xl opacity-50" />
-                        <div className="relative w-full h-full bg-gradient-to-br from-steel-blue via-racing-green to-steel-blue rounded-2xl p-6 shadow-xl">
-                          <svg fill="currentColor" viewBox="0 0 24 24" className="w-full h-full text-white">
-                            <path d="M12,2L2,7V10H3V20H11V18H13V20H21V10H22V7L12,2M12,4.4L18.8,8H5.2L12,4.4M11,10V12H13V10H11M4,10H9V11H4V10M15,10H20V11H15V10M4,12H9V13H4V12M15,12H20V13H15V12M4,14H9V15H4V14M15,14H20V15H15V14M4,16H9V17H4V16M15,16H20V17H15V16M4,18H9V19H4V18M15,18H20V19H15V18Z"/>
-                          </svg>
-                        </div>
-                      </div>
-
-                      <h3 className="text-3xl font-bold mb-4 text-white">Empty Garage</h3>
-                      <p className="text-neutral-300 leading-relaxed text-lg max-w-md mx-auto mb-8">
-                        Save your first bike configuration to start building your elite garage collection.
-                      </p>
-                      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <span className="badge-racing-accent text-sm px-6 py-3">Ready to Build</span>
-                        <div className="flex items-center gap-2 text-sm text-neutral-400">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                          </svg>
-                          <span>Configure a bike above</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+            </section>
+          )}
         </main>
       </div>
     </>
   );
 }
-
-const GarageCard = ({ config, onLoad, onDelete }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleLoadConfig = async () => {
-    setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 300));
-    onLoad(config);
-    setIsLoading(false);
-  };
-
-  const bikeGradients = {
-    road: 'from-racing-red via-racing-orange to-warning-yellow',
-    gravel: 'from-steel-blue via-racing-green to-steel-blue',
-    mtb: 'from-racing-orange via-racing-red to-carbon-black'
-  };
-
-  const gradient = bikeGradients[config.bikeType] || 'from-steel-blue to-racing-green';
-
-  return (
-    <div className="group relative">
-      {/* Glow effect */}
-      <div className={`absolute -inset-1 bg-gradient-to-br ${gradient} rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
-
-      <div className="relative card-carbon hover-lift-racing shadow-xl h-full">
-        {/* Racing circuit background */}
-        <div className="absolute inset-0 opacity-5">
-          <svg className="w-full h-full" viewBox="0 0 200 200" fill="none">
-            <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="1" className="text-white" />
-            <circle cx="100" cy="100" r="60" stroke="currentColor" strokeWidth="1" className="text-white" />
-          </svg>
-        </div>
-
-        {/* Header with bike type icon */}
-        <div className="relative z-10">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg`}>
-                  <span className="text-white text-xl font-bold">{config.bikeType ? config.bikeType.charAt(0).toUpperCase() : '?'}</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">{config.name}</h3>
-                  <p className="text-sm text-neutral-400 font-medium">{config.bikeType ? config.bikeType.charAt(0).toUpperCase() + config.bikeType.slice(1) : 'Unknown'} Bike</p>
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={() => onDelete(config.id)}
-              className="p-2 rounded-lg transition-all text-neutral-400 hover:bg-racing-red/20 hover:text-racing-red border border-transparent hover:border-racing-red/30 backdrop-blur-sm"
-              title="Delete configuration"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            </button>
-          </div>
-
-          {config.compatibilityResults && (
-            <div className="mb-6">
-              <CompatibilityDisplay compatibilityResults={config.compatibilityResults} className="text-xs"/>
-            </div>
-          )}
-
-          <div className="space-y-6 mb-6">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
-                  </svg>
-                </div>
-                <h4 className="text-sm font-bold text-white">Components</h4>
-              </div>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between items-center p-2 rounded-lg bg-white/5 backdrop-blur-sm">
-                  <span className="text-neutral-400">Crankset:</span>
-                  <span className="font-medium text-white text-right truncate ml-2">{config.proposedSetup?.crankset?.model || 'Not set'}</span>
-                </div>
-                <div className="flex justify-between items-center p-2 rounded-lg bg-white/5 backdrop-blur-sm">
-                  <span className="text-neutral-400">Cassette:</span>
-                  <span className="font-medium text-white text-right truncate ml-2">{config.proposedSetup?.cassette?.model || 'Not set'}</span>
-                </div>
-                <div className="flex justify-between items-center p-2 rounded-lg bg-white/5 backdrop-blur-sm">
-                  <span className="text-neutral-400">Wheel:</span>
-                  <span className="font-medium text-white text-right truncate ml-2">{config.proposedSetup?.wheel || 'Not set'}</span>
-                </div>
-                <div className="flex justify-between items-center p-2 rounded-lg bg-white/5 backdrop-blur-sm">
-                  <span className="text-neutral-400">Tire:</span>
-                  <span className="font-medium text-white text-right truncate ml-2">{config.proposedSetup?.tire || 'Not set'}</span>
-                </div>
-              </div>
-            </div>
-
-            {config.results && (
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
-                    </svg>
-                  </div>
-                  <h4 className="text-sm font-bold text-white">Performance</h4>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 rounded-xl bg-gradient-to-br from-steel-blue/20 to-steel-blue/10 border border-steel-blue/30 backdrop-blur-sm">
-                    <div className="font-bold text-steel-blue text-2xl mb-1 drop-shadow-lg">{config.results.proposed?.totalWeight}g</div>
-                    <div className="text-xs text-neutral-400 font-medium uppercase tracking-wide">Weight</div>
-                  </div>
-                  <div className="text-center p-4 rounded-xl bg-gradient-to-br from-racing-green/20 to-racing-green/10 border border-racing-green/30 backdrop-blur-sm">
-                    <div className="font-bold text-racing-green text-2xl mb-1 drop-shadow-lg">{config.results.proposed?.gearRange}%</div>
-                    <div className="text-xs text-neutral-400 font-medium uppercase tracking-wide">Range</div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <button
-            onClick={handleLoadConfig}
-            disabled={isLoading}
-            className="btn-racing w-full disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden group/btn"
-          >
-            {isLoading ? (
-              <span className="flex items-center justify-center gap-2 relative z-10">
-                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Loading...
-              </span>
-            ) : (
-              <span className="flex items-center justify-center gap-2 relative z-10">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                </svg>
-                Load Configuration
-              </span>
-            )}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};

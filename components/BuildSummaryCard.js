@@ -296,7 +296,7 @@ export default function BuildSummaryCard({
         <button
           onClick={exportToPDF}
           disabled={isExporting || isSetupIncomplete} // FIXED: Disable if any part missing
-          className={`font-medium py-3 px-6 rounded-xl transition-all text-lg ${isExporting || isSetupIncomplete ? 'bg-[var(--bg-tertiary)] text-[var(--text-disabled)] cursor-not-allowed' : 'bg-[var(--brand-green)] text-[var(--text-inverse)] hover:opacity-80'}`}
+          className={`font-medium py-3 px-6 rounded-xl transition-all text-lg ${isExporting || isSetupIncomplete ? 'bg-[var(--bg-tertiary)] text-[var(--text-disabled)] cursor-not-allowed' : 'bg-blue-500 text-white hover:opacity-80'}`}
         >
           <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 

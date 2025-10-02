@@ -7,6 +7,9 @@ export default function Custom404() {
   const router = useRouter();
   const [countdown, setCountdown] = useState(10);
   const [autoRedirect, setAutoRedirect] = useState(true);
+  const [suggestedPage, setSuggestedPage] = useState('/calculator'); // Default for SSR
+  const [pageDisplayName, setPageDisplayName] = useState('Bike Calculator'); // Default for SSR
+  const [isClient, setIsClient] = useState(false);
 
   // Popular tools and pages
   const popularPages = [
@@ -15,28 +18,28 @@ export default function Custom404() {
       description: 'Calculate optimal gear ratios for your bike',
       href: '/calculator',
       icon: '⚙️',
-      color: 'from-brand-orange to-brand-yellow'
+      color: 'from-blue-500 to-blue-600'
     },
     {
       title: 'Professional Bike Fit',
       description: 'Get your perfect bike fit measurements',
       href: '/bike-fit',
       icon: '🚴‍♂️',
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-blue-500 to-blue-600'
     },
     {
       title: 'Tire Pressure Calculator',
       description: 'Find optimal tire pressure for your setup',
       href: '/tire-pressure',
       icon: '🔧',
-      color: 'from-brand-blue to-brand-purple'
+      color: 'from-blue-500 to-blue-600'
     },
     {
       title: 'Ask Riley AI',
       description: 'Get expert cycling advice from AI',
       href: '/ask-riley',
       icon: '🤖',
-      color: 'from-brand-green to-emerald-400'
+      color: 'from-blue-500 to-blue-600'
     }
   ];
 
@@ -70,7 +73,30 @@ export default function Custom404() {
     return '/calculator'; // Default fallback
   };
 
-  const suggestedPage = getPageSuggestion(router.asPath);
+  // Get display name for page
+  const getPageDisplayName = (page) => {
+    const names = {
+      '/calculator': 'Bike Calculator',
+      '/bike-fit': 'Bike Fit Calculator',
+      '/tire-pressure': 'Tire Pressure Calculator',
+      '/ask-riley': 'AI Expert Riley',
+      '/performance-analysis': 'Performance Analysis',
+      '/blog': 'main page',
+      '/about': 'About page',
+      '/docs': 'Documentation'
+    };
+    return names[page] || 'main page';
+  };
+
+  // Set suggested page on client side only to avoid hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+    if (router.asPath) {
+      const newSuggestedPage = getPageSuggestion(router.asPath);
+      setSuggestedPage(newSuggestedPage);
+      setPageDisplayName(getPageDisplayName(newSuggestedPage));
+    }
+  }, [router.asPath]);
 
   useEffect(() => {
     if (!autoRedirect) return;
@@ -100,14 +126,14 @@ export default function Custom404() {
         url="https://cranksmith.com/404"
       />
       
-      <div className="min-h-screen bg-gradient-to-br from-brand-blue via-brand-purple to-brand-green flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex items-center justify-center px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* 404 Animation */}
           <div className="mb-8">
             <div className="text-8xl md:text-9xl font-bold text-white/20 mb-4">
               404
             </div>
-            <div className="w-32 h-32 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-2xl animate-bounce">
+            <div className="w-32 h-32 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center shadow-2xl animate-bounce">
               <span className="text-5xl">🚴‍♂️</span>
             </div>
           </div>
@@ -126,12 +152,7 @@ export default function Custom404() {
               <p className="text-white mb-2">
                 Redirecting you to our{' '}
                 <Link href={suggestedPage} className="text-yellow-300 hover:text-yellow-200 underline">
-                  {suggestedPage === '/calculator' ? 'Bike Calculator' : 
-                   suggestedPage === '/bike-fit' ? 'Bike Fit Calculator' :
-                   suggestedPage === '/tire-pressure' ? 'Tire Pressure Calculator' :
-                   suggestedPage === '/ask-riley' ? 'AI Expert Riley' :
-                   suggestedPage === '/performance-analysis' ? 'Performance Analysis' :
-                   'main page'}
+                  {pageDisplayName}
                 </Link>
                 {' '}in {countdown} seconds
               </p>

@@ -360,7 +360,7 @@ export default function Calculator() {
                     key={type}
                     onClick={() => setBikeType(type)}
                     className={`card cursor-pointer text-left ${
-                      bikeType === type ? 'ring-2 ring-brand-red' : ''
+                      bikeType === type ? 'ring-2 ring-blue-500' : ''
                     }`}
                   >
                     <div className="flex flex-col items-center text-center">

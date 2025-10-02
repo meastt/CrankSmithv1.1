@@ -11,7 +11,7 @@ export default function Privacy() {
       <div className="space-y-8">
         <section className="card">
           <p className="text-sm mb-6" style={{ color: 'var(--text-tertiary)' }}>
-            Last updated: {new Date().toLocaleDateString()}
+            Last updated: December 18, 2024
           </p>
           
           <div className="space-y-6" style={{ color: 'var(--text-secondary)' }}>

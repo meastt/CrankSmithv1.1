@@ -69,10 +69,10 @@ const GearSelectorPanel = React.memo(({
   // Early return if bikeType is not set - prevents empty options rendering
   if (!bikeType || bikeType === '') {
     return (
-      <div className="card-racing group dropdown-container">
+      <div className="card dropdown-container">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-steel-blue/10 flex items-center justify-center text-steel-blue text-xl">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xl">
               {Icon}
             </div>
             <div>
@@ -81,7 +81,7 @@ const GearSelectorPanel = React.memo(({
             </div>
           </div>
           {badge && (
-            <div className={`px-3 py-1 rounded-full text-xs font-bold text-white ${badgeColor || 'bg-steel-blue'}`}>
+            <div className={`px-3 py-1 rounded-full text-xs font-bold text-white ${badgeColor || 'bg-blue-500'}`}>
               {badge}
             </div>
           )}
@@ -123,9 +123,9 @@ const GearSelectorPanel = React.memo(({
   // Show loading state if components are still loading
   if (loading) {
     return (
-      <div className="card-racing group dropdown-container">
+      <div className="card dropdown-container">
         <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-steel-blue"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
           <span className="ml-3 text-neutral-600 dark:text-neutral-400 font-medium">Loading components...</span>
         </div>
       </div>
@@ -135,33 +135,24 @@ const GearSelectorPanel = React.memo(({
   // Show error state if there was an error loading components
   if (error) {
     return (
-      <div className="card-racing group dropdown-container">
+      <div className="card dropdown-container">
         <div className="flex items-center justify-center py-12">
-          <span className="text-racing-red font-medium">Error loading components: {error}</span>
+          <span className="text-red-500 font-medium">Error loading components: {error}</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="card-racing group dropdown-container relative overflow-hidden">
-      {/* Racing circuit background */}
-      <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-        <svg className="w-full h-full" viewBox="0 0 300 300" fill="none">
-          <circle cx="150" cy="150" r="120" stroke="currentColor" strokeWidth="1" className="text-racing-red" />
-          <circle cx="150" cy="150" r="90" stroke="currentColor" strokeWidth="1" className="text-racing-red" />
-          <circle cx="150" cy="150" r="60" stroke="currentColor" strokeWidth="1" className="text-racing-red" />
-        </svg>
-      </div>
-
+    <div className="card dropdown-container">
       {/* Card Header */}
-      <div className="relative z-10 flex items-start justify-between mb-8">
+      <div className="flex items-start justify-between mb-8">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-steel-blue/20 to-steel-blue/10 flex items-center justify-center text-steel-blue text-2xl group-hover:scale-110 transition-transform duration-300">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-2xl">
             {Icon}
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-neutral-900 dark:text-white group-hover:text-racing-red transition-colors">
+            <h3 className="text-2xl font-bold text-neutral-900 dark:text-white">
               {title}
             </h3>
             <p className="text-neutral-600 dark:text-neutral-400 font-medium">
@@ -169,22 +160,22 @@ const GearSelectorPanel = React.memo(({
             </p>
           </div>
         </div>
-        <span className={`px-4 py-2 rounded-full text-sm font-bold text-white shadow-lg ${badgeColor || 'bg-steel-blue'}`}>
+        <span className={`px-4 py-2 rounded-full text-sm font-bold text-white shadow-lg ${badgeColor || 'bg-blue-500'}`}>
           {badge}
         </span>
       </div>
 
       {/* Form Fields */}
-      <div className="relative z-10 space-y-8">
+      <div className="space-y-8">
         {/* Wheel Size Selection */}
-        <div className="group/field">
-          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+        <div>
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white">
             Wheel Size
           </label>
           <select
             value={setup.wheel}
             onChange={(e) => handleWheelChange(e.target.value)}
-            className="input-field group-hover/field:border-racing-red/50 transition-colors"
+            className="input-field"
           >
             <option value="">Select wheel size</option>
             {config.wheelSizes.map((size) => (
@@ -196,14 +187,14 @@ const GearSelectorPanel = React.memo(({
         </div>
 
         {/* Tire Width */}
-        <div className="group/field">
-          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+        <div>
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white">
             Tire Width
           </label>
           <select
             value={setup.tire}
             onChange={(e) => handleTireChange(e.target.value)}
-            className="input-field group-hover/field:border-racing-red/50 transition-colors"
+            className="input-field"
           >
             <option value="">Select tire width</option>
             {config.tireWidths.map((width) => (
@@ -215,8 +206,8 @@ const GearSelectorPanel = React.memo(({
         </div>
 
         {/* Crankset with Visual Icons */}
-        <div className="group/field">
-          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+        <div>
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white">
             Crankset
           </label>
           <div className="relative">
@@ -230,8 +221,8 @@ const GearSelectorPanel = React.memo(({
         </div>
 
         {/* Cassette with Visual Icons */}
-        <div className="group/field">
-          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white group-hover/field:text-racing-red transition-colors">
+        <div>
+          <label className="block text-sm font-bold mb-4 text-neutral-900 dark:text-white">
             Cassette
           </label>
           <div className="relative">

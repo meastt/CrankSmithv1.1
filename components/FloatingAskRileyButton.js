@@ -38,7 +38,7 @@ export default function FloatingAskRileyButton() {
     <div className="fixed bottom-6 right-6 z-50 floating-element">
       <Link
         href="/ask-riley"
-        className={`group flex items-center gap-3 bg-gradient-to-r from-brand-blue to-brand-purple text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+        className={`group flex items-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
           isExpanded ? 'px-6 py-4' : 'p-4'
         }`}
         onMouseEnter={handleMouseEnter}
@@ -59,7 +59,7 @@ export default function FloatingAskRileyButton() {
         </div>
 
         {/* Pulse animation for attention */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-brand-blue to-brand-purple opacity-75 animate-ping" />
+        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 opacity-75 animate-ping" />
       </Link>
 
       {/* Tooltip for when not expanded */}

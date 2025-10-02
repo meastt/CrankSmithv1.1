@@ -115,7 +115,7 @@ export default function AskRiley() {
           </div>
         </div>
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-brand-blue to-brand-purple text-white py-16">
+        <section className="bg-gradient-to-br from-blue-500 to-blue-600 text-white py-16">
           <div className="container-responsive">
             <div className="max-w-3xl mx-auto text-center">
               <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -144,7 +144,7 @@ export default function AskRiley() {
               {/* Chat Header */}
               <div className="border-b border-neutral-200 dark:border-neutral-800 p-6 bg-neutral-50 dark:bg-neutral-800">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                     <span className="text-xl">🤖</span>
                   </div>
                   <div>
@@ -251,7 +251,7 @@ export default function AskRiley() {
 
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                   <span className="text-2xl text-white">🔧</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-neutral-900 dark:text-white">Upgrade Questions</h3>
@@ -261,7 +261,7 @@ export default function AskRiley() {
               </div>
 
               <div className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                   <span className="text-2xl text-white">📋</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-neutral-900 dark:text-white">Installation Guides</h3>
@@ -271,7 +271,7 @@ export default function AskRiley() {
               </div>
 
               <div className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                   <span className="text-2xl text-white">✅</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-neutral-900 dark:text-white">Compatibility Checks</h3>

@@ -42,24 +42,6 @@ export default function App({ Component, pageProps }) {
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         </Head>
         
-        {/* Theme Initialization Script */}
-        <Script id="theme-init" strategy="beforeInteractive">
-          {`
-            try {
-              const savedTheme = localStorage.getItem('theme') || 'light';
-              if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.documentElement.setAttribute('data-theme', 'dark');
-              } else {
-                document.documentElement.classList.remove('dark');
-                document.documentElement.setAttribute('data-theme', 'light');
-              }
-            } catch (e) {
-              document.documentElement.classList.remove('dark');
-              document.documentElement.setAttribute('data-theme', 'light');
-            }
-          `}
-        </Script>
         
         {/* Google Analytics */}
         <Script
@@ -103,24 +85,6 @@ export default function App({ Component, pageProps }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       
-      {/* Theme Initialization Script */}
-      <Script id="theme-init-desktop" strategy="beforeInteractive">
-        {`
-          try {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            if (savedTheme === 'dark') {
-              document.documentElement.classList.add('dark');
-              document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-              document.documentElement.setAttribute('data-theme', 'light');
-            }
-          } catch (e) {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.setAttribute('data-theme', 'light');
-          }
-        `}
-      </Script>
       
       {/* Google Analytics */}
       <Script

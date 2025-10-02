@@ -212,7 +212,7 @@ export default function Layout({ children }) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block text-sm hover:text-brand-red transition-colors text-neutral-600 dark:text-neutral-400"
+                    className="block text-sm hover:text-blue-600 transition-colors text-neutral-600 dark:text-neutral-400"
                   >
                     {link.label}
                   </Link>
@@ -244,13 +244,13 @@ export default function Layout({ children }) {
 
           <div className="border-t mt-8 pt-6 flex flex-col md:flex-row justify-between items-center border-neutral-200 dark:border-neutral-800">
             <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              © {new Date().getFullYear()} CrankSmith
+              © 2024 CrankSmith
             </p>
             <div className="flex items-center gap-6 mt-4 md:mt-0">
-              <Link href="/blog" className="text-sm hover:text-brand-red transition-colors text-neutral-500 dark:text-neutral-400">
+              <Link href="/blog" className="text-sm hover:text-blue-600 transition-colors text-neutral-500 dark:text-neutral-400">
                 Blog
               </Link>
-              <Link href="/about" className="text-sm hover:text-brand-red transition-colors text-neutral-500 dark:text-neutral-400">
+              <Link href="/about" className="text-sm hover:text-blue-600 transition-colors text-neutral-500 dark:text-neutral-400">
                 About
               </Link>
             </div>

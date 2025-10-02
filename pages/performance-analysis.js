@@ -36,7 +36,7 @@ export default function PerformanceAnalysis() {
         keywords="cycling performance analysis, bike speed calculator, cadence analysis, cycling efficiency, power analysis, training zones"
         url="https://cranksmith.com/performance-analysis"
       />
-      <div className="min-h-screen bg-gradient-to-br from-brand-blue via-brand-purple to-brand-green flex flex-col items-center justify-center py-10 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 flex flex-col items-center justify-center py-10 px-4">
         <div className="bg-white/90 dark:bg-neutral-900/90 rounded-2xl shadow-xl p-6 max-w-lg w-full">
           <h1 className="text-2xl font-bold mb-4 text-center text-brand-blue">Performance Analysis</h1>
           <div className="mb-4">

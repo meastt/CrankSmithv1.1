@@ -17,28 +17,28 @@ export default function Home() {
       title: 'Gear Calculator',
       description: 'Calculate gear ratios, check compatibility, and optimize your drivetrain setup.',
       href: '/calculator',
-      color: 'from-red-500 to-orange-500'
+      color: 'from-blue-500 to-blue-600'
     },
     {
       icon: '🚴',
       title: 'Bike Fit',
       description: 'Get precise frame sizing recommendations using professional fitting methods.',
       href: '/bike-fit',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-blue-500 to-blue-600'
     },
     {
       icon: '🔧',
       title: 'Tire Pressure',
       description: 'Calculate optimal tire pressure based on your weight, tire size, and terrain.',
       href: '/tire-pressure',
-      color: 'from-green-500 to-emerald-500'
+      color: 'from-blue-500 to-blue-600'
     },
     {
       icon: '🤖',
       title: 'Ask Riley AI',
       description: 'Get personalized cycling advice from our AI assistant.',
       href: '/ask-riley',
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-blue-500 to-blue-600'
     }
   ];
 
@@ -141,7 +141,7 @@ export default function Home() {
                       {tool.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-bold mb-2 text-neutral-900 dark:text-white group-hover:text-brand-red transition-colors">
+                      <h3 className="text-xl font-bold mb-2 text-neutral-900 dark:text-white group-hover:text-blue-600 transition-colors">
                         {tool.title}
                       </h3>
                       <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">

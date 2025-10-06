@@ -47,12 +47,12 @@ export default function BlogPage() {
         url="https://cranksmith.com/blog"
       />
       
-      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 dark:from-carbon-black dark:via-neutral-900 dark:to-neutral-800">
         <div className="max-w-4xl mx-auto px-4 py-12">
           {/* Header */}
           <div className="mb-12">
-            <h1 className="text-4xl font-bold mb-4">CrankSmith Blog</h1>
-            <p className="text-[var(--text-secondary)] text-lg">
+            <h1 className="text-4xl font-bold mb-4 text-neutral-900 dark:text-white">CrankSmith Blog</h1>
+            <p className="text-neutral-600 dark:text-neutral-300 text-lg">
               Expert tips on bike gearing, performance, and optimization
             </p>
           </div>
@@ -65,14 +65,14 @@ export default function BlogPage() {
           </div>
 
           {/* Call to Action */}
-          <div className="mt-16 bg-[var(--bg-secondary)] rounded-lg p-8 text-center">
-            <h2 className="text-2xl font-bold mb-4">Ready to Optimize Your Setup?</h2>
-            <p className="text-[var(--text-secondary)] mb-6">
+          <div className="mt-16 bg-white dark:bg-neutral-800 rounded-lg p-8 text-center shadow-sm border border-neutral-200 dark:border-neutral-700">
+            <h2 className="text-2xl font-bold mb-4 text-neutral-900 dark:text-white">Ready to Optimize Your Setup?</h2>
+            <p className="text-neutral-600 dark:text-neutral-300 mb-6">
               Use CrankSmith's gear calculator to find your perfect drivetrain configuration
             </p>
             <Link 
               href="/calculator"
-              className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Try the Calculator
             </Link>
@@ -86,28 +86,28 @@ export default function BlogPage() {
 // Blog Post Card Component
 function BlogPostCard({ post }) {
   return (
-    <article className="bg-[var(--bg-secondary)] rounded-lg p-6 hover:bg-[var(--bg-tertiary)] transition-colors">
-      <div className="flex items-center gap-4 mb-3 text-sm text-[var(--text-secondary)]">
-        <span className="bg-[var(--accent-blue)] text-white px-2 py-1 rounded text-xs">
+    <article className="bg-white dark:bg-neutral-800 rounded-lg p-6 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors shadow-sm border border-neutral-200 dark:border-neutral-700">
+      <div className="flex items-center gap-4 mb-3 text-sm text-neutral-600 dark:text-neutral-300">
+        <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
           {post.category}
         </span>
         <time>{new Date(post.date).toLocaleDateString()}</time>
         <span>{post.readTime}</span>
       </div>
       
-      <h2 className="text-xl font-bold mb-3 hover:text-[var(--accent-blue)]">
+      <h2 className="text-xl font-bold mb-3 hover:text-blue-600 dark:hover:text-blue-400 text-neutral-900 dark:text-white">
         <Link href={`/blog/${post.id}`}>
           {post.title}
         </Link>
       </h2>
       
-      <p className="text-[var(--text-secondary)] mb-4">
+      <p className="text-neutral-600 dark:text-neutral-300 mb-4">
         {post.excerpt}
       </p>
       
       <Link 
         href={`/blog/${post.id}`}
-        className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] font-medium"
+        className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
       >
         Read More →
       </Link>

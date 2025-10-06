@@ -11,34 +11,34 @@ export default function BikeGearOptimizationGuide() {
         keywords="bike gear optimization, gear ratios, cycling cadence, climbing gears, drivetrain setup, bike performance, cycling efficiency"
       />
       
-      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 dark:from-carbon-black dark:via-neutral-900 dark:to-neutral-800">
         <div className="max-w-4xl mx-auto px-4 py-12">
           {/* Back Link */}
-          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
+          <Link href="/blog" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mb-8 inline-block">
             ← Back to Blog
           </Link>
 
           {/* Article Header */}
           <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
-              <span className="bg-[var(--success-green)] text-white px-2 py-1 rounded text-xs">
+            <div className="flex items-center gap-4 mb-4 text-sm text-neutral-600 dark:text-neutral-300">
+              <span className="bg-green-500 text-white px-2 py-1 rounded text-xs">
                 Gear Optimization
               </span>
               <time>December 16, 2024</time>
               <span>12 min read</span>
             </div>
             
-            <h1 className="text-4xl font-bold mb-4">
+            <h1 className="text-4xl font-bold mb-4 text-neutral-900 dark:text-white">
               Complete Bike Gear Optimization Guide
             </h1>
             
-            <p className="text-xl text-[var(--text-secondary)]">
+            <p className="text-xl text-neutral-600 dark:text-neutral-300">
               Master the art of gear selection and optimize your cycling performance with our comprehensive guide to bike gearing.
             </p>
           </header>
 
           {/* Article Content */}
-          <article className="prose prose-invert max-w-none">
+          <article className="prose prose-lg max-w-none text-neutral-700 dark:text-neutral-300">
             <p>
               Whether you're a road cyclist, mountain biker, or gravel rider, understanding gear optimization is crucial for maximizing your performance and enjoyment on the bike. This comprehensive guide will teach you everything you need to know about bike gearing, from basic concepts to advanced optimization techniques.
             </p>
@@ -174,14 +174,14 @@ export default function BikeGearOptimizationGuide() {
               Optimizing your bike's gearing is an ongoing process that requires understanding your riding style, terrain, and fitness level. Use CrankSmith's tools to experiment with different configurations and find what works best for you. Remember, the best gear setup is the one that keeps you pedaling efficiently and enjoying your rides.
             </p>
 
-            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 mt-8">
-              <h3 className="text-xl font-bold mb-4">Ready to Optimize Your Setup?</h3>
-              <p className="mb-4">
+            <div className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-6 mt-8">
+              <h3 className="text-xl font-bold mb-4 text-neutral-900 dark:text-white">Ready to Optimize Your Setup?</h3>
+              <p className="mb-4 text-neutral-600 dark:text-neutral-300">
                 Use CrankSmith's free gear calculator to find your perfect drivetrain configuration.
               </p>
               <Link 
                 href="/calculator"
-                className="inline-block bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
               >
                 Try the Calculator
               </Link>

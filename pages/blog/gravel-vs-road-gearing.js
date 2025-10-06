@@ -11,34 +11,34 @@ export default function GravelVsRoadGearing() {
         url="https://cranksmith.com/blog/gravel-vs-road-gearing"
       />
       
-      <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-100 dark:from-carbon-black dark:via-neutral-900 dark:to-neutral-800">
         <div className="max-w-3xl mx-auto px-4 py-12">
           {/* Back Link */}
-          <Link href="/blog" className="text-[var(--accent-blue)] hover:text-[var(--accent-blue-hover)] mb-8 inline-block">
+          <Link href="/blog" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mb-8 inline-block">
             ← Back to Blog
           </Link>
 
           {/* Article Header */}
           <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4 text-sm text-[var(--text-secondary)]">
-              <span className="bg-[var(--success-green)] text-white px-2 py-1 rounded text-xs">
+            <div className="flex items-center gap-4 mb-4 text-sm text-neutral-600 dark:text-neutral-300">
+              <span className="bg-green-500 text-white px-2 py-1 rounded text-xs">
                 Bike Setup
               </span>
               <time>June 10, 2025</time>
               <span>7 min read</span>
             </div>
             
-            <h1 className="text-4xl font-bold mb-4">
+            <h1 className="text-4xl font-bold mb-4 text-neutral-900 dark:text-white">
               Gravel vs Road Bike Gearing: What's the Difference?
             </h1>
             
-            <p className="text-xl text-[var(--text-secondary)]">
+            <p className="text-xl text-neutral-600 dark:text-neutral-300">
               Understanding why gravel bikes need different gear ratios and how to optimize for mixed terrain riding.
             </p>
           </header>
 
           {/* Article Content */}
-          <article className="prose prose-invert max-w-none">
+          <article className="prose prose-lg max-w-none text-neutral-700 dark:text-neutral-300">
             <p>
               If you've ever wondered why your road bike feels inadequate on gravel trails, or why gravel bikes have such different gearing, you're not alone. The terrain demands completely different approaches to gear selection.
             </p>

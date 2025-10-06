@@ -392,15 +392,17 @@ export default function SearchableDropdown({
                   listHeight: Math.min(300, flattenedOptions.length * 64),
                   itemCount: flattenedOptions.length
                 }) */}
-                {React.createElement(List as any, {
-                  ref: listRef as any,
-                  height: Math.min(300, flattenedOptions.length * 64),
-                  itemCount: flattenedOptions.length,
-                  itemSize: 64,
-                  width: "100%",
-                  overscanCount: 5,
-                  children: Row
-                })}
+                {/* @ts-ignore */}
+                <List
+                  ref={listRef as any}
+                  height={Math.min(300, flattenedOptions.length * 64)}
+                  itemCount={flattenedOptions.length}
+                  itemSize={64}
+                  width="100%"
+                  overscanCount={5}
+                >
+                  {Row}
+                </List>
               </>
             )}
           </div>

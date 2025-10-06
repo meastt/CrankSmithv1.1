@@ -3,8 +3,12 @@ import React, { useState, useRef, useEffect, useMemo, useCallback, ReactElement 
 import { FixedSizeList as List } from 'react-window';
 import { DropdownOption, GroupedOptions } from '../types';
 
-// Type for react-window List component
-type ListComponent = React.ComponentType<any>;
+// Type for react-window List component with methods
+interface ListRef {
+  scrollToItem: (index: number, align?: 'auto' | 'smart' | 'center' | 'end' | 'start') => void;
+  scrollTo: (scrollOffset: number) => void;
+  scrollToPosition: (scrollOffset: number) => void;
+}
 
 interface SearchableDropdownProps {
   options: DropdownOption[];
@@ -35,7 +39,7 @@ export default function SearchableDropdown({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<ListComponent>(null);
+  const listRef = useRef<ListRef>(null);
   const focusTimeout = useRef<NodeJS.Timeout | null>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -389,7 +393,7 @@ export default function SearchableDropdown({
                   itemCount: flattenedOptions.length
                 }) */}
                 {React.createElement(List as any, {
-                  ref: listRef,
+                  ref: listRef as any,
                   height: Math.min(300, flattenedOptions.length * 64),
                   itemCount: flattenedOptions.length,
                   itemSize: 64,

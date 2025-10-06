@@ -1,8 +1,12 @@
 // lib/pwa-enhanced.ts - Enhanced PWA utilities with offline support and background sync
 import { ServiceWorkerMessage } from '../types';
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<{ userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }> }>;
+}
+
 let swRegistration: ServiceWorkerRegistration | null = null;
-let installPromptEvent: any = null;
+let installPromptEvent: BeforeInstallPromptEvent | null = null;
 
 // Enhanced service worker registration
 export async function registerEnhancedServiceWorker(): Promise<void> {
@@ -97,7 +101,7 @@ export function initializeEnhancedPWA(): void {
   // Listen for install prompt
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    installPromptEvent = e;
+    installPromptEvent = e as BeforeInstallPromptEvent;
     console.log('PWA install prompt captured');
   });
 
@@ -130,7 +134,7 @@ export async function installEnhancedPWA(): Promise<boolean> {
     const result = await installPromptEvent.prompt();
     const userChoice = await result.userChoice;
     
-    if (userChoice === 'accepted') {
+    if (userChoice.outcome === 'accepted') {
       console.log('User accepted PWA install');
       return true;
     } else {
@@ -151,7 +155,7 @@ export function canInstallEnhancedPWA(): boolean {
 }
 
 // Offline configuration management
-export async function saveConfigurationOffline(config: any): Promise<void> {
+export async function saveConfigurationOffline(config: Record<string, unknown>): Promise<void> {
   if (!swRegistration?.active) {
     console.warn('Service worker not available for offline save');
     return;
@@ -170,7 +174,7 @@ export async function saveConfigurationOffline(config: any): Promise<void> {
 }
 
 // Get cache status
-export async function getCacheStatus(): Promise<any> {
+export async function getCacheStatus(): Promise<{ hasOfflineData: boolean; hasPendingSync: boolean }> {
   return new Promise((resolve) => {
     if (!swRegistration?.active) {
       resolve({ hasOfflineData: false, hasPendingSync: false });
@@ -292,10 +296,10 @@ export async function networkAwareFetch(
 
 // Offline-first calculation wrapper
 export async function offlineCalculateResults(
-  currentSetup: any,
-  proposedSetup: any,
+  currentSetup: Record<string, unknown>,
+  proposedSetup: Record<string, unknown>,
   speedUnit: string
-): Promise<any> {
+): Promise<Record<string, unknown>> {
   try {
     // Try to import calculation function directly
     const { calculateRealPerformance } = await import('./calculateRealPerformance');

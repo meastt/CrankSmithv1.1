@@ -48,6 +48,30 @@ export default function GravelVsRoadGearing() {
               Road bikes prioritize speed and efficiency on smooth pavement, while gravel bikes need versatility for everything from loose dirt to steep off-road climbs. This fundamental difference drives every gearing decision.
             </p>
 
+            <h3>Gear Ratio Considerations</h3>
+            <p>
+              <strong>Road Bikes:</strong> Typically use 50/34T or 52/36T chainrings with 11-28T or 11-30T cassettes. This provides tight gear spacing for maintaining optimal cadence on varied road terrain.
+            </p>
+            <p>
+              <strong>Gravel Bikes:</strong> Often feature 46/30T or 48/31T chainrings with 11-34T or 11-36T cassettes. The lower gearing helps tackle steep climbs and loose surfaces where maintaining momentum is crucial.
+            </p>
+
+            <h3>Why Lower Gears Matter for Gravel</h3>
+            <p>
+              Gravel riding presents unique challenges that road cycling doesn't:
+            </p>
+            <ul>
+              <li><strong>Loose surfaces:</strong> Require more power to maintain speed</li>
+              <li><strong>Steep climbs:</strong> Often steeper than road climbs</li>
+              <li><strong>Variable conditions:</strong> Mud, sand, and rocks demand flexibility</li>
+              <li><strong>Heavier bikes:</strong> Gravel bikes are typically heavier than road bikes</li>
+            </ul>
+
+            <h3>Optimizing Your Setup</h3>
+            <p>
+              Use CrankSmith's gear calculator to find your optimal setup. Input your current components and riding style to see how different gear ratios will perform on your typical routes.
+            </p>
+
             <h3>Gear Range Comparison</h3>
             <p>
               <strong>Road bikes:</strong> Typically 34/50 chainrings with 11-28 or 11-32 cassettes<br/>

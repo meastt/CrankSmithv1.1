@@ -126,8 +126,11 @@ export default function Home() {
         <section className="container-responsive py-16">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12 text-neutral-900 dark:text-white">
-              Cycling Tools
+              Professional Cycling Tools
             </h2>
+            <p className="text-center text-neutral-600 dark:text-neutral-300 mb-12 max-w-3xl mx-auto">
+              From gear calculations to bike fitting, our comprehensive suite of tools helps cyclists of all levels optimize their performance and comfort.
+            </p>
             <div className="grid md:grid-cols-2 gap-6">
               {tools.map((tool, index) => (
                 <Link
@@ -197,6 +200,64 @@ export default function Home() {
             </Link>
           </div>
         </section>
+
+        {/* Footer */}
+        <footer className="bg-neutral-900 dark:bg-neutral-950 text-white py-16">
+          <div className="container-responsive">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid md:grid-cols-4 gap-8">
+                {/* Tools */}
+                <div>
+                  <h3 className="text-lg font-bold mb-4">Tools</h3>
+                  <ul className="space-y-2 text-neutral-300">
+                    <li><Link href="/calculator" className="hover:text-white transition-colors">Gear Calculator</Link></li>
+                    <li><Link href="/bike-fit" className="hover:text-white transition-colors">Bike Fit Tool</Link></li>
+                    <li><Link href="/tire-pressure" className="hover:text-white transition-colors">Tire Pressure</Link></li>
+                    <li><Link href="/ask-riley" className="hover:text-white transition-colors">Ask Riley AI</Link></li>
+                  </ul>
+                </div>
+
+                {/* Resources */}
+                <div>
+                  <h3 className="text-lg font-bold mb-4">Resources</h3>
+                  <ul className="space-y-2 text-neutral-300">
+                    <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+                    <li><Link href="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
+                    <li><Link href="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
+                    <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+                  </ul>
+                </div>
+
+                {/* Support */}
+                <div>
+                  <h3 className="text-lg font-bold mb-4">Support</h3>
+                  <ul className="space-y-2 text-neutral-300">
+                    <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                    <li><Link href="/mobile" className="hover:text-white transition-colors">Mobile App</Link></li>
+                    <li><Link href="/performance-analysis" className="hover:text-white transition-colors">Performance Analysis</Link></li>
+                  </ul>
+                </div>
+
+                {/* Company */}
+                <div>
+                  <h3 className="text-lg font-bold mb-4">CrankSmith</h3>
+                  <p className="text-neutral-300 mb-4">
+                    Free, professional cycling tools for cyclists worldwide.
+                  </p>
+                  <div className="flex space-x-4">
+                    <a href="https://twitter.com/cranksmithapp" className="text-neutral-400 hover:text-white transition-colors">
+                      Twitter
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-neutral-800 mt-12 pt-8 text-center text-neutral-400">
+                <p>&copy; 2024 CrankSmith. All rights reserved. Made with ❤️ for cyclists.</p>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   );

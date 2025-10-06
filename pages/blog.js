@@ -5,6 +5,14 @@ import SEOHead from '../components/SEOHead';
 // Sample blog posts - you'll replace this with actual content
 const blogPosts = [
   {
+    id: 'bike-gear-optimization-guide',
+    title: 'Complete Bike Gear Optimization Guide',
+    excerpt: 'Master bike gear optimization with our comprehensive guide. Learn gear ratios, cadence, climbing gears, and how to choose the perfect drivetrain setup.',
+    date: '2024-12-16',
+    readTime: '12 min read',
+    category: 'Gear Optimization'
+  },
+  {
     id: 'optimal-climbing-gears',
     title: 'How to Choose Optimal Climbing Gears for Your Next Hill Climb',
     excerpt: 'Learn the science behind gear selection for steep climbs and maintain your cadence when the road goes up.',

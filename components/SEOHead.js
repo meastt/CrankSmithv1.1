@@ -4,7 +4,7 @@ export default function SEOHead({
   title = "CrankSmith - Professional Bike Gear Calculator & Drivetrain Compatibility Tool",
   description = "Professional bike gear ratio calculator, drivetrain compatibility checker, and bike fit calculator. Perfect for cyclists, bike shops, and bike mechanics. Calculate optimal gearing for road, mountain, gravel, and touring bikes.",
   url = "https://cranksmith.com",
-  image = "/og-image.jpg",
+  image = "/og-image.svg",
   keywords = "bike gear calculator, gear ratio calculator, drivetrain compatibility, bike fit calculator, cycling gear, bicycle gearing, bike setup, cycling tools, bike mechanics, cycling optimization",
   type = "website",
   structuredData = null,
@@ -123,6 +123,26 @@ export default function SEOHead({
       <meta name='impact-site-verification' value='8d751d83-117e-4b87-b7c0-253d7bb08754' />
       {/* <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" /> */}
       {/* <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE" /> */}
+      
+      {/* Performance and Loading Optimization */}
+      <meta name="format-detection" content="telephone=no" />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="apple-mobile-web-app-title" content="CrankSmith" />
+      
+      {/* Additional SEO Meta Tags */}
+      <meta name="theme-color" content="#0086F4" />
+      <meta name="msapplication-TileColor" content="#0086F4" />
+      <meta name="msapplication-config" content="/browserconfig.xml" />
+      
+      {/* Preconnect to external domains for performance */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      
+      {/* DNS Prefetch for performance */}
+      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+      <link rel="dns-prefetch" href="//fonts.gstatic.com" />
     </Head>
   );
 } 

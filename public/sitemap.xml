@@ -77,6 +77,13 @@
 
   <!-- Blog Articles - Medium Priority -->
   <url>
+    <loc>https://cranksmith.com/blog/bike-gear-optimization-guide</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
     <loc>https://cranksmith.com/blog/gravel-vs-road-gearing</loc>
     <lastmod>2024-12-16</lastmod>
     <changefreq>monthly</changefreq>
@@ -97,9 +104,49 @@
     <priority>0.5</priority>
   </url>
 
+  <!-- FAQ Page - High Priority -->
+  <url>
+    <loc>https://cranksmith.com/faq</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Alternative Entry Point -->
   <url>
     <loc>https://cranksmith.com/landing</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Mobile App -->
+  <url>
+    <loc>https://cranksmith.com/mobile</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Performance Analysis -->
+  <url>
+    <loc>https://cranksmith.com/performance-analysis</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://cranksmith.com/privacy</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://cranksmith.com/about</loc>
     <lastmod>2024-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>

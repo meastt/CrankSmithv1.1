@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable experimental features for better performance
-  experimental: {
-    optimizeCss: true,
-  },
+  // Disable CSS optimization to fix build errors
+  // experimental: {
+  //   optimizeCss: true,
+  // },
   
   // Image optimization
   images: {

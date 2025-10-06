@@ -3,6 +3,9 @@ import React, { useState, useRef, useEffect, useMemo, useCallback, ReactElement 
 import { FixedSizeList as List } from 'react-window';
 import { DropdownOption, GroupedOptions } from '../types';
 
+// Type for react-window List component
+type ListComponent = React.ComponentType<any>;
+
 interface SearchableDropdownProps {
   options: DropdownOption[];
   value?: DropdownOption | string | null;
@@ -32,7 +35,7 @@ export default function SearchableDropdown({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<any>(null);
+  const listRef = useRef<ListComponent>(null);
   const focusTimeout = useRef<NodeJS.Timeout | null>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -385,16 +388,15 @@ export default function SearchableDropdown({
                   listHeight: Math.min(300, flattenedOptions.length * 64),
                   itemCount: flattenedOptions.length
                 }) */}
-                <List
-                  ref={listRef}
-                  height={Math.min(300, flattenedOptions.length * 64)}
-                  itemCount={flattenedOptions.length}
-                  itemSize={64}
-                  width="100%"
-                  overscanCount={5}
-                >
-                  {Row as any}
-                </List>
+                {React.createElement(List as any, {
+                  ref: listRef,
+                  height: Math.min(300, flattenedOptions.length * 64),
+                  itemCount: flattenedOptions.length,
+                  itemSize: 64,
+                  width: "100%",
+                  overscanCount: 5,
+                  children: Row
+                })}
               </>
             )}
           </div>

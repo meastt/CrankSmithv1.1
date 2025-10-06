@@ -3,9 +3,6 @@ import React, { useState, useRef, useEffect, useMemo, useCallback, ReactElement 
 import { FixedSizeList as List } from 'react-window';
 import { DropdownOption, GroupedOptions } from '../types';
 
-// Type for the List component
-type ListRef = React.RefObject<React.ComponentType<any>>;
-
 interface SearchableDropdownProps {
   options: DropdownOption[];
   value?: DropdownOption | string | null;

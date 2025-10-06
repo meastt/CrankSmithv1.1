@@ -3,6 +3,9 @@ import React, { useState, useRef, useEffect, useMemo, useCallback, ReactElement 
 import { FixedSizeList as List } from 'react-window';
 import { DropdownOption, GroupedOptions } from '../types';
 
+// Type for the List component
+type ListRef = React.RefObject<React.ComponentType<any>>;
+
 interface SearchableDropdownProps {
   options: DropdownOption[];
   value?: DropdownOption | string | null;
@@ -32,7 +35,7 @@ export default function SearchableDropdown({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<List>(null);
+  const listRef = useRef<any>(null);
   const focusTimeout = useRef<NodeJS.Timeout | null>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -232,18 +235,8 @@ export default function SearchableDropdown({
     if (item.type === 'group') {
       return (
         <div
-          style={{
-            ...style,
-            padding: '8px 12px',
-            background: 'var(--bg-secondary)',
-            color: 'var(--text-secondary)',
-            borderBottom: '1px solid var(--border-subtle)',
-            fontSize: '12px',
-            fontWeight: '600',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1
-          }}
+          style={style}
+          className="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 text-xs font-semibold sticky top-0 z-10"
         >
           {item.name}
         </div>
@@ -258,57 +251,35 @@ export default function SearchableDropdown({
 
     return (
       <div
-        style={{
-          ...style,
-          padding: '12px 16px',
-          cursor: 'pointer',
-          background: isHighlighted 
-            ? 'rgb(var(--brand-blue))' 
-            : isSelected 
-              ? 'rgb(var(--bg-tertiary))' 
-              : 'transparent',
-          color: isHighlighted ? 'white' : 'rgb(var(--text-primary))',
-          transition: 'background-color 0.1s ease'
-        }}
+        style={style}
+        className={`
+          px-4 py-3 cursor-pointer transition-colors
+          ${isHighlighted ? 'bg-blue-500 text-white' : ''}
+          ${isSelected ? 'bg-blue-50 dark:bg-blue-900 text-blue-900 dark:text-blue-100' : 'text-gray-900 dark:text-gray-100'}
+          ${!isHighlighted && !isSelected ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''}
+        `}
         onClick={() => handleSelect(option)}
         onMouseEnter={() => setHighlightedIndex(index)}
       >
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '12px' }}>
-          <div style={{ fontWeight: '500', fontSize: '16px' }}>
+        <div className="flex items-baseline justify-between gap-3">
+          <div className="font-medium text-base">
             {option.model}
             {option.recommended && (
-              <span style={{
-                background: '#2563eb', color: 'white', fontSize: '11px', borderRadius: '6px', padding: '2px 6px', marginLeft: '8px', fontWeight: 600
-              }}>Recommended</span>
+              <span className="ml-2 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium rounded">
+                Recommended
+              </span>
             )}
             {option.popular && !option.recommended && (
-              <span style={{
-                background: '#f59e42', color: 'white', fontSize: '11px', borderRadius: '6px', padding: '2px 6px', marginLeft: '8px', fontWeight: 600
-              }}>Popular</span>
+              <span className="ml-2 px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs font-medium rounded">
+                Popular
+              </span>
             )}
           </div>
-          <div 
-            style={{ 
-              fontSize: '14px',
-              fontWeight: '400',
-              flexShrink: 0,
-              color: isHighlighted 
-                ? 'rgba(255,255,255,0.85)' 
-                : 'rgb(var(--text-tertiary))'
-            }}
-          >
+          <div className="text-sm font-normal flex-shrink-0 text-gray-500 dark:text-gray-400">
             {option.weight}g
           </div>
         </div>
-        <div 
-          style={{ 
-            fontSize: '14px',
-            marginTop: '4px',
-            color: isHighlighted 
-              ? 'rgba(255,255,255,0.75)' 
-              : 'rgb(var(--text-tertiary))'
-          }}
-        >
+        <div className="text-sm mt-1 text-gray-600 dark:text-gray-400">
           {option.variant}
         </div>
       </div>
@@ -425,7 +396,7 @@ export default function SearchableDropdown({
                   width="100%"
                   overscanCount={5}
                 >
-                  {Row}
+                  {Row as any}
                 </List>
               </>
             )}

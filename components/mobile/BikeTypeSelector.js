@@ -1,5 +1,4 @@
 // components/mobile/BikeTypeSelector.js - Mobile-optimized bike type selection
-import { bikeConfig } from '../../lib/components';
 
 export default function BikeTypeSelector({ bikeType, setBikeType, onNext }) {
   const bikeTypes = [

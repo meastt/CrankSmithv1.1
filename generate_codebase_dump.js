@@ -42,10 +42,8 @@ function generateCodebaseDump() {
   const rootDir = process.cwd();
   const outputFile = `CrankSmith_Codebase_Dump_${new Date().toISOString().slice(0, 19).replace(/:/g, '')}.txt`;
   
-  console.log('🔍 Scanning codebase...');
   const allFiles = getAllFiles(rootDir);
   
-  console.log(`📁 Found ${allFiles.length} files to process`);
   
   let output = '';
   output += '='.repeat(80) + '\n';
@@ -64,7 +62,6 @@ function generateCodebaseDump() {
     output += content;
     output += '\n';
     
-    console.log(`📄 Processed: ${relativePath}`);
   });
   
   output += '\n' + '='.repeat(80) + '\n';
@@ -74,10 +71,6 @@ function generateCodebaseDump() {
   // Write to file
   fs.writeFileSync(outputFile, output, 'utf8');
   
-  console.log(`\n✅ Codebase dump generated successfully!`);
-  console.log(`📄 Output file: ${outputFile}`);
-  console.log(`📊 Total files processed: ${allFiles.length}`);
-  console.log(`📏 File size: ${(fs.statSync(outputFile).size / 1024 / 1024).toFixed(2)} MB`);
   
   return outputFile;
 }
@@ -86,7 +79,6 @@ function generateCodebaseDump() {
 if (require.main === module) {
   try {
     const outputFile = generateCodebaseDump();
-    console.log(`\n🎉 Codebase dump complete! Check: ${outputFile}`);
   } catch (error) {
     console.error('❌ Error generating codebase dump:', error);
     process.exit(1);

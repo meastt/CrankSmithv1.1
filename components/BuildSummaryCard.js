@@ -108,7 +108,6 @@ export default function BuildSummaryCard({
         alert('PDF exported successfully!'); // ADDED: User feedback
       } else {
         // Fallback to JSON export if PDF fails
-        console.warn('PDF library not available, exporting as JSON');
         exportToJSON();
       }
     } catch (error) {

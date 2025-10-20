@@ -301,10 +301,10 @@ export default function SearchableDropdown({
         disabled={options.length === 0}
         onClick={() => {
           if (options.length === 0) {
-            // console.log('🖱️ Dropdown trigger clicked but no options available');
+            // // console.log('🖱️ Dropdown trigger clicked but no options available');
             return;
           }
-          // console.log('🖱️ Dropdown trigger clicked:', {
+          // // console.log('🖱️ Dropdown trigger clicked:', {
           //   placeholder,
           //   currentIsOpen: isOpen,
           //   willBeOpen: !isOpen,
@@ -386,7 +386,7 @@ export default function SearchableDropdown({
               </div>
             ) : (
               <>
-                {/* console.log('📋 About to render List:', {
+                {/* // console.log('📋 About to render List:', {
                   placeholder,
                   flattenedOptionsLength: flattenedOptions.length,
                   listHeight: Math.min(300, flattenedOptions.length * 64),

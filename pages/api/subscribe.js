@@ -1,10 +1,6 @@
 // Import the existing Supabase client
 import { supabaseAdmin } from '../../lib/supabase.js';
 
-// For debugging - let's see what's happening
-console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
-console.log('Supabase Service Key exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -26,7 +22,6 @@ export default async function handler(req, res) {
 
     // Try to save to Supabase users table
     try {
-      console.log('Attempting to save to Supabase users table...');
       
       // Check if email already exists in users table
       const { data: existingUser, error: checkError } = await supabaseAdmin
@@ -68,7 +63,6 @@ export default async function handler(req, res) {
         
         // If users table doesn't exist, try email_subscribers as fallback
         if (error.code === '42P01') { // Table doesn't exist
-          console.log('Users table not found, trying email_subscribers table...');
           
           const { data: fallbackData, error: fallbackError } = await supabaseAdmin
             .from('email_subscribers')
@@ -87,7 +81,6 @@ export default async function handler(req, res) {
             throw new Error(`Database error: ${fallbackError.message}`);
           }
 
-          console.log('New email subscriber (fallback to email_subscribers):', email);
           return res.status(200).json({
             success: true,
             message: 'Successfully subscribed to newsletter!',
@@ -103,7 +96,6 @@ export default async function handler(req, res) {
       }
 
       // Log successful subscription
-      console.log('New user subscribed (users table):', email);
 
       // Return success response
       return res.status(200).json({
@@ -117,12 +109,10 @@ export default async function handler(req, res) {
       });
     } catch (supabaseError) {
       console.error('Supabase operation failed:', supabaseError);
-      console.log('Falling back to console logging...');
       // Fall through to fallback storage
     }
 
     // Fallback: Log to console and return success
-    console.log('New email subscriber (fallback):', email);
     
     // Return success response
     return res.status(200).json({

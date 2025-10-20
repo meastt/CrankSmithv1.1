@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import MobileLayout from '../components/mobile/MobileLayout';
 import MobileInstallPrompt from '../components/mobile/InstallPrompt';
-import { calculateRealPerformance, validateSetupComplete } from '../lib/calculateRealPerformance';
-import { bikeConfig, getComponentsForBikeType, componentDatabase } from '../lib/components';
 import { CompatibilityChecker } from '../lib/compatibilityChecker';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { toast } from '../components/Toast';
@@ -67,7 +65,7 @@ export default function MobileApp() {
     };
   }, []);
 
-  // Load saved data from localStorage
+  // Load saved data from localStorage on mount
   useEffect(() => {
     try {
       const savedUnit = localStorage.getItem('cranksmith_speed_unit');
@@ -78,6 +76,7 @@ export default function MobileApp() {
     } catch (error) {
       console.error('Error loading saved data:', error);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInstallApp = async () => {

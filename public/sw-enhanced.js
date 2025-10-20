@@ -6,8 +6,8 @@ const OFFLINE_CACHE = `cranksmith-offline-v${CACHE_VERSION}`;
 
 // Simple logging utility
 const log = {
-  info: (msg, ...args) => console.log(`[SW] ${msg}`, ...args),
-  warn: (msg, ...args) => console.warn(`[SW] ${msg}`, ...args),
+  info: (msg, ...args) => // console.log(`[SW] ${msg}`, ...args),
+  warn: (msg, ...args) => // console.warn(`[SW] ${msg}`, ...args),
   error: (msg, ...args) => console.error(`[SW] ${msg}`, ...args)
 };
 

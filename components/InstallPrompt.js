@@ -1,6 +1,6 @@
 // components/InstallPrompt.js - PWA Install Prompt
 import { useState, useEffect } from 'react';
-import { canInstall, getInstallPrompt, installPWA, checkIfPWA, isIOS } from '../lib/pwa-utils';
+import { checkIfPWA, isIOS } from '../lib/pwa-utils';
 
 export default function InstallPrompt({ variant = 'banner' }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -23,7 +23,6 @@ export default function InstallPrompt({ variant = 'banner' }) {
 
     // Listen for install prompt
     const handleBeforeInstallPrompt = (e) => {
-      console.log('🎉 Install prompt detected!', e);
       e.preventDefault();
       setDeferredPrompt(e);
       setIsVisible(true);
@@ -53,11 +52,9 @@ export default function InstallPrompt({ variant = 'banner' }) {
       const result = await deferredPrompt.prompt();
       
       if (result.outcome === 'accepted') {
-        console.log('🎉 CrankSmith installed successfully!');
         setDeferredPrompt(null);
         setIsVisible(false);
       } else {
-        console.log('❌ Installation was cancelled');
       }
     } catch (error) {
       console.error('Install failed:', error);

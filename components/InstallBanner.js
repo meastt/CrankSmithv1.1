@@ -30,7 +30,6 @@ export default function InstallBanner() {
         }
       } catch (error) {
         // localStorage might not be available
-        console.warn('localStorage not available');
       }
 
       // Check if app can be installed
@@ -76,7 +75,6 @@ export default function InstallBanner() {
     try {
       localStorage.setItem('cranksmith_banner_dismissed', Date.now().toString());
     } catch (error) {
-      console.warn('Could not save dismissal to localStorage');
     }
   };
 

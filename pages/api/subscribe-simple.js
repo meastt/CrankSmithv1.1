@@ -20,7 +20,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    console.log('Attempting to save email to existing users table structure...', email);
     
     // Check if email already exists
     const { data: existingUser, error: checkError } = await supabaseAdmin
@@ -35,7 +34,6 @@ export default async function handler(req, res) {
     }
 
     if (existingUser) {
-      console.log('Email already exists:', email);
       return res.status(200).json({ 
         success: true,
         message: 'Email already registered! Thanks for your interest.'
@@ -63,7 +61,6 @@ export default async function handler(req, res) {
       
       // Handle duplicate email error gracefully
       if (error.code === '23505') {
-        console.log('Duplicate email detected via database constraint:', email);
         return res.status(200).json({
           success: true,
           message: 'Email already registered! Thanks for your interest.'
@@ -73,7 +70,6 @@ export default async function handler(req, res) {
       throw new Error(`Database error: ${error.message}`);
     }
 
-    console.log('Successfully saved email:', email);
 
     return res.status(200).json({
       success: true,

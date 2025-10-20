@@ -27,12 +27,10 @@ const CACHEABLE_APIS = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing...');
   
   event.waitUntil(
     caches.open(STATIC_CACHE_NAME)
       .then((cache) => {
-        console.log('Service Worker: Caching static assets');
         // Only cache files that exist - filter out non-existent files
         const existingAssets = STATIC_ASSETS.filter(asset => {
           // Skip dynamic paths that might not exist
@@ -60,7 +58,6 @@ self.addEventListener('message', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating...');
   
   event.waitUntil(
     caches.keys()
@@ -71,7 +68,6 @@ self.addEventListener('activate', (event) => {
             if (cacheName !== STATIC_CACHE_NAME && 
                 cacheName !== DYNAMIC_CACHE_NAME && 
                 cacheName !== CACHE_NAME) {
-              console.log('Service Worker: Deleting old cache', cacheName);
               return caches.delete(cacheName);
             }
           })
@@ -171,7 +167,6 @@ async function networkFirst(request) {
     
     return networkResponse;
   } catch (error) {
-    console.log('Network failed, trying cache:', error);
     
     const cache = await caches.open(DYNAMIC_CACHE_NAME);
     const cachedResponse = await cache.match(request);
@@ -319,14 +314,12 @@ self.addEventListener('sync', (event) => {
 
 async function syncPendingConfigs() {
   // Handle any pending configuration saves when back online
-  console.log('Service Worker: Syncing pending configurations...');
   
   // This would integrate with your data saving logic
   // For now, just log that sync happened
   try {
     // Check if there are pending saves in IndexedDB or localStorage
     // Send them to the server when online
-    console.log('Service Worker: Sync completed');
   } catch (error) {
     console.error('Service Worker: Sync failed', error);
   }

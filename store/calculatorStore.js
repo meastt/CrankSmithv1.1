@@ -81,7 +81,6 @@ const useCalculatorStore = create(
 
           // Prevent concurrent calculations
           if (state.loading) {
-            console.log('Calculation already in progress, skipping...');
             return null;
           }
 

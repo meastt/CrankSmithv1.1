@@ -95,31 +95,6 @@ const GearSelectorPanel = React.memo(({
     );
   }
 
-  // Enhanced debug logging with better context
-  console.log(`🔍 GearSelectorPanel (${title}):`, {
-    bikeType,
-    cranksets,
-    cassettes,
-    cranksetsLength: cranksets?.length,
-    cassettesLength: cassettes?.length,
-    setup,
-    config,
-    loading,
-    error,
-    context: `Rendering for bikeType: ${bikeType}`
-  });
-
-  console.log(`🔧 Transformed options for ${title}:`, {
-    cranksetOptions: cranksetOptions,
-    cassetteOptions: cassetteOptions,
-    cranksetOptionsLength: cranksetOptions?.length || 0,
-    cassetteOptionsLength: cassetteOptions?.length || 0,
-    firstCrankset: cranksetOptions[0],
-    firstCassette: cassetteOptions[0]
-  });
-
-
-
   // Show loading state if components are still loading
   if (loading) {
     return (

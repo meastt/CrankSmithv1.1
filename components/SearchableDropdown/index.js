@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 
 const SearchableDropdown = ({
   options,
@@ -17,9 +16,9 @@ const SearchableDropdown = ({
   const filteredOptions = options.filter(option => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      option.model.toLowerCase().includes(searchLower) ||
-      option.variant.toLowerCase().includes(searchLower) ||
-      option.weight.toString().includes(searchTerm)
+      option.model?.toLowerCase().includes(searchLower) ||
+      option.variant?.toLowerCase().includes(searchLower) ||
+      (option.weight != null && option.weight.toString().includes(searchTerm))
     );
   });
 

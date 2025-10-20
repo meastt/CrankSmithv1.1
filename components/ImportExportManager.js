@@ -62,7 +62,6 @@ export default class ErrorBoundary extends React.Component {
       const recentErrors = existingErrors.slice(-5);
       localStorage.setItem('cranksmith_errors', JSON.stringify(recentErrors));
     } catch (storageError) {
-      console.warn('Failed to store error details:', storageError);
     }
   }
 

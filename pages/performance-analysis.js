@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import SEOHead from '../components/SEOHead';
 import { useState } from 'react';
 import { bikeConfig, componentDatabase } from '../lib/components';

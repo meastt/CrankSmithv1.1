@@ -105,7 +105,7 @@ const CompatibilityDisplay = ({ compatibilityResults, className = "" }) => {
   );
 };
 
-// localStorage functions
+// localStorage functions with quota handling
 const localStorageDB = {
   getConfigs: () => {
     try {
@@ -113,7 +113,7 @@ const localStorageDB = {
       return { data: saved ? JSON.parse(saved) : [] };
     } catch (error) {
       console.error('Error loading configs:', error);
-      return { data: [] };
+      return { data: [], error: 'Failed to load configurations' };
     }
   },
   saveConfig: async (config) => {
@@ -121,11 +121,26 @@ const localStorageDB = {
       const existing = await localStorageDB.getConfigs();
       const newConfig = { ...config, id: Date.now(), created_at: new Date().toISOString() };
       const updated = [...existing.data, newConfig];
-      localStorage.setItem('cranksmith_configs', JSON.stringify(updated));
-      return { error: null };
+
+      try {
+        localStorage.setItem('cranksmith_configs', JSON.stringify(updated));
+        return { error: null };
+      } catch (storageError) {
+        // Handle quota exceeded error
+        if (storageError.name === 'QuotaExceededError' || storageError.code === 22) {
+          // Try to clean up old configs and retry
+          if (updated.length > 1) {
+            const trimmed = updated.slice(-10); // Keep only last 10 configs
+            localStorage.setItem('cranksmith_configs', JSON.stringify(trimmed));
+            return { error: null, warning: 'Storage limit reached. Oldest configurations were removed.' };
+          }
+          return { error: 'Storage quota exceeded. Please delete some saved configurations.' };
+        }
+        throw storageError;
+      }
     } catch (error) {
       console.error('Error saving config:', error);
-      return { error: 'Failed to save configuration' };
+      return { error: error.message || 'Failed to save configuration' };
     }
   },
   deleteConfig: async (id) => {
@@ -136,7 +151,7 @@ const localStorageDB = {
       return { error: null };
     } catch (error) {
       console.error('Error deleting config:', error);
-      return { error: 'Failed to delete configuration' };
+      return { error: error.message || 'Failed to delete configuration' };
     }
   }
 };
@@ -240,21 +255,32 @@ export default function Calculator() {
   };
 
   const handleCalculate = async () => {
+    setCalculationError(null);
+
     try {
-      setCalculationError(null);
-      await calculateResults();
+      const calculationResults = await calculateResults();
+
+      // Only proceed with compatibility check if calculation succeeded
+      if (!calculationResults) {
+        throw new Error('Calculation returned no results');
+      }
+
       checkCompatibility();
-      
+
+      // Show Riley AI after successful calculation
       setTimeout(() => {
-        if (results && !calculationError) {
+        if (calculationResults && !calculationError) {
           setShowRiley(true);
         }
       }, 2000);
-      
+
     } catch (error) {
-      console.error('Calculation failed:', error);
-      setCalculationError(error.message || 'Calculation failed. Please check your inputs and try again.');
-      showToast('Calculation failed. Please try again.');
+      const errorMessage = error.message || 'Calculation failed. Please check your inputs and try again.';
+      setCalculationError(errorMessage);
+      showToast(errorMessage);
+
+      // Don't show Riley AI if calculation failed
+      setShowRiley(false);
     }
   };
 

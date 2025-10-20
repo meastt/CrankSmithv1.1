@@ -37,7 +37,7 @@ export default function TirePressure() {
     let basePSI = 0;
     let minPSI = 0;
     let maxPSI = 0;
-    let width = Number(tireWidth);
+    const width = Number(tireWidth);
 
     if (surfaceType === 'road') {
       if (width <= 25) { basePSI = 85 + (totalWeightKg - 70) * 0.8; minPSI = 75; maxPSI = 110; } 

@@ -11,7 +11,6 @@ let installPromptEvent: BeforeInstallPromptEvent | null = null;
 // Enhanced service worker registration
 export async function registerEnhancedServiceWorker(): Promise<void> {
   if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
-    console.log('Service Worker not supported');
     return;
   }
 
@@ -21,7 +20,6 @@ export async function registerEnhancedServiceWorker(): Promise<void> {
     for (const registration of registrations) {
       if (registration.scope.includes('sw.js')) {
         await registration.unregister();
-        console.log('Unregistered old service worker');
       }
     }
 
@@ -31,7 +29,6 @@ export async function registerEnhancedServiceWorker(): Promise<void> {
       updateViaCache: 'none'
     });
 
-    console.log('Enhanced Service Worker registered successfully');
 
     // Handle service worker updates
     swRegistration.addEventListener('updatefound', () => {
@@ -59,11 +56,10 @@ export async function registerEnhancedServiceWorker(): Promise<void> {
 
 // Handle messages from service worker
 function handleServiceWorkerMessage(event: MessageEvent<ServiceWorkerMessage>): void {
-  const { type, payload } = event.data;
+  const { type } = event.data;
 
   switch (type) {
     case 'CACHE_UPDATED':
-      console.log('Cache updated:', payload);
       break;
     case 'OFFLINE_READY':
       showOfflineReadyNotification();
@@ -90,7 +86,6 @@ export async function cacheComponentData(): Promise<void> {
       });
     }
 
-    console.log('Component data sent to service worker for caching');
   } catch (error) {
     console.error('Failed to cache component data:', error);
   }
@@ -102,12 +97,10 @@ export function initializeEnhancedPWA(): void {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     installPromptEvent = e as BeforeInstallPromptEvent;
-    console.log('PWA install prompt captured');
   });
 
   // Handle app installed
   window.addEventListener('appinstalled', () => {
-    console.log('PWA installed successfully');
     installPromptEvent = null;
     
     // Track installation
@@ -126,7 +119,6 @@ export function initializeEnhancedPWA(): void {
 // Enhanced install PWA function
 export async function installEnhancedPWA(): Promise<boolean> {
   if (!installPromptEvent) {
-    console.log('No install prompt available');
     return false;
   }
 
@@ -135,10 +127,8 @@ export async function installEnhancedPWA(): Promise<boolean> {
     const userChoice = await result.userChoice;
     
     if (userChoice.outcome === 'accepted') {
-      console.log('User accepted PWA install');
       return true;
     } else {
-      console.log('User dismissed PWA install');
       return false;
     }
   } catch (error) {
@@ -157,7 +147,6 @@ export function canInstallEnhancedPWA(): boolean {
 // Offline configuration management
 export async function saveConfigurationOffline(config: Record<string, unknown>): Promise<void> {
   if (!swRegistration?.active) {
-    console.warn('Service worker not available for offline save');
     return;
   }
 
@@ -167,7 +156,6 @@ export async function saveConfigurationOffline(config: Record<string, unknown>):
       payload: config
     });
 
-    console.log('Configuration saved for offline sync');
   } catch (error) {
     console.error('Failed to save configuration offline:', error);
   }
@@ -221,13 +209,11 @@ export class ConnectionManager {
   private handleOnline(): void {
     this.isOnline = true;
     this.notifyListeners();
-    console.log('Connection restored');
   }
 
   private handleOffline(): void {
     this.isOnline = false;
     this.notifyListeners();
-    console.log('Connection lost');
   }
 
   private notifyListeners(): void {
@@ -277,7 +263,6 @@ export async function networkAwareFetch(
 
     return response;
   } catch (error) {
-    console.warn('Network request failed, checking cache:', url);
     
     // Try to get cached version if available
     if ('caches' in window) {
@@ -285,7 +270,6 @@ export async function networkAwareFetch(
       const cached = await cache.match(url);
       
       if (cached) {
-        console.log('Returning cached response for:', url);
         return cached;
       }
     }
